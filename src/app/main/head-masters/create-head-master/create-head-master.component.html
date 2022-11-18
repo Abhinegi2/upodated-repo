@@ -1,0 +1,269 @@
+<div id="head-master" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/head-masters'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ headMasterModel.FirstName }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Head Master
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Head Master Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-head-master-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateHeadMasterDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-head-master-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateHeadMasterDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="headMasterForm" [formGroup]="headMasterForm" class="head-master w-100-p p-24 mr-24"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVTP($event.value)"
+                                [disabled]="PageRights.IsReadOnly || UserModel.RoleCode == 'VC'">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="headMasterForm.controls.VTPId.invalid">
+                                {{getErrorMessage(headMasterForm, 'VTPId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVC($event.value)"
+                                [disabled]="PageRights.IsReadOnly || UserModel.RoleCode == 'VC'">
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="headMasterForm.controls.VCId.invalid">
+                                {{getErrorMessage(headMasterForm, 'VCId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" required appearance="outline"
+                                matTooltip="Select School" matTooltipPosition='above' matTooltipClass="allow-cr"
+                                [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="headMasterForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(headMasterForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="UserModel.RoleCode != 'VT'">
+                            <mat-label>Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="VTId" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>First Name</mat-label>
+                            <input matInput name="firstName" formControlName="FirstName" required
+                                placeholder="Ex. Rakesh" matTooltip="First letter should be capital."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="headMasterForm.controls.FirstName.invalid">
+                                {{getErrorMessage(headMasterForm, 'FirstName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput name="middleName" formControlName="MiddleName" placeholder="Ex. Kumar"
+                                matTooltip="First letter should be capital." matTooltipPosition="above">
+                            <mat-error *ngIf="headMasterForm.controls.MiddleName.invalid">
+                                {{getErrorMessage(headMasterForm, 'MiddleName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput name="lastName" formControlName="LastName" placeholder="Ex. Nayak"
+                                matTooltip="First letter should be capital." matTooltipPosition="above">
+                            <mat-error *ngIf="headMasterForm.controls.LastName.invalid">
+                                {{getErrorMessage(headMasterForm, 'LastName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>First Mobile Number</mat-label>
+                            <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="headMasterForm.controls.Mobile.invalid">
+                                {{getErrorMessage(headMasterForm, 'Mobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Second Mobile Number</mat-label>
+                            <input matInput name="mobile1" formControlName="Mobile1" digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="headMasterForm.controls.Mobile1.invalid">
+                                {{getErrorMessage(headMasterForm, 'Mobile1')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Gender</mat-label>
+                            <mat-select name="gender" formControlName="Gender" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
+                                    {{ genderItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="headMasterForm.controls.Gender.invalid">
+                                {{getErrorMessage(headMasterForm, 'Gender')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Email</mat-label>
+                            <input matInput name="email" formControlName="Email" required
+                                placeholder="Ex. abc@test.com">
+                            <mat-error *ngIf="headMasterForm.controls.Email.invalid">
+                                {{getErrorMessage(headMasterForm, 'Email')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Of Joining School</mat-label>
+                            <input matInput [matDatepicker]="picker1" name="dateOfJoiningSchool"
+                                (dateChange)="onChangeDateCalculateYear($event)" formControlName="DateOfJoining"
+                                [max]="CurrentDate" [disabled]="PageRights.IsReadOnly" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="headMasterForm.controls.DateOfJoining.invalid">
+                                {{getErrorMessage(headMasterForm, 'DateOfJoining')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
+                            <mat-label>Date of Leaving School</mat-label>
+                            <input matInput [matDatepicker]="picker" name="dateOfResignationFromSchool"
+                                (dateChange)="onChangeDateEnableDisableCheckBox(headMasterForm, $event)"
+                                [max]="CurrentDate" [min]="headMasterForm.controls.DateOfJoining.value"
+                                formControlName="DateOfResignation" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="headMasterForm.controls.DateOfResignation.invalid">
+                                {{getErrorMessage(headMasterForm, 'DateOfResignation')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-icon matDatepickerToggleIcon
+                            (click)="clearDateValueInFormControl(headMasterForm, 'DateOfResignation', $event)"
+                            *ngIf="headMasterForm.controls.DateOfResignation.value && PageRights.ActionType !='view'">
+                            clear</mat-icon>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Years in School</mat-label>
+                            <input matInput name="yearsInSchool" formControlName="YearsInSchool" digitOnly minlength="0"
+                                maxlength="2" min="0" max="60" readonly
+                                matTooltip="Enter number of years in current school." matTooltipPosition="above">
+                            <mat-error *ngIf="headMasterForm.controls.YearsInSchool.invalid">
+                                {{getErrorMessage(headMasterForm, 'YearsInSchool')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,176 @@
+<div id="course-module" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/course-modules'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtClassModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Course Module
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Course Module Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-course-module-button" [disabled]="courseModuleForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateCourseModuleDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-course-module-button"                
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateCourseModuleDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="courseModuleForm" [formGroup]="courseModuleForm" class="course-module w-100-p p-24 mr-24"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Class</mat-label>
+
+                            <mat-select formControlName="ClassId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseModuleForm.controls.ClassId.invalid">
+                                {{getErrorMessage(courseModuleForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Course Module</mat-label>
+
+                            <mat-select formControlName="ModuleTypeId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="moduleTypeItem.Id" *ngFor="let moduleTypeItem of moduleTypeList">
+                                    {{ moduleTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseModuleForm.controls.ModuleTypeId.invalid">
+                                {{getErrorMessage(courseModuleForm, 'ModuleTypeId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="courseModuleForm.controls.ModuleTypeId.value == '122'">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseModuleForm.controls.SectorId.invalid">
+                                {{getErrorMessage(courseModuleForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseModuleForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(courseModuleForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="75" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Units</mat-label>
+                            <input matInput name="unitName" formControlName="UnitName" required>
+                            <mat-error *ngIf="courseModuleForm.controls.UnitName.invalid">
+                                {{getErrorMessage(courseModuleForm, 'UnitName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Display Order</mat-label>
+                            <input matInput name="displayOrder" formControlName="DisplayOrder" required digitOnly maxlength="2">
+                            <mat-error *ngIf="courseModuleForm.controls.DisplayOrder.invalid">
+                                {{getErrorMessage(courseModuleForm, 'DisplayOrder')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="PageRights.IsReadOnly==false">
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sessions</mat-label>
+                            <input matInput name="sessionName" [(ngModel)]="sessionName"
+                                [ngModelOptions]="{standalone: true}" maxlength="150">
+                        </mat-form-field>
+                        <span class="material-icons add-session" (click)="addSession()">add_circle_outline</span>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-list fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-list-item *ngFor="let sessionItem of sessionList let sessionIndex=index;">
+                                <div style="float: left; width: 90%;"><span> {{sessionItem.SessionName}} </span></div>
+                                <div style="float: right; width: 10%;" *ngIf="PageRights.IsReadOnly==false"><span
+                                        class="material-icons remove-session"
+                                        (click)="removeSession(sessionItem)">remove_circle_outline</span></div>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

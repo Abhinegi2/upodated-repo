@@ -1,0 +1,129 @@
+<div id="vtp-sector-job-role" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vtp-sector-job-roles'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtpSectorJobRoleModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VTP Sector Job Role
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VTP Sector Job Role Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vtp-sector-job-role-button"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateVTPSectorJobRoleDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vtp-sector-job-role-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTPSectorJobRoleDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtpSectorJobRoleForm" [formGroup]="vtpSectorJobRoleForm" class="vtp-sector-job-role w-100-p p-24 mr-24" fxLayout="column"
+                fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select School VTP Sector JobRole</mat-label>
+
+                                <mat-select formControlName="VTPId" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                        {{ vtpItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vtpSectorJobRoleForm.controls.VTPId.invalid">
+                                    {{getErrorMessage(vtpSectorJobRoleForm, 'VTPId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select Sector</mat-label>
+
+                                <mat-select formControlName="SectorId" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="sectorItem.Id"
+                                        *ngFor="let sectorItem of sectorList">
+                                        {{ sectorItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vtpSectorJobRoleForm.controls.SectorId.invalid">
+                                    {{getErrorMessage(vtpSectorJobRoleForm, 'SectorId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select Job Role</mat-label>
+
+                                <mat-select formControlName="JobRoleId" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="jobRoleItem.Id"
+                                        *ngFor="let jobRoleItem of jobRoleList">
+                                        {{ jobRoleItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vtpSectorJobRoleForm.controls.JobRoleId.invalid">
+                                    {{getErrorMessage(vtpSectorJobRoleForm, 'JobRoleId')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>VTP Sector Job Role Name</mat-label>
+                                <input matInput name="vtpSectorJobRoleName" formControlName="VTPSectorJobRoleName">
+                                <mat-error *ngIf="vtpSectorJobRoleForm.controls.VTPSectorJobRoleName.invalid">{{getErrorMessage(vtpSectorJobRoleForm, 'VTPSectorJobRoleName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

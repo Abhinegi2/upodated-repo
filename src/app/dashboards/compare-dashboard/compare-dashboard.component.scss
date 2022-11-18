@@ -1,0 +1,338 @@
+@import "src/@fuse/scss/fuse";
+
+data-list-view {
+    #compare-dashboard {
+        .top-bg {
+            @include media-breakpoint("lt-md") {
+                height: 256px;
+            }
+        }
+
+        > .center {
+            > .header {
+                display: contents !important;
+                .logo {
+                    .refresh-data {
+                        margin-left: 15px;
+                        background: transparent !important;
+                        color: #a4ef13 !important;
+                    }
+
+                    .refresh-data:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .search-wrapper {
+                    width: 100%;
+                    max-width: 480px;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    @include mat-elevation(1);
+
+                    @include media-breakpoint("xs") {
+                        width: 100%;
+                    }
+
+                    .search {
+                        width: 100%;
+                        height: 48px;
+                        line-height: 48px;
+                        padding: 0 18px;
+
+                        input {
+                            width: 100%;
+                            height: 48px;
+                            min-height: 48px;
+                            max-height: 48px;
+                            padding: 0 16px;
+                            border: none;
+                            outline: none;
+                        }
+                    }
+                }
+
+                @include media-breakpoint("lt-md") {
+                    padding: 8px 0;
+                    height: 192px !important;
+                    min-height: 192px !important;
+                    max-height: 192px !important;
+                }
+            }
+        }
+
+        .filter-content-card {
+            background-color: #fdfdfb;
+            border: whitesmoke 1px solid;
+            border-radius: 5px;
+            padding: 0 10px;
+        }
+
+        .filter-content {
+            display: initial !important;
+            height: 80px;
+
+            .filter-row {
+                height: 45px !important;
+            }
+
+            .mat-form-field {
+                .mat-select {
+                    margin-top: -7px !important;
+                }
+
+                .mat-form-field-wrapper {
+                    padding-bottom: 1.25em !important;
+                }
+            }
+
+            .clear-filter {
+                display: flex;
+            }
+
+            .filter-button {
+                margin-bottom: 9px;
+                margin-right: 15px;
+            }
+        }
+    }
+
+    .school-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 40px;
+            padding: 10px;
+        }
+        .first-header-row {
+            min-height: 30px !important;
+            padding-bottom: 0px !important;
+            border-bottom: none !important;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            // display: flex;
+            text-align: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .mat-column-student {
+            flex: 0 1 150px;
+        }
+
+        .mat-column-high {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-medium {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-low {
+            flex: 0 1 200px;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+    .clear-btn {
+        margin-top: 10px;
+        float: right;
+        height: 40px;
+    }
+
+    .hcolor {
+        color: #0e38a6;
+    }
+
+    // .graph-legend {
+    //     width: 12px;
+    //     height: 12px;
+    //     margin-right: 8px !important;
+    //     border-radius: 50%;
+    //     margin-left: 5px;
+    // }
+    // .text-legend {
+    //     margin-left: -5px;
+    //     margin-right: 2px;
+    // }
+
+    // .graph-legend-first {
+    //     margin-left: 90px;
+    // }
+
+    .download-btn {
+        float: right;
+    }
+    .right-arrow {
+        margin-top: 10px;
+    }
+
+    //detailed graph
+    .view-checkbox {
+        display: flex;
+    }
+
+    .checkbox-view {
+        margin-right: 5px;
+        top: 5px;
+    }
+
+    //for compare dashboard
+    .compare-divider {
+        margin-right: 25px;
+    }
+    .compare-title {
+        margin-left: 80px;
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th.mat-header-cell,
+    td.mat-cell {
+        text-align: center;
+        //   border: 1px solid #CCC;
+        padding: 0 !important;
+    }
+    //progress-bar
+    .gender-progress-bar {
+        width: 120px !important;
+        padding-left: 17px !important;
+        height: 7px !important;
+        border-radius: 8px !important;
+    }
+
+    .trainers-reporting-progress-bar {
+        width: 120px !important;
+        padding-left: 17px !important;
+        height: 7px !important;
+        border-radius: 8px !important;
+    }
+
+    .gender-progress-bar .mat-progress-bar-fill::after {
+        background-color: #11d3d3 !important;
+    }
+    .gender-progress-bar .mat-progress-bar-buffer {
+        background-color: #6ec352 !important;
+    }
+    .choose-kpi {
+        min-width: 200px !important;
+    }
+    .skyblue-color .mat-progress-bar-buffer {
+        background-color: #11d3d3 !important;
+    }
+    .skyblue-color .mat-progress-bar-fill::after {
+        background-color: #11d3d3 !important;
+    }
+    .green-color .mat-progress-bar-buffer {
+        background-color: #6ec352 !important;
+    }
+    .green-color .mat-progress-bar-fill::after {
+        background-color: #6ec352 !important;
+    }
+    .purple-color .mat-progress-bar-buffer {
+        background-color: #6549ac !important;
+    }
+    .purple-color .mat-progress-bar-fill::after {
+        background-color: #6549ac !important;
+    }
+    .blue-color .mat-progress-bar-buffer {
+        background-color: #4420e6 !important;
+    }
+    .blue-color .mat-progress-bar-fill::after {
+        background-color: #4420e6 !important;
+    }
+
+    @media screen and (max-width: 700px) {
+        .compare-header {
+            flex-direction: column !important;
+        }
+        .for-row {
+            max-width: 100% !important;
+            padding-left: 10px;
+            padding-bottom: 10px;
+        }
+        .compare-responsive-table {
+            flex: 1 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+          
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+          
+            .mat-table {
+              width: 100%;
+              max-width: 100%;
+              margin-bottom: 1rem;
+              display: table;
+              border-collapse: collapse;
+              margin: 0px;
+            }
+          
+            .mat-row,
+            .mat-header-row {
+              display: table-row;
+            }
+          
+            .mat-header-row th {
+              position: sticky;
+              top: 0;
+              background-color: white;
+            }
+          
+            mat-footer-row,
+            mat-row {
+              min-height: 30px;
+            }
+          
+            .mat-row .mat-cell p {
+              margin: 0px;
+            }
+          
+            .mat-cell,
+            .mat-header-cell {
+              word-wrap: initial;
+              display: table-cell;
+              padding: 0px 5px;
+              line-break: unset;
+              width: auto;
+              white-space: nowrap;
+              overflow: hidden;
+              vertical-align: middle;
+              border-bottom: 1px solid #e0e0e0;
+              position: sticky !important;
+            }
+          
+            mat-cell:first-of-type,
+            mat-footer-cell:first-of-type,
+            mat-header-cell:first-of-type {
+              padding-left: 24px;
+            }
+          }
+    }
+}

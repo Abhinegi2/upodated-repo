@@ -1,0 +1,180 @@
+#vt-daily-reporting {
+    .header {
+        .subtitle {
+            margin: 6px 0 0 0;
+            color:black !important;
+        }
+    }
+
+    .content {
+        .mat-tab-group,
+        .mat-tab-body-wrapper,
+        .tab-content{
+            flex: 1 1 auto;
+            max-width: 100%;
+        }
+
+        .mat-tab-body-content {
+            display: flex;
+        }
+
+        .mat-tab-label {
+            height: 64px;
+        }
+
+        // Temporary prefix alignment fix
+        .mat-form-field-appearance-outline .mat-form-field-prefix,
+        .mat-form-field-appearance-outline .mat-form-field-suffix {
+            top: 0;
+        }
+
+        .checkbox-space {
+            margin-left: 3px;
+            margin-right: 15px;
+            padding-top: 3px;
+        }
+
+        .mat-form-field-infix > .mat-input-element:disabled {
+            color: #3c4252 !important;
+        }
+
+        .vt-daily-type {
+            display: initial !important;
+        }
+ 
+        .line-center{
+            margin:0;padding:0 10px;
+            background:#fff;
+            display:inline-block;
+        }
+
+        h2{
+            text-align:center;
+            position:relative;
+            z-index:2;
+        }
+        
+        h2:after{
+            content:"";
+            position:absolute;
+            top:50%;
+            left:0;
+            right:0;
+            border-top:solid 1px rgb(0, 132, 255);
+            z-index:-1;
+        }
+
+        .repetitive-block {
+            display: inherit !important;
+        }
+    }
+
+    .student-attendance-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 64px;
+        }
+
+        .vt-daily-reporting {
+            position: relative;
+            cursor: pointer;
+            height: 84px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .mat-column-SchoolName {
+            flex: 0 1 250px;
+        }
+
+        .mat-column-SectorName {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-ReportType {
+            flex: 0 1 140px;
+        }
+
+        .mat-column-ReportingDate {
+            flex: 0 1 160px;
+        }
+
+        .mat-column-ApprovalStatus {
+            flex: 0 1 150px;
+        }
+
+        .mat-column-IsActive {
+            flex: 0 1 100px;
+        }
+
+        .mat-column-Actions {
+            flex: 0 1 15%;
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            & + span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+
+        // @include media-breakpoint('lt-sm') {
+        //     .mat-column-Code {
+        //         flex: 0 1 80px;
+        //     }
+
+        //     .mat-column-Name {
+        //         flex: 0 1 130px;
+        //     }
+
+        //     .mat-column-IsActive {
+        //         flex: 0 1 80px;
+        //     }
+
+        //     .mat-column-Actions {
+        //         flex: 0 1 35%;
+        //     }
+        // }
+    }
+    .demography-space {
+        margin-top: -2px;
+        margin-left: 30px;
+    }
+    .student-list{
+        margin-left: 35px;
+        height: 37px;
+        font-size: 16px;
+    }
+    .student-list-group{
+        margin-top: 20px;
+    }
+    .mat-list > .mat-list-item:nth-child(2n+1) {
+        background-color:#f3f3f3;
+    }
+      
+    .mat-list > .mat-list-item:nth-child(2n) {
+        background-color:#e0e0e094;
+    }
+    .mat-list-class{
+        max-width: 97% !important;
+    }
+}

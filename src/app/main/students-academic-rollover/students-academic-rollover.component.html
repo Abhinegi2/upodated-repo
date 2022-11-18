@@ -1,0 +1,263 @@
+<div id="students-academic-rollover" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    STUDENTS ACADEMIC ROLLOVER : {{ yearName }}
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button *ngIf="PageRights.IsAdd" (click)="onTransfer()" mat-raised-button
+                    class="add-vt-school-sector-button fuse-white mt-24 mt-md-0">
+                    <span>
+                        ACADEMIC ROLLOVER
+                    </span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card">
+            <div class="filter-content">
+                <form name="studentTransferForm" [formGroup]="studentTransferForm" class="course-material-status-report"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+
+                    <div class="ar-validation" *ngIf="Erromsg==true">
+                        <span [ngClass]="vtClassExistsForNextYear ? 'ar-success' : 'ar-error'">{{errorMessage}}</span>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required disabled="true">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" required appearance="outline" required
+                                matTooltip="Select Vocational Training Provider" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" #SelectVTP (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" appearance="fill" required
+                                matTooltip="Select Vocational Coordinator" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" (selectionChange)="onChangeVC($event.value)" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="this.filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Trainer </mat-label>
+
+                            <mat-select formControlName="VTId" appearance="fill" required
+                                matTooltip="Select Vocational Trainer" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" (selectionChange)="onChangeVT($event.value)" #SelectVT>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVT.focused" [array]="vtList"
+                                    (filteredReturn)="filteredVTItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredVTItems">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School </mat-label>
+
+                            <mat-select formControlName="SchoolId" appearance="outline" required
+                                matTooltip="Select School" matTooltipPosition='above' matTooltipClass="allow-cr"
+                                #SelectSchool (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class </mat-label>
+
+                            <mat-select formControlName="ClassId" appearance="fill" required
+                                matTooltip="Student data display when academic rollover completed for selected trainer class"
+                                matTooltipPosition='above' matTooltipClass="allow-cr"
+                                (selectionChange)="onChangeClass($event.value)">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Target Vocational Trainers </mat-label>
+
+                            <mat-select formControlName="TargetVTId" appearance="fill" required>
+                                <mat-option [value]="targetVTItem.Id" *ngFor="let targetVTItem of targetVTList">
+                                    {{ targetVTItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="student-class-table responsive-table" #table [dataSource]="tableDataSource" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class</mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectionName Column -->
+                <ng-container matColumnDef="SectionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SectionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- StudentName Column -->
+                <ng-container matColumnDef="StudentName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.StudentName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfEnrollment Column -->
+                <ng-container matColumnDef="DateOfEnrollment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Enrollment
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.DateOfEnrollment | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsAYRollover Column -->
+                <ng-container matColumnDef="IsAYRollover">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is AY Rollover?
+                        &nbsp;&nbsp;&nbsp;
+                        <mat-checkbox (change)="onStudentForAdemicYear($event, null)"></mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtClass" class="text-center">
+                        <mat-checkbox [checked]="vtClass.IsActive" (change)="onStudentForAdemicYear($event, vtClass)"
+                            [disabled]="vtClass.IsAYRollover">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let studentClass; columns: displayedColumns;" class="student-class" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="15"
+                [pageSizeOptions]="[15, 25, 100, 200, 500]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,127 @@
+<div id="broadcast-message" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/broadcast-messages'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ broadcastMessagesModel.MessageText }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Broadcast Message
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Broadcast Message Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-division-button"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateBroadcastMessagesDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-division-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateBroadcastMessagesDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="broadcastMessagesForm" [formGroup]="broadcastMessagesForm"
+                    class="broadcast-messages w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Broadcast Message</mat-label>
+                            <input matInput name="MessageText" formControlName="MessageText" required>
+                            <mat-error *ngIf="broadcastMessagesForm.controls.MessageText.invalid">
+                                {{getErrorMessage(broadcastMessagesForm, 'MessageText')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>From Date</mat-label>
+                            <input matInput [matDatepicker]="picker1" name="fromDate" formControlName="FromDate"
+                                [min]="CurrentDate" [disabled]="PageRights.IsReadOnly" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="broadcastMessagesForm.controls.FromDate.invalid">
+                                {{getErrorMessage(broadcastMessagesForm, 'FromDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>To Date</mat-label>
+                            <input matInput [matDatepicker]="picker" name="toDate" [min]="CurrentDate" formControlName="ToDate"
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="broadcastMessagesForm.controls.ToDate.invalid">
+                                {{getErrorMessage(broadcastMessagesForm, 'ToDate')}}
+                            </mat-error>
+                        </mat-form-field>                       
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Applicable For</mat-label>
+                            <mat-select name="workingDayTypeIds" formControlName="ApplicableFor" multiple required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="VC">Vocational Coordinator</mat-option>
+                                <mat-option value="VT">Vocational Trainer</mat-option>
+                                <mat-option value="HM">Head Master</mat-option>
+                                <mat-option value="PMU">PMU Admin</mat-option>
+                                <mat-option value="All">All</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="broadcastMessagesForm.controls.ApplicableFor.invalid">
+                                {{getErrorMessage(broadcastMessagesForm, 'ApplicableFor')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

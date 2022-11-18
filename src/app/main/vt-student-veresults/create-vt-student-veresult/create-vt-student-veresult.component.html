@@ -1,0 +1,150 @@
+<div id="vt-student-veresult" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-student-ve-results'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtStudentVEResultModel.StudentName }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Student VE Result
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Student VE Result Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-student-veresult-button"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateVTStudentVEResultDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-student-veresult-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStudentVEResultDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtStudentVEResultForm" [formGroup]="vtStudentVEResultForm"
+                      class="vt-student-veresult w-100-p p-24 mr-24" fxLayout="column"
+                      fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Student</mat-label>
+
+                            <mat-select formControlName="StudentId" required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="studentItem.Id" *ngFor="let studentItem of studentList">
+                                    {{ studentItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.StudentId.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'StudentId')}}
+                            </mat-error>
+                        </mat-form-field>                    
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Date Issuence</mat-label>
+                            <input matInput name="dateIssuence" formControlName="DateIssuence" [max]="CurrentDate"
+                                   [matDatepicker]="dateIssuence" required [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateIssuence"></mat-datepicker-toggle>
+                            <mat-datepicker #dateIssuence></mat-datepicker>
+
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.DateIssuence.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'DateIssuence')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>External Marks</mat-label>
+                            <input matInput name="externalMarks" formControlName="ExternalMarks" digitOnly minlength="1" maxlength="3">
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.ExternalMarks.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'ExternalMarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Theory Marks</mat-label>
+                            <input matInput name="theoryMarks" formControlName="TheoryMarks" required digitOnly minlength="1" maxlength="3">
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.TheoryMarks.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'TheoryMarks')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Internal Marks</mat-label>
+                            <input matInput name="internalMarks" formControlName="InternalMarks" digitOnly minlength="1" maxlength="3">
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.InternalMarks.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'InternalMarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Total Marks</mat-label>
+                            <input matInput name="totalMarks" formControlName="TotalMarks" required digitOnly minlength="1" maxlength="4">
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.TotalMarks.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'TotalMarks')}}
+                            </mat-error>
+                        </mat-form-field>                    
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Grade</mat-label>
+                            <input matInput name="grade" formControlName="Grade">
+                            <mat-error *ngIf="vtStudentVEResultForm.controls.Grade.invalid">
+                                {{getErrorMessage(vtStudentVEResultForm, 'Grade')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

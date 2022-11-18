@@ -1,0 +1,210 @@
+<div id="role-transaction" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/role-transactions'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ roleTransactionModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Role Transaction
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Role Transaction Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-role-transaction-button" [disabled]="roleTransactionForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateRoleTransactionDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-role-transaction-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateRoleTransactionDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="roleTransactionForm" [formGroup]="roleTransactionForm" class="role-transaction w-100-p"
+                    fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Role</mat-label>
+
+                                <mat-select formControlName="RoleId" appearance="outline" required
+                                    matTooltip="Select Role" matTooltipPosition='above' matTooltipClass="allow-cr"
+                                    [disabled]="PageRights.IsReadOnly" #SelectRole>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectRole.focused"
+                                        [array]="roleList" (filteredReturn)="this.filteredRoleItems = $event"
+                                        [displayMember]="'Name'"></mat-select-filter>
+                                    <mat-option [value]="roleItem.Id" *ngFor="let roleItem of filteredRoleItems">
+                                        {{ roleItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="roleTransactionForm.controls.RoleId.invalid">
+                                    {{getErrorMessage(roleTransactionForm, 'RoleId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Transaction</mat-label>
+
+                                <mat-select formControlName="TransactionId" appearance="outline" required
+                                    matTooltip="Select Transaction" matTooltipPosition='above'
+                                    matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectTransaction>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectTransaction.focused"
+                                        [array]="transactionList"
+                                        (filteredReturn)="this.filteredTransactionItems = $event"
+                                        [displayMember]="'Name'"></mat-select-filter>
+                                    <mat-option [value]="transactionItem.Id"
+                                        *ngFor="let transactionItem of filteredTransactionItems">
+                                        {{ transactionItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="roleTransactionForm.controls.TransactionId.invalid">
+                                    {{getErrorMessage(roleTransactionForm, 'TransactionId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Rights?</span>
+                                <mat-checkbox matInput formControlName="Rights" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Can Add?</span>
+                                <mat-checkbox matInput formControlName="CanAdd" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Can Edit?</span>
+                                <mat-checkbox matInput formControlName="CanEdit" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Can Delete?</span>
+                                <mat-checkbox matInput formControlName="CanDelete" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Can View?</span>
+                                <mat-checkbox matInput formControlName="CanView" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Can Export?</span>
+                                <mat-checkbox matInput formControlName="CanExport" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">List View?</span>
+                                <mat-checkbox matInput formControlName="ListView" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Basic View?</span>
+                                <mat-checkbox matInput formControlName="BasicView" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Detail View?</span>
+                                <mat-checkbox matInput formControlName="DetailView" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Is Public?</span>
+                                <mat-checkbox matInput formControlName="IsPublic" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <span class="checkbox-space" fxFlex="60">Is Active?</span>
+                                <mat-checkbox matInput formControlName="IsActive" fxFlex="40"
+                                    [disabled]="PageRights.IsReadOnly">
+                                </mat-checkbox>
+                            </div>
+
+                            <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="75" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Remarks</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="roleTransactionForm.controls.Remarks.invalid">
+                                    {{getErrorMessage(roleTransactionForm, 'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

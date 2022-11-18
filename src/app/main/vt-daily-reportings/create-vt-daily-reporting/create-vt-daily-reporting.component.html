@@ -1,0 +1,1308 @@
+<div id="vt-daily-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-daily-reporting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtDailyReportingModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Daily Reporting
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Daily Reporting Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            <!-- [disabled]="vtDailyReportingForm.invalid" -->
+            <button mat-raised-button class="add-vt-daily-reporting-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTDailyReportingDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-daily-reporting-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateVTDailyReportingDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtDailyReportingForm" [formGroup]="vtDailyReportingForm"
+                    class="vt-daily-reporting w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Reporting Date</mat-label>
+                            <input matInput [matDatepicker]="reportingDate" name="reportingDate"
+                                [min]="minReportingDate" [max]="CurrentDate" formControlName="ReportingDate" required
+                                (dateChange)="onChangeReportingDate()" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="reportingDate"></mat-datepicker-toggle>
+                            <mat-datepicker #reportingDate></mat-datepicker>
+                            <mat-error *ngIf="vtDailyReportingForm.controls.ReportingDate.invalid">
+                                {{getErrorMessage(vtDailyReportingForm, 'ReportingDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Report Type</mat-label>
+                            <mat-select name="reportType" formControlName="ReportType" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeReportType($event.value)">
+                                <mat-option [value]="reportTypeItem.Id" *ngFor="let reportTypeItem of reportTypeList">
+                                    {{ reportTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtDailyReportingForm.controls.ReportType.invalid">
+                                {{getErrorMessage(vtDailyReportingForm, 'ReportType')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="vtDailyReportingForm.controls.ReportType.value == 37">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Working Day Type</mat-label>
+                            <mat-select name="workingDayTypeIds" formControlName="WorkingDayTypeIds" multiple required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeWorkingType($event.value)">
+                                <mat-option [value]="workingDayTypeIdsItem.Id"
+                                    *ngFor="let workingDayTypeIdsItem of workingDayTypeIdsList">
+                                    {{ workingDayTypeIdsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtDailyReportingForm.controls.WorkingDayTypeIds.invalid">
+                                {{getErrorMessage(vtDailyReportingForm, 'WorkingDayTypeIds')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Teaching vocational-education start -->
+                    <fieldset formGroupName="teachingVocationalEducationGroup"
+                        *ngIf="isAllowTeachingVocationalEducation">
+                        <legend>Teaching Vocational Educations</legend>
+                        <!-- <button mat-raised-button
+                            (click)="debugHTMLObjects(vtDailyReportingForm.controls.teachingVocationalEducationGroup)">
+                            <span>Debug</span>
+                        </button> -->
+
+                        <div formArrayName="teachingVocationalEducations">
+                            <!-- iterate formArray -->
+                            <div
+                                *ngFor="let tveItem of vtDailyReportingForm.controls.teachingVocationalEducationGroup.get('teachingVocationalEducations').controls; let tveIndex=index">
+                                <h2><span class="line-center">Teaching Vocational Education : {{tveIndex + 1}}</span>
+                                </h2>
+                                <div [formGroupName]="tveIndex" class="vt-daily-type vocational-class">
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px">
+                                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Class Taught</mat-label>
+                                            <mat-select name="classTaughtId" formControlName="ClassTaughtId"
+                                                [required]="isAllowTeachingVocationalEducation" appearance="outline"
+                                                (selectionChange)="onChangeClassForTaught(tveItem, $event.value)"
+                                                [disabled]="PageRights.IsReadOnly">
+                                                <mat-option [value]="classItem.Id"
+                                                    *ngFor="let classItem of classTaughtList">
+                                                    {{ classItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.ClassTaughtId.invalid">
+                                                {{getErrorMessage(tveItem, 'ClassTaughtId')}}
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Section Taught</mat-label>
+                                            <mat-select name="classSectionIds" formControlName="ClassSectionIds"
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value"
+                                                appearance="outline"
+                                                (selectionChange)="onChangeSectionForTaught(tveItem, $event.value)"
+                                                [disabled]="PageRights.IsReadOnly">
+                                                <mat-option [value]="sectionItem.Id"
+                                                    *ngFor="let sectionItem of sectionList">
+                                                    {{ sectionItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.ClassSectionIds.invalid">
+                                                {{getErrorMessage(tveItem, 'ClassSectionIds')}}
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <div appearance="outline" fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                            style="margin-bottom: 18px; display: none;">
+                                            <mat-label style="margin-right: 25px;">Did you teach today?
+                                            </mat-label>
+                                            <mat-checkbox matInput formControlName="DidYouTeachToday"
+                                                [disabled]="PageRights.IsReadOnly">
+                                            </mat-checkbox>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px">
+                                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Activity Type</mat-label>
+                                            <mat-select name="activityTypeIds" formControlName="ActivityTypeIds"
+                                                multiple
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value"
+                                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                                <mat-option [value]="activityTypeItem.Id"
+                                                    *ngFor="let activityTypeItem of activityTypeList">
+                                                    {{ activityTypeItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.ActivityTypeIds.invalid">
+                                                {{getErrorMessage(tveItem, 'ActivityTypeIds')}}
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Class Type</mat-label>
+                                            <mat-select name="classTypeId" formControlName="ClassTypeId"
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value"
+                                                [disabled]="PageRights.IsReadOnly" appearance="outline">
+                                                <mat-option [value]="classTypeItem.Id"
+                                                    *ngFor="let classTypeItem of classTypeList">
+                                                    {{ classTypeItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+
+                                            <mat-error *ngIf="tveItem.controls.ClassTypeId.invalid">
+                                                {{getErrorMessage(tveItem, 'ClassTypeId')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <!-- Debug HTML Objects  {{ debugHTMLObjects(tveItem) }} -->
+
+                                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Class duration in minutes</mat-label>
+                                            <input matInput name="classTime" formControlName="ClassTime"
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value"
+                                                digitOnly maxlength="3"
+                                                placeholder="Total duration of class in minutes">
+                                            <mat-error *ngIf="tveItem.controls.ClassTime.invalid">
+                                                {{getErrorMessage(tveItem, 'ClassTime')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="PageRights.IsReadOnly==false">
+                                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Modules Taught</mat-label>
+                                            <mat-select name="moduleId" formControlName="ModuleId" appearance="outline"
+                                                [disabled]="PageRights.IsReadOnly"
+                                                [required]="unitSessionsModels.length > 0 && unitSessionsModels[0].length == 0"
+                                                (selectionChange)="onChangeCourseModule(tveItem, tveIndex, $event.value)">
+                                                <mat-option [value]="moduleItem"
+                                                    *ngFor="let moduleItem of moduleTaughtList">
+                                                    {{ moduleItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.ModuleId.invalid">
+                                                {{getErrorMessage(tveItem, 'ModuleId')}}
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Units Taught</mat-label>
+                                            <mat-select name="unitId" formControlName="UnitId" appearance="outline"
+                                                [disabled]="PageRights.IsReadOnly"
+                                                [required]="unitSessionsModels.length > 0 && unitSessionsModels[0].length == 0"
+                                                (selectionChange)="onChangeUnitsTaught(tveItem, tveIndex, $event.value)">
+                                                <mat-option [value]="unitItem"
+                                                    *ngFor="let unitItem of unitList[tveIndex]">
+                                                    {{ unitItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.UnitId.invalid">
+                                                {{getErrorMessage(tveItem, 'UnitId')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="PageRights.IsReadOnly==false">
+                                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Sessions Taught</mat-label>
+                                            <mat-select name="sessionsTaught" formControlName="SessionsTaught" multiple
+                                                [required]="unitSessionsModels.length > 0 && unitSessionsModels[0].length == 0"
+                                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                                <mat-option [value]="sessionItem"
+                                                    *ngFor="let sessionItem of sessionList[tveIndex]">
+                                                    {{ sessionItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="tveItem.controls.SessionsTaught.invalid">
+                                                {{getErrorMessage(tveItem, 'SessionsTaught')}}
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <div class="add-course-taught">
+                                            <span class="material-icons add-session"
+                                                (click)="addUnitSession(tveItem, tveIndex)">add_circle_outline</span>
+                                            <span class="add-course-text">Kindly press "+" to add information</span>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" class="mat-list-class"
+                                        *ngIf="tveItem.controls.DidYouTeachToday.value==true">
+                                        <mat-list fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                            <mat-list-item
+                                                *ngFor="let sessionItem of unitSessionsModels[tveIndex] let sessionIndex=index;">
+                                                <div style="float: left; width: 90%;">
+                                                    <span style="width:5%"> {{sessionIndex + 1}}) </span>
+                                                    <span style="width:20%; font-weight: bold;">
+                                                        {{sessionItem.ModuleName}}-
+                                                    </span>
+                                                    <span style="width:25%"> {{sessionItem.UnitName}}- </span>
+                                                    <span style="width:50%"> {{sessionItem.SessionNames}} </span>
+                                                </div>
+                                                <div style="float: right; width: 10%;"
+                                                    *ngIf="PageRights.IsReadOnly==false">
+                                                    <span class="material-icons remove-session"
+                                                        (click)="removeUnitSession(tveIndex, sessionItem)">
+                                                        remove_circle_outline
+                                                    </span>
+                                                </div>
+                                            </mat-list-item>
+                                        </mat-list>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="tveItem.controls.DidYouTeachToday.value==true">
+                                        <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Class Picture</mat-label>
+                                            <ngx-mat-file-input name="classPictureFile"
+                                                formControlName="ClassPictureFile" [accept]="AllowedImageExtensions"
+                                                (change)="uploadedClassPhotoFile(tveItem, $event)"
+                                                [required]="tveItem.controls.IsClassPictureFile.value == false"
+                                                [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                                            <mat-icon matSuffix>folder</mat-icon>
+                                            <mat-error *ngIf="tveItem.controls.ClassPictureFile.invalid">
+                                                {{getErrorMessage(tveItem, 'ClassPictureFile')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <div class="default-image-container" fxFlex="15">
+                                            <mat-checkbox matInput formControlName="IsClassPictureFile"
+                                                [disabled]="PageRights.IsReadOnly"
+                                                (change)="setMandatoryFieldControl(tveItem, 'ClassPictureFile', $event)">
+                                            </mat-checkbox>
+                                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText
+                                                }}</span>
+                                        </div>
+
+                                        <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Lesson Plan Picture</mat-label>
+                                            <ngx-mat-file-input name="lessonPlanPictureFile"
+                                                formControlName="LessonPlanPictureFile"
+                                                [accept]="AllowedImageExtensions"
+                                                (change)="uploadedLessonPlanPhotoFile(tveItem, $event)"
+                                                [required]="tveItem.controls.IsLessonPlanPictureFile.value == false"
+                                                [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                                            <mat-icon matSuffix>folder</mat-icon>
+                                            <mat-error *ngIf="tveItem.controls.LessonPlanPictureFile.invalid">
+                                                {{getErrorMessage(tveItem, 'LessonPlanPictureFile')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <div class="default-image-container" fxFlex="15">
+                                            <mat-checkbox matInput formControlName="IsLessonPlanPictureFile"
+                                                [disabled]="PageRights.IsReadOnly"
+                                                (change)="setMandatoryFieldControl(tveItem, 'LessonPlanPictureFile', $event)">
+                                            </mat-checkbox>
+                                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText
+                                                }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="tveItem.controls.DidYouTeachToday.value==false">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Reason Of Not Conducting The Class</mat-label>
+                                            <mat-select name="reasonOfNotConductingTheClassIds"
+                                                formControlName="ReasonOfNotConductingTheClassIds" multiple
+                                                appearance="outline"
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value == false"
+                                                [disabled]="PageRights.IsReadOnly">
+                                                <mat-option [value]="otherWorkItem.Id"
+                                                    *ngFor="let otherWorkItem of otherWorkList">
+                                                    {{ otherWorkItem.Name }}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="tveItem.controls.ReasonOfNotConductingTheClassIds.invalid">
+                                                {{getErrorMessage(tveItem, 'ReasonOfNotConductingTheClassIds')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="tveItem.controls.DidYouTeachToday.value==false">
+                                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                            fxFlex.lt-sm="100">
+                                            <mat-label>Reason Details</mat-label>
+                                            <input matInput name="reasonDetails" formControlName="ReasonDetails"
+                                                [required]="isAllowTeachingVocationalEducation && tveItem.controls.DidYouTeachToday.value == false">
+                                            <mat-error *ngIf="tveItem.controls.ReasonDetails.invalid">
+                                                {{getErrorMessage(tveItem, 'ReasonDetails')}}
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <mat-divider *ngIf="tveItem.controls.DidYouTeachToday.value==true">
+                                    </mat-divider>
+                                    <div fxLayout="row" *ngIf="tveItem.controls.DidYouTeachToday.value==true">
+                                        <div style="margin-top: 10px;">
+                                            <span class="h2">Student Present</span>
+                                        </div>
+                                    </div>
+
+                                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                        fxLayoutGap.lt-md="0px" *ngIf="tveItem.controls.DidYouTeachToday.value==true">
+                                        <div formArrayName="StudentAttendances" class="student-list-group">
+                                            <!-- iterate formArray -->
+                                            <div style="background: #f3f3f3;"
+                                                *ngFor="let studentItem of tveItem.get('StudentAttendances').controls; let studentIndex=index">
+                                                <!-- Use the index for each formGroup inside the formArray -->
+                                                <div [formGroupName]="studentIndex" class="student-list">
+                                                    <span>{{studentIndex+1}})</span>
+                                                    <input formControlName="StudentName" [disabled]="true"
+                                                        style="background: #f3f3f3;" />
+                                                    <mat-slide-toggle formControlName="IsPresent"
+                                                        [disabled]="PageRights.IsReadOnly" [checked]="IsPresent">
+                                                    </mat-slide-toggle>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Teaching vocational-education end -->
+
+                    <!-- training-of-teachers trainers start-->
+                    <fieldset formGroupName="trainingOfTeacherGroup" *ngIf="isAllowTrainingOfTeacher">
+                        <legend>Training of Teacher</legend>
+
+                        <div class="vt-daily-type training-of-teachers">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Training Type</mat-label>
+                                    <mat-select name="trainingTypeId" formControlName="TrainingTypeId"
+                                        [required]="isAllowTrainingOfTeacher" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="trainingTypeItem.Id"
+                                            *ngFor="let trainingTypeItem of trainingTypeList">
+                                            {{ trainingTypeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTypeId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.trainingOfTeacherGroup,
+                                        'TrainingTypeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTypeId.value == '126'">
+                                    <mat-label>Training By</mat-label>
+                                    <input matInput name="trainingBy" formControlName="TrainingBy"
+                                        [required]="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTypeId.value == '126'">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingBy.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.trainingOfTeacherGroup,
+                                        'TrainingBy')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTypeId.value == '124' || vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTypeId.value == '125'">
+
+                                    <mat-label>Training Topics</mat-label>
+                                    <mat-select name="trainingTopicIds" formControlName="TrainingTopicIds" multiple
+                                        [required]="isAllowTrainingOfTeacher" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="trainingTopicsItem.Id"
+                                            *ngFor="let trainingTopicsItem of trainingTopicsList">
+                                            {{ trainingTopicsItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingTopicIds.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.trainingOfTeacherGroup,
+                                        'TrainingTopicIds')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Training Details</mat-label>
+                                    <input matInput name="trainingDetails" formControlName="TrainingDetails">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.trainingOfTeacherGroup.controls.TrainingDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.trainingOfTeacherGroup,
+                                        'TrainingDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- training-of-teachers end -->
+
+                    <!-- On Job Training Coordination start -->
+                    <fieldset formGroupName="onJobTrainingCoordinationGroup" *ngIf="isAllowOnJobTrainingCoordination">
+                        <legend>On-job Training Coordination</legend>
+
+                        <div class="vt-daily-type on-job-training-coordination">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>On-Job Training Activity </mat-label>
+                                    <mat-select name="onJobTrainingActivityId" formControlName="OnJobTrainingActivityId"
+                                        [required]="isAllowOnJobTrainingCoordination" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="ojtActivityItem.Id"
+                                            *ngFor="let ojtActivityItem of ojtActivityList">
+                                            {{ ojtActivityItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.OnJobTrainingActivityId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.onJobTrainingCoordinationGroup,
+                                        'OnJobTrainingActivityId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.OnJobTrainingActivityId.value == '139' || vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.OnJobTrainingActivityId.value == '140'">
+                                    <mat-label>Industry</mat-label>
+                                    <input matInput name="industryName" formControlName="IndustryName"
+                                        [required]="isAllowOnJobTrainingCoordination">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.IndustryName.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.onJobTrainingCoordinationGroup,
+                                        'IndustryName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.OnJobTrainingActivityId.value == '139'">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Industry Contact Person </mat-label>
+                                    <input matInput name="industryContactPerson" formControlName="IndustryContactPerson"
+                                        [required]="isAllowOnJobTrainingCoordination">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.IndustryContactPerson.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.onJobTrainingCoordinationGroup,
+                                        'IndustryContactPerson')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Contact Number</mat-label>
+                                    <input matInput name="industryContactNumber" formControlName="IndustryContactNumber"
+                                        [required]="isAllowOnJobTrainingCoordination" digitOnly minlength="10"
+                                        maxlength="10">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.IndustryContactNumber.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.onJobTrainingCoordinationGroup,
+                                        'IndustryContactNumber')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </div>
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>OJT Activity Details</mat-label>
+                                    <input matInput name="ojtActivityDetails" formControlName="OJTActivityDetails"
+                                        [required]="isAllowOnJobTrainingCoordination">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.onJobTrainingCoordinationGroup.controls.OJTActivityDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.onJobTrainingCoordinationGroup,
+                                        'OJTActivityDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- On Job Training Coordination end -->
+
+                    <!-- assessor-in-other-school  -->
+                    <fieldset formGroupName="assessorInOtherSchoolGroup" *ngIf="isAllowAssessorInOtherSchool">
+                        <legend>Assessor In Other School</legend>
+
+                        <div class="vt-daily-type assessor-in-other-school">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>School Name</mat-label>
+                                    <input matInput name="schoolName" formControlName="SchoolName"
+                                        [required]="isAllowAssessorInOtherSchool">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.SchoolName.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'SchoolName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>UDISE</mat-label>
+                                    <input matInput name="udise" formControlName="Udise"
+                                        [required]="isAllowAssessorInOtherSchool" digitOnly minlength="11"
+                                        maxlength="11">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.Udise.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'Udise')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Class</mat-label>
+                                    <mat-select name="classId" formControlName="ClassId"
+                                        [required]="isAllowAssessorInOtherSchool" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="studentClassItem.Id"
+                                            *ngFor="let studentClassItem of studentClassList">
+                                            {{ studentClassItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.ClassId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'ClassId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Boys Present</mat-label>
+                                    <input matInput name="boysPresent" formControlName="BoysPresent"
+                                        [required]="isAllowAssessorInOtherSchool" digitOnly maxlength="3">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.BoysPresent.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'BoysPresent')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Girls Present</mat-label>
+                                    <input matInput name="girlsPresent" formControlName="GirlsPresent"
+                                        [required]="isAllowAssessorInOtherSchool" digitOnly maxlength="3">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.GirlsPresent.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'GirlsPresent')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Exam Details</mat-label>
+                                    <input matInput name="examDetails" formControlName="ExamDetails"
+                                        [required]="isAllowAssessorInOtherSchool">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assessorInOtherSchoolGroup.controls.ExamDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assessorInOtherSchoolGroup,
+                                        'ExamDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- assessor-in-other-school end -->
+
+                    <!-- school event Celebration-->
+                    <fieldset formGroupName="schoolEventCelebrationGroup" *ngIf="isAllowSchoolEventCelebration">
+                        <legend>School Event/ Celebration</legend>
+                        <div class="vt-daily-type school-event-celebration">
+                            <!-- <h2><span class="line-center">School Event/ Celebration</span></h2> -->
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>School Event/ Celebration</mat-label>
+                                    <input matInput name="schoolEventCelebration"
+                                        formControlName="SchoolEventCelebration"
+                                        [required]="isAllowSchoolEventCelebration">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.schoolEventCelebrationGroup.controls.SchoolEventCelebration.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.schoolEventCelebrationGroup,
+                                        'SchoolEventCelebration')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- /school event Celebration-->
+
+                    <!-- parent-teacher-meeting -->
+                    <fieldset formGroupName="parentTeacherMeetingGroup" *ngIf="isAllowParentTeacherMeeting">
+                        <legend>Parent Teacher Meeting</legend>
+
+                        <div class="vt-daily-type pta-meeting">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Parents Count</mat-label>
+                                    <input matInput name="vocationalParentsCount"
+                                        formControlName="VocationalParentsCount" digitOnly maxlength="3"
+                                        [required]="isAllowParentTeacherMeeting">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.parentTeacherMeetingGroup.controls.VocationalParentsCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.parentTeacherMeetingGroup,
+                                        'VocationalParentsCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Parents Count</mat-label>
+                                    <input matInput name="otherParentsCount" formControlName="OtherParentsCount"
+                                        digitOnly maxlength="3" [required]="isAllowParentTeacherMeeting">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.parentTeacherMeetingGroup.controls.OtherParentsCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.parentTeacherMeetingGroup,
+                                        'OtherParentsCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>PTA Details</mat-label>
+                                    <input matInput name="ptaDetails" formControlName="PTADetails"
+                                        [required]="isAllowParentTeacherMeeting">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.parentTeacherMeetingGroup.controls.PTADetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.parentTeacherMeetingGroup,
+                                        'PTADetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- pta-meeting end -->
+
+                    <!-- Community Home Visit -->
+                    <fieldset formGroupName="communityHomeVisitGroup" *ngIf="isAllowCommunityHomeVisit">
+                        <legend>Community Home Visit</legend>
+
+                        <div class="vt-daily-type pta-meeting">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Parents Count</mat-label>
+                                    <input matInput name="vocationalParentsCount"
+                                        formControlName="VocationalParentsCount" digitOnly maxlength="3"
+                                        [required]="isAllowCommunityHomeVisit">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.communityHomeVisitGroup.controls.VocationalParentsCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.communityHomeVisitGroup,
+                                        'VocationalParentsCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Parents Count</mat-label>
+                                    <input matInput name="otherParentsCount" formControlName="OtherParentsCount"
+                                        digitOnly maxlength="3" [required]="isAllowCommunityHomeVisit">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.communityHomeVisitGroup.controls.OtherParentsCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.communityHomeVisitGroup,
+                                        'OtherParentsCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Community Visit Details</mat-label>
+                                    <input matInput name="communityVisitDetails" formControlName="CommunityVisitDetails"
+                                        [required]="isAllowCommunityHomeVisit">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.communityHomeVisitGroup.controls.CommunityVisitDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.communityHomeVisitGroup,
+                                        'CommunityVisitDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Community Home Visit -->
+
+                    <!-- Industry Visit -->
+                    <fieldset formGroupName="industryVisitGroup" *ngIf="isAllowIndustryVisit">
+                        <legend>Industry Visit</legend>
+
+                        <div class="vt-daily-type industry-visit">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Industry Visit Count</mat-label>
+                                    <input matInput name="industryVisitCount" formControlName="IndustryVisitCount"
+                                        digitOnly min="1" max="5" [required]="isAllowIndustryVisit"
+                                        (change)="onChangeIndustryVisitCount($event.target.value)">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.industryVisitGroup.controls.IndustryVisitCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.industryVisitGroup,'IndustryVisitCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div formArrayName="IndustryVisits">
+                                <!-- iterate formArray -->
+                                <div
+                                    *ngFor="let industryVisitItem of vtDailyReportingForm.controls.industryVisitGroup.get('IndustryVisits').controls; let industryVisitIndex=index">
+
+                                    <h2><span class="line-center">Industry Visit : {{industryVisitIndex + 1}}</span>
+                                    </h2>
+                                    <!-- Use the index for each formGroup inside the formArray -->
+                                    <div [formGroupName]="industryVisitIndex" class="repetitive-block">
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Industry</mat-label>
+                                                <input matInput name="industryName" formControlName="IndustryName"
+                                                    [required]="isAllowIndustryVisit">
+
+                                                <mat-error *ngIf="industryVisitItem.controls.IndustryName.invalid">
+                                                    {{getErrorMessage(industryVisitItem, 'IndustryName')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Industry Contact Person</mat-label>
+                                                <input matInput name="industryContactPerson"
+                                                    formControlName="IndustryContactPerson"
+                                                    [required]="isAllowIndustryVisit">
+                                                <mat-error
+                                                    *ngIf="industryVisitItem.controls.IndustryContactPerson.invalid">
+                                                    {{getErrorMessage(industryVisitItem,'IndustryContactPerson')}}
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Contact Number</mat-label>
+                                                <input matInput name="industryContactNumber"
+                                                    formControlName="IndustryContactNumber"
+                                                    [required]="isAllowIndustryVisit" digitOnly minlength="10"
+                                                    maxlength="10">
+                                                <mat-error
+                                                    *ngIf="industryVisitItem.controls.IndustryContactNumber.invalid">
+                                                    {{getErrorMessage(industryVisitItem,'IndustryContactNumber')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Industry Visit Details</mat-label>
+                                                <input matInput name="industryVisitDetails"
+                                                    formControlName="IndustryVisitDetails">
+                                                <mat-error
+                                                    *ngIf="industryVisitItem.controls.IndustryVisitDetails.invalid">
+                                                    {{getErrorMessage(industryVisitItem,'IndustryVisitDetails')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Industry Visit -->
+
+                    <!-- Visit to Educational Institute -->
+                    <fieldset formGroupName="visitToEducationalInstituteGroup"
+                        *ngIf="isAllowVisitToEducationalInstitute">
+                        <legend>Visit To Educational Institute</legend>
+
+                        <div class="vt-daily-type visit-to-educational-institute">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Educational Institute Visit Count</mat-label>
+                                    <input matInput name="educationalInstituteVisitCount"
+                                        formControlName="EducationalInstituteVisitCount" digitOnly min="1" max="5"
+                                        [required]="isAllowVisitToEducationalInstitute"
+                                        (change)="onChangeEducationalInstituteVisitCount($event.target.value)">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.visitToEducationalInstituteGroup.controls.EducationalInstituteVisitCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.visitToEducationalInstituteGroup,
+                                        'EducationalInstituteVisitCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div formArrayName="VisitToEducationalInstitutes">
+                                <!-- iterate formArray -->
+                                <div
+                                    *ngFor="let visitToEducationalItem of vtDailyReportingForm.controls.visitToEducationalInstituteGroup.get('VisitToEducationalInstitutes').controls; let visitToEducationalInstituteIndex=index">
+
+                                    <h2><span class="line-center">Visit to Educational Institute :
+                                            {{visitToEducationalInstituteIndex + 1}}</span></h2>
+                                    <!-- Use the index for each formGroup inside the formArray -->
+                                    <div [formGroupName]="visitToEducationalInstituteIndex" class="repetitive-block">
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Educational Institute</mat-label>
+                                                <input matInput name="educationalInstitute"
+                                                    formControlName="EducationalInstitute"
+                                                    [required]="isAllowVisitToEducationalInstitute">
+                                                <mat-error
+                                                    *ngIf="visitToEducationalItem.controls.EducationalInstitute.invalid">
+                                                    {{getErrorMessage(visitToEducationalItem, 'EducationalInstitute')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Institute Contact Person</mat-label>
+                                                <input matInput name="instituteContactPerson"
+                                                    formControlName="InstituteContactPerson"
+                                                    [required]="isAllowVisitToEducationalInstitute">
+                                                <mat-error
+                                                    *ngIf="visitToEducationalItem.controls.InstituteContactPerson.invalid">
+                                                    {{getErrorMessage(visitToEducationalItem,'InstituteContactPerson')}}
+                                                </mat-error>
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Contact Number</mat-label>
+                                                <input matInput name="instituteContactNumber"
+                                                    formControlName="InstituteContactNumber"
+                                                    [required]="isAllowVisitToEducationalInstitute" digitOnly
+                                                    minlength="10" maxlength="10">
+                                                <mat-error
+                                                    *ngIf="visitToEducationalItem.controls.InstituteContactNumber.invalid">
+                                                    {{getErrorMessage(visitToEducationalItem,'InstituteContactNumber')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                            fxLayoutGap.lt-md="0px">
+                                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                                                fxFlex.lt-sm="100">
+                                                <mat-label>Institute Visit Details</mat-label>
+                                                <input matInput name="instituteVisitDetails"
+                                                    formControlName="InstituteVisitDetails">
+                                                <mat-error
+                                                    *ngIf="visitToEducationalItem.controls.InstituteVisitDetails.invalid">
+                                                    {{getErrorMessage(visitToEducationalItem,'InstituteVisitDetails')}}
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!--/ Visit to Educational Institute -->
+
+                    <!-- assignment-from-vocational-department -->
+                    <fieldset formGroupName="assignmentFromVocationalDepartmentGroup"
+                        *ngIf="isAllowAssignmentFromVocationalDepartment">
+                        <legend>Assignment From Vocational Department</legend>
+
+                        <div class="vt-daily-type assignment-or-administrative-work">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Assigment Number</mat-label>
+                                    <input matInput name="assigmentNumber" formControlName="AssigmentNumber" digitOnly
+                                        maxlength="10">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup.controls.AssigmentNumber.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup,
+                                        'AssigmentNumber')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Assignment Details</mat-label>
+                                    <input matInput name="assignmentDetails" formControlName="AssignmentDetails"
+                                        [required]="isAllowAssignmentFromVocationalDepartment">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup.controls.AssignmentDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup,
+                                        'AssignmentDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Assignment Photo</mat-label>
+                                    <ngx-mat-file-input name="assignmentPhotoFile" formControlName="AssignmentPhotoFile"
+                                        [accept]="AllowedImageExtensions" (change)="uploadedAssignmentPhotoFile($event)"
+                                        [required]="vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup.controls.IsAssignmentPhotoFile.value == false"
+                                        [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                                    <mat-icon matSuffix>folder</mat-icon>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup.controls.AssignmentPhotoFile.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup,
+                                        'AssignmentPhotoFile')}}
+                                    </mat-error>
+                                </mat-form-field>
+                                <div class="default-image-container" fxFlex="30">
+                                    <mat-checkbox matInput formControlName="IsAssignmentPhotoFile"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (change)="setMandatoryFieldControl(vtDailyReportingForm.controls.assignmentFromVocationalDepartmentGroup, 'AssignmentPhotoFile', $event)">
+                                    </mat-checkbox>
+                                    <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- assignment-from-vocational-department end -->
+
+                    <!-- Teaching Non Vocational Subject -->
+                    <fieldset formGroupName="teachingNonVocationalSubjectGroup"
+                        *ngIf="isAllowTeachingNonVocationalSubject">
+                        <legend>Teaching Non Vocational Subject</legend>
+
+                        <div class="vt-daily-type pta-meeting">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Class Taken Details</mat-label>
+                                    <input matInput name="otherClassTakenDetails"
+                                        formControlName="OtherClassTakenDetails"
+                                        [required]="isAllowTeachingNonVocationalSubject">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.teachingNonVocationalSubjectGroup.controls.OtherClassTakenDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.teachingNonVocationalSubjectGroup,
+                                        'OtherClassTakenDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Class Time</mat-label>
+                                    <input matInput name="otherClassTime" formControlName="OtherClassTime" digitOnly
+                                        maxlength="3" [required]="isAllowTeachingNonVocationalSubject">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.teachingNonVocationalSubjectGroup.controls.OtherClassTime.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.teachingNonVocationalSubjectGroup,
+                                        'OtherClassTime')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- /Teaching Non Vocational Subject -->
+
+                    <!-- Work assigned by Head Master -->
+                    <fieldset formGroupName="workAssignedByHeadMasterGroup" *ngIf="isAllowWorkAssignedByHeadMaster">
+                        <legend>Work Assigned by Head Master</legend>
+
+                        <div class="vt-daily-type work-assigned-by-head-master">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Work</mat-label>
+                                    <input matInput name="workAssignedByHeadMaster"
+                                        formControlName="WorkAssignedByHeadMaster"
+                                        [required]="isAllowWorkAssignedByHeadMaster">
+
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.workAssignedByHeadMasterGroup.controls.WorkAssignedByHeadMaster.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.workAssignedByHeadMasterGroup,
+                                        'WorkAssignedByHeadMaster')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Work assigned by Head Master -->
+
+                    <!-- School Exam Duty -->
+                    <fieldset formGroupName="schoolExamDutyGroup" *ngIf="isAllowSchoolExamDuty">
+                        <legend>School Exam Duty</legend>
+
+                        <div class="vt-daily-type school-exam-duty">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Work</mat-label>
+                                    <input matInput name="schoolExamDuty" formControlName="SchoolExamDuty"
+                                        [required]="isAllowSchoolExamDuty">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.schoolExamDutyGroup.controls.SchoolExamDuty.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.schoolExamDutyGroup,
+                                        'SchoolExamDuty')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- School Exam Duty -->
+
+                    <!-- Other Work -->
+                    <fieldset formGroupName="otherWorkGroup" *ngIf="isAllowOtherWork">
+                        <legend>Other Work</legend>
+
+                        <div class="vt-daily-type other-work">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Other Work</mat-label>
+                                    <input matInput name="otherWork" formControlName="OtherWork"
+                                        [required]="isAllowOtherWork">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.otherWorkGroup.controls.OtherWork.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.otherWorkGroup, 'OtherWork')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- Other Work -->
+
+                    <!-- holiday -->
+                    <fieldset formGroupName="holidayGroup" *ngIf="isAllowHoliday">
+                        <legend>Holiday</legend>
+                        <div class="vt-daily-type holiday">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Holiday Type</mat-label>
+                                    <mat-select name="holidayTypeId" formControlName="HolidayTypeId" [required]="true"
+                                        appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="holidayTypeItem.Id"
+                                            *ngFor="let holidayTypeItem of holidayTypeList">
+                                            {{ holidayTypeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.holidayGroup, 'HolidayTypeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.value != 132">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Holiday Details</mat-label>
+                                    <input matInput name="holidayDetails" formControlName="HolidayDetails">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.holidayGroup.controls.HolidayDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.holidayGroup,
+                                        'HolidayDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- holiday end -->
+
+                    <!-- observational-day -->
+                    <fieldset formGroupName="observationDayGroup" *ngIf="isAllowObservationDay">
+                        <legend>Observational Day</legend>
+                        <div class="vt-daily-type observational-day"
+                            *ngIf="vtDailyReportingForm.controls.ReportType.value == '123'">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Student Count</mat-label>
+                                    <input matInput name="obStudentCount" formControlName="OBStudentCount" digitOnly
+                                        minlength="3" [required]="isAllowObservationDay">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.observationDayGroup.controls.OBStudentCount.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.observationDayGroup,
+                                        'OBStudentCount')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Observation Details</mat-label>
+                                    <input matInput name="observationDetails" formControlName="ObservationDetails"
+                                        [required]="isAllowObservationDay">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.observationDayGroup.controls.ObservationDetails.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.observationDayGroup,
+                                        'ObservationDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- observational-day end -->
+
+                    <!-- leave -->
+                    <fieldset formGroupName="leaveGroup" *ngIf="isAllowLeave">
+                        <legend>Leave</legend>
+
+                        <div class="vt-daily-type leave">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Type</mat-label>
+                                    <mat-select name="leaveTypeId" formControlName="LeaveTypeId"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveTypeItem.Id"
+                                            *ngFor="let leaveTypeItem of leaveTypeList">
+                                            {{ leaveTypeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveTypeId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.leaveGroup, 'LeaveTypeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Mode</mat-label>
+                                    <mat-select name="leaveModeId" formControlName="LeaveModeId"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveModeItem.Id"
+                                            *ngFor="let leaveModeItem of leaveModeList">
+                                            {{ leaveModeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveModeId.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.leaveGroup, 'LeaveModeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Approval Status</mat-label>
+                                    <mat-select name="leaveApprovalStatus" formControlName="LeaveApprovalStatus"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option value="Yes">Yes</mat-option>
+                                        <mat-option value="No">No</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveApprovalStatus.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.leaveGroup,
+                                        'LeaveApprovalStatus')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveApprovalStatus.value == 'Yes'">
+                                    <mat-label>Leave Approver</mat-label>
+                                    <mat-select name="leaveApprover" formControlName="LeaveApprover"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveApproverItem.Id"
+                                            *ngFor="let leaveApproverItem of leaveApproverList">
+                                            {{ leaveApproverItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveApprover.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.leaveGroup, 'LeaveApprover')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Reason</mat-label>
+                                    <input matInput name="leaveReason" formControlName="LeaveReason"
+                                        [required]="isAllowLeave">
+                                    <mat-error
+                                        *ngIf="vtDailyReportingForm.controls.leaveGroup.controls.LeaveReason.invalid">
+                                        {{getErrorMessage(vtDailyReportingForm.controls.leaveGroup, 'LeaveReason')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <!-- leave end -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

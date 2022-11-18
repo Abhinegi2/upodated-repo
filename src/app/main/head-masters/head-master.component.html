@@ -1,0 +1,284 @@
+<div id="head-master" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'HEADMASTER.HEAD_MASTERS' | translate}}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="hmSearchForm" [formGroup]="hmSearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input name="searchText" formControlName="SearchText" placeholder="Search for Head Master"
+                            matTooltip="Search By VTP, VC, VT Name & EmailId" matTooltipPosition='above'
+                            matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <button mat-raised-button class="fuse-white filter-button"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
+                    replaceUrl="false" class="add-head-master-button fuse-white mt-24 mt-md-0">
+                    <span>{{'HEADMASTER.ADD_NEW_HEAD_MASTER' | translate}}</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="hmFilterForm" [formGroup]="hmFilterForm" class="vc-issue-report" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Academic Year</mat-label>
+
+                            <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill"
+                                (selectionChange)="onChangeAY($event.value)">
+                                <mat-option [value]="academicYearIdItem.Id"
+                                    *ngFor="let academicYearIdItem of academicYearList">
+                                    {{ academicYearIdItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC
+                                (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="15" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" appearance="fill" matTooltip="Select School"
+                                matTooltipPosition='above' matTooltipClass="allow-cr" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="15" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="15" fxFlex.lt-sm="100">
+                            <mat-label>Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="10" fxFlex.lt-sm="100">
+                            <mat-label>Status</mat-label>
+
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option value="">Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadHeadMastersByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="head-master-table responsive-table" #table [dataSource]="tableDataSource"
+                #exporter="matTableExporter" [hiddenColumns]="[8]" matSort fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster">
+                        <p class="text-truncate">{{headMaster.SchoolUDISE}}-{{headMaster.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- FullName Column -->
+                <ng-container matColumnDef="FullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Full Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster">
+                        <p class="text-truncate">{{headMaster.FullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="Mobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mobile</mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{headMaster.Mobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="Email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{headMaster.Email}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender</mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{headMaster.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- YearsInSchool Column -->
+                <ng-container matColumnDef="YearsInSchool">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Years In School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{headMaster.YearsInSchool}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsResigned Column -->
+                <ng-container matColumnDef="IsResigned">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" class="text-center">
+                        <span>{{ (headMaster.IsResigned ? 'Yes' : 'No') }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" class="text-center">
+                        <mat-icon *ngIf="headMaster.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!headMaster.IsActive" class="data-inactive s-20">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
+
+                    <mat-cell *matCellDef="let headMaster" fxShow.gt-xs class="text-center">
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/head-masters', 'view', headMaster.HMId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            mat-icon-button [routerLink]="['/head-masters', 'edit', headMaster.HMId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="PageRights.IsDelete && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            mat-icon-button color="warn" (click)="onDeleteHeadMaster(headMaster.HMId)">
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let headMaster; columns: displayedColumns;" class="head-master" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

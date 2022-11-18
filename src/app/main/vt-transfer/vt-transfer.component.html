@@ -1,0 +1,285 @@
+<div id="vt-transfer" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2 subtitle secondary-text">
+                        <span>VT Transfer Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+                <form name="vtTransferForm" [formGroup]="vtTransferForm" class="vt-transfer w-100-p" fxLayout="column"
+                    fxFlex>
+                    <div class="tab-content p-24">
+                        <fieldset class="fs-padding">
+                            <legend>From Trainer details </legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Training Provider</mat-label>
+
+                                    <mat-select formControlName="FromVTPId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeFromVTP($event.value)">
+                                        <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                            {{ vtpItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="vtTransferForm.controls.FromVTPId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'FromVTPId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Coordinator</mat-label>
+
+                                    <mat-select formControlName="FromVCId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeFromVC($event.value)">
+                                        <mat-option [value]="vcItem.Id" *ngFor="let vcItem of fromVCList">
+                                            {{ vcItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="vtTransferForm.controls.FromVCId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'FromVCId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Trainer</mat-label>
+
+                                    <mat-select formControlName="FromVTId" required appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeFromVT($event.value)" #SelectFromVTId>
+                                        <mat-select-filter class="select-filter" *ngIf="SelectFromVTId.focused"
+                                            [array]="fromVTList" (filteredReturn)="this.filteredFromVTItems = $event"
+                                            [displayMember]="'Name'">
+                                        </mat-select-filter>
+                                        <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredFromVTItems">
+                                            {{ vtItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+
+                                    <mat-error *ngIf="vtTransferForm.controls.FromVTId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'FromVTId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>School</mat-label>
+
+                                    <mat-select formControlName="FromSchoolId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="schoolItem.SchoolId" *ngFor="let schoolItem of fromSchoolList">
+                                            {{ schoolItem.SchoolName }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="vtTransferForm.controls.FromSchoolId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'FromSchoolId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- CONTENT -->
+                            <div class="content-card">
+
+                                <mat-table matTableExporter class="school-student-table responsive-table" #table
+                                    [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[4]"
+                                    matSort fusePerfectScrollbar
+                                    [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                                    <!-- AcademicYear Column -->
+                                    <ng-container matColumnDef="AcademicYear">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic
+                                            Year
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent" fxHide fxShow.gt-xs>
+                                            <p class="text-truncate">{{schoolStudent.AcademicYear}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- SchoolName Column -->
+                                    <ng-container matColumnDef="SchoolName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                                            School
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.SchoolName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- SectorName Column -->
+                                    <ng-container matColumnDef="SectorName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                                            Sector
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.SectorName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- JobRoleName Column -->
+                                    <ng-container matColumnDef="JobRoleName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Job
+                                            Role
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.JobRoleName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- VTName Column -->
+                                    <ng-container matColumnDef="VTName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT
+                                            Name
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.VTName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- ClassName Column -->
+                                    <ng-container matColumnDef="ClassName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                                            Class
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.ClassName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- SectionName Column -->
+                                    <ng-container matColumnDef="SectionName">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                                            Section
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.SectionName}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <!-- StudentCount Column -->
+                                    <ng-container matColumnDef="StudentCount">
+                                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                                            Students
+                                        </mat-header-cell>
+                                        <mat-cell *matCellDef="let schoolStudent">
+                                            <p class="text-truncate">{{schoolStudent.StudentCount}}</p>
+                                        </mat-cell>
+                                    </ng-container>
+
+                                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                                    <mat-row *matRowDef="let schoolStudent; columns: displayedColumns;"
+                                        class="vtp-sector" matRipple>
+                                    </mat-row>
+                                </mat-table>
+                            </div>
+                            <!-- / CONTENT -->
+
+                        </fieldset>
+
+                        <fieldset class="fs-padding">
+                            <legend>To Trainer details </legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Training Provider</mat-label>
+
+                                    <mat-select formControlName="ToVTPId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeToVTP($event.value)">
+                                        <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                            {{ vtpItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="vtTransferForm.controls.ToVTPId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'ToVTPId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Coordinator</mat-label>
+
+                                    <mat-select formControlName="ToVCId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeToVC($event.value)">
+                                        <mat-option [value]="vcItem.Id" *ngFor="let vcItem of toVCList">
+                                            {{ vcItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="vtTransferForm.controls.ToVCId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'ToVCId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Vocational Trainer</mat-label>
+
+                                    <mat-select formControlName="ToVTId" required appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly" #SelectToVTId>
+                                        <mat-select-filter class="select-filter" *ngIf="SelectToVTId.focused"
+                                            [array]="fromVTList" (filteredReturn)="this.filteredToVTItems = $event"
+                                            [displayMember]="'Name'">
+                                        </mat-select-filter>
+                                        <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredToVTItems">
+                                            {{ vtItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+
+                                    <mat-error *ngIf="vtTransferForm.controls.ToVTId.invalid">
+                                        {{getErrorMessage(vtTransferForm, 'ToVTId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+
+                            <button mat-raised-button class="submit-button" color="accent" (click)="saveVTTransfers()">
+                                <span>Transfer VT</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

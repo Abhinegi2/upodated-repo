@@ -1,0 +1,409 @@
+<div id="vt-field-industry-visit-conducted" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-field-industry-visit-conducted'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtFieldIndustryVisitConductedModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Field / Industry Visit Conducted
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Field / Industry Visit Conducted Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-field-industry-visit-conducted-button" 
+            *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTFieldIndustryVisitConductedDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-field-industry-visit-conducted-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTFieldIndustryVisitConductedDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtFieldIndustryVisitConductedForm" [formGroup]="vtFieldIndustryVisitConductedForm"
+                    class="vt-field-industry-visit-conducted w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Reporting Date</mat-label>
+                            <input matInput name="reportingDate" formControlName="ReportingDate"
+                                [min]="minReportingDate" [max]="CurrentDate" [matDatepicker]="reportingDate" required
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="reportingDate"></mat-datepicker-toggle>
+                            <mat-datepicker #reportingDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.ReportingDate.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'ReportingDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Class Taught</mat-label>
+
+                            <mat-select name="classTaughtId" formControlName="ClassTaughtId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClassForTaught($event.value)">
+                                <mat-option [value]="vtClassItem.Id" *ngFor="let vtClassItem of classTaughtList">
+                                    {{ vtClassItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.ClassTaughtId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'ClassTaughtId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Section Taught</mat-label>
+                            <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeSectionForTaught($event.value)">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SectionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Purpose Of The Visit</mat-label>
+                            <input matInput name="fieldVisitTheme" formControlName="FieldVisitTheme" required>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FieldVisitTheme.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FieldVisitTheme')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Field Visit Activities</mat-label>
+                            <input matInput name="fieldVisitActivities" formControlName="FieldVisitActivities" required>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FieldVisitActivities.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FieldVisitActivities')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px"
+                        *ngIf="PageRights.IsReadOnly==false">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Modules Covered in FV</mat-label>
+                            <mat-select name="moduleId" formControlName="ModuleId" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" [required]="unitSessionsModels.length==0"
+                                (selectionChange)="onChangeCourseModule($event.value)">
+                                <mat-option [value]="moduleItem" *ngFor="let moduleItem of moduleTaughtList">
+                                    {{ moduleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.ModuleId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'ModuleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Units Covered in FV</mat-label>
+                            <mat-select name="unitId" formControlName="UnitId" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" [required]="unitSessionsModels.length==0"
+                                (selectionChange)="onChangeUnitsTaught($event.value)">
+                                <mat-option [value]="unitItem" *ngFor="let unitItem of unitList">
+                                    {{ unitItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.UnitId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'UnitId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px"
+                        *ngIf="PageRights.IsReadOnly==false">
+                        <mat-form-field appearance="outline"  fxFlex="70" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Sessions Covered in FV</mat-label>
+                            <mat-select name="sessionIds" formControlName="SessionIds" multiple appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" [required]="unitSessionsModels.length==0">
+                                <mat-option [value]="sessionItem" *ngFor="let sessionItem of sessionList">
+                                    {{ sessionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SessionIds.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SessionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <div class="add-course-taught">
+                            <span class="material-icons add-session" (click)="addUnitSession()">add_circle_outline</span>
+                            <span class="add-course-text">Kindly press "+" to add information</span>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-list fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="mat-list-class">
+                            <mat-list-item *ngFor="let sessionItem of unitSessionsModels let sessionIndex=index;">
+                                <div style="float: left; width: 99%;">
+                                    <span style="width:5%"> {{sessionIndex + 1}}) </span>
+                                    <span style="width:20%; font-weight: bold;"> {{sessionItem.ModuleName}}- </span>
+                                    <span style="width:25%"> {{sessionItem.UnitName}}- </span>
+                                    <span style="width:50%"> {{sessionItem.SessionNames}} </span>
+                                </div>
+                                <div style="float: right; width: 10%;" *ngIf="PageRights.IsReadOnly==false">
+                                    <span class="material-icons remove-session"
+                                        (click)="removeUnitSession(sessionItem)">remove_circle_outline</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Field Visit Organisation</mat-label>
+                            <input matInput name="fvOrganisation" formControlName="FVOrganisation" required
+                                matTooltip="Please enter the name of the organisation where the visit has taken place."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVOrganisation.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVOrganisation')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Organisation Address</mat-label>
+                            <input matInput name="fvOrganisationAddress" formControlName="FVOrganisationAddress"
+                                required matTooltip="Please enter the venue (address) details of the organisation."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVOrganisationAddress.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVOrganisationAddress')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="35" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Field Visit Distance in KM</mat-label>
+                            <input matInput name="fvDistance" formControlName="FVDistance" required digitOnly
+                                maxlength="3"
+                                matTooltip="Please enter the distance (in Kms) from school to field visit organisation."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVDistance.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVDistance')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="35" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Field Visit Picture</mat-label>
+                            <ngx-mat-file-input name="fvPictureFile" formControlName="FVPictureFile"
+                                [accept]="AllowedImageExtensions" (change)="uploadedFieldVisitPhotoFile($event)"
+                                [disabled]="PageRights.IsReadOnly" [required]="vtFieldIndustryVisitConductedForm.controls.IsFVPictureFile.value == false"></ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVPictureFile.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVPictureFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="default-image-container" fxFlex="30">                            
+                            <mat-checkbox matInput formControlName="IsFVPictureFile" [disabled]="PageRights.IsReadOnly" (change)="setMandatoryFieldControl(vtFieldIndustryVisitConductedForm, 'FVPictureFile', $event)">
+                            </mat-checkbox>
+                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Field Visit Contact Person</mat-label>
+                            <input matInput name="fvContactPersonName" formControlName="FVContactPersonName" required
+                                matTooltip="Please enter the name of the contact person at the organisation
+                                        Do not add any title. Enter name as [First Name] [Middle Name] [Last Name].."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVContactPersonName.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVContactPersonName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Contact Person Mobile</mat-label>
+                            <input matInput name="fvContactPersonMobile" formControlName="FVContactPersonMobile"
+                                digitOnly maxlength="10" minlength="10" required
+                                matTooltip="Please enter the mobile number of the contact person at the organisation."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVContactPersonMobile.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVContactPersonMobile')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Contact Person Email</mat-label>
+                            <input matInput name="fvContactPersonEmail" formControlName="FVContactPersonEmail"
+                                matTooltip="Please enter the email ID of the contact person at the organisation."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.FVContactPersonEmail.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVContactPersonEmail')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Contact Person Designation</mat-label>
+                            <input matInput name="fvContactPersonDesignation"
+                                formControlName="FVContactPersonDesignation" required
+                                matTooltip="Please enter the designation of the contact person at the organisation."
+                                matTooltipPosition="above">
+                            <mat-error
+                                *ngIf="vtFieldIndustryVisitConductedForm.controls.FVContactPersonDesignation.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVContactPersonDesignation')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Is Organization interested to conduct more FV?</mat-label>
+                            <mat-select name="fvOrganisationInterestStatus"
+                                formControlName="FVOrganisationInterestStatus" matTooltip="Is Organization interested to conduct more FV?"
+                                matTooltipPosition="above" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="vtFieldIndustryVisitConductedForm.controls.FVOrganisationInterestStatus.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVOrganisationInterestStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Is FV Organisation interested in conducting OJT/Internship?</mat-label>
+                            <mat-select name="fvOrignisationOJTStatus" formControlName="FVOrignisationOJTStatus"
+                                matTooltip="Is FV Organisation interested in conducting OJT/Internship?"
+                                matTooltipPosition="above" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="vtFieldIndustryVisitConductedForm.controls.FVOrignisationOJTStatus.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FVOrignisationOJTStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Feedback from Orgnisation</mat-label>
+                            <input matInput name="feedbackFromOrgnisation" formControlName="FeedbackFromOrgnisation"
+                                matTooltip="Please enter feedbacks from field visit organisation."
+                                matTooltipPosition="above">
+                            <mat-error
+                                *ngIf="vtFieldIndustryVisitConductedForm.controls.FeedbackFromOrgnisation.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'FeedbackFromOrgnisation')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Remarks</mat-label>
+                            <input matInput name="remarks" formControlName="Remarks">
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.Remarks.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'Remarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row">
+                        <div>
+                            <span class="h2">Student Present</span>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px"
+                        *ngIf="vtFieldIndustryVisitConductedForm.get('StudentAttendances') != null">
+                        <div formArrayName="StudentAttendances" class="student-list-group">
+                            <!-- iterate formArray -->
+                            <div class="students-list" style="background: #f3f3f3;"
+                                *ngFor="let studentItem of vtFieldIndustryVisitConductedForm.get('StudentAttendances').controls; let studentIndex=index">
+                                <!-- Use the index for each formGroup inside the formArray -->
+                                <div [formGroupName]="studentIndex" class="student-list">
+                                    <input formControlName="StudentName" [disabled]="true"
+                                        style="background: #f3f3f3;" />
+                                    <mat-slide-toggle formControlName="IsPresent" [checked]="IsPresent">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

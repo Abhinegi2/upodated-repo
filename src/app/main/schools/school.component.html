@@ -1,0 +1,259 @@
+<div id="school" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'SCHOOL.SCHOOLS' | translate }}
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="schoolSearchForm" [formGroup]="schoolSearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input name="searchText" formControlName="SearchText" placeholder="Search for schools"
+                            matTooltip="Search By Division, District, School Category, School Management & Status"
+                            matTooltipPosition='above' matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
+                    replaceUrl="false" class="add-school-button fuse-white mt-24 mt-md-0">
+                    <span>{{'SCHOOL.ADD_NEW_SCHOOL' | translate}}</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="schoolFilterForm" [formGroup]="schoolFilterForm" class="vc-issue-report" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+                            <mat-select name="divisionId" formControlName="DivisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select name="districtId" formControlName="DistrictId" appearance="outline"
+                                (selectionChange)="onChangeDistrict($event.value)" #SelectDistrict>
+                                <mat-select-filter class="select-filter" *ngIf="SelectDistrict.focused"
+                                    [array]="districtList" (filteredReturn)="
+                                    filteredDistrictItems = $event" [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="districtItem.Id"
+                                    *ngFor="let districtItem of filteredDistrictItems">
+                                    {{ districtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Category</mat-label>
+                            <mat-select name="schoolCategoryId" formControlName="SchoolCategoryId" appearance="fill">
+                                <mat-option [value]="SchoolCategoryItem.Id"
+                                    *ngFor="let SchoolCategoryItem of schoolCategoryList">
+                                    {{ SchoolCategoryItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+                            <mat-select name="schoolManagementId" formControlName="SchoolManagementId" appearance="fill"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" fxFlex.lt-md="10" fxFlex.lt-sm="100">
+                            <mat-label>Status</mat-label>
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option value="">Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadSchoolsByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <mat-table class="school-table responsive-table" [dataSource]="tableDataSource" matSort fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school">
+                        <p class="text-truncate">{{school.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Udise Column -->
+                <ng-container matColumnDef="Udise">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE</mat-header-cell>
+                    <mat-cell *matCellDef="let school">
+                        <p class="text-truncate">{{school.Udise}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolManagement Column -->
+                <ng-container matColumnDef="SchoolManagement">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School Management
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{school.SchoolManagement}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CategoryName Column -->
+                <ng-container matColumnDef="CategoryName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        School Category
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{school.CategoryName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DivisionId Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{school.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictCode Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{school.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BlockName Column -->
+                <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
+                    <mat-cell *matCellDef="let school" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{school.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsImplemented Column -->
+                <ng-container matColumnDef="IsImplemented">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">
+                        Is Implemented?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let school" class="text-center">
+                        <span>{{ (school.IsImplemented ? 'Yes' : 'No') }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let school" class="text-center">
+                        <mat-icon *ngIf="school.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!school.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
+
+                    <mat-cell *matCellDef="let school" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/schools', 'view', school.SchoolId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit || UserModel.RoleCode == 'SUR'" mat-icon-button
+                            [routerLink]="['/schools', 'edit', school.SchoolId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsDelete || UserModel.RoleCode == 'SUR'" mat-icon-button color="warn"
+                            (click)="onDeleteSchool(school.SchoolId)">
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let school; columns: displayedColumns;" class="school" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

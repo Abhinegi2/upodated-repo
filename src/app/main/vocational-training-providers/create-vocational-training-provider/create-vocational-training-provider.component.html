@@ -1,0 +1,307 @@
+<div id="vocational-training-provider" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vocational-training-providers'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start center"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vocationalTrainingProviderModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Vocational Training Provider
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Vocational Training Provider Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vocational-training-provider-button"                
+            *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateVocationalTrainingProviderDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vocational-training-provider-button"                
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVocationalTrainingProviderDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vocationalTrainingProviderForm" [formGroup]="vocationalTrainingProviderForm"
+                    class="vocational-training-provider w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex>
+                            <mat-label>VTP</mat-label>
+                            <input matInput name="vtpShortName" formControlName="VTPShortName" required
+                                placeholder="Ex. Centum"
+                                matTooltip="Enter short name of the Vocational Training Provider. Space Not Allowed."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPShortName.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPShortName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Approval Year</mat-label>
+
+                            <mat-select name="approvalYear" formControlName="ApprovalYear" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="academicYearItem.Name"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.ApprovalYear.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'ApprovalYear')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP Full Name</mat-label>
+                            <input matInput name="vtpName" formControlName="VTPName" required
+                                placeholder="Ex. Jan Shikshan Sansthan"
+                                matTooltip="Enter full name of the Vocational Training Provider."
+                                matTooltipPosition="above"
+                                >
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPName.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Certification Number</mat-label>
+                            <input matInput name="certificationNo" formControlName="CertificationNo" required maxlength="30"
+                                matTooltip="Enter Certification Number."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.CertificationNo.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'CertificationNo')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Certification Agency</mat-label>
+                            <input matInput name="certificationAgency" formControlName="CertificationAgency" required
+                                placeholder="Ex. Shikshan Services"
+                                matTooltip="Enter name of Certification Agency."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.CertificationAgency.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'CertificationAgency')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP Mobile Number</mat-label>
+                            <input matInput name="vtpMobileNo" formControlName="VTPMobileNo" required digitOnly
+                                minlength="10" maxlength="10" placeholder="Ex. 9800098000"
+                                matTooltip="Enter VTP Coordinator Contact Number."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPMobileNo.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPMobileNo')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP Email</mat-label>
+                            <input matInput name="vtpEmailId" formControlName="VTPEmailId" required
+                                placeholder="Ex. abc@test.com"
+                                matTooltip="Enter VTP Coordinator Email Address."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPEmailId.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPEmailId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP Address</mat-label>
+                            <input matInput name="vtpAddress" formControlName="VTPAddress" required
+                            matTooltip="Enter Full Address of the VTP."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPAddress.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPAddress')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Primary Contact Person</mat-label>
+                            <input matInput name="certificationNo" formControlName="PrimaryContactPerson" required
+                            matTooltip="Enter name of the VTP contact person at Head Office."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.PrimaryContactPerson.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'PrimaryContactPerson')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Primary Contact Number</mat-label>
+                            <input matInput name="primaryMobileNumber" formControlName="PrimaryMobileNumber" required
+                                digitOnly minlength="10" maxlength="10" placeholder="Ex. 9800098000"
+                                matTooltip="Enter VTP Contact Number of Head Office."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.PrimaryMobileNumber.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'PrimaryMobileNumber')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>Primary Contact Email</mat-label>
+                            <input matInput name="primaryMobileNumber" formControlName="PrimaryContactEmail" required
+                                placeholder="Ex. abc@test.com"
+                                matTooltip="Enter VTP Email Address of Head Office."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.PrimaryContactEmail.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'PrimaryContactEmail')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP State Coordinator</mat-label>
+                            <input matInput name="certificationNo" formControlName="VTPStateCoordinator" required
+                            matTooltip="Enter name of the VTP Coordinator appointed for the State."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPStateCoordinator.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPStateCoordinator')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP State Coordinator Mobile</mat-label>
+                            <input matInput name="vtpStateCoordinatorMobile" formControlName="VTPStateCoordinatorMobile" required digitOnly
+                                minlength="10" maxlength="10" placeholder="Ex. 9800098000"
+                                matTooltip="Enter VTP State Coordinator Mobile."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPStateCoordinatorMobile.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPStateCoordinatorMobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex>
+                            <mat-label>VTP State Coordinator Email</mat-label>
+                            <input matInput name="vtpStateCoordinatorEmail" formControlName="VTPStateCoordinatorEmail" required
+                                placeholder="Ex. abc@test.com"
+                                matTooltip="Enter VTP State Coordinator Email."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.VTPStateCoordinatorEmail.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'VTPStateCoordinatorEmail')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px" *ngIf="appInfo.target == 'jh'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Contract Approval Date</mat-label>
+                            <input matInput [matDatepicker]="picker1" name="contractApprovalDate"
+                                 formControlName="ContractApprovalDate"
+                                [max]="CurrentDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.ContractApprovalDate.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'ContractApprovalDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Contract End Date</mat-label>
+                            <input matInput [matDatepicker]="picker" name="contractEndDate"
+                                (dateChange)="onChangeDateEnableDisableCheckBox(vocationalTrainingProviderForm, $event)"
+                                [min]="CurrentDate" formControlName="ContractEndDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.ContractEndDate.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'ContractEndDate')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <!-- <mat-icon matDatepickerToggleIcon
+                            (click)="clearDateValueInFormControl(vocationalTrainingProviderForm, 'DateOfResignationFromSchool', $event)"
+                            *ngIf="vocationalTrainingProviderForm.controls.DateOfResignationFromSchool.value && PageRights.ActionType !='view'">
+                            clear</mat-icon> -->
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px" *ngIf="appInfo.target == 'jh'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>MOU Doc Upload</mat-label>
+                            <ngx-mat-file-input name="mouDocumentFile" formControlName="MOUDocumentFile"
+                                [accept]="AllowedPDFExtensions" [disabled]="PageRights.IsReadOnly"
+                                (change)="uploadedMOUDocumentUploadFile($event)">
+                                
+                            </ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vocationalTrainingProviderForm.controls.MOUDocumentFile.invalid">
+                                {{getErrorMessage(vocationalTrainingProviderForm, 'MOUDocumentFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

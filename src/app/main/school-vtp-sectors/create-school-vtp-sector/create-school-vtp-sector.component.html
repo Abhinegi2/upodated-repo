@@ -1,0 +1,155 @@
+<div id="school-vtpsector" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/school-vtp-sectors'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ schoolVTPSectorModel.SchoolVTPSectorName }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New School VTP Sector
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>School VTP Sector Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-school-vtpsector-button" 
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateSchoolVTPSectorDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-school-vtpsector-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateSchoolVTPSectorDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="schoolVTPSectorForm" [formGroup]="schoolVTPSectorForm" class="school-vtpsector w-100-p p-24 mr-24" fxLayout="column"
+                fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select Academic Year</mat-label>
+
+                                <mat-select formControlName="AcademicYearId" required appearance="outline"
+                                    (selectionChange)="onChangeAcademicYear($event.value)"
+                                    [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="academicYearItem.Id"
+                                        *ngFor="let academicYearItem of academicYearList">
+                                        {{ academicYearItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="schoolVTPSectorForm.controls.AcademicYearId.invalid">
+                                    {{getErrorMessage(schoolVTPSectorForm, 'AcademicYearId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select VTP</mat-label>
+
+                                <mat-select formControlName="VTPId" required appearance="outline"
+                                    (selectionChange)="onChangeVTP($event.value)" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                        {{ vtpItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="schoolVTPSectorForm.controls.VTPId.invalid">
+                                    {{getErrorMessage(schoolVTPSectorForm, 'VTPId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select Sector</mat-label>
+
+                                <mat-select formControlName="SectorId" required appearance="outline"
+                                    (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                        {{ sectorItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="schoolVTPSectorForm.controls.SectorId.invalid">
+                                    {{getErrorMessage(schoolVTPSectorForm, 'SectorId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select School</mat-label>
+
+                                <mat-select formControlName="SchoolId" required appearance="outline"
+                                    (selectionChange)="onChangeSchool($event.value)" [disabled]="PageRights.IsReadOnly" #SelectSchool>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused" [array]="schoolList" (filteredReturn)="
+                                    filteredSchoolItems = $event" [displayMember]="'Name'"></mat-select-filter>
+                                    <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                        {{ schoolItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="schoolVTPSectorForm.controls.SchoolId.invalid">
+                                    {{getErrorMessage(schoolVTPSectorForm, 'SchoolId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                <mat-label>UDISE VTP Sector</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="schoolVTPSectorForm.controls.Remarks.invalid">
+                                    {{getErrorMessage(schoolVTPSectorForm, 'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLfxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    <!-- </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

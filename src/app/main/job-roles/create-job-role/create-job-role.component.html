@@ -1,0 +1,143 @@
+<div id="job-role" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/job-roles'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ jobRoleModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Sector Job Role
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Sector Job Role Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-job-role-button" [disabled]="jobRoleForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateJobRoleDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-job-role-button"
+                *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateJobRoleDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="jobRoleForm" [formGroup]="jobRoleForm" class="school w-100-p p-24 mr-24" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+
+                            <input type="text" matInput placeholder="Search Sector" [formControl]="sectorCtrl" [matAutocomplete]="auto">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                [displayWith]="getSectorName.bind(this)" (optionSelected)="onChangeSector($event)">
+                                <mat-option [value]="sectorItem.Id"
+                                    *ngFor="let sectorItem of sectorFilteredOptions | async">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-autocomplete>
+
+                            <!-- <mat-select formControlName="SectorId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeSector($event)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select> -->
+
+                            <mat-error *ngIf="jobRoleForm.controls.SectorId.invalid">
+                                {{getErrorMessage(jobRoleForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Job Role Name</mat-label>
+                            <input matInput name="jobRoleName" formControlName="JobRoleName" required
+                                placeholder="Ex. Service Technician" (change)="onChangeJobRole($event)">
+                            <mat-error *ngIf="jobRoleForm.controls.JobRoleName.invalid">
+                                {{getErrorMessage(jobRoleForm, 'JobRoleName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>QP Code</mat-label>
+                            <input matInput name="qpCode" formControlName="QPCode" required placeholder="Ex. BSC/Q0201">
+                            <mat-error *ngIf="jobRoleForm.controls.QPCode.invalid">
+                                {{getErrorMessage(jobRoleForm, 'QPCode')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Display Order</mat-label>
+                            <input matInput name="displayOrder" formControlName="DisplayOrder" required digitOnly
+                                maxlength="2">
+                            <mat-error *ngIf="jobRoleForm.controls.DisplayOrder.invalid">
+                                {{getErrorMessage(jobRoleForm, 'DisplayOrder')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Sector Job Role</mat-label>
+                            <input matInput name="remarks" formControlName="Remarks">
+                            <mat-error *ngIf="jobRoleForm.controls.Remarks.invalid">
+                                {{getErrorMessage(jobRoleForm, 'Remarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

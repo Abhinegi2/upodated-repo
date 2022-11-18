@@ -1,0 +1,258 @@
+<div id="vc-school-sector" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{ 'VCSCHOOLSECTOR.VC_SCHOOL_SECTORS' | translate}}
+
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="vcSchoolSectorSearchForm" [formGroup]="vcSchoolSectorSearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input formControlName="SearchText" placeholder="Search for a school vtp sectors"
+                            matTooltip="Search By VTP, VC, Sector, School Name, UDISE" matTooltipPosition='above'
+                            matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
+                    replaceUrl="false" class="add-vc-school-sector-button fuse-white mt-24 mt-md-0">
+                    <span>{{ 'VCSCHOOLSECTOR.ADD_NEW_VC_SCHOOL_SECTORS' | translate}}</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="vcSchoolSectorFilterForm" [formGroup]="vcSchoolSectorFilterForm" class="vc-issue-report"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVtpSectorItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVtpSectorItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC
+                                (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVcItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVcItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of filteredSchoolItems">
+                                    {{ schoolsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="10" fxFlex.lt-sm="100">
+                            <mat-label>Status</mat-label>
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option value="">Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadVCSchoolSectorsByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vc-school-sector-table responsive-table" #table
+                [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[6]" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- AcademicYearId Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vcSchoolSector.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Vocational Coordinator
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector">
+                        <p class="text-truncate">{{vcSchoolSector.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector">
+                        <p class="text-truncate">{{vcSchoolSector.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolVTPSector Column -->
+                <ng-container matColumnDef="SchoolVTPSector">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School VTP Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vcSchoolSector.SchoolVTPSector}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfAllocation Column -->
+                <ng-container matColumnDef="DateOfAllocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vcSchoolSector.DateOfAllocation | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vcSchoolSector" class="text-center">
+                        <mat-icon *ngIf="vcSchoolSector.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!vcSchoolSector.IsActive" class="data-inactive s-20">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
+
+                    <mat-cell *matCellDef="let vcSchoolSector" fxShow.gt-xs class="text-center">
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vc-school-sectors', 'view', vcSchoolSector.VCSchoolSectorId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="(PageRights.IsEdit && vcSchoolSector.DateOfRemoval == null) || UserModel.RoleCode == 'SUR'"
+                            mat-icon-button
+                            [routerLink]="['/vc-school-sectors', 'edit', vcSchoolSector.VCSchoolSectorId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="(PageRights.IsDelete && vcSchoolSector.DateOfRemoval == null) || UserModel.RoleCode == 'SUR'"
+                            mat-icon-button color="warn"
+                            (click)="onDeleteVCSchoolSector(vcSchoolSector.VCSchoolSectorId)">
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let vcSchoolSector; columns: displayedColumns;" class="vc-school-sector" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

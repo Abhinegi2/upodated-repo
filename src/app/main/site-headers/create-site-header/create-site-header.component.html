@@ -1,0 +1,126 @@
+<div id="site-header" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/site-headers'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ siteHeaderModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Site Header
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Site Header Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-site-header-button" [disabled]="siteHeaderForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateSiteHeaderDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-site-header-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateSiteHeaderDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="siteHeaderForm" [formGroup]="siteHeaderForm" class="site-header w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Short Name</mat-label>
+                                <input matInput name="shortName" formControlName="ShortName" required>
+                                <mat-error *ngIf="siteHeaderForm.controls.ShortName.invalid">{{getErrorMessage(siteHeaderForm, 'ShortName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Long Name</mat-label>
+                                <input matInput name="longName" formControlName="LongName">
+                                <mat-error *ngIf="siteHeaderForm.controls.LongName.invalid">{{getErrorMessage(siteHeaderForm, 'LongName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="siteHeaderForm.controls.Description.invalid">{{getErrorMessage(siteHeaderForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Display Order</mat-label>
+                                <input matInput name="displayOrder" formControlName="DisplayOrder" required>
+                                <mat-error *ngIf="siteHeaderForm.controls.DisplayOrder.invalid">{{getErrorMessage(siteHeaderForm, 'DisplayOrder')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Remarks</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="siteHeaderForm.controls.Remarks.invalid">{{getErrorMessage(siteHeaderForm, 'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

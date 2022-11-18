@@ -1,0 +1,649 @@
+<div id="vt-daily-monthly-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT DAILY MONTHLY REPORT
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="vtDailyMonthlySearchForm" [formGroup]="vtDailyMonthlySearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input formControlName="SearchText" placeholder="Search for vt attendance"
+                            matTooltip="Search By Academic Year, VTP, VC, VT" matTooltipPosition='above'
+                            matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+
+                <button mat-raised-button class="fuse-white filter-button" style="margin: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'VTDailyMonthlyReport', sheet: 'VTDailyMonthlyReport', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="vtDailyMonthlyFilterForm" [formGroup]="vtDailyMonthlyFilterForm"
+                    class="vt-daily-monthly-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="140px" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="140px" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="set-bottom-border">
+                            <mat-label>Report Month</mat-label>
+
+                            <input matInput name="reportDate" formControlName="ReportDate" required
+                                [matDatepicker]="reportDate" [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
+                            <mat-datepicker #reportDate startView="year" (yearSelected)="chosenYearHandler($event)"
+                                (monthSelected)="chosenMonthHandler($event, reportDate)"></mat-datepicker>
+
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" appearance="fill" #SelectVC
+                                (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" appearance="outline" matTooltip="Select School"
+                                matTooltipPosition='above' (selectionChange)="onChangeSchool($event.value)"
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadVTDailyMonthlyByCriteria()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <div fxLayout="column" fxLayout.gt-sm="row">
+            <div class="circle-W">W </div>
+            <p>- Present </p>
+            <div class="circle-H">H </div>
+            <p> - Holiday </p>
+            <div class="circle-L">L </div>
+            <p> - Leave</p>
+        </div>
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vt-daily-monthly-report-table responsive-table" #table
+                [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[0]" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef>Sr No</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance; let RowIndex = index;">
+                        <p class="attendance">{{vtAttendance.SrNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTEmailId Column -->
+                <ng-container matColumnDef="VTEmailId">
+                    <mat-header-cell *matHeaderCellDef>VT EmailId </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTEmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTMobile Column -->
+                <ng-container matColumnDef="VTMobile">
+                    <mat-header-cell *matHeaderCellDef>VT Mobile </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTDateOfResignation Column -->
+                <ng-container matColumnDef="VTDateOfResignation">
+                    <mat-header-cell *matHeaderCellDef>VT Date Of Resignation </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTDateOfResignation}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTStatus Column -->
+                <ng-container matColumnDef="VTStatus">
+                    <mat-header-cell *matHeaderCellDef>VT Status </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCEmailId Column -->
+                <ng-container matColumnDef="VCEmailId">
+                    <mat-header-cell *matHeaderCellDef>VC EmailId </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VCEmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCMobile Column -->
+                <ng-container matColumnDef="VCMobile">
+                    <mat-header-cell *matHeaderCellDef>VC Mobile </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VCMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.VTPName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Job Role
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportMonth Column -->
+                <ng-container matColumnDef="ReportMonth">
+                    <mat-header-cell *matHeaderCellDef>Report Month </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.ReportMonth}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- UDISE Column -->
+                <ng-container matColumnDef="UDISE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School UDISE
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.UDISE}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DivisionName Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictName Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="attendance">{{vtAttendance.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 1 Column -->
+                <ng-container matColumnDef="Day1">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 1</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day1}}">{{vtAttendance.Day1}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 2 Column -->
+                <ng-container matColumnDef="Day2">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 2</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day2}}">{{vtAttendance.Day2}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 3 Column -->
+                <ng-container matColumnDef="Day3">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 3</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day3}}">{{vtAttendance.Day3}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 4 Column -->
+                <ng-container matColumnDef="Day4">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 4</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day4}}">{{vtAttendance.Day4}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 5 Column -->
+                <ng-container matColumnDef="Day5">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 5</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day5}}">{{vtAttendance.Day5}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 6 Column -->
+                <ng-container matColumnDef="Day6">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 6</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day6}}">{{vtAttendance.Day6}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 7 Column -->
+                <ng-container matColumnDef="Day7">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 7</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day7}}">{{vtAttendance.Day7}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 8 Column -->
+                <ng-container matColumnDef="Day8">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 8</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day8}}">{{vtAttendance.Day8}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 9 Column -->
+                <ng-container matColumnDef="Day9">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 9</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day9}}">{{vtAttendance.Day9}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 10 Column -->
+                <ng-container matColumnDef="Day10">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 10</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day10}}">{{vtAttendance.Day10}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 11 Column -->
+                <ng-container matColumnDef="Day11">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 11</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day11}}">{{vtAttendance.Day11}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 12 Column -->
+                <ng-container matColumnDef="Day12">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 12</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day12}}">{{vtAttendance.Day12}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 13 Column -->
+                <ng-container matColumnDef="Day13">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 13</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day13}}">{{vtAttendance.Day13}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 14 Column -->
+                <ng-container matColumnDef="Day14">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 14</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day14}}">{{vtAttendance.Day14}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 15 Column -->
+                <ng-container matColumnDef="Day15">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 15</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day15}}">{{vtAttendance.Day15}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 16 Column -->
+                <ng-container matColumnDef="Day16">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 16</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day16}}">{{vtAttendance.Day16}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 17 Column -->
+                <ng-container matColumnDef="Day17">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 17</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day17}}">{{vtAttendance.Day17}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 18 Column -->
+                <ng-container matColumnDef="Day18">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 18</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day18}}">{{vtAttendance.Day18}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 19 Column -->
+                <ng-container matColumnDef="Day19">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 19</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day19}}">{{vtAttendance.Day19}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 20 Column -->
+                <ng-container matColumnDef="Day20">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 20</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day20}}">{{vtAttendance.Day20}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 21 Column -->
+                <ng-container matColumnDef="Day21">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 21</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day21}}">{{vtAttendance.Day21}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 22 Column -->
+                <ng-container matColumnDef="Day22">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 22</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day22}}">{{vtAttendance.Day22}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 23 Column -->
+                <ng-container matColumnDef="Day23">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 23</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day23}}">{{vtAttendance.Day23}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 24 Column -->
+                <ng-container matColumnDef="Day24">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 24</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day24}}">{{vtAttendance.Day24}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 25 Column -->
+                <ng-container matColumnDef="Day25">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 25</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day25}}">{{vtAttendance.Day25}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 26 Column -->
+                <ng-container matColumnDef="Day26">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 26</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day26}}">{{vtAttendance.Day26}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 27 Column -->
+                <ng-container matColumnDef="Day27">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 27</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day27}}">{{vtAttendance.Day27}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 28 Column -->
+                <ng-container matColumnDef="Day28">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 28</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day28}}">{{vtAttendance.Day28}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 29 Column -->
+                <ng-container matColumnDef="Day29">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 29</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day29}}">{{vtAttendance.Day29}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 30 Column -->
+                <ng-container matColumnDef="Day30">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 30</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day30}}">{{vtAttendance.Day30}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- 31 Column -->
+                <ng-container matColumnDef="Day31">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Day 31</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-{{vtAttendance.Day31}}">{{vtAttendance.Day31}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WorkingDays Column -->
+                <ng-container matColumnDef="WorkingDays">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Working Days</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-W">{{vtAttendance.WorkingDays}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Sundays Column -->
+                <ng-container matColumnDef="Sundays">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Sundays</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-H">{{vtAttendance.Sundays}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Holidays Column -->
+                <ng-container matColumnDef="Holidays">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Holidays</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-H">{{vtAttendance.Holidays}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Leaves Column -->
+                <ng-container matColumnDef="Leaves">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Leaves</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="circle attendance-L">{{vtAttendance.Leaves}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DaysInMonth Column -->
+                <ng-container matColumnDef="DaysInMonth">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Days In Month</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance" class="text-center">
+                        <p class="attendance">{{vtAttendance.DaysInMonth}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                <mat-row *matRowDef="let vtAttendance; columns: displayedColumns;" class="vt-daily-monthly-report"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

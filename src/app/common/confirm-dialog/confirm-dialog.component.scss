@@ -1,0 +1,13 @@
+.confirm-message {
+    align-items: center;
+    display: inline-flex;    
+}
+
+.confirm-message>span {
+    margin-left: 10px; 
+}
+
+.confirm-action {
+    float: right;
+    padding-top: 24px !important;
+}

@@ -1,0 +1,94 @@
+<div id="school-category" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/school-categories'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ schoolCategoryModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New School Category
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>School Category Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-school-category-button" [disabled]="schoolCategoryForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateSchoolCategoryDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-school-category-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateSchoolCategoryDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="schoolCategoryForm" [formGroup]="schoolCategoryForm" class="school-category w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Category Name</mat-label>
+                                <input matInput name="categoryName" formControlName="CategoryName" required>
+                                <mat-error *ngIf="schoolCategoryForm.controls.CategoryName.invalid">{{getErrorMessage(schoolCategoryForm, 'CategoryName')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="schoolCategoryForm.controls.Description.invalid">{{getErrorMessage(schoolCategoryForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

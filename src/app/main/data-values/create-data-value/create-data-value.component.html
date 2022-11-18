@@ -1,0 +1,144 @@
+<div id="data-value" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/data-values'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ dataValueModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Data Value
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Data Value Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-data-value-button" [disabled]="dataValueForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateDataValueDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-data-value-button"
+                *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateDataValueDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="dataValueForm" [formGroup]="dataValueForm" class="data-value w-100-p" fxLayout="column"
+                    fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Select Data Type</mat-label>
+
+                                <mat-select formControlName="DataTypeId" appearance="outline"
+                                    [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="dataTypeItem.Name" *ngFor="let dataTypeItem of dataTypeList">
+                                        {{ dataTypeItem.Description }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="dataValueForm.controls.DataTypeId.invalid">
+                                    {{getErrorMessage(dataValueForm, 'DataTypeId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Data Sub Type</mat-label>
+                                <input matInput name="parentId" formControlName="ParentId">
+                                <mat-error *ngIf="dataValueForm.controls.ParentId.invalid">
+                                    {{getErrorMessage(dataValueForm, 'ParentId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Code</mat-label>
+                                <input matInput name="code" formControlName="Code">
+                                <mat-error *ngIf="dataValueForm.controls.Code.invalid">
+                                    {{getErrorMessage(dataValueForm, 'Code')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Name</mat-label>
+                                <input matInput name="name" formControlName="Name" required>
+                                <mat-error *ngIf="dataValueForm.controls.Name.invalid">
+                                    {{getErrorMessage(dataValueForm, 'Name')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="dataValueForm.controls.Description.invalid">
+                                    {{getErrorMessage(dataValueForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Display Order</mat-label>
+                                <input matInput name="displayOrder" formControlName="DisplayOrder" required digitOnly minlength="0" maxlength="3" min="0" max="100">
+                                <mat-error *ngIf="dataValueForm.controls.DisplayOrder.invalid">
+                                    {{getErrorMessage(dataValueForm, 'DisplayOrder')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

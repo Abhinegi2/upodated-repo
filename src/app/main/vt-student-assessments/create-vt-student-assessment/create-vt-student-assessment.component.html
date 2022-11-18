@@ -1,0 +1,208 @@
+<div id="vt-student-assessment" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-student-assessments'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtStudentAssessmentModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Student Assessment
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Student Assessment Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-student-assessment-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTStudentAssessmentDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-student-assessment-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStudentAssessmentDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtStudentAssessmentForm" [formGroup]="vtStudentAssessmentForm"
+                    class="vt-student-assessment w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Testimonial Type</mat-label>
+                            <input matInput name="testimonialType" formControlName="TestimonialType" required>
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.TestimonialType.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'TestimonialType')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Student Name</mat-label>
+                            <input matInput name="studentName" formControlName="StudentName" required>
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.StudentName.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'StudentName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Student Gender</mat-label>
+                            <mat-select name="studentGender" formControlName="StudentGender" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
+                                    {{ genderItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.StudentGender.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'StudentGender')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>OJT Company</mat-label>
+                            <input matInput name="ojtCompany" formControlName="OJTCompany">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.OJTCompany.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'OJTCompany')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>OJT Company Address</mat-label>
+                            <input matInput name="ojtCompanyAddress" formControlName="OJTCompanyAddress">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.OJTCompanyAddress.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'OJTCompanyAddress')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>OJT Field Super Name</mat-label>
+                            <input matInput name="ojtFieldSuperName" formControlName="OJTFieldSuperName">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.OJTFieldSuperName.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'OJTFieldSuperName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>OJT Field Super Mobile</mat-label>
+                            <input matInput name="ojtFieldSuperMobile" formControlName="OJTFieldSuperMobile" digitOnly
+                                maxlength="10" minlength="10">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.OJTFieldSuperMobile.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'OJTFieldSuperMobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>OJT Field Super Email</mat-label>
+                            <input matInput name="ojtFieldSuperEmail" formControlName="OJTFieldSuperEmail">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.OJTFieldSuperEmail.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'OJTFieldSuperEmail')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Student Photo</mat-label>
+                            <ngx-mat-file-input name="studentPhoto" formControlName="StudentPhoto"
+                                [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.StudentPhoto.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'StudentPhoto')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Group Photo</mat-label>
+                            <ngx-mat-file-input name="groupPhoto" formControlName="GroupPhoto"
+                                [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.GroupPhoto.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'GroupPhoto')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Testimonial Title</mat-label>
+                            <input matInput name="testimonialTitle" formControlName="TestimonialTitle">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.TestimonialTitle.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'TestimonialTitle')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Testimonial Details</mat-label>
+                            <input matInput name="testimonialDetails" formControlName="TestimonialDetails">
+                            <mat-error *ngIf="vtStudentAssessmentForm.controls.TestimonialDetails.invalid">
+                                {{getErrorMessage(vtStudentAssessmentForm, 'TestimonialDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

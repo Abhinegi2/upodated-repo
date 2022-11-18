@@ -1,0 +1,106 @@
+<div id="terms-condition" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/terms-conditions'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ termsConditionModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Terms Condition
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Terms Condition Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-terms-condition-button" [disabled]="termsConditionForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateTermsConditionDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-terms-condition-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateTermsConditionDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="termsConditionForm" [formGroup]="termsConditionForm" class="terms-condition w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Name</mat-label>
+                                <input matInput name="name" formControlName="Name" required>
+                                <mat-error *ngIf="termsConditionForm.controls.Name.invalid">{{getErrorMessage(termsConditionForm, 'Name')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description" required>
+                                <mat-error *ngIf="termsConditionForm.controls.Description.invalid">{{getErrorMessage(termsConditionForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Applicable From</mat-label>
+                                <input matInput name="applicableFrom" formControlName="ApplicableFrom">
+                                <mat-error *ngIf="termsConditionForm.controls.ApplicableFrom.invalid">{{getErrorMessage(termsConditionForm, 'ApplicableFrom')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

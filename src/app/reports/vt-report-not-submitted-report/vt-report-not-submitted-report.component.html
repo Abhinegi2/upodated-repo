@@ -1,0 +1,257 @@
+<div id="vt-report-not-submitted-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT REPORT NOT SUBMITTED REPORT
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for VT daily reporting not submitted tracking">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'VTReportNotSubmitted', sheet: 'VTReportNotSubmitted', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card">
+            <div class="filter-content">
+                <form name="vtReportNotSubmittedForm" [formGroup]="vtReportNotSubmittedForm"
+                    class="vt-student-tracking-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>From Date</mat-label>
+                            <input matInput name="fromDate" formControlName="FromDate" [matDatepicker]="fromDate" [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>To Date</mat-label>
+                            <input matInput name="toDate" formControlName="ToDate" [matDatepicker]="toDate" [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                            <mat-datepicker #toDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getVTReportNotSubmittedReports()"><span>SEARCH</span></button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vt-student-tracking-report-table responsive-table" #table
+                [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[0]" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SrNo</mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted; let RowIndex = index;">
+                        <p class="text-truncate">{{vtReportNotSubmitted.SrNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VTPName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCMobile Column -->
+                <ng-container matColumnDef="VCMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VCMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCEmail Column -->
+                <ng-container matColumnDef="VCEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VCEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTMobile Column -->
+                <ng-container matColumnDef="VTMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VTMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTEmail Column -->
+                <ng-container matColumnDef="VTEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.VTEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTDateOfJoining Column -->
+                <ng-container matColumnDef="VTDateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Date Of Joining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">
+                            {{vtReportNotSubmitted.VTDateOfJoining | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Division Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- District Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Block Column -->
+                <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Block
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- UDISE Column -->
+                <ng-container matColumnDef="UDISE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE</mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.UDISE}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingDate Column -->
+                <ng-container matColumnDef="ReportingDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.ReportingDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingStatus Column -->
+                <ng-container matColumnDef="ReportingStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtReportNotSubmitted">
+                        <p class="text-truncate">{{vtReportNotSubmitted.ReportingStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtReportNotSubmitted; columns: displayedColumns;"
+                    class="vt-Student-tracking-report" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

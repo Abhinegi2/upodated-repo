@@ -1,0 +1,1916 @@
+<div id="summary-dashboard" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    SUMMARY DASHBOARD
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)=toggleDisplayDivIf()>
+                <span>FILTERS</span>
+            </button>
+        </div>
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="isShowDivIf">
+            <div class="filter-content">
+                <form name="summaryDashboardForm" [formGroup]="summaryDashboardForm" class="summary-dashboard-view"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill" required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicyearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Month</mat-label>
+
+                            <mat-select formControlName="MonthId" name="monthId" appearance="fill">
+                                <mat-option [value]="monthItem.Id" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button" (click)="getSummaryDashboards()">
+                                <span>SEARCH</span>
+                            </button>
+
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetDashboardFilters()">
+                                <span>CLEAR</span>
+                            </button>
+
+                            <!-- <button mat-raised-button class="fuse-white filter-button"
+                                (click)="refreshSummaryDashboard()"><span>REFRESH</span></button> -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+        <!-- CONTENT CARD -->
+        <!-- <mat-card style="overflow: hidden;"> -->
+        <div class="content-card" style="padding:16px;" fusePerfectScrollbar
+            [fusePerfectScrollbarOptions]="{'suppressScrollX': false}" *ngIf="!isShowGallery">
+            <!-- <md-content flex layout-padding> -->
+            <div fxLayout="row" class="programme-information-title">
+                <h2 class="programme-information">PROGRAMME INFORMATION</h2>
+            </div>
+            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap.lt-sm="10px"
+                style="margin-top: 1%;">
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <mat-card appMaterialElevation class="dashboard-card" (click)="onSchoolCardClick()">
+                        <mat-card-title class="card-title">
+                            School
+                            <mat-icon class="info-icon"
+                                matTooltip="Implemented schools are schools where trainers(VT) have been placed and student enrolment is complete and recorded in the database"
+                                matTooltipPosition='above'>info</mat-icon>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ schoolCard.Count }}</b><small class="card-content-info"> IMPLEMENTED OUT OF
+                                {{ schoolCard.Name }} APPROVED
+                            </small>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <!-- <mat-card appMaterialElevation class="dashboard-card" (click)="onCompareDashboardClick()"> -->
+                    <mat-card appMaterialElevation class="dashboard-card">
+                        <mat-card-title class="card-title">
+                            <span>Sector</span>
+                            <!-- <span style="margin-left: 15%;">Job Role</span> -->
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ sectorCard.ApprovedCount }}</b>
+                            <!-- <b style="margin-left:65%">{{
+                                sectorCard.ImplementedCount }}</b> -->
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <mat-card appMaterialElevation class="dashboard-card">
+                        <!-- (click)="onJobRoleCardClick()" -->
+                        <mat-card-title class="card-title">
+                            <span>Job Role</span>
+                            <!-- <span style="margin-left: 15%;">Job Role</span> -->
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ sectorCard.ImplementedCount }}</b>
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <!-- <mat-card appMaterialElevation class="dashboard-card" (click)="onCompareDashboardClick()"> -->
+                    <mat-card appMaterialElevation class="dashboard-card">
+                        <mat-card-title class="performance-card-title">
+                            Training Partner(VTP)
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ vtpCard.ApprovedCount }}</b>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <mat-card appMaterialElevation class="dashboard-card" (click)="onVTCardClick()">
+                        <mat-card-title class="performance-card-title">
+                            Vocational Trainer
+                            <mat-icon class="info-icon vt-info-icon"
+                                matTooltip="Reporting trainers are no. of vocational trainer(VTs) who have submitted at least one(1) daily reporting form in any calender month or specific calendar month"
+                                matTooltipPosition='above'>info</mat-icon>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ vtCard.PlacedVT}}</b> <span class="card-content-info"> DEPLOYED OUT OF {{
+                                vtCard.TotalVT }} PLACED</span>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <mat-card appMaterialElevation class="dashboard-card" (click)="onClassesCardClick()">
+                        <mat-card-title class="card-title">
+                            Classes
+                            <mat-icon class="info-icon" matTooltip="Sum of Classes in all implemented schools"
+                                matTooltipPosition='above'>info</mat-icon>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ classCard.Total }}</b> <span class="card-content-info"> FOR IMPLEMENTED SCHOOLS</span>
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+                <div fxFlex="14.2%" fxLayoutAlign="center">
+                    <mat-card appMaterialElevation class="dashboard-card" (click)="onStudentCardClick()">
+                        <mat-card-title class="card-title">
+                            Students
+                            <mat-icon class="info-icon"
+                                matTooltip="Number of Students Currently enrolled in the programme,including new enrollements and dropouts."
+                                matTooltipPosition='above' matTooltipClass="allow-cr">info</mat-icon>
+                        </mat-card-title>
+                        <mat-card-content>
+                            <b>{{ studentCard.Total }}</b><span class="card-content-info"> FOR IMPLEMENTED
+                                SCHOOLS</span>
+
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+
+            </div>
+
+            <div class="content-card" *ngIf="activeDrillDownGraph == ''">
+                <div fxLayout="row" class="programme-information-title">
+                    <h2 class="programme-information">PROGRAMME PERFORMANCE</h2>
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" style="margin-top:1%" fxLayoutGap="10px">
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="performance-card"
+                            (click)="onCourseMaterialStatusCardClick()">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                Course Material Status
+                                <mat-icon class="info-icon"
+                                    matTooltip="Reported Received-% of reported classes where Course Materials receipt status equal to received.
+                                            Report Not Received-% of reported classes where Course Materials receipt status equal to not received.
+                                            Not Reported-% of classes who have not reported Course Materials receipt status."
+                                    matTooltipPosition='above' matTooltipClass="allow-cr">info</mat-icon>
+                            </mat-card-title>
+
+                            <mat-card-content>
+                                <div fxLayout="row">
+                                    <div fxFlex="100%" fxLayoutAlign="center">
+                                        <ngx-charts-pie-chart [results]="courseMaterialStatusChart" [view]="pieView"
+                                            class="course-material-pie" [scheme]="colorScheme" [legend]="true"
+                                            [legendTitle]="'Classes'">
+
+                                        </ngx-charts-pie-chart>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1 ">
+                        <mat-card appMaterialElevation class="performance-card"
+                            (click)="onToolsAndEquipmentStatusCardClick()">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                Tools and Equipment Status
+                                <mat-icon class="info-icon"
+                                    matTooltip='Reported Received-% of reported Job Role Units where Tools and Equipment receipt status equal to received.
+                                Report Not Received-% of reported Job Role Units where Tools and Equipment receipt status equal to not received.
+                                Not Reported-% of Job Role Units who have not reported Tools and Equipment receipt status.'
+                                    matTooltipPosition='above' matTooltipClass="allow-cr">info</mat-icon>
+                            </mat-card-title>
+
+                            <mat-card-content>
+                                <div fxLayout="row">
+                                    <div class="ngx-pie-chart" fxFlex="100%" fxLayoutAlign="center">
+                                        <ngx-charts-pie-chart [results]="toolsAndEquipmentsChart" [scheme]="colorScheme"
+                                            class="tools-equipment-pie" [legend]="true" [view]="pieView"
+                                            [legendTitle]="'Job Role Units'">
+                                        </ngx-charts-pie-chart>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="performance-card">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                School Visit Status
+                                <mat-icon class="info-icon" matTooltip='Avg. School Visits =
+                                  Number of school visits completed in calendar month
+                                ______________________________________________________
+                                   Number of coordinators reporting school visits
+                                Reporting coordinators are no. of coordinators who have submitted at least one (1) school daily reporting
+                                form in any calendar month or specific calendar month' matTooltipPosition='above'
+                                    matTooltipClass="allow-cr">info</mat-icon>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <div style="width: inherit; height: inherit; opacity: 0.13;">
+                                    <!-- (click)="OnSchoolVisitStatusCardClick()" -->
+                                    <div>
+                                        <b>{{schoolVisits.AvgVisitsPerCordinatorPerMonth}}</b>
+                                        <p class="school-cart-text">AVG. VISITS PER COORDINATOR (VC) PER MONTH</p>
+                                    </div>
+                                    <h6 class="for-hr"><span class="span-hr">FOR</span></h6>
+                                    <div>
+                                        <!-- (click)="OnVcCardClick()" -->
+                                        <b>{{schoolVisits.PlacedVC}}</b>
+                                        <p class="school-cart-text">
+                                            REPORTING VC OUT OF
+                                            {{schoolVisits.TotalVC}}
+                                            VC PLACED
+                                        </p>
+                                    </div>
+                                </div>
+                                <h2 class="school-visit-status-text">Note: Under Development</h2>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="performance-card"
+                            (click)="onIssueManagementDashboardClick()">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                Issue Management Status
+                                <mat-icon class="info-icon" matTooltip='table below provides the count and current status of issues,
+                                i.e, raised, resolved and pending, as entered by VTs, VCs and HMs'
+                                    matTooltipPosition='above' matTooltipClass="allow-cr">info</mat-icon>
+                            </mat-card-title>
+
+                            <mat-card-content>
+                                <div fxLayout="row" style="max-height: 144px; width: inherit; height: inherit;"
+                                    fusePerfectScrollbar>
+                                    <table mat-table [dataSource]="dataSourceIssueManagement"
+                                        class="issue-management-status-table" fusePerfectScrollbar
+                                        [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                                        <!-- Name Column -->
+                                        <ng-container matColumnDef="Name">
+                                            <th mat-header-cell *matHeaderCellDef> </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                                        </ng-container>
+
+                                        <!-- High Column -->
+                                        <ng-container matColumnDef="High">
+                                            <th mat-header-cell *matHeaderCellDef> High </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.High}} </td>
+                                        </ng-container>
+
+                                        <!-- Medium Column -->
+                                        <ng-container matColumnDef="Medium">
+                                            <th mat-header-cell *matHeaderCellDef> Medium </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.Medium}} </td>
+                                        </ng-container>
+
+                                        <!-- Low Column -->
+                                        <ng-container matColumnDef="Low">
+                                            <th mat-header-cell *matHeaderCellDef> Low </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.Low}} </td>
+                                        </ng-container>
+
+                                        <tr mat-header-row
+                                            *matHeaderRowDef="displayedIssueManagementColumns; sticky: true"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedIssueManagementColumns;">
+                                        </tr>
+                                    </table>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" style="margin-top:1%" fxLayoutGap="10px">
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="mat-card performance-card"
+                            (click)="onGuestLectureCardClick()">
+                            <mat-card-title class="card-title">
+                                Guest Lecture Status
+                                <mat-icon class="info-icon" matTooltip='Each class is expected to conduct min 1 Guest Lectures per month.
+                                Number of Guest Lectures conducted in a given month * 100
+                                __________________________________________________________
+                                                Count of all classes' matTooltipPosition='above'
+                                    matTooltipClass="allow-cr">info</mat-icon>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <div class="resizeGraph" #containerRef>
+                                    <ngx-charts-line-chart
+                                        [view]="[containerRef.offsetWidth, containerRef.offsetHeight]"
+                                        [scheme]="chartColor" [xAxis]="xAxis" [timeline]="timeline" [yAxis]="showYAxis"
+                                        [results]="guestLectureChart" (window:resize)="onCardGraphResize($event)"
+                                        [yAxisTickFormatting]="percYAxisTickFormatting" [SeriesTooltipDisabled]="true">
+
+                                        <ng-template #tooltipTemplate let-model="model">
+                                            <!-- fields are series/name/value -->
+                                            <div class="tooltip">
+                                                {{model.name}}
+                                                <hr>
+                                                Total - {{model.value}} %
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template #seriesTooltipTemplate>
+                                            <!-- fields are series/name/value -->
+                                            <!-- <div class="tooltip">
+                                                {{model.name}}
+                                                <hr>
+                                                Total - {{model.value}} %
+                                            </div> -->
+                                        </ng-template>
+
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="performance-card" (click)="onFieldVisitCardClick()">
+                            <mat-card-title class="card-title">
+                                Field Visit Status
+                                <mat-icon class="info-icon" matTooltip='Each class is expected to conduct 1 Field Visit per quarter.
+                                 Number of Field Visits per Quarter * 100
+                                _________________________________________
+                                         Count of all classes ' matTooltipPosition='above' matTooltipClass="allow-cr">
+                                    info
+                                </mat-icon>
+                            </mat-card-title>
+                            <mat-card-content>
+                                <div class="resizeGraph" #containerRef>
+                                    <ngx-charts-line-chart class="field-visit-status-card"
+                                        [view]="[containerRef.offsetWidth, containerRef.offsetHeight]"
+                                        [scheme]="chartColor" [xAxis]="xAxis" [yAxis]="yAxis" [timeline]="timeline"
+                                        (window:resize)="onCardGraphResize($event)" [results]="fieldStatusChart"
+                                        [yAxisTickFormatting]="percYAxisTickFormatting">
+                                        <ng-template #tooltipTemplate let-model="model">
+                                            <!-- fields are series/name/value -->
+                                            <div class="tooltip">
+                                                <table style="border-collapse: collapse;
+                                            border-spacing: 0;
+                                            background-color: #485465;
+                                            empty-cells: show;">
+                                                    <tbody>
+                                                        <tr style="border-bottom: 1px solid #ccc;">
+                                                            <th colspan="3">{{model.name}}</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div style="background-color:#1f77b4; height: 10px;
+                                                            width: 10px;
+                                                            border-radius: 50%;"></div>
+                                                            </td>
+                                                            <td class="name" style="border-right: 1px dotted #ccc;">
+                                                                total</td>
+                                                            <td class="value" style="border-right: 1px dotted #ccc;">
+                                                                {{model.value}}%</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </ng-template>
+
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center" class="pr-1">
+                        <mat-card appMaterialElevation class="performance-card" (click)="OnVtVcAttandanceCardClick()">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                <div class="container-left-legend">
+                                    <span>VT Attendance</span>
+                                </div>
+                                <div class="container-rigth-legend">
+                                    <!-- <div class="graph-legend" style="background-color: #0e88f0de;"></div>
+                                    <div class="text-legend"><small>VC</small></div> -->
+                                    <div class="graph-legend" style="background-color: #f46a19e8;"></div>
+                                    <div class="text-legend"><small>VT</small></div>
+                                    <mat-icon class="info-icon info-legend" matTooltip='The average attendance (in %) of programme
+                                    stakeholders is calculated using the following formula.
+                                     E(Present days per stakeholder per month/ Total Working Days in a Month) * 100
+                                    __________________________________________________________________________________
+                                                                    Total Stakeholders' matTooltipPosition='above'
+                                        matTooltipClass="allow-cr">info</mat-icon>
+                                </div>
+                            </mat-card-title>
+
+                            <mat-card-content>
+                                <div class="resizeGraph" #containerRef>
+                                    <ngx-charts-line-chart class="vtvc-Attendance-Card"
+                                        [view]="[containerRef.offsetWidth, containerRef.offsetHeight]"
+                                        [scheme]="vtvcChartColor" [xAxis]="xAxis" [yAxis]="yAxis" [timeline]="timeline"
+                                        [results]="vtVcAttendanceChart" [yAxisTickFormatting]="percYAxisTickFormatting"
+                                        (window:resize)="onCardGraphResize($event)">
+                                        <ng-template #tooltipTemplate let-model="model">
+                                            <!-- fields are series/name/value -->
+                                            <div>
+                                                {{model.value}}
+                                            </div>
+                                            <!-- <div class="tooltip">
+                                            <table style="border-collapse: collapse;
+                                            border-spacing: 0;
+                                            background-color: #485465;
+                                            empty-cells: show;">
+                                                <tbody>
+                                                    <tr style="border-bottom: 1px solid #ccc;">
+                                                        <th colspan="3">{{model.name}}</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><div
+                                                            style="background-color:#ff7f0e; height: 10px;
+                                                            width: 10px;
+                                                            border-radius: 50%;"></div></td>
+                                                        <td class="name" style="border-right: 1px dotted #ccc;">
+                                                            total</td>
+                                                        <td class="value" style="border-right: 1px dotted #ccc;">{{model.value}}%</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><div
+                                                            style="background-color:#1f77b4; height: 10px;
+                                                            width: 10px;
+                                                            border-radius: 50%;"></div></td>
+                                                        <td class="name" style="border-right: 1px dotted #ccc;">
+                                                            total</td>
+                                                        <td class="value" style="border-right: 1px dotted #ccc;">{{model.value}}%</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div> -->
+                                        </ng-template>
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="25%" fxLayoutAlign="center">
+                        <mat-card appMaterialElevation class="performance-card"
+                            (click)="onStudentAttendanceCardClick()">
+                            <mat-card-title class="card-title" fxLayout="wrap">
+                                <div class="container-left-legend">
+                                    <span>Student Attendance</span>
+                                </div>
+                                <div class="container-rigth-legend">
+                                    <div class="graph-legend" style="background-color: #0e88f0de;"></div>
+                                    <div class="text-legend"><small>Boy</small></div>
+                                    <div class="graph-legend" style="background-color: #f46a19e8;"></div>
+                                    <div class="text-legend"><small>Girl</small></div>
+                                    <mat-icon class="info-icon info-legend" style="right:2px;" matTooltip='The average attendance(in%) of student is calculated using the following formula:
+                                        E(Actual Attendance on day/ Total Enrolment Count)*100
+                                    ___________________________________________________________
+                                                        Total days' matTooltipPosition='above'
+                                        matTooltipClass="allow-cr">info</mat-icon>
+                                </div>
+                            </mat-card-title>
+
+                            <mat-card-content>
+                                <div class="resizeGraph" #containerRef>
+                                    <ngx-charts-line-chart class="student-attendance-card"
+                                        [view]="[containerRef.offsetWidth, containerRef.offsetHeight]"
+                                        [scheme]="chartColor" [xAxis]="xAxis" [yAxis]="yAxis" [timeline]="timeline"
+                                        [results]="schoolAttendanceChart"
+                                        [yAxisTickFormatting]="percYAxisTickFormatting"
+                                        (window:resize)="onCardGraphResize($event)">
+
+                                    </ngx-charts-line-chart>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+            <!-- </md-content> -->
+
+            <!-- DETAILED GRAPH CONTENT CARD-->
+            <!-- <div class="content-card" fusePerfectScrollbar> -->
+            <!-- for school card -->
+            <div *ngIf="activeDrillDownGraph == 'SchoolCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>NUMBER OF SCHOOLS</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'Schools')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div class="view-checkbox">
+                            <!-- <mat-checkbox (change)="onCheck(item.name, $event)" [checked]="true" class="checkbox-view">
+                            </mat-checkbox> -->
+                            <div class="circle" style="background-color: #1f76b4;"></div>
+                            <p class="implemented">Implemented Schools</p>
+
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="Schools" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Number Of Schools</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="schoolChartCount > 0">
+                            <ngx-charts-bar-vertical [view]="viewGraph" (window:resize)="onResize($event)"
+                                [scheme]="schoolColor" [results]="schoolChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" (select)="onSelectSchool($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class=" mx-width check side" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" *ngFor="let graph of graphArray"
+                                        [value]="graph.FilterBy"
+                                        (change)="onChangeSchoolChartXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for vt card -->
+            <div *ngIf="activeDrillDownGraph == 'VTCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="40%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>VOCATIONAL TRAINERS(VTS)</b>
+                    </div>
+                    <div fxFlex="40%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="ReportingStatus" [checked]="true">
+                                Reporting Status
+                            </mat-radio-button>
+                            <mat-radio-button value="ReportSubmitted" class="mr-left" [disabled]="true">
+                                Report Submitted
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'VocationalTrainers')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of vtChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox [(ngModel)]="item.checked" class="checkbox-view"
+                                (change)="onCheckVocationalTrainerView(item.value, $event)">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="VTColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="OnVtVcAttandanceCardClick()">
+                                    <p matLine>Vocational Trainer Attendance</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="VocationalTrainers" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">
+                            Vocational Trainer- Reporting Status
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="vocationalTrainerChartCount > 0">
+                            <ngx-charts-bar-vertical [view]="viewGraph" (window:resize)="onResize($event)"
+                                [scheme]="VTColorScheme" [results]="vocationalTrainerChart" [gradient]="gradient"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectVocationalTrainer($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of vocationalTrainersXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeVTChartXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for vtp card -->
+            <div *ngIf="activeDrillDownGraph == 'VTPCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>SUMMARY <mat-icon class="right-arrow">arrow_right</mat-icon></span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>TRAINING PROVIDER(VTP)</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of chkList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheck(item.name, $event)" [checked]="true" class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="colorScheme.domain[i]"></div><b>
+                                {{item.value}}
+                            </b>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Training Provider(VTP)</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="multi.length > 0">
+                            <ngx-charts-bar-vertical-stacked *ngIf="favoriteSeason == 'VTP'"
+                                (window:resize)="onResize($event)" [view]="viewGraph" [scheme]="colorSchemeGraph"
+                                [results]="multi" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                                [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label" name="xAxisSchools"
+                                    formControlName="XaxisSchools" [(ngModel)]="favoriteSeason"
+                                    class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" *ngFor="let graph of graphArray"
+                                        [value]="graph" (change)="selectedValue($event, graph)">
+                                        {{graph}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for job Role card -->
+            <div *ngIf="activeDrillDownGraph == 'JobRoleCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>NUMBER OF JOB ROLE UNITS</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of jobRoleChkList;let i = index" class="view-checkbox">
+                            <div class="circle" [style.backgroundColor]="JobRoleColorScheme.domain[i]"></div>
+                            {{item}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Number Of Job Role Units</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="jobRoleChartCount > 0">
+                            <ngx-charts-bar-vertical [view]="viewGraph" [scheme]="JobRoleColorScheme"
+                                (window:resize)="onResize($event)" [results]="jobRoleChart" [gradient]="gradient"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectJobRoleUnit($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of jobRoleUnitsXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeJobRoleChartXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for classes card -->
+            <div *ngIf="activeDrillDownGraph == 'ClassCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>CLASSES</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'Classes')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of classChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox [(ngModel)]="item.checked" class="checkbox-view"
+                                (change)="onCheckClassView(item.value, $event)">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="classColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="Classes" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">
+                            Classes
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="classChartCount > 0">
+                            <ngx-charts-bar-vertical-stacked [view]="viewGraph" [scheme]="classColorScheme"
+                                (window:resize)="onResize($event)" [results]="classChart" [gradient]="gradient"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectClass($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" *ngFor="let graph of classesXAxis"
+                                        [value]="graph.FilterBy"
+                                        (change)="onChangeClassesXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- For Student details graph -->
+            <div *ngIf="activeDrillDownGraph == 'StudentCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="30%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>STUDENT COUNT DETAILS</b>
+                    </div>
+                    <div fxFlex="55%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="ReportingStatus" [checked]="true">
+                                Current Students
+                            </mat-radio-button>
+                            <mat-radio-button value="ReportSubmitted" class="mr-left" [disabled]="true">
+                                New Enrolment & Dropouts
+                            </mat-radio-button>
+                            <mat-radio-button value="ReportSubmitted" class="mr-left" [disabled]="true">
+                                Average Students
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxFlex="15%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'Students')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of studentChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckStudentView(item.name, $event)" [(ngModel)]="item.checked"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="studentColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="Students" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Number Of Students</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="studentChartCount > 0">
+                            <ngx-charts-bar-vertical-stacked [view]="viewGraph" [scheme]="studentColorScheme"
+                                (window:resize)="onResize($event)" [results]="studentChart" [gradient]="gradient"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="  onSelectStudent($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" *ngFor="let graph of studentXAxis"
+                                        [value]="graph.FilterBy"
+                                        (change)="onChangeStudentXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for Course Material Status card -->
+            <div *ngIf="activeDrillDownGraph == 'CourseMaterialStatusCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>COURSE MATERIAL STATUS</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'CourseMaterialStatus')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of courseMaterialStatusChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckCourseMaterialStatusView(item.name, $event)"
+                                [(ngModel)]="item.checked" class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="courseMaterialStatusColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onClassesCardClick()">
+                                    <p matLine>Classes</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onToolsAndEquipmentStatusCardClick()">
+                                    <p matLine>Tools & Equipment Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="CourseMaterialStatus" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Course Material Status (For Classes)
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="courseMaterialStatusChartCount > 0">
+                            <ngx-charts-bar-vertical-stacked [view]="viewGraph" (window:resize)="onResize($event)"
+                                [scheme]="courseMaterialStatusColorScheme" [results]="courseMaterialStatusChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectCourseMaterial($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of courseMaterialStatusXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeCourseMaterialStatusXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for Tools And Equipment Status card -->
+            <div *ngIf="activeDrillDownGraph == 'ToolsAndEquipmentCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>TOOLS AND EQUIPMENT STATUS</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'ToolsAndEquipmentStatus')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of courseMaterialStatusChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckToolsAndEquipmentsView(item.name, $event)"
+                                [(ngModel)]="item.checked" class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="courseMaterialStatusColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onJobRoleCardClick()">
+                                    <p matLine>Job Role Units</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                                <mat-list-item (click)="onCourseMaterialStatusCardClick()">
+                                    <p matLine>Course Material Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="ToolsAndEquipmentStatus" fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">
+                            Tools And Equipment Status (For Job
+                            Role Units)
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="toolsAndEquipmentsChartCount > 0">
+                            <ngx-charts-bar-vertical-stacked [view]="viewGraph" (window:resize)="onResize($event)"
+                                [scheme]="courseMaterialStatusColorScheme" [results]="toolsAndEquipmentsChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectToolsAndEquipments($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of toolsAndEquipmentsXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeToolsAndEquipmentsXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- For Student Attendance details graph -->
+            <div *ngIf="activeDrillDownGraph == 'StudentAttendanceCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>STUDENT ATTENDANCE</b>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'StudentAttendance')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="100px" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of studentAttendanceChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox [(ngModel)]="item.checked" class="checkbox-view"
+                                (change)="onCheckStudentAttendanceView(item.value, $event, xAxisDrillDownFilter)">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="studentAttendanceColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+                    </div>
+
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="StudentAttendance" fxFlex="95%" class="mx-width">
+                        <p style="text-align: center; width: 100%;padding: 10px;">Student Attendance</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="schoolAttendanceChartCount > 0">
+                            <ngx-charts-bar-vertical-2d *ngIf="xAxisDrillDownFilter !== 'ByTimeline'"
+                                [view]="viewGraphStudent" [scheme]="studentAttendanceColorScheme" [autoScale]="true"
+                                (window:resize)="onResizeAttendanceGraph($event)" [results]="schoolAttendanceChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [barPadding]="15" [yAxis]="showYAxis"
+                                [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" [yAxisTickFormatting]="percYAxisTickFormatting"
+                                (select)="onSelectStudentAttendance($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical-2d>
+                            <ngx-charts-line-chart *ngIf="xAxisDrillDownFilter == 'ByTimeline'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="studentAttendanceColorScheme"
+                                [xAxis]="xAxis" [yAxis]="yAxis" [timeline]="timeline" [results]="schoolAttendanceChart"
+                                [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="210px" class="check side mx-width change-x-axis" fxLayoutAlign="center">
+                        <h3 class="hcolor">Change X-AXIS</h3>
+                        <div>
+                            <mat-radio-group aria-labelledby="example-radio-group-label"
+                                [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                <mat-radio-button class="example-radio-button"
+                                    *ngFor="let graph of studentAttendenceXAxis" [value]="graph.FilterBy"
+                                    (change)="onChangeStudentAttendanceXaxis($event, graph.FilterBy)">
+                                    {{graph.FilterName}}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Student Attendance details graph -->
+            <!-- For Field Visit details graph -->
+            <div *ngIf="activeDrillDownGraph == 'FieldVisitCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="40%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <b>FIELD VISIT STATUS</b>
+                    </div>
+                    <div fxFlex="40%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="FieldVisitStatus" [checked]="true"
+                                (change)="onChangeFieldVisitType('FVStatus')">
+                                Field Visit Status
+                            </mat-radio-button>
+                            <mat-radio-button value="NumberOfFieldVisit" class="mr-left" style="margin-left:10px;"
+                                (change)="onChangeFieldVisitType('FVCount')">
+                                Number of Field Visit
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'FieldVisitStatus')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngIf="fieldVisitType == 'FVStatus'" class="view-checkbox">
+                            <div class="circle" style="background-color:#1f77b4;"></div>
+                            <p class="implemented">FIELD VISIT CONDUCTED (%)</p>
+                        </div>
+
+                        <div *ngIf="fieldVisitType == 'FVCount'">
+                            <div class="view-checkbox" *ngFor="let item of noOfFieldVisitChkList;let i = index">
+                                <mat-checkbox [checked]="true" class="checkbox-view">
+                                </mat-checkbox>
+                                <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                    [style.backgroundColor]="noOfFieldVisitColorScheme.domain[i]"></div>
+                                {{item.value}}
+                            </div>
+                        </div>
+
+                        <div>
+                            <strong class="hcolor">Go To</strong>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onGuestLectureCardClick()">
+                                    <p matLine>Guest Lecture Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+
+                    <div id="FieldVisitStatus" fxFlex="55%" class="mx-width">
+                        <p style="text-align: center; width: 100%;padding: 10px;">Field Visit Status</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="fieldVisitChartCount > 0">
+                            <ngx-charts-bar-vertical
+                                *ngIf="xAxisDrillDownFilter !== 'ByTimeline' && xAxisDrillDownFilter !== 'ByTimelineForFV'"
+                                [view]="viewGraph" (window:resize)="onResize($event)" [scheme]="fieldVisitColorScheme"
+                                [results]="fieldStatusChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" [yAxisTickFormatting]="percYAxisTickFormatting"
+                                (select)="onSelectFieldVisit($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-bar-vertical *ngIf="xAxisDrillDownFilter == 'ByTimelineForFV'"
+                                [view]="viewGraph" [scheme]="fieldVisitColorScheme" (window:resize)="onResize($event)"
+                                [results]="fieldStatusChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" [yAxisTickFormatting]="valYAxisTickFormatting">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-line-chart *ngIf="xAxisDrillDownFilter == 'ByTimeline'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="fieldVisitColorScheme" [xAxis]="xAxis"
+                                [yAxis]="yAxis" [timeline]="timeline" [results]="fieldStatusChart"
+                                [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button" *ngFor="let graph of fieldVisitXAxis"
+                                        [value]="graph.FilterBy"
+                                        (change)="onChangeFieldVisitXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Field Visit details graph -->
+            <!-- For Guest Lecture details graph -->
+            <div *ngIf="activeDrillDownGraph == 'GuestLectureCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="30%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <b>GUEST LECTURE STATUS</b>
+                    </div>
+                    <div fxFlex="50%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="GuestLectureStatus" [checked]="true"
+                                (change)="onChangeGuestLectureType('GLStatus')">
+                                Guest Lecture Status
+                            </mat-radio-button>
+                            <mat-radio-button value="NumberOfGuestLecture" style="margin-left:10px;"
+                                (change)="onChangeGuestLectureType('GLCount')">
+                                Number of Guest Lecture
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'GuestLectureStatus')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngIf="guestLectureType == 'GLStatus'" class="view-checkbox">
+                            <div class="circle" style="background-color:#59d9d8;"></div>
+                            <p class="implemented">GUEST LECTURE CONDUCTED (%)</p>
+                        </div>
+
+                        <div *ngIf="guestLectureType == 'GLCount'">
+                            <div class="view-checkbox" *ngFor="let item of noOfGuestLectureChkList;let i = index">
+                                <mat-checkbox [(ngModel)]="item.checked" class="checkbox-view">
+                                </mat-checkbox>
+                                <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                    [style.backgroundColor]="noOfGuestLectureColorScheme.domain[i]"></div>
+                                {{item.value}}
+                            </div>
+                        </div>
+
+                        <div>
+                            <strong class="hcolor">Go To</strong>
+                            <mat-nav-list>
+                                <mat-list-item (click)="onFieldVisitCardClick()">
+                                    <p matLine>Field Visit Status</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="GuestLectureStatus" fxFlex="55%" class="mx-width">
+                        <p style="text-align: center; width: 100%;padding: 10px;">Guest Lecture Status</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="guestLectureChartCount > 0">
+                            <ngx-charts-bar-vertical
+                                *ngIf="xAxisDrillDownFilter !== 'ByTimeline' && xAxisDrillDownFilter !== 'ByTimelineForGL'"
+                                [view]="viewGraph" [scheme]="guestLectureColorScheme" [results]="guestLectureChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (window:resize)="onResize($event)"
+                                [yAxisTickFormatting]="percYAxisTickFormatting"
+                                (select)="onSelectGuestLecture($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-bar-vertical *ngIf="xAxisDrillDownFilter == 'ByTimelineForGL'"
+                                [view]="viewGraph" [scheme]="guestLectureColorScheme" [results]="guestLectureChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" (window:resize)="onResize($event)"
+                                [yAxisTickFormatting]="valYAxisTickFormatting">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-line-chart *ngIf="xAxisDrillDownFilter == 'ByTimeline'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="guestLectureColorScheme" [xAxis]="xAxis"
+                                [yAxis]="yAxis" [timeline]="timeline" [results]="guestLectureChart"
+                                [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of guestLectureXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeGuestLectureXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Guest Lecture details graph -->
+            <!-- For VT AND VC Attendance details graph -->
+            <div *ngIf="activeDrillDownGraph == 'VTVCAttendanceCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="35%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <b>VT AND VC ATTENDANCE</b>
+                    </div>
+                    <div fxFlex="50%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="VT" [checked]="true" (change)="onVtVcHeaderChange('VT')">
+                                Vocational Trainers(VT)
+                            </mat-radio-button>
+                            <mat-radio-button value="VC" class="mr-left" (change)="onVtVcHeaderChange('VC')">
+                                Vocational Coordinators(VC)
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div fxFlex="15%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'VtAndVcAttendance')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div class="view-checkbox">
+                            <div class="circle" style="background-color:#1f77b4;"></div>
+                            <p class="implemented">Average Attendance</p>
+                        </div>
+                    </div>
+
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="VtAndVcAttendance" fxFlex="55%" class="mx-width">
+                        <p style="text-align: center; width: 100%;padding: 10px;">Average Attendance</p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="vtAttendance"> -->
+                        <div *ngIf="vtAttendanceChartCount > 0 && vtAttendance">
+                            <ngx-charts-bar-vertical *ngIf="xAxisDrillDownFilter !== 'ByMonth'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="fieldVisitColorScheme"
+                                [results]="vtAttendanceChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" [yAxisTickFormatting]="percYAxisTickFormatting"
+                                (select)="onSelectVtAttendance($event, xAxisDrillDownFilter)">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-line-chart *ngIf="xAxisDrillDownFilter == 'ByMonth'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="fieldVisitColorScheme" [xAxis]="xAxis"
+                                [yAxis]="yAxis" [timeline]="timeline" [results]="vtAttendanceChart"
+                                [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-line-chart>
+                        </div>
+                        <!-- </div> -->
+                        <!-- <div *ngIf="vtAttendance"> -->
+                        <div *ngIf="vcAttendanceChartCount > 0 && vcAttendance">
+                            <ngx-charts-bar-vertical *ngIf="xAxisDrillDownFilter !== 'ByMonth'" [view]="viewGraph"
+                                (window:resize)="onResize($event)" [scheme]="fieldVisitColorScheme"
+                                [results]="vcAttendanceChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-line-chart *ngIf="xAxisDrillDownFilter == 'ByMonth'" [view]="viewGraph"
+                                [scheme]="fieldVisitColorScheme" [xAxis]="xAxis" [yAxis]="yAxis" [timeline]="timeline"
+                                [results]="vcAttendanceChart" [yAxisTickFormatting]="percYAxisTickFormatting">
+                            </ngx-charts-line-chart>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div *ngIf="vtAttendance">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of vtAttendanceXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeVtAttendanceXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <div *ngIf="vcAttendance">
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of vcAttendanceXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeVcAttendanceXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Vt and Vc Attendance details graph -->
+            <!-- For school Visit Status  details graph -->
+            <div *ngIf="activeDrillDownGraph == 'SchoolVisitStatusCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <b> SCHOOL VISIT STATUS</b>
+                    </div>
+
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportDrildownDataExcel(evt, 'SchoolVisitStatus')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div class="view-checkbox"
+                            *ngIf="xAxisDrillDownFilter !== 'ByMonth' && xAxisDrillDownFilter == 'ByVTP'">
+                            <div class="circle" style="background-color:#1f77b4;"></div>
+                            <p class="implemented">Total</p>
+                        </div>
+
+                        <div *ngIf="xAxisDrillDownFilter == 'ByMonth' && xAxisDrillDownFilter !== 'ByVTP'">
+                            <div *ngFor="let item of schoolvisitChkList;let i = index" class="view-checkbox">
+                                <mat-checkbox [checked]="true" class="checkbox-view"
+                                    (change)="onCheckSchoolVisitView(item, $event)">
+                                </mat-checkbox>
+                                <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                    [style.backgroundColor]="schoolVisitStatusByMonthColorScheme.domain[i]"></div>
+                                {{item}}
+                            </div>
+                        </div>
+                        <h3 class="hcolor">Go To</h3>
+                        <mat-nav-list>
+                            <mat-list-item (click)="onFieldVisitCardClick()">
+                                <p matLine>VTP Coordinator Reporting</p>
+                                <button mat-icon-button>
+                                    <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                </button>
+                            </mat-list-item>
+                            <mat-list-item (click)="onFieldVisitCardClick()">
+                                <p matLine>VTP Coordinator Attendance</p>
+                                <button mat-icon-button>
+                                    <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                </button>
+                            </mat-list-item>
+                        </mat-nav-list>
+                    </div>
+
+
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div id="SchoolVisitStatus" fxFlex="55%" class="mx-width">
+                        <p style="text-align: center; width: 100%;padding: 10px;">School Visit Status</p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="schoolVisitStatusChartCount > 0">
+                            <ngx-charts-bar-vertical
+                                *ngIf="xAxisDrillDownFilter !== 'ByMonth' && xAxisDrillDownFilter == 'ByVTP'"
+                                (window:resize)="onResize($event)" [view]="viewGraph" [gradient]="gradient"
+                                [scheme]="schoolVisitStatusColorScheme" [results]="schoolVisitStatusChart"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+                            </ngx-charts-bar-vertical>
+                            <ngx-charts-bar-vertical-stacked
+                                *ngIf="xAxisDrillDownFilter == 'ByMonth' && xAxisDrillDownFilter !== 'ByVTP'"
+                                (window:resize)="onResize($event)" [view]="viewGraph"
+                                [scheme]="schoolVisitStatusByMonthColorScheme" [results]="schoolVisitStatusChart"
+                                [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+                            </ngx-charts-bar-vertical-stacked>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="xAxisDrillDownFilter" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of schoolVisitStatusXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeschoolVisitStatusXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </div>
+            </div> -->
+            <!-- school Visit Status details graph -->
+            <!-- for vc card -->
+            <div *ngIf="activeDrillDownGraph == 'VCCardInfo'">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="40%" class="mx-width">
+                        <span>
+                            <a style="color: black !important;" [routerLink]="['./']">SUMMARY</a>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <b>VOCATIONAL COORDINATORS (VC)</b>
+                    </div>
+                    <div fxFlex="40%" class="mx-width">
+                        <mat-radio-group aria-label="Select an option">
+                            <mat-radio-button value="ReportingStatus" [checked]="true">
+                                Reporting Status
+                            </mat-radio-button>
+                            <mat-radio-button value="ReportSubmitted" class="mr-left">
+                                Report Submitted
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of vtChkList;let i = index" class="view-checkbox">
+                            <mat-checkbox [checked]="true" class="checkbox-view"
+                                (change)="onCheckVocationalTrainerView(item.value, $event)">
+                            </mat-checkbox>
+                            <div class="circle" style="margin-right: 5px; margin-top: 7px;"
+                                [style.backgroundColor]="VTColorScheme.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">Go To</h3>
+                            <mat-nav-list>
+                                <mat-list-item (click)="OnVtVcAttandanceCardClick()">
+                                    <p matLine>VC Attendance</p>
+                                    <button mat-icon-button>
+                                        <mat-icon style="float: right;margin-right: 10px;">arrow_forward</mat-icon>
+                                    </button>
+                                </mat-list-item>
+                            </mat-nav-list>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">
+                            Vocational Coordinator- Reporting Status
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="vocationalTrainerChartCount > 0">
+                            <ngx-charts-bar-vertical [view]="viewGraph" (window:resize)="onResize($event)"
+                                [scheme]="VTColorScheme" [results]="vocationalTrainerChart" [gradient]="gradient"
+                                [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                                [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                                (select)="onSelectVocationalTrainer($event, vocationalTrainerXaxisItem)">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">Change X-AXIS</h3><br>
+                            <div>
+                                <mat-radio-group aria-labelledby="example-radio-group-label"
+                                    [(ngModel)]="vocationalTrainerXaxisItem" class="example-radio-group">
+                                    <mat-radio-button class="example-radio-button"
+                                        *ngFor="let graph of vocationalTrainersXAxis" [value]="graph.FilterBy"
+                                        (change)="onChangeVTChartXaxis($event, graph.FilterBy)">
+                                        {{graph.FilterName}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end vc card  -->
+        </div>
+        <!-- Gallery Content -->
+        <!-- <div fxLayout="row" class="show-gallery-card" (click)="onShowGalleryClick()" *ngIf="isShowGallery"> 
+            <div class="text-xs-center">Show Gallery</div>   
+            <div class="show-gallery-icon"><mat-icon>keyboard_arrow_down</mat-icon></div>
+        </div> -->
+
+        <!-- /Gallery Content -->
+        <!-- </mat-card> -->
+        <!-- / CONTENT CARD -->
+        <!-- <div fxLayout="row" class="hide-gallery-card" (click)="onHideGalleryClick()" *ngIf="isShowGallery"> 
+            <div class="text-xs-center">Hide Gallery</div>   
+            <div class="hide-gallery-icon"><mat-icon>keyboard_arrow_up</mat-icon></div>
+        </div> -->
+    </div>
+
+</div>
+<!-- / CENTER -->

@@ -1,0 +1,154 @@
+<div id="vt-daily-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT DAILY APPROVAL
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vt daily reporting">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                class="add-vt-daily-reporting-button fuse-white mt-24 mt-md-0">
+                <span>ADD</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vt-daily-reporting-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting">
+                        <p class="text-truncate">{{vtDailyReporting.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting">
+                        <p class="text-truncate">{{vtDailyReporting.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportType Column -->
+                <ng-container matColumnDef="ReportType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        Report Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtDailyReporting.ReportType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingDate Column -->
+                <ng-container matColumnDef="ReportingDate">
+                    <mat-header-cell *matHeaderCellDef class="tab-col-15" mat-sort-header fxHide fxShow.gt-xs>
+                        Reporting Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting" class="tab-col-15" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">
+                            {{vtDailyReporting.ReportingDate | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovalStatus Column -->
+                <ng-container matColumnDef="ApprovalStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>
+                        Approval Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtDailyReporting.ApprovalStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="vtDailyReporting.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!vtDailyReporting.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions">
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vt-daily-reporting', 'view', vtDailyReporting.VTDailyReportingId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vt-daily-approved', 'approved', vtDailyReporting.VTDailyReportingId]"
+                            skipLocationChange="true" replaceUrl="false"
+                            (click)="saveOrUpdateVTDailyApprovalDetails( 'approved' , vtDailyReporting.VTDailyReportingId)">
+                            <mat-icon color="primary">check</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/vt-daily-approved', 'rejected', vtDailyReporting.VTDailyReportingId]"
+                            skipLocationChange="true" replaceUrl="false"
+                            (click)="saveOrUpdateVTDailyApprovalDetails( 'rejected' , vtDailyReporting.VTDailyReportingId)">
+                            <mat-icon color="primary">close</mat-icon>
+                        </button>
+
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtDailyReporting; columns: displayedColumns;" class="vt-daily-reporting"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

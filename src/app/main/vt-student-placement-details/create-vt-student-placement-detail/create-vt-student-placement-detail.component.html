@@ -1,0 +1,168 @@
+<div id="vt-student-placement-detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-student-placement-details'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtStudentPlacementDetailModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Student Placement Detail
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Student Placement Detail Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-student-placement-detail-button"
+             *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTStudentPlacementDetailDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-student-placement-detail-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStudentPlacementDetailDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtStudentPlacementDetailForm" [formGroup]="vtStudentPlacementDetailForm"
+                    class="vt-student-placement-detail w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Select Student</mat-label>
+
+                            <mat-select formControlName="StudentId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="studentItem.Id" *ngFor="let studentItem of studentList">
+                                    {{ studentItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.StudentId.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'StudentId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Student Placement Status</mat-label>
+                            <input matInput name="studentPlacementStatus" formControlName="StudentPlacementStatus">
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.StudentPlacementStatus.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'StudentPlacementStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Placement Apply Status</mat-label>
+                            <input matInput name="placementApplyStatus" formControlName="PlacementApplyStatus" required>
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.PlacementApplyStatus.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'PlacementApplyStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Placement Status</mat-label>
+                            <input matInput name="placementStatus" formControlName="PlacementStatus" required>
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.PlacementStatus.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'PlacementStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Apprenticeship Apply Status</mat-label>
+                            <input matInput name="apprenticeshipApplyStatus"
+                                formControlName="ApprenticeshipApplyStatus">
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.ApprenticeshipApplyStatus.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'ApprenticeshipApplyStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Apprenticeship Status</mat-label>
+                            <input matInput name="apprenticeshipStatus" formControlName="ApprenticeshipStatus">
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.ApprenticeshipStatus.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'ApprenticeshipStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Higher Education VE</mat-label>
+                            <input matInput name="higherEducationVE" formControlName="HigherEducationVE">
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.HigherEducationVE.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'HigherEducationVE')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Higher Eductaion Other</mat-label>
+                            <input matInput name="higherEductaionOther" formControlName="HigherEductaionOther">
+                            <mat-error *ngIf="vtStudentPlacementDetailForm.controls.HigherEductaionOther.invalid">
+                                {{getErrorMessage(vtStudentPlacementDetailForm, 'HigherEductaionOther')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

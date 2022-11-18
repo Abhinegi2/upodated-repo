@@ -1,0 +1,139 @@
+@import "src/@fuse/scss/fuse";
+
+igmite-home {
+    #home {
+        width: 100%;
+        overflow: hidden;
+        background-size: cover;
+
+        .home-header {
+            padding: 10px;
+            background-color: white;
+        }
+        .menu-spacer {
+            flex: 1 1 auto;
+        }
+        mat-carousel {
+            width: 100%;
+        }
+        .imgbox {
+            border: 1px solid white;
+            padding: 20px;
+            line-height: 9px;
+            margin: 15px 0;
+            border-radius: 5px;
+            background: #0e49b5;
+            color: white;
+            height: 150px;
+        }
+
+        .img-index {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .index-h5 {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 5%;
+            margin-top: 1%;
+            line-height: 1.5rem;
+            padding-left: 2px;
+        }
+        #rahulsharma_depart {
+            line-height: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 13px;
+            padding-left: 5px;
+        }
+        .faq-box {
+            padding-left: 1%;
+            padding-right: 1%;
+        }
+        .faq-row {
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+        .contact-row {
+            background: #0f4c75;
+            color: white;
+            padding: 13px 0;
+        }
+
+        .mat-toolbar {
+            background: inherit;
+            color: black; //GTM: inherit  black
+            box-shadow: 0px -1px 1px -1px rgba(0, 0, 0, 0.2), 0px 0px 1px 0px rgba(0, 0, 0, 0.14),
+                0px -1px 3px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        .above {
+            position: relative;
+            z-index: 99;
+        }
+
+        .managed-by {
+            width: auto;
+            height: 62px;
+            margin-right: 12px;
+        }
+
+        .lighthouse-logo {
+            width: auto;
+            height: 58px;
+            margin-left: 80%;
+        }
+
+        .lahi-version {
+            font-size: 11px;
+            margin-left: 25px;
+            margin-top: 5px;
+
+            .web-version {
+                font-weight: bold;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .lighthouse-logo {
+                width: auto;
+                height: 56px;
+                margin-left: 80%;
+            }
+        }
+        .list-unstyled {
+            list-style: none;
+            padding-left: 0px;
+        }
+        .list-unstyled li {
+            margin-right: 20px;
+            display: inline;
+        }
+
+        .mat-carousel-style {
+            height: 580px !important;
+
+            .carousel {
+                height: inherit !important;
+
+                .carousel-list {
+                    height: inherit !important;
+
+                    .carousel-slide {
+                        height: inherit !important;
+                    }
+                }
+            }
+        }
+
+        .social-icons i {
+            font-family: "FontAwesome" !important;
+            font-size: 25px;
+            color: white;
+        }
+    }
+}

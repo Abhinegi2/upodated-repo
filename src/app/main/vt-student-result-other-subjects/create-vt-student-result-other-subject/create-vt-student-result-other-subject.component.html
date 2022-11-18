@@ -1,0 +1,128 @@
+<div id="vt-student-result-other-subject" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-student-result-other-subjects'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtStudentResultOtherSubjectModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Student Result Other Subject
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Student Result Other Subject Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-student-result-other-subject-button"
+             *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTStudentResultOtherSubjectDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-student-result-other-subject-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStudentResultOtherSubjectDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtStudentResultOtherSubjectForm" [formGroup]="vtStudentResultOtherSubjectForm"
+                    class="vt-student-result-other-subject w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Select Student</mat-label>
+
+                            <mat-select formControlName="StudentId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="studentItem.Id" *ngFor="let studentItem of studentList">
+                                    {{ studentItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtStudentResultOtherSubjectForm.controls.StudentId.invalid">
+                                {{getErrorMessage(vtStudentResultOtherSubjectForm, 'StudentId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Subject Name</mat-label>
+                            <input matInput name="subjectName" formControlName="SubjectName" required>
+                            <mat-error *ngIf="vtStudentResultOtherSubjectForm.controls.SubjectName.invalid">
+                                {{getErrorMessage(vtStudentResultOtherSubjectForm, 'SubjectName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Subject Number</mat-label>
+                            <input matInput name="subjectNumber" formControlName="SubjectNumber" required digitOnly
+                                minlength="1" maxlength="3">
+                            <mat-error *ngIf="vtStudentResultOtherSubjectForm.controls.SubjectNumber.invalid">
+                                {{getErrorMessage(vtStudentResultOtherSubjectForm, 'SubjectNumber')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Subject Marks</mat-label>
+                            <input matInput name="subjectMarks" formControlName="SubjectMarks" required digitOnly
+                                minlength="1" maxlength="3">
+                            <mat-error *ngIf="vtStudentResultOtherSubjectForm.controls.SubjectMarks.invalid">
+                                {{getErrorMessage(vtStudentResultOtherSubjectForm, 'SubjectMarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+        </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

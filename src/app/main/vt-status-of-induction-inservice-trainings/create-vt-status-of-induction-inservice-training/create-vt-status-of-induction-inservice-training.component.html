@@ -1,0 +1,94 @@
+<div id="vt-status-of-induction-inservice-training" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-status-of-induction-inservice-training'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtStatusOfInductionInserviceTrainingModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Status Of Induction Inservice Training
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Status Of Induction Inservice Training Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-status-of-induction-inservice-training-button"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateVTStatusOfInductionInserviceTrainingDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-status-of-induction-inservice-training-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStatusOfInductionInserviceTrainingDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtStatusOfInductionInserviceTrainingForm" [formGroup]="vtStatusOfInductionInserviceTrainingForm" class="vt-status-of-induction-inservice-training w-100-p p-24 mr-24" fxLayout="column"
+                      fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Industry Training Status</mat-label>
+                            <input matInput name="industryTrainingStatus" formControlName="IndustryTrainingStatus" required>
+                            <mat-error *ngIf="vtStatusOfInductionInserviceTrainingForm.controls.IndustryTrainingStatus.invalid">
+                                {{getErrorMessage(vtStatusOfInductionInserviceTrainingForm, 'IndustryTrainingStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Inservice Training Status</mat-label>
+                            <input matInput name="inserviceTrainingStatus" formControlName="InserviceTrainingStatus" required>
+                            <mat-error *ngIf="vtStatusOfInductionInserviceTrainingForm.controls.InserviceTrainingStatus.invalid">
+                                {{getErrorMessage(vtStatusOfInductionInserviceTrainingForm, 'InserviceTrainingStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

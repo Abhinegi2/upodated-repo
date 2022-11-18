@@ -1,0 +1,596 @@
+@import "src/@fuse/scss/fuse";
+
+data-list-view {
+    #summary-dashboard {
+        .top-bg {
+            @include media-breakpoint("lt-md") {
+                height: 256px;
+            }
+        }
+
+        >.center {
+            >.header {
+                display: contents !important;
+
+                .logo {
+                    .refresh-data {
+                        margin-left: 15px;
+                        background: transparent !important;
+                        color: #a4ef13 !important;
+                    }
+
+                    .refresh-data:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                .search-wrapper {
+                    width: 100%;
+                    max-width: 480px;
+                    border-radius: 28px;
+                    overflow: hidden;
+                    @include mat-elevation(1);
+
+                    @include media-breakpoint("xs") {
+                        width: 100%;
+                    }
+
+                    .search {
+                        width: 100%;
+                        height: 48px;
+                        line-height: 48px;
+                        padding: 0 18px;
+
+                        input {
+                            width: 100%;
+                            height: 48px;
+                            min-height: 48px;
+                            max-height: 48px;
+                            padding: 0 16px;
+                            border: none;
+                            outline: none;
+                        }
+                    }
+                }
+
+                @include media-breakpoint("lt-md") {
+                    padding: 8px 0;
+                    height: 192px !important;
+                    min-height: 192px !important;
+                    max-height: 192px !important;
+                }
+            }
+        }
+
+        .filter-content-card {
+            background-color: #fdfdfb;
+            border: whitesmoke 1px solid;
+            border-radius: 5px;
+            padding: 0 10px;
+        }
+
+        .filter-content {
+            display: initial !important;
+            height: 80px;
+
+            .filter-row {
+                height: 45px !important;
+            }
+
+            .mat-form-field {
+                .mat-select {
+                    margin-top: -7px !important;
+                }
+
+                .mat-form-field-wrapper {
+                    padding-bottom: 1.25em !important;
+                }
+            }
+
+            .clear-filter {
+                display: flex;
+            }
+
+            .filter-button {
+                margin-bottom: 9px;
+                margin-right: 15px;
+            }
+        }
+    }
+
+    .resizeGraph {
+        width: 100%;
+        height: 200px;
+        margin-left: 25px;
+    }
+
+    .issue-management-status-table {
+        flex: 1 1 auto;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+
+        .mat-header-row {
+            min-height: 40px;
+            padding: 10px;
+        }
+
+        .mat-cell {
+            min-width: 0;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .mat-column-IssueStatus {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-High {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-Medium {
+            flex: 0 1 200px;
+        }
+
+        .mat-column-Low {
+            flex: 0 1 200px;
+        }
+
+        tbody {
+            .mat-column-IssueStatus {
+                font-size: 12px !important;
+                padding-left: 0 5px;
+            }
+        }
+
+        .quantity-indicator {
+            display: inline-block;
+            vertical-align: middle;
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            margin-right: 8px;
+
+            &+span {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+
+        .active-icon {
+            border-radius: 50%;
+        }
+    }
+
+    .clear-btn {
+        margin-top: 10px;
+        float: right;
+        height: 40px;
+    }
+
+    .dashboard-card {
+        width: 300px;
+        height: 112px;
+        margin-left: 6px;
+        background: #fafafa !important;
+    }
+
+    .card-title {
+        height: 23px;
+        border-bottom: 1px solid #726b6b8c;
+        font-size: 13px !important;
+    }
+
+    .performance-card-title {
+        height: 23px;
+        border-bottom: 1px solid #726b6b8c;
+        font-size: 13px !important;
+
+        @media screen and (max-width: 1770px) {
+            height: 34px;
+        }
+    }
+
+    .info-icon {
+        font-size: 18px;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+    }
+
+    .info-legend {
+        margin-left: 3px;
+        margin-top: 1px;
+    }
+
+    .card-content-info {
+        font-size: 8px !important;
+        color: gray;
+    }
+
+    .programme-information {
+        font-size: 13px;
+        //margin-left: 15px;
+        font-weight: 700;
+    }
+
+    .programme-information-title {
+        height: 27px;
+    }
+
+    .performance-card {
+        width: 100% !important;
+        height: 200px;
+        background: #fafafa !important;
+
+        @include media-breakpoint("lt-md") {
+            //width: 310px;
+            width: 100%;
+            height: 200px;
+            margin: 0px !important;
+        }
+
+        .line-chart.chart {
+            display: contents;
+        }
+    }
+
+    .ngx-pie-chart {
+        height: 150px;
+        //width: 150px;
+        width: 100%;
+    }
+
+    .check-list {
+        list-style: none;
+        margin-right: 48px;
+        text-align: left;
+        font-size: 8px;
+    }
+
+    .li-font {
+        font-size: 12px;
+    }
+
+    // .legend-labels {
+    //     width: 200px !important;
+    // }
+
+    .pie-chart {
+        padding-left: 0px !important;
+    }
+
+    .legend-title {
+        margin-right: -139px;
+    }
+
+    .chart-legend {
+        margin-left: -27px;
+    }
+
+    .school-cart-text {
+        font-size: 8px;
+    }
+
+    .for-hr {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        line-height: 0.1em;
+        margin: 20px 0 20px;
+    }
+
+    .span-hr {
+        background: #fff;
+        padding: 0 10px;
+    }
+
+    //detailed graph css
+    .right-arrow {
+        margin-top: 10px;
+    }
+
+    .side {
+        margin-top: 10px;
+        margin-left: 15px;
+    }
+
+    .hcolor {
+        color: #0e38a6;
+    }
+
+    .program_info {
+        padding-left: 10px;
+    }
+
+    .check {
+        padding-top: 0px;
+    }
+
+    .example-radio-group {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 0;
+    }
+
+    .example-radio-button {
+        margin: 5px;
+    }
+
+    .graph-legend {
+        width: 12px;
+        min-width: 12px;
+        max-width: 12px;
+        height: 12px;
+        min-height: 12px;
+        max-height: 12px;
+        margin-right: 8px !important;
+        border-radius: 50%;
+        margin-left: 5px;
+        margin-top: 3px;
+    }
+
+    .container-left-legend {
+        float: left;
+        font-size: 12px;
+        width: 60%;
+    }
+
+    .container-rigth-legend {
+        float: right;
+        display: flex;
+        font-size: 12px;
+        width: 40%;
+    }
+
+    .text-legend {
+        margin-left: -5px;
+        margin-right: 2px;
+    }
+
+    ngx-charts-line-chart {
+        width: 100%;
+    }
+
+    .download-btn {
+        float: right;
+    }
+
+    .right-arrow {
+        margin-top: 10px;
+    }
+
+    .chart-wrapper {
+        display: flex;
+        overflow: hidden;
+    }
+
+    .ngx-charts-outer {
+        width: 100% !important;
+        margin-left: 15px;
+
+        .ngx-charts {
+            overflow: initial;
+        }
+    }
+
+    //detailed graph
+    .view-checkbox {
+        display: flex;
+    }
+
+    .checkbox-view {
+        margin-right: 5px;
+        top: 5px;
+    }
+
+    .circle {
+        height: 10px;
+        width: 10px;
+        border-radius: 50%;
+    }
+
+    .implemented {
+        margin-top: -3px;
+        margin-left: 7px;
+    }
+
+    .advanced-pie-legend .legend-items-container .legend-items .legend-item .item-value {
+        margin-right: -20px !important;
+        // @include media-breakpoint('lt-md') {
+        //     padding: 8px 0;
+        //     height: 192px !important;
+        //     min-height: 192px !important;
+        //     max-height: 192px !important;
+        // }
+    }
+
+    .chart-legend .legend-label-text {
+        font-size: 10px !important;
+
+        @include media-breakpoint("lt-md") {
+            display: inline-block;
+            vertical-align: top;
+            line-height: 15px;
+            font-size: 10px;
+            width: calc(100% - 20px);
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    }
+
+    .legend-labels {
+        width: 155px !important;
+        background: transparent !important;
+
+        @include media-breakpoint("md") {
+            width: 155px !important;
+            //margin-top:10px;
+        }
+    }
+
+    .legend-wrap {
+        margin-top: 10px !important;
+    }
+
+    .chart-legend .legend-label {
+        margin: 4px !important;
+    }
+
+    .course-material-pie {
+        // @include media-breakpoint("lt-md") {
+        //padding-left: 62px;
+        margin-left: -150px !important;
+        // }
+    }
+
+    .tools-equipment-pie {
+        // @include media-breakpoint("lt-md") {
+        //padding-left: 62px;
+        margin-left: -150px !important;
+        // }
+    }
+
+    .issue-management-status-table {
+        @include media-breakpoint("lt-md") {
+            flex: 1 1 auto;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+            overflow: auto;
+        }
+    }
+
+    // @include media-breakpoint("lt-md") {
+    //     padding-left: 62px;
+    // }
+
+    .vt-info-icon {
+        @include media-breakpoint("lg") {
+            top: 18px;
+            right: -3px;
+        }
+    }
+
+    .mat-list-base .mat-list-item .mat-list-item-content {
+        padding: 0px !important;
+    }
+
+    .guestLectureChartStyle {
+        padding-left: 10px;
+    }
+
+    svg:not(:root) {
+        overflow: inherit !important;
+    }
+
+    .guest-lecture-card {
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: visible !important;
+    }
+
+    .mr-left {
+        margin: 10px;
+    }
+
+    @media screen and (max-width: 700px) {
+        .view-div {
+            flex-direction: column !important;
+        }
+
+        .mx-width {
+            max-width: 100% !important;
+            padding: 10px;
+        }
+
+        .mr-left {
+            margin: 0px !important;
+        }
+
+        .download-btn {
+            float: none !important;
+        }
+
+        ngx-charts-line-chart {
+            width: 100%;
+        }
+    }
+
+    .c3-tooltip {
+        border-collapse: collapse;
+        border-spacing: 0;
+        background-color: #485465;
+        empty-cells: show;
+        box-shadow: 7px 7px 12px -9px #777;
+    }
+
+    .c3-tooltip tr {
+        border: 0 solid #ccc;
+    }
+
+    @include media-breakpoint("lg") {
+        .field-visit-status-card .ngx-charts-outer {
+            width: 190px !important;
+        }
+
+        .vtvc-Attendance-Card .ngx-charts-outer {
+            width: 195px !important;
+        }
+
+        .student-attendance-card .ngx-charts-outer {
+            // width: 197px !important;
+            width: 100%;
+        }
+    }
+
+    .show-gallery-card {
+        cursor: pointer;
+        align-items: center;
+        position: relative;
+        padding: 12px 24px;
+        min-height: 48px;
+    }
+
+    .text-xs-center {
+        text-align: center !important;
+    }
+
+    .show-gallery-card> :not(.show-gallery-icon) {
+        flex: 1 1 auto;
+    }
+
+    .hide-gallery-card {
+        cursor: pointer;
+        align-items: center;
+        position: relative;
+        padding: 12px 24px;
+        min-height: 48px;
+    }
+
+    .text-xs-center {
+        text-align: center !important;
+    }
+
+    .hide-gallery-card> :not(.hide-gallery-icon) {
+        flex: 1 1 auto;
+    }
+
+    .school-visit-status-text {
+        /* Abs positioning makes it not take up vert space */
+        position: absolute;
+        font-size: 22px;
+        bottom: 4px;
+        color: #858b7d;
+        letter-spacing: 2px;
+        background: #bfdce312;
+
+        /* Rotate from top left corner (not default) */
+        transform-origin: 0 0;
+        transform: rotate(-23deg);
+    }
+
+    .change-x-axis {
+        display: block !important;
+    }
+}

@@ -1,0 +1,152 @@
+<div id="site-sub-header" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/site-sub-headers'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ siteSubHeaderModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Site Sub Header
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Site Sub Header Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-site-sub-header-button" [disabled]="siteSubHeaderForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateSiteSubHeaderDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-site-sub-header-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateSiteSubHeaderDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="siteSubHeaderForm" [formGroup]="siteSubHeaderForm" class="site-sub-header w-100-p"
+                    fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Site Header</mat-label>
+
+                                <mat-select formControlName="SiteHeaderId" appearance="outline" required
+                                    matTooltip="Select Site Header" matTooltipPosition='above'
+                                    matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectHeader>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectHeader.focused"
+                                        [array]="siteHeaderList"
+                                        (filteredReturn)="this.filteredSiteHeaderItems = $event"
+                                        [displayMember]="'Name'"></mat-select-filter>
+                                    <mat-option [value]="siteHeaderItem.Id"
+                                        *ngFor="let siteHeaderItem of filteredSiteHeaderItems">
+                                        {{ siteHeaderItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="siteSubHeaderForm.controls.SiteHeaderId.invalid">
+                                    {{getErrorMessage(siteSubHeaderForm, 'SiteHeaderId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Transaction</mat-label>
+
+                                <mat-select formControlName="TransactionId" appearance="outline" required
+                                    matTooltip="Select Transaction" matTooltipPosition='above'
+                                    matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectTransaction>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectTransaction.focused"
+                                        [array]="transactionList"
+                                        (filteredReturn)="this.filteredTransactionItems = $event"
+                                        [displayMember]="'Name'"></mat-select-filter>
+                                    <mat-option [value]="transactionItem.Id"
+                                        *ngFor="let transactionItem of filteredTransactionItems">
+                                        {{ transactionItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="siteSubHeaderForm.controls.TransactionId.invalid">
+                                    {{getErrorMessage(siteSubHeaderForm, 'TransactionId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Header Menu</span>
+                            <mat-checkbox matInput formControlName="IsHeaderMenu" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Display Order</mat-label>
+                                <input matInput name="displayOrder" formControlName="DisplayOrder" required>
+                                <mat-error *ngIf="siteSubHeaderForm.controls.DisplayOrder.invalid">
+                                    {{getErrorMessage(siteSubHeaderForm, 'DisplayOrder')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Remarks</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="siteSubHeaderForm.controls.Remarks.invalid">
+                                    {{getErrorMessage(siteSubHeaderForm, 'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

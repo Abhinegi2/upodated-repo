@@ -1,0 +1,143 @@
+<div id="vt-guest-lecture-conducted" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT GUEST LECTURE CONDUCTED
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vt guest lecture conducteds">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                class="add-vt-guest-lecture-conducted-button fuse-white mt-24 mt-md-0">
+                <span>ADD</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vt-guest-lecture-conducted-table responsive-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+             
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted">
+                        <p class="text-truncate">{{vtGuestLectureConducted.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingDate Column -->
+                <ng-container matColumnDef="ReportingDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted">
+                        <p class="text-truncate">{{vtGuestLectureConducted.ReportingDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- GLType Column -->
+                <ng-container matColumnDef="GLType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guest Lecture Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtGuestLectureConducted.GLType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- GLTopic Column -->
+                <ng-container matColumnDef="GLTopic">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guest Lecture Topic
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtGuestLectureConducted.GLTopic}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- GLName Column -->
+                <ng-container matColumnDef="GLName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guest Lecturer
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtGuestLectureConducted.GLName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovalStatus Column -->
+                <ng-container matColumnDef="ApprovalStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approval Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtGuestLectureConducted.ApprovalStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vtGuestLectureConducted" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vt-guest-lecture-conducted', 'view', vtGuestLectureConducted.VTGuestLectureId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/vt-guest-lecture-conducted', 'edit', vtGuestLectureConducted.VTGuestLectureId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn"
+                            (click)="onDeleteVTGuestLectureConducted(vtGuestLectureConducted.VTGuestLectureId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtGuestLectureConducted; columns: displayedColumns;"
+                    class="vt-guest-lecture-conducted" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

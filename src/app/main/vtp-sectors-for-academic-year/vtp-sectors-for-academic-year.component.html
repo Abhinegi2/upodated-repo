@@ -1,0 +1,101 @@
+<div id="vtp-sector" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VTP SECTORS FOR ACADEMIC ROLLOVER : {{ yearName }}
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button (click)="onTransferVTPSectors()" skipLocationChange="true" replaceUrl="false"
+                    class="add-vtp-sector-button fuse-white mt-24 mt-md-0">
+                    <span>ACADEMIC ROLLOVER</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vtp-sector-table responsive-table" #table [dataSource]="tableDataSource"
+                #exporter="matTableExporter" [hiddenColumns]="[3,4]" matSort fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpSector" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpSector.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpSector">
+                        <p class="text-truncate">{{vtpSector.VTPName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpSector">
+                        <p class="text-truncate">{{vtpSector.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsAYRollover Column -->
+                <ng-container matColumnDef="IsAYRollover">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is AY Rollover?
+                        &nbsp;&nbsp;&nbsp;
+                        <mat-checkbox (change)="onVSForAdemicYear($event, null)"></mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpSector" class="text-center">
+                        <mat-checkbox [checked]="vtpSector.IsActive" (change)="onVSForAdemicYear($event, vtpSector)"
+                            [disabled]="vtpSector.IsAYRollover">
+                        </mat-checkbox>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtpSector; columns: displayedColumns;" class="vtp-sector" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="15"
+                [pageSizeOptions]="[15, 25, 100, 200, 500]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

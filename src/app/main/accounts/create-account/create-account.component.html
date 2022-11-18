@@ -1,0 +1,349 @@
+<div id="account" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/users'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ accountModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New User
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>User Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-account-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateAccountDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-account-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateAccountDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" #scrollScreen>
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="accountForm" [formGroup]="accountForm" class="account w-100-p" fxLayout="column" fxFlex>
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <fieldset>
+                            <legend>User Information</legend>
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Login Id</mat-label>
+                                    <input matInput name="loginId" formControlName="LoginId" required>
+                                    <mat-error *ngIf="accountForm.controls.LoginId.invalid">
+                                        {{getErrorMessage(accountForm, 'LoginId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="PageRights.ActionType == 'new'">
+                                    <mat-label>Password</mat-label>
+                                    <input matInput name="password" formControlName="Password" type="password" required>
+                                    <mat-error *ngIf="accountForm.controls.Password.invalid">
+                                        {{getErrorMessage(accountForm, 'Password')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>First Name</mat-label>
+                                    <input matInput name="firstName" formControlName="FirstName" required>
+                                    <mat-error *ngIf="accountForm.controls.FirstName.invalid">
+                                        {{getErrorMessage(accountForm, 'FirstName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Last Name</mat-label>
+                                    <input matInput name="lastName" formControlName="LastName" required>
+                                    <mat-error *ngIf="accountForm.controls.LastName.invalid">
+                                        {{getErrorMessage(accountForm, 'LastName')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>User Name</mat-label>
+                                    <input matInput name="userName" formControlName="UserName" required>
+                                    <mat-error *ngIf="accountForm.controls.UserName.invalid">
+                                        {{getErrorMessage(accountForm, 'UserName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Select Role</mat-label>
+
+                                    <mat-select formControlName="RoleId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly" required
+                                        (selectionChange)="onChangeRoleType($event.value)">
+                                        <mat-option [value]="roleItem.Id" *ngFor="let roleItem of roleList">
+                                            {{ roleItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error *ngIf="accountForm.controls.RoleId.invalid">
+                                        {{getErrorMessage(accountForm, 'RoleId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Email Id</mat-label>
+                                    <input matInput name="emailId" formControlName="EmailId" required>
+                                    <mat-error *ngIf="accountForm.controls.EmailId.invalid">
+                                        {{getErrorMessage(accountForm, 'EmailId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Mobile</mat-label>
+                                    <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
+                                        maxlength="10">
+                                    <mat-error *ngIf="accountForm.controls.Mobile.invalid">
+                                        {{getErrorMessage(accountForm, 'Mobile')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                                <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <span class="checkbox-space" fxFlex="60">Is Locked?</span>
+                                    <mat-checkbox matInput formControlName="IsLocked" fxFlex="40" 
+                                        [disabled]="PageRights.IsReadOnly">
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                                <div class="checkbox-row" fxFlex="25" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <span class="checkbox-space" fxFlex="60">Is Active?</span>
+                                    <mat-checkbox matInput formControlName="IsActive" fxFlex="40" 
+                                        [disabled]="PageRights.IsReadOnly">
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset formGroupName="workLocationForm">
+                            <legend>User Work Locations</legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
+                                    <mat-label>State</mat-label>
+
+                                    <mat-select formControlName="StateCode" name="stateCode" [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeState($event.value)" [required]="accountForm.controls.RoleId.value == Constants.DistrictEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.DistrictResourcePerson ||
+                                        accountForm.controls.RoleId.value == Constants.DivisionEducationOfficer ||
+                                        accountForm.controls.RoleId.value == Constants.BlockEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.BlockResoursePerson">
+                                        <mat-option [value]="stateItem.Id" *ngFor="let stateItem of stateList">
+                                            {{ stateItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                   <!-- <mat-error *ngIf="accountForm.controls.workLocationForm.get('StateCode').invalid">
+                                       {{getErrorMessage(accountForm.controls.workLocationForm, 'StateCode')}}
+                                   </mat-error> -->
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
+                                    <mat-label>Division</mat-label>
+
+                                    <mat-select formControlName="DivisionId" name="divisionId"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        (selectionChange)="onChangeDivision($event.value)" [required]="accountForm.controls.RoleId.value == Constants.DistrictEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.DistrictResourcePerson ||
+                                        accountForm.controls.RoleId.value == Constants.DivisionEducationOfficer ||
+                                        accountForm.controls.RoleId.value == Constants.BlockEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.BlockResoursePerson">
+                                        <mat-option [value]="divisionItem.Id" *ngFor="let divisionItem of divisionList">
+                                            {{ divisionItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="accountForm.controls.workLocationForm.get('DivisionId').invalid">
+                                        {{getErrorMessage(accountForm.controls.workLocationForm, 'DivisionId')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+                        
+                                <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
+                                    <mat-label>District</mat-label>
+                                    <mat-select formControlName="DistrictId" name="districtId" (selectionChange)="onChangeDistrict($event.value)" 
+                                        [disabled]="PageRights.IsReadOnly" [required]="accountForm.controls.RoleId.value == Constants.DistrictEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.DistrictResourcePerson ||
+                                        accountForm.controls.RoleId.value == Constants.BlockEducationOfficer || 
+                                        accountForm.controls.RoleId.value == Constants.BlockResoursePerson">
+                                        <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                            {{districtItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="accountForm.controls.workLocationForm.get('DistrictId').invalid">
+                                        {{getErrorMessage(accountForm.controls.workLocationForm, 'DistrictId')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
+                                    <mat-label>Block</mat-label>
+                                    <mat-select formControlName="BlockId" name="blockId" appearance="outline"
+                                        (selectionChange)="onChangeBlock($event.value)" [disabled]="PageRights.IsReadOnly"
+                                        [required]="accountForm.controls.RoleId.value == Constants.BlockEducationOfficer || 
+                                    accountForm.controls.RoleId.value == Constants.BlockResoursePerson">
+                                        <mat-option [value]="blockItem.Id" *ngFor="let blockItem of blockList">
+                                            {{ blockItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <input matInput formControlName="BlockId" name="blockId" [required]="accountForm.controls.RoleId.value == Constants.BlockEducationOfficer || 
+                                    accountForm.controls.RoleId.value == Constants.BlockResoursePerson"> -->
+
+                                    <!-- <mat-error *ngIf="accountForm.controls.workLocationForm.controls.BlockId.invalid">
+                                        {{getErrorMessage(accountForm.controls.workLocationForm, 'BlockId')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
+                                    <mat-label>Cluster</mat-label> 
+                                    <!-- <input matInput formControlName="ClusterId" name="clusterId" [required]="false"> -->
+                                    <mat-select formControlName="ClusterId" name="clusterId" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly" required="false">
+                                        <mat-option [value]="clusterItem.Id" *ngFor="let clusterItem of clusterList">
+                                            {{ clusterItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <!-- <mat-error *ngIf="accountForm.controls.workLocationForm.controls.ClusterId.invalid">
+                                        {{getErrorMessage(accountForm.controls.workLocationForm, 'ClusterId')}}
+                                    </mat-error> -->
+                                </mat-form-field>
+
+                                <div fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                                    <div class="checkbox-row" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                        <span class="checkbox-space" fxFlex="80">Is Active?</span>
+                                        <mat-checkbox matInput formControlName="IsActive" fxFlex="20" [disabled]="PageRights.IsReadOnly">
+                                        </mat-checkbox>
+                                    </div>
+                                </div>
+
+                                <div fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="wl-action-div">
+                                    <button mat-raised-button (click)="onAddWorkLocation()" class="add-account-button fuse-white mt-24 mt-md-0">
+                                        <span>{{ workLocationAction =='add' ? 'Add' : 'Save' }}</span>
+                                    </button>
+                                    <button mat-raised-button (click)="onClearWorkLocation()" class="add-account-button fuse-white mt-24 mt-md-0">
+                                        <span>Clear</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <mat-divider class="ig-mat-divider"></mat-divider>
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+
+                                <div class="content-card">    
+                                    <mat-table class="account-table responsive-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                                    
+                                        <!-- StateName Column -->
+                                        <ng-container matColumnDef="StateName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                State Name
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.StateName}} </td>
+                                        </ng-container>
+                                
+                                        <!-- DivisionName Column -->
+                                        <ng-container matColumnDef="DivisionName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                Division Name
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.DivisionName}} </td>
+                                        </ng-container>
+                                
+                                        <!-- DistrictName Column -->
+                                        <ng-container matColumnDef="DistrictName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                District Name
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.DistrictName}} </td>
+                                        </ng-container>
+
+                                        <!-- BlockName Column -->
+                                        <ng-container matColumnDef="BlockName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                Block Name
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.BlockName}} </td>
+                                        </ng-container>
+
+                                        <!-- ClusterName Column -->
+                                        <ng-container matColumnDef="ClusterName">
+                                            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                                Cluster Name
+                                            </th>
+                                            <td mat-cell *matCellDef="let element"> {{element.ClusterName}} </td>
+                                        </ng-container>
+                                
+                                        <ng-container matColumnDef="Actions" stickyEnd>
+                                            <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                                            <mat-cell *matCellDef="let element, let wlIndex = index">
+                                                <button mat-icon-button (click)="onEditWorkLocation(wlIndex)">                                                    
+                                                    <mat-icon color="primary">edit</mat-icon>
+                                                </button>
+                                                <button mat-icon-button (click)="onDeleteWorkLocation(wlIndex)">
+                                                    <mat-icon color="warn">delete_outline</mat-icon>
+                                                </button>
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+                                        <mat-row *matRowDef="let account; columns: displayedColumns;" class="account" matRipple></mat-row>
+                                    </mat-table>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

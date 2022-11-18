@@ -1,0 +1,175 @@
+<div id="employee" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/employees'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ employeeModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Employee
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Employee Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-employee-button" [disabled]="employeeForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateEmployeeDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-employee-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateEmployeeDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="employeeForm" [formGroup]="employeeForm" class="employee w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Employee Code</mat-label>
+                                <input matInput name="employeeCode" formControlName="EmployeeCode">
+                                <mat-error *ngIf="employeeForm.controls.EmployeeCode.invalid">{{getErrorMessage(employeeForm, 'EmployeeCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>First Name</mat-label>
+                                <input matInput name="firstName" formControlName="FirstName" required>
+                                <mat-error *ngIf="employeeForm.controls.FirstName.invalid">{{getErrorMessage(employeeForm, 'FirstName')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Middle Name</mat-label>
+                                <input matInput name="middleName" formControlName="MiddleName">
+                                <mat-error *ngIf="employeeForm.controls.MiddleName.invalid">{{getErrorMessage(employeeForm, 'MiddleName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Last Name</mat-label>
+                                <input matInput name="lastName" formControlName="LastName" required>
+                                <mat-error *ngIf="employeeForm.controls.LastName.invalid">{{getErrorMessage(employeeForm, 'LastName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Gender</mat-label>
+                                <mat-select name="gender" formControlName="Gender" required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="gender.Id" *ngFor="let gender of genderList">
+                                        {{gender.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="employeeForm.controls.Gender.invalid">{{getErrorMessage(employeeForm, 'Gender')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Date Of Birth</mat-label>
+                                <input matInput name="dateOfBirth" formControlName="DateOfBirth" [max]="CurrentDate">
+                                <mat-error *ngIf="employeeForm.controls.DateOfBirth.invalid">{{getErrorMessage(employeeForm, 'DateOfBirth')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Department</mat-label>
+                                <input matInput name="department" formControlName="Department">
+                                <mat-error *ngIf="employeeForm.controls.Department.invalid">{{getErrorMessage(employeeForm, 'Department')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Telephone</mat-label>
+                                <input matInput name="telephone" formControlName="Telephone">
+                                <mat-error *ngIf="employeeForm.controls.Telephone.invalid">{{getErrorMessage(employeeForm, 'Telephone')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Mobile</mat-label>
+                                <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10" maxlength="10">
+                                <mat-error *ngIf="employeeForm.controls.Mobile.invalid">{{getErrorMessage(employeeForm, 'Mobile')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Email Id</mat-label>
+                                <input matInput name="emailId" formControlName="EmailId" required>
+                                <mat-error *ngIf="employeeForm.controls.EmailId.invalid">{{getErrorMessage(employeeForm, 'EmailId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div> -->
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

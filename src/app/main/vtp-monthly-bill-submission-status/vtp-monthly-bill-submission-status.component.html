@@ -1,0 +1,148 @@
+<div id="vtp-monthly-bill-submission-status" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VTP MONTHLY BILL SUBMISSION STATUS
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)" placeholder="Search for a vtp monthly bill submission status">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false" class="add-vtp-monthly-bill-submission-status-button fuse-white mt-24 mt-md-0">
+                <span>ADD</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vtp-monthly-bill-submission-status-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- VCId Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Month Column -->
+                <ng-container matColumnDef="Month">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.Month}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateSubmission Column -->
+                <ng-container matColumnDef="DateSubmission">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Submission</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.DateSubmission | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Incorrect Column -->
+                <ng-container matColumnDef="Incorrect">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Incorrect</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.Incorrect}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IncorrectDetails Column -->
+                <ng-container matColumnDef="IncorrectDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Incorrect Details</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.IncorrectDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Final Column -->
+                <ng-container matColumnDef="Final">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Final</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.Final}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovedPMU Column -->
+                <ng-container matColumnDef="ApprovedPMU">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approved PMU</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtpMonthlyBillSubmissionStatus.ApprovedPMU}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <!-- <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="vtpMonthlyBillSubmissionStatus.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!vtpMonthlyBillSubmissionStatus.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container> -->
+
+                <ng-container matColumnDef="Actions">
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpMonthlyBillSubmissionStatus" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                        [routerLink]="['/vtp-monthly-bill-submission-status', 'view', vtpMonthlyBillSubmissionStatus.VTPMonthlyBillSubmissionStatusId]" skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                        [routerLink]="['/vtp-monthly-bill-submission-status', 'edit', vtpMonthlyBillSubmissionStatus.VTPMonthlyBillSubmissionStatusId]" skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteVTPMonthlyBillSubmissionStatus(vtpMonthlyBillSubmissionStatus.VTPMonthlyBillSubmissionStatusId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtpMonthlyBillSubmissionStatus; columns: displayedColumns;" class="vtp-monthly-bill-submission-status" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

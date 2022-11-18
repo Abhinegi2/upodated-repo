@@ -1,0 +1,243 @@
+<div id="course-material" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    COURSE MATERIALS
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="courseMaterialSearchForm" [formGroup]="courseMaterialSearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input formControlName="filterText" placeholder="Search for Course Material"
+                            matTooltip="Search By Academic Year, VTP, VC, VT, Sector, Job Role, School Name, UDISE"
+                            matTooltipPosition='above' matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
+                    replaceUrl="false" class="add-course-material-button fuse-white mt-24 mt-md-0">
+                    <span>ADD</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="courseMaterialFilterForm" [formGroup]="courseMaterialFilterForm" class="vc-issue-report"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVtpSectorItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVtpSectorItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" appearance="fill" #SelectVC
+                                (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVcItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVcItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of filteredSchoolItems">
+                                    {{ schoolsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadCourseMaterialsByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="course-material-table responsive-table" #table [dataSource]="tableDataSource" matSort
+                fusePerfectScrollbar>
+
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>VC Name</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>VT Name</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>School Name</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Class</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReceiptDate Column -->
+                <ng-container matColumnDef="ReceiptDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Receipt Date</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.ReceiptDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CMStatus Column -->
+                <ng-container matColumnDef="CMStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CM Status</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.CMStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Details Column -->
+                <ng-container matColumnDef="Details">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Details</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.Details}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/course-materials', 'view', courseMaterial.CourseMaterialId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/course-materials', 'edit', courseMaterial.CourseMaterialId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn"
+                            (click)="onDeleteCourseMaterial(courseMaterial.CourseMaterialId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let courseMaterial; columns: displayedColumns;" class="course-material" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

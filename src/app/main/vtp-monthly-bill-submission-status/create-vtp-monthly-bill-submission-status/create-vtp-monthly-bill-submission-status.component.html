@@ -1,0 +1,183 @@
+<div id="vtp-monthly-bill-submission-status" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vtp-monthly-bill-submission-status'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtpMonthlyBillSubmissionStatusModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VTP Monthly Bill Submission Status
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VTP Monthly Bill Submission Status Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vtp-monthly-bill-submission-status-button"
+                    *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateVTPMonthlyBillSubmissionStatusDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vtp-monthly-bill-submission-status-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTPMonthlyBillSubmissionStatusDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtpMonthlyBillSubmissionStatusForm" [formGroup]="vtpMonthlyBillSubmissionStatusForm" class="vtp-monthly-bill-submission-status w-100-p p-24 mr-24" fxLayout="column"
+                      fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Month</mat-label>
+                            <!-- <input matInput name="month" formControlName="Month" required digitOnly minlength="1" maxlength="2" min="0" max="12"> -->
+                            <mat-select name="month" formControlName="Month" appearance="outline" [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="monthItem.Name"
+                                    *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.Month.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'Month')}}
+                            </mat-error>
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="outline"  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Submission</mat-label>
+
+                            <input matInput [matDatepicker]="dateSubmission" name="dateSubmission" required [max]="CurrentDate" formControlName="DateSubmission" [disabled]="PageRights.IsReadOnly">
+
+                            <mat-datepicker-toggle matSuffix [for]="dateSubmission"></mat-datepicker-toggle>
+                            <mat-datepicker #dateSubmission></mat-datepicker>
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.DateSubmission.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'DateSubmission')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vocationalCoordinatorList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.VCId.invalid">
+                                {{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'VCId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Incorrect</mat-label>
+                            <input matInput name="incorrect" formControlName="Incorrect">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.Incorrect.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'Incorrect')}}
+                            </mat-error>
+                        </mat-form-field>
+                    
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Incorrect Details</mat-label>
+                            <input matInput name="incorrectDetails" formControlName="IncorrectDetails">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.IncorrectDetails.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'IncorrectDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Final</mat-label>
+                            <input matInput name="final" formControlName="Final" required>
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.Final.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'Final')}}
+                            </mat-error>
+                        </mat-form-field>                    
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Approved PMU</mat-label>
+                            <input matInput name="approvedPMU" formControlName="ApprovedPMU">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.ApprovedPMU.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'ApprovedPMU')}}
+                            </mat-error>
+                        </mat-form-field>                    
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Amount</mat-label>
+                            <input matInput name="amount" formControlName="Amount" required digitOnly minlength="1" maxlength="10">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.Amount.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'Amount')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Diary Entry Done</mat-label>
+                            <input matInput name="diaryentryDone" formControlName="DiaryentryDone">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.DiaryentryDone.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'DiaryentryDone')}}
+                            </mat-error>
+                        </mat-form-field>
+                   
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Diary Entry Number</mat-label>
+                            <input matInput name="diaryentryNumber" formControlName="DiaryentryNumber">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.DiaryentryNumber.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'DiaryentryNumber')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Details</mat-label>
+                            <input matInput name="details" formControlName="Details">
+                            <mat-error *ngIf="vtpMonthlyBillSubmissionStatusForm.controls.Details.invalid">{{getErrorMessage(vtpMonthlyBillSubmissionStatusForm, 'Details')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

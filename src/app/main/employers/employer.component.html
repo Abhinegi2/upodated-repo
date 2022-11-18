@@ -1,0 +1,166 @@
+<div id="employer" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    EMPLOYERS
+                    <a [routerLink]="['./']" skipLocationChange="true" replaceUrl="false"
+                        class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a employers">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                    class="add-employer-button fuse-white mt-24 mt-md-0">
+                    <span>ADD</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exporter.exportTable('xlsx', {fileName:'Employers', sheet: 'Employers', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="employer-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
+            matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- StateName Column -->
+                <ng-container matColumnDef="StateName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>State</mat-header-cell>
+                    <mat-cell *matCellDef="let employer">
+                        <p class="text-truncate">{{employer.StateName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DivisionName Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer">
+                        <p class="text-truncate">{{employer.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictName Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BlockName Column -->
+                <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BusinessType Column -->
+                <ng-container matColumnDef="BusinessType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>BusinessType
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.BusinessType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- EmployeeCount Column -->
+                <ng-container matColumnDef="EmployeeCount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>EmployeeCount
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.EmployeeCount}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Outlets Column -->
+                <ng-container matColumnDef="Outlets">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Outlets
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.Outlets}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="employer.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!employer.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/employers', 'view', employer.EmployerId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/employers', 'edit', employer.EmployerId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteEmployer(employer.EmployerId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let employer; columns: displayedColumns;" class="employer" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

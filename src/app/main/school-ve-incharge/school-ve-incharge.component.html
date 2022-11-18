@@ -1,0 +1,252 @@
+<div id="school-veincharge" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    SCHOOL VE INCHARGE
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form name="schoolVEInchargeSearchForm" [formGroup]="schoolVEInchargeSearchForm">
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input formControlName="filterText" placeholder="Search for school ve incharges"
+                            matTooltip="Search By Academic Year, VTP, VC, VT, School Name " matTooltipPosition='above'
+                            matTooltipClass="allow-cr">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- SEARCH -->
+            <!-- <div class="search-wrapper mx-28 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a school ve incharges">
+                </div>
+            </div> -->
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                </a>
+
+                <button mat-raised-button class="fuse-white filter-button"
+                    style="margin-left:10px; margin-bottom: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
+                    replaceUrl="false" class="add-school-veincharge-button fuse-white mt-24 mt-md-0">
+                    <span>ADD</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'SchoolVEIncharge', sheet: 'SchoolVEIncharge', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="schoolVEInchargeFilterForm" [formGroup]="schoolVEInchargeFilterForm" class="se-issue-report"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" appearance="fill" #SelectVC
+                                (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of filteredSchoolItems">
+                                    {{ schoolsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadSchoolVEInchargeByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="school-veincharge-table responsive-table" #table
+                [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[6,7]" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge">
+                        <p class="text-truncate">{{schoolVEIncharge.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- FullName Column -->
+                <ng-container matColumnDef="FullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Full Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge">
+                        <p class="text-truncate">{{schoolVEIncharge.FullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="Mobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mobile</mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{schoolVEIncharge.Mobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="Email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{schoolVEIncharge.Email}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender</mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{schoolVEIncharge.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfJoining Column -->
+                <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Joining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{schoolVEIncharge.DateOfJoining | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="schoolVEIncharge.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!schoolVEIncharge.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let schoolVEIncharge" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/school-ve-incharge', 'view', schoolVEIncharge.VEIId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/school-ve-incharge', 'edit', schoolVEIncharge.VEIId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteSchoolVEIncharge(schoolVEIncharge.VEIId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let schoolVEIncharge; columns: displayedColumns;" class="school-veincharge"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

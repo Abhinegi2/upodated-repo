@@ -1,0 +1,484 @@
+<div id="vt-attendance-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VOCATIONAL TRAINER ATTENDANCE REPORT
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a guest-lecture-conducteds">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'VTAttendances', sheet: 'VTAttendances', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="isShowFilterContainer">
+            <div class="filter-content">
+                <form name="vocationalTrainerAttendanceForm" [formGroup]="vocationalTrainerAttendanceForm"
+                    class="vt-attendance-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicyearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Month</mat-label>
+
+                            <mat-select formControlName="MonthId" name="monthId" appearance="fill">
+                                <mat-option [value]="monthItem.Id" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill" disabled="true">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getVocationalTrainerAttendanceReports()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetReportFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vt-attendance-report-table responsive-table" #table [dataSource]="tableDataSource"
+                matTableExporter #exporter="matTableExporter" [hiddenColumns]="[0]" matSort fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SrNo</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance; let RowIndex = index;">
+                        <p class="text-truncate">{{studentEnrollment.SrNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolAllottedYear Column -->
+                <ng-container matColumnDef="SchoolAllottedYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School Allotted Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.SchoolAllottedYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PhaseName Column -->
+                <ng-container matColumnDef="PhaseName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Phase</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.PhaseName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VTPName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCMobile Column -->
+                <ng-container matColumnDef="VCMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VCMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCEmail Column -->
+                <ng-container matColumnDef="VCEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VCEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTMobile Column -->
+                <ng-container matColumnDef="VTMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VTMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTEmail Column -->
+                <ng-container matColumnDef="VTEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VTEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTDateOfJoining Column -->
+                <ng-container matColumnDef="VTDateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Date Of Joining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">
+                            {{vtAttendance.VTDateOfJoining | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMName Column -->
+                <ng-container matColumnDef="HMName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.HMName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMMobile Column -->
+                <ng-container matColumnDef="HMMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.HMMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMEmail Column -->
+                <ng-container matColumnDef="HMEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.HMEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolManagement Column -->
+                <ng-container matColumnDef="SchoolManagement">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School Management
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.SchoolManagement}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DivisionName Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictName Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- BlockName Column -->
+                <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Block</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- UDISE Column -->
+                <ng-container matColumnDef="UDISE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE</mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.UDISE}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Job Role
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- MonthYear Column -->
+                <ng-container matColumnDef="MonthYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.MonthYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Date Column -->
+                <ng-container matColumnDef="Date">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.Date | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- TypeOfDay Column -->
+                <ng-container matColumnDef="TypeOfDay">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Type Of Day
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.TypeOfDay}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Code Column -->
+                <ng-container matColumnDef="Code">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Code
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.Code}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="Description">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Description
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.Description}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTReportType Column -->
+                <ng-container matColumnDef="VTReportType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Report Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.VTReportType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportCode Column -->
+                <ng-container matColumnDef="ReportCode">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Report Code
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.ReportCode}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CurrentStatus Column -->
+                <ng-container matColumnDef="CurrentStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Current Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtAttendance">
+                        <p class="text-truncate">{{vtAttendance.CurrentStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtAttendance; columns: displayedColumns;" class="vt-attendance-report"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

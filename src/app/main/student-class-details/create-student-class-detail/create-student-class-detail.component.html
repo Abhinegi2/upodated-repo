@@ -1,0 +1,226 @@
+<div id="student-class-detail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/student-class-details'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start center"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ studentClassDetailModel.FatherName }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Student Class Details
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Student Class Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-student-class-detail-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateStudentClassDetailDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-student-class-detail-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateStudentClassDetailDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="studentClassDetailForm" [formGroup]="studentClassDetailForm"
+                    class="student-class-detail w-100-p p-24 mr-24" fxLayout="column" fxFlex="1 0 auto" fxFlex
+                    fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Student Name</mat-label>
+                            <mat-select formControlName="StudentId" appearance="outline"
+                                [disabled]="PageRights.ActionType !='new'" required>
+                                <mat-option [value]="studentItem.StudentId" *ngFor="let studentItem of studentList">
+                                    {{ studentItem.StudentName }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="studentClassDetailForm.controls.StudentId.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'StudentId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Student Unique ID</mat-label>
+                            <input matInput name="studentRollNumber" formControlName="StudentRollNumber" required
+                                maxlength="19" [disabled]="PageRights.IsReadOnly || (PageRights.ActionType == 'edit' || UserModel.RoleCode == 'SUR')">
+                            <mat-error *ngIf="studentClassDetailForm.controls.StudentRollNumber.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'StudentRollNumber')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Father Name</mat-label>
+                            <input matInput name="fatherName" formControlName="FatherName" required
+                                placeholder="Ex. Mohan Sohan Patil"
+                                matTooltip="Enter father name. Ensure first letter should be capital of each word."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="studentClassDetailForm.controls.FatherName.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'FatherName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Mother Name</mat-label>
+                            <input matInput name="motherName" formControlName="MotherName" required
+                                placeholder="Ex. Shanti D Patil"
+                                matTooltip="Enter mother name. Ensure first letter should be capital of each word."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="studentClassDetailForm.controls.MotherName.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'MotherName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Guardian Name</mat-label>
+                            <input matInput name="guardianName" formControlName="GuardianName"
+                                placeholder="Ex. Ram Pratab Patil"
+                                matTooltip="Enter guardian name. Ensure first letter should be capital of each word."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="studentClassDetailForm.controls.GuardianName.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'GuardianName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Of Birth</mat-label>
+                            <input matInput [matDatepicker]="dateOfBirth" name="dateOfBirth" required
+                                formControlName="DateOfBirth" [max]="MinimumAgeChildrenDate"
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfBirth></mat-datepicker>
+                            <mat-error *ngIf="studentClassDetailForm.controls.DateOfBirth.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'DateOfBirth')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="Constants.DefaultStateId != 'MH'">
+                            <mat-label>Aadhaar Number</mat-label>
+                            <input matInput name="aadhaarNumber" formControlName="AadhaarNumber" digitOnly
+                                minlength="12" maxlength="12">
+                            <mat-error *ngIf="studentClassDetailForm.controls.AadhaarNumber.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'AadhaarNumber')}}
+                            </mat-error>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>First Mobile Number</mat-label>
+                            <input matInput name="mobile" formControlName="Mobile" digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="studentClassDetailForm.controls.Mobile.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'Mobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Second Mobile Number</mat-label>
+                            <input matInput name="mobile1" formControlName="Mobile1" digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="studentClassDetailForm.controls.Mobile1.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'Mobile1')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Social Category</mat-label>
+                            <mat-select name="socialCategory" formControlName="SocialCategory" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="socialCategoryItem.Id"
+                                    *ngFor="let socialCategoryItem of socialCategoryList">
+                                    {{ socialCategoryItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="studentClassDetailForm.controls.SocialCategory.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'SocialCategory')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" class="pr-20" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Select Religion</mat-label>
+                                <mat-select name="religion" formControlName="Religion" required appearance="outline"
+                                    [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="religionItem.Id" *ngFor="let religionItem of religionList">
+                                        {{ religionItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="studentClassDetailForm.controls.Religion.invalid">
+                                    {{getErrorMessage(studentClassDetailForm, 'Religion')}}
+                                </mat-error>
+                            </mat-form-field> -->
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>CWSN Status</mat-label>
+                            <mat-select name="cwsnStatus" formControlName="CWSNStatus" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" matTooltip="CWSN (Children with special need)"
+                                matTooltipPosition="above">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="studentClassDetailForm.controls.CWSNStatus.invalid">
+                                {{getErrorMessage(studentClassDetailForm, 'CWSNStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div> -->
+                    <!-- </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

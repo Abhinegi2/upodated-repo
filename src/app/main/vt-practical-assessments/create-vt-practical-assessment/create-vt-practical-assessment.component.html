@@ -1,0 +1,256 @@
+<div id="vt-practical-assessment" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-practical-assessments'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtPracticalAssessmentModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Practical Assessment
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Practical Assessment Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-practical-assessment-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTPracticalAssessmentDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-practical-assessment-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTPracticalAssessmentDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtPracticalAssessmentForm" [formGroup]="vtPracticalAssessmentForm"
+                    class="vt-practical-assessment w-100-p p-24 mr-24" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select VT Class</mat-label>
+
+                                <mat-select formControlName="VTClassId" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtClassList">
+                                        {{ vtItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Assessment Date</mat-label>
+                                <input matInput name="assessmentDate" formControlName="AssessmentDate"
+                                    [matDatepicker]="assessmentDate" required [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="assessmentDate"></mat-datepicker-toggle>
+                                <mat-datepicker #assessmentDate></mat-datepicker>
+
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessmentDate.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessmentDate')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Boys Present</mat-label>
+                                <input matInput name="boysPresent" formControlName="BoysPresent" digitOnly>
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.BoysPresent.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'BoysPresent')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Girls Present</mat-label>
+                                <input matInput name="girlsPresent" formControlName="GirlsPresent" digitOnly>
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.GirlsPresent.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'GirlsPresent')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Name</mat-label>
+                                <input matInput name="assessorName" formControlName="AssessorName" required>
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorName.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Mobile</mat-label>
+                                <input matInput name="assessorMobile" formControlName="AssessorMobile" digitOnly maxlength="10" minlength="10">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorMobile.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorMobile')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Email</mat-label>
+                                <input matInput name="assessorEmail" formControlName="AssessorEmail">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorEmail.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorEmail')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Qualification</mat-label>
+                                <input matInput name="assessorQualification" formControlName="AssessorQualification">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorQualification.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorQualification')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Time Reached</mat-label>                                
+                                <input matInput name="assessorTimeReached" formControlName="AssessorTimeReached"
+                                    [matDatepicker]="assessorTimeReached" [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="assessorTimeReached"></mat-datepicker-toggle>
+                                <mat-datepicker #assessorTimeReached></mat-datepicker>
+
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorTimeReached.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorTimeReached')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Id Check</mat-label>
+                                <input matInput name="assessorIdCheck" formControlName="AssessorIdCheck">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorIdCheck.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorIdCheck')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Id Type</mat-label>
+                                <input matInput name="assessorIdType" formControlName="AssessorIdType">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorIdType.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorIdType')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor SSC Letter</mat-label>
+                                <input matInput name="assessorSSCLetter" formControlName="AssessorSSCLetter">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorSSCLetter.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorSSCLetter')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Behaviour</mat-label>
+                                <input matInput name="assessorBehaviour" formControlName="AssessorBehaviour">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorBehaviour.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorBehaviour')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Demands</mat-label>
+                                <input matInput name="assessorDemands" formControlName="AssessorDemands">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorDemands.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorDemands')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Behaiour Formality</mat-label>
+                                <input matInput name="assessorBehaiourFormality"
+                                    formControlName="AssessorBehaiourFormality">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorBehaiourFormality.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorBehaiourFormality')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Assessor Group Photo</mat-label>
+                                <ngx-mat-file-input name="assessorGroupPhoto" formControlName="AssessorGroupPhoto" [disabled]="PageRights.IsReadOnly"></ngx-mat-file-input>
+                                <mat-icon matSuffix>folder</mat-icon>
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.AssessorGroupPhoto.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'AssessorGroupPhoto')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>VC PMU Name Visit</mat-label>
+                                <input matInput name="vcpmuNameVisit" formControlName="VCPMUNameVisit">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.VCPMUNameVisit.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'VCPMUNameVisit')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Remarks Details</mat-label>
+                                <input matInput name="remarksDetails" formControlName="RemarksDetails">
+                                <mat-error *ngIf="vtPracticalAssessmentForm.controls.RemarksDetails.invalid">
+                                    {{getErrorMessage(vtPracticalAssessmentForm, 'RemarksDetails')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

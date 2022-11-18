@@ -1,0 +1,201 @@
+<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/message-templates'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2 subtitle secondary-text" *ngIf="PageRights.ActionType === 'edit'">
+                        {{ messageTemplateModel.TemplateName }}
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'new'">
+                        New Message Template
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'view'">
+                        <span>Message Template Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button class="add-message-template-button"
+                    (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'ADD' : 'SAVE') }}</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="messageTemplateForm" [formGroup]="messageTemplateForm"
+                    class="head-master w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Message Template Name</mat-label>
+                            <input matInput name="TemplateName" formControlName="TemplateName" required>
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateName.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Flow Id</mat-label>
+                            <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Message Type</mat-label>
+
+                            <mat-select formControlName="MessageTypeId" required appearance="outline"
+                                (selectionChange)="onChangeMessageType($event.value)">
+                                <mat-option [value]="messageTypeItem.Id"
+                                    *ngFor="let messageTypeItem of messageTypeList">
+                                    {{ messageTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="messageTemplateForm.controls.MessageTypeId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'MessageTypeId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Message Sub Type</mat-label>
+
+                            <mat-select formControlName="MessageSubTypeId" required appearance="outline"
+                                (selectionChange)="onChangeMessageSubType($event.value)">
+                                <mat-option [value]="messageSubTypeItem.Id"
+                                    *ngFor="let messageSubTypeItem of messageSubTypeList">
+                                    {{ messageSubTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="messageTemplateForm.controls.MessageSubTypeId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'MessageSubTypeId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Message Variables</mat-label>
+                            <mat-select formControlName="MessageFieldIds" required appearance="outline" multiple>
+                                <mat-option [value]="messageVariablesItem.Id"
+                                    *ngFor="let messageVariablesItem of filteredMessageVariablesItems">
+                                    {{ messageVariablesItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="messageTemplateForm.controls.MessageFieldIds.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'MessageFieldIds')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Message Applicable</mat-label>
+                            <mat-select formControlName="ApplicableForIds" appearance="outline" multiple>
+                                <mat-option [value]="messageApplicableItem"
+                                    *ngFor="let messageApplicableItem of messageApplicableList">
+                                    {{messageApplicableItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="80" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Sms Message</mat-label>
+                            <textarea matInput name="SMSMessage" formControlName="SMSMessage" cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2"
+                                cdkAutosizeMaxRows="10"></textarea>
+
+                            <mat-error *ngIf="messageTemplateForm.controls.SMSMessage.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'SMSMessage')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="80" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Whatsapp Message</mat-label>
+                            <textarea matInput name="WhatsappMessage" formControlName="WhatsappMessage"
+                                cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="15"></textarea>
+
+                            <mat-error *ngIf="messageTemplateForm.controls.WhatsappMessage.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'WhatsappMessage')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="80" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Email Message</mat-label>
+                            <textarea matInput name="EmailMessage" formControlName="EmailMessage" cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="25"></textarea>
+
+                            <mat-error *ngIf="messageTemplateForm.controls.EmailMessage.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'EmailMessage')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+
+                    <!-- </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

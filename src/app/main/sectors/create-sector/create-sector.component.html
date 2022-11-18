@@ -1,0 +1,104 @@
+<div id="sector" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/sectors'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ sectorModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Sector
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Sector Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-sector-button" [disabled]="sectorForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateSectorDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-sector-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateSectorDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="sectorForm" [formGroup]="sectorForm" class="sector w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Sector Name</mat-label>
+                                <input matInput name="sectorName" formControlName="SectorName" required>
+                                <mat-error *ngIf="sectorForm.controls.SectorName.invalid">{{getErrorMessage(sectorForm, 'SectorName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="sectorForm.controls.Description.invalid">{{getErrorMessage(sectorForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Display Order</mat-label>
+                                <input matInput name="description" formControlName="DisplayOrder" digitOnly maxlength="2">
+                                <mat-error *ngIf="sectorForm.controls.DisplayOrder.invalid">{{getErrorMessage(sectorForm, 'DisplayOrder')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

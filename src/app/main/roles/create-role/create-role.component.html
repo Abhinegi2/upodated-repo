@@ -1,0 +1,120 @@
+<div id="role" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/roles'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ roleModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Role
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Role Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+            
+            <!-- Add: [disabled]="vcSchoolSectorForm.invalid" -->
+            <!-- Edit: [disabled]="vcSchoolSectorForm.invalid || vcSchoolSectorForm.pristine" -->
+            <button mat-raised-button class="add-role-button" 
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateRoleDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-role-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateRoleDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="roleForm" [formGroup]="roleForm" class="role w-100-p" fxLayout="column" fxFlex>
+                    <div class="tab-content p-24">
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Code</mat-label>
+                                <input matInput name="code" formControlName="Code" required>
+                                <mat-error *ngIf="roleForm.controls.Code.invalid">{{getErrorMessage(roleForm, 'Code')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Name</mat-label>
+                                <input matInput name="name" formControlName="Name" required>
+                                <mat-error *ngIf="roleForm.controls.Name.invalid">{{getErrorMessage(roleForm, 'Name')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="roleForm.controls.Description.invalid">{{getErrorMessage(roleForm,
+                                    'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Landing Page Url</mat-label>
+                                <input matInput name="landingPageUrl" formControlName="LandingPageUrl">
+                                <mat-error *ngIf="roleForm.controls.LandingPageUrl.invalid">{{getErrorMessage(roleForm,
+                                    'LandingPageUrl')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row">
+                            <mat-form-field fxFlex appearance="outline">
+                                <mat-label>Remarks</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="roleForm.controls.Remarks.invalid">{{getErrorMessage(roleForm,
+                                    'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start" class="input-row md-block">
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                                Is Active?
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

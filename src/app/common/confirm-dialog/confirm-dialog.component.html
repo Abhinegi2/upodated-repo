@@ -1,0 +1,11 @@
+<div class="confirm-dialog">
+    <div class="confirm-message">
+        <mat-icon id="close-icon" (click)="closeDialog()">close</mat-icon>
+        <span class="content-span full-width">{{ data.message }}</span>
+    </div>
+
+    <div mat-dialog-actions class="confirm-action" >
+        <button mat-flat-button id="no-button" [mat-dialog-close]="false">NO</button>
+        <button mat-raised-button class="mat-accent mr-16" [mat-dialog-close]="true">YES</button>
+    </div>
+</div>

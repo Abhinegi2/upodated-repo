@@ -1,0 +1,133 @@
+<div id="user-otpdetail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    USER OTPDETAILS
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)" placeholder="Search for a user otpdetails">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false" class="add-user-otpdetail-button fuse-white mt-24 mt-md-0">
+                <span>ADD</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="user-otpdetail-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- OTPId Column -->
+                <ng-container matColumnDef="OTPId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>OTPId</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail">
+                        <p class="text-truncate">{{userOTPDetail.OTPId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Mobile Column -->
+                <ng-container matColumnDef="Mobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail">
+                        <p class="text-truncate">{{userOTPDetail.Mobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- OTPToken Column -->
+                <ng-container matColumnDef="OTPToken">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>OTPToken</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail">
+                        <p class="text-truncate">{{userOTPDetail.OTPToken}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ExpireOn Column -->
+                <ng-container matColumnDef="ExpireOn">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>ExpireOn</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail">
+                        <p class="text-truncate">{{userOTPDetail.ExpireOn}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsRedeemed Column -->
+                <ng-container matColumnDef="IsRedeemed">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>IsRedeemed</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="userOTPDetail.IsRedeemed" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!userOTPDetail.IsRedeemed" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="userOTPDetail.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!userOTPDetail.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions">
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let userOTPDetail" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                        [routerLink]="['/user-otpdetails', 'view', userOTPDetail.OTPId]" skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                        [routerLink]="['/user-otpdetails', 'edit', userOTPDetail.OTPId]" skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteUserOTPDetail(userOTPDetail.OTPId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let userOTPDetail; columns: displayedColumns;" class="user-otpdetail" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

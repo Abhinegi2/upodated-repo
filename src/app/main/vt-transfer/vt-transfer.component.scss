@@ -1,0 +1,18 @@
+@import "src/@fuse/scss/fuse";
+
+
+#vt-transfer {
+    .fs-padding {
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .school-student-table {
+        height: fit-content;
+
+        .mat-cell,
+        .mat-header-cell {
+            min-width: 144px !important;
+        }
+    }
+}

@@ -1,0 +1,90 @@
+<div id="data-upload" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="subtitle secondary-text">
+                        <span>Upload bulk data using excel templates</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form id="dataUploadForm" name="dataUploadForm" [formGroup]="dataUploadForm"
+                    enctype="multipart/form-data" class="data-upload w-100-p p-24 mr-24" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Data Type</mat-label>
+                            <mat-select name="contentType" formControlName="ContentType" appearance="outline" required
+                                matTooltip="Select Data Type" matTooltipPosition="above">
+                                <mat-option [value]="contentTypeItem" *ngFor="let contentTypeItem of dataTypetList">
+                                    {{ contentTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="dataUploadForm.controls.ContentType.invalid">
+                                {{getErrorMessage(dataUploadForm, 'ContentType')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <mat-form-field appearance="outline" class="pr-20" fxFlex="70" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Upload Excel File</mat-label>
+                            <ngx-mat-file-input name="uploadFile" formControlName="UploadFile" required
+                                [accept]="AllowedExcelExtensions" (change)="uploadedFile($event)"
+                                placeholder="Select excel template file" matTooltip="Select excel template file"
+                                matTooltipPosition="above"></ngx-mat-file-input>
+
+                            <mat-error *ngIf="dataUploadForm.controls.UploadFile.invalid">
+                                {{getErrorMessage(dataUploadForm, 'UploadFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" class="pl-100">
+                        <span class="material-icons action-btn" (click)="downloadTemplateExcel()"
+                            matTooltip="Download excel template" matTooltipPosition="above">description</span>
+                        <span class="material-icons action-btn" (click)="uploadExcelData()"
+                            matTooltip="Upload bulk data" matTooltipPosition="above">cloud_upload</span>
+                        <span class="material-icons action-btn" *ngIf="isAvailableUploadedExcel"
+                            (click)="downloadUploadedExcelResults()" matTooltip="Download Uploaded Excel Results"
+                            matTooltipPosition="above">get_app</span>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

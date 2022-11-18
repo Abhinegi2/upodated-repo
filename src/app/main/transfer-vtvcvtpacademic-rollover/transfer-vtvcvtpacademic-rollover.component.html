@@ -1,0 +1,791 @@
+<div id="transfer-vtvcvtpacademic-rollover" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Transfer VTP/VC/VT
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button *ngIf="PageRights.IsAdd" (click)="onTransfer()" mat-raised-button
+                    class="add-vt-school-sector-button fuse-white mt-24 mt-md-0">
+                    <span>
+                        TRANSFER
+                    </span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card"
+            style="background-color: #fdfdfb;border: whitesmoke 1px solid;border-radius: 5px;padding: 0 10px; margin:10px 0;">
+            <div class="filter-content">
+                <form name="transferForm" [formGroup]="transferForm" class="course-material-status-report"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select name="academicYearId" formControlName="AcademicYearId" required
+                                appearance="fill">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Select Entity</mat-label>
+
+                            <mat-select formControlName="EntityType" name="entityType" required appearance="fill"
+                                (selectionChange)="onChangeEntityType($event)">
+                                <mat-option value="VTP">VTP</mat-option>
+                                <mat-option value="VC">VC</mat-option>
+                                <mat-option value="VT">VT</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-group" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label id="lblDestination" style="padding-top:23px;">Destination</mat-label>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-group" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+
+                                <mat-radio-group name="Destination" formControlName="Destination" required
+                                    appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    fxLayoutGap="20px" class="radio-space-tc" [disabled]="PageRights.IsReadOnly"
+                                    style="padding-top:20px;" (change)="onChangeDestination($event)">
+                                    <mat-radio-button value="ActualReplacement">Actual Replacement Transfer
+                                    </mat-radio-button>
+                                    <mat-radio-button value="DummyAssign">Dummy Assign</mat-radio-button>
+                                </mat-radio-group>
+
+                                <!-- <mat-error *ngIf="transferForm.controls.Destination.invalid">
+                                        {{getErrorMessage(transferForm, 'Destination')}}
+                                    </mat-error> -->
+                            </div> <br />
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select From</mat-label>
+
+                            <mat-select formControlName="FromEntityId" name="FromEntityId" appearance="fill"
+                                #SelectVCVTVTP (selectionChange)="onChangeFromEntity($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVCVTVTP.focused"
+                                    [array]="fromEntityList" (filteredReturn)="filteredFromEntityItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+
+                                <mat-option [value]="fromEntityItem.Id"
+                                    *ngFor="let fromEntityItem of filteredFromEntityItems">
+                                    {{ fromEntityItem.Name }}
+                                </mat-option>
+                            </mat-select>
+
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="transferForm.controls.Destination.value== 'ActualReplacement'">
+                            <mat-label>Select To</mat-label>
+
+                            <mat-select formControlName="ToEntityId" name="ToEntityId" appearance="fill" #SelectVCVTVTP
+                                (selectionChange)="onChangeToEntity($event.value)"
+                                [disabled]="transferForm.controls.Destination.value=='DummyAssign'">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVCVTVTP.focused"
+                                    [array]="toEntityList" (filteredReturn)="filteredToEntityItems = $event"
+                                    [displayMember]="'Name'">
+                                </mat-select-filter>
+
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredToEntityItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+            fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+            <!-- CONTENT CARD => VTP Sector -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VTP'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px !important;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">VTP Sector
+                </mat-label>
+                <mat-table class="vt-school-sector-table responsive-table" #table
+                    [dataSource]="tableDataSourceVTPSector" matSort fusePerfectScrollbar
+                    [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtpSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vtpSector.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTPName Column -->
+                    <ng-container matColumnDef="VTPName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtpSector">
+                            <p class="text-truncate">{{vtpSector.VTPName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SectorName Column -->
+                    <ng-container matColumnDef="SectorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtpSector">
+                            <p class="text-truncate">{{vtpSector.SectorName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsTransfer Column -->
+                    <ng-container matColumnDef="IsTransfer">
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is Transfer?
+                        </mat-header-cell>
+
+                        <mat-cell *matCellDef="let vtpSector" class="text-center">
+                            <mat-radio-button [value]="vtpSector"
+                                (click)="onLoadSchoolVTPSectorAndVCSchoolSectorBySectorId(vtpSector.SectorId)"
+                                color="primary"></mat-radio-button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsVTPSector; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsVTPSector;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorVTPSector [length]="tableDataSourceVTPSector.filteredData.length"
+                    [pageIndex]="0" [pageSize]="15" [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => School VTP Sector -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VTP'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px !important;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">School VTP Sector</mat-label>
+                <mat-table class="vt-school-sector-table responsive-table" #table
+                    [dataSource]="tableDataSourceSchoolVTPSector" matSort fusePerfectScrollbar
+                    [fusePerfectScrollbarOptions]="{'suppressScrollX': false}" [hiddenColumns]="[0]">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{schoolVTPSector.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTPName Column -->
+                    <ng-container matColumnDef="VTPName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector">
+                            <p class="text-truncate">{{schoolVTPSector.VTPName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- AcademicYearId Column -->
+                    <ng-container matColumnDef="SectorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector">
+                            <p class="text-truncate">{{schoolVTPSector.SectorName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolName Column -->
+                    <ng-container matColumnDef="SchoolName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{schoolVTPSector.SchoolName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- UDISE Column -->
+                    <ng-container matColumnDef="UDISE">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UDISE
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{schoolVTPSector.UDISE}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsTransfer Column -->
+                    <ng-container matColumnDef="IsTransfer">
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is Transfer?
+                            &nbsp;&nbsp;&nbsp;
+                            <mat-checkbox checked="true" (change)="onSVSForAdemicYear($event, null)"></mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let schoolVTPSector" class="text-center">
+                            <mat-checkbox [checked]="schoolVTPSector.IsTransfer"
+                                (change)="onSVSForAdemicYear($event, schoolVTPSector)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsVTPSchoolSector; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsVTPSchoolSector;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorSchoolVTPSector
+                    [length]="tableDataSourceSchoolVTPSector.filteredData.length" [pageIndex]="0" [pageSize]="15"
+                    [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => VC School Sectors -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VTP' || transferForm.controls.EntityType.value == 'VC'"
+                fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">VC School Sectors</mat-label>
+                <mat-table class="vc-school-sector-table responsive-table" #table
+                    [dataSource]="tableDataSourceVCSchoolSector" matSort fusePerfectScrollbar
+                    [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vcSchoolSector.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VCName Column -->
+                    <ng-container matColumnDef="VCName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Vocational
+                            Coordinator
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector">
+                            <p class="text-truncate">{{vcSchoolSector.VCName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolName Column -->
+                    <ng-container matColumnDef="SchoolName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vcSchoolSector.SchoolName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolVTPSector Column -->
+                    <ng-container matColumnDef="SchoolVTPSector">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School VTP Sector
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vcSchoolSector.SchoolVTPSector}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- DateOfAllocation Column -->
+                    <ng-container matColumnDef="DateOfAllocation">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Date Of Allocation
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector">
+                            <p class="text-truncate">{{vcSchoolSector.DateOfAllocation}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsTransfer Column -->
+                    <ng-container matColumnDef="IsTransfer">
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is Transfer?
+                            &nbsp;&nbsp;&nbsp;
+                            <mat-checkbox checked="true" [disabled]="transferForm.controls.EntityType.value == 'VC'"
+                                (change)="onVCSForAdemicYear($event, null)"></mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vcSchoolSector" class="text-center">
+                            <mat-checkbox [checked]="vcSchoolSector.IsTransfer"
+                                [disabled]="transferForm.controls.EntityType.value == 'VC'"
+                                (change)="onVCSForAdemicYear($event, vcSchoolSector)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsVCSchoolSector; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsVCSchoolSector;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorVCSchoolSector [length]="tableDataSourceVCSchoolSector.filteredData.length"
+                    [pageIndex]="0" [pageSize]="15" [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => Vocational Trainers -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VC'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">Vocational Trainers</mat-label>
+                <mat-table class="vt-table responsive-table" #table [dataSource]="tableDataSourceVocationalTrainers"
+                    matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- VTPName Column -->
+                    <ng-container matColumnDef="VTPName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.VTPName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VCName Column -->
+                    <ng-container matColumnDef="VCName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.VCName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTName Column -->
+                    <ng-container matColumnDef="VTName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.VTName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Mobile Column -->
+                    <ng-container matColumnDef="Mobile">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mobile
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vocationalTrainer.Mobile}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="Email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Email</mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vocationalTrainer.Email}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Gender Column -->
+                    <ng-container matColumnDef="Gender">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vocationalTrainer.Gender}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SocialCategory Column -->
+                    <ng-container matColumnDef="SocialCategory">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Social Category
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vocationalTrainer.SocialCategory}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- NatureOfAppointment Column -->
+                    <ng-container matColumnDef="NatureOfAppointment">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Nature Of
+                            Appointment
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.NatureOfAppointment}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsTransfer Column -->
+                    <ng-container matColumnDef="IsTransfer">
+                        <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Is Transfer?
+                            &nbsp;&nbsp;&nbsp;
+                            <mat-checkbox checked="true" [disabled]="transferForm.controls.EntityType.value == 'VC'"
+                                (change)="onVTForAdemicYear($event, null)"></mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer" class="text-center">
+                            <mat-checkbox [checked]="vocationalTrainer.IsTransfer"
+                                [disabled]="transferForm.controls.EntityType.value == 'VC'"
+                                (change)="onVTForAdemicYear($event, vocationalTrainer)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsVocationalTrainers; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsVocationalTrainers;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorVocationalTrainers
+                    [length]="tableDataSourceVocationalTrainers.filteredData.length" [pageIndex]="0" [pageSize]="15"
+                    [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => VT School Sector -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VT'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">VT School Sector</mat-label>
+                <mat-table class="vt-school-sector-table responsive-table" #table [dataSource]="tableDataSource" matSort
+                    fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VCName Column -->
+                    <ng-container matColumnDef="VCName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover">
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.VCName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTName Column -->
+                    <ng-container matColumnDef="VTName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover">
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.VTName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTEmailId Column -->
+                    <ng-container matColumnDef="VTEmailId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover">
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.VTEmailId}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolName Column -->
+                    <ng-container matColumnDef="SchoolName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover">
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.SchoolName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- UDISE Column -->
+                    <ng-container matColumnDef="UDISE">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover">
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.UDISE}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SectorName Column -->
+                    <ng-container matColumnDef="SectorName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Sector
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.SectorName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- DateOfAllocation Column -->
+                    <ng-container matColumnDef="DateOfAllocation">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let VtSchoolSectorsForAcademicRollover" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{VtSchoolSectorsForAcademicRollover.DateOfAllocation | date:
+                                Constants.ShortDateFormat}}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsActive Column -->
+                    <ng-container matColumnDef="IsActive">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtSchoolSector" fxHide fxShow.gt-xs>
+                            <mat-icon *ngIf="vtSchoolSector.IsActive" class="active-icon green-600 s-16">check
+                            </mat-icon>
+                            <mat-icon *ngIf="!vtSchoolSector.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumns;" class="vt-school-sector"
+                        matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                    [pageSize]="15" [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => VT Classes -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VT'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">VT Classes</mat-label>
+                <mat-table class="vt-class-table responsive-table" #table [dataSource]="tableDataSourceVTClasses"
+                    matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vtClass.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolName Column -->
+                    <ng-container matColumnDef="SchoolName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass">
+                            <p class="text-truncate">{{vtClass.SchoolName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- UDISE Column -->
+                    <ng-container matColumnDef="UDISE">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass">
+                            <p class="text-truncate">{{vtClass.UDISE}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTName Column -->
+                    <ng-container matColumnDef="VTName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass">
+                            <p class="text-truncate">{{vtClass.VTName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTEmailId Column -->
+                    <ng-container matColumnDef="VTEmailId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT EmailId
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass">
+                            <p class="text-truncate">{{vtClass.VTEmailId}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- ClassName Column -->
+                    <ng-container matColumnDef="ClassName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Class
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vtClass.ClassName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SectionName Column -->
+                    <ng-container matColumnDef="SectionName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{vtClass.SectionName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsActive Column -->
+                    <ng-container matColumnDef="IsActive">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vtClass" fxHide fxShow.gt-xs>
+                            <mat-icon *ngIf="vtClass.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                            <mat-icon *ngIf="!vtClass.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsVTClasses; sticky:true"></mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsVTClasses;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorVTClasses [length]="tableDataSourceVTClasses.filteredData.length"
+                    [pageIndex]="0" [pageSize]="15" [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+
+            <!-- CONTENT CARD => Student Class -->
+            <div *ngIf="transferForm.controls.EntityType.value == 'VT'" fxLayout.lt-md="column" class="input-row"
+                fxLayoutGap="10px" fxLayoutGap.lt-md="0px"
+                style="padding: 10px;margin-bottom: 15px;border:1px solid #cccc;border-radius: 5px;">
+                <mat-label style="color: #0e38a6;margin: 10px 0;font-size:large">Student Class</mat-label>
+                <mat-table class="vt-student-table responsive-table" #table
+                    [dataSource]="tableDataSourceStudentClassMapping" matSort fusePerfectScrollbar
+                    [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <!-- AcademicYear Column -->
+                    <ng-container matColumnDef="AcademicYear">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.AcademicYear}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SchoolName Column -->
+                    <ng-container matColumnDef="SchoolName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.SchoolName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- ClassName Column -->
+                    <ng-container matColumnDef="ClassName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.ClassName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SectionName Column -->
+                    <ng-container matColumnDef="SectionName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.SectionName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- VTName Column -->
+                    <ng-container matColumnDef="VTName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>VT Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.VTName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- StudentName Column -->
+                    <ng-container matColumnDef="StudentName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.StudentName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- Gender Column -->
+                    <ng-container matColumnDef="Gender">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.Gender}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- DateOfEnrollment Column -->
+                    <ng-container matColumnDef="DateOfEnrollment">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Enrollment
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.DateOfEnrollment | date: Constants.ShortDateFormat
+                                }}
+                            </p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- IsActive Column -->
+                    <ng-container matColumnDef="IsActive">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <mat-icon *ngIf="studentClass.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                            <mat-icon *ngIf="!studentClass.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumnsStudentClassMapping; sticky:true">
+                    </mat-header-row>
+
+                    <mat-row *matRowDef="let vtSchoolSector; columns: displayedColumnsStudentClassMapping;"
+                        class="vt-school-sector" matRipple>
+                    </mat-row>
+                </mat-table>
+
+                <mat-paginator #ListPaginatorStudentClassMapping
+                    [length]="tableDataSourceStudentClassMapping.filteredData.length" [pageIndex]="0" [pageSize]="15"
+                    [pageSizeOptions]="[15, 25, 100, 200, 500]">
+                </mat-paginator>
+            </div>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

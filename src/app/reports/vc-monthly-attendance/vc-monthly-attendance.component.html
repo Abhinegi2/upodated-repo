@@ -1,0 +1,73 @@
+<div id="vc-monthly-attendance" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="subtitle secondary-text">
+                        <span>VC Monthly Attendance Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="monthlyAttendanceForm" [formGroup]="monthlyAttendanceForm"
+                    class="vc-monthly-attendance w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Report Month</mat-label>
+
+                                <input matInput name="reportDate" formControlName="ReportDate" required
+                                    [matDatepicker]="reportDate" [max]="CurrentDate">
+                                <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
+                                <mat-datepicker #reportDate startView="year"
+                                (yearSelected)="chosenYearHandler($event)"
+                                (monthSelected)="chosenMonthHandler($event, reportDate)"></mat-datepicker>
+
+                                <mat-error *ngIf="monthlyAttendanceForm.controls.ReportDate.invalid">
+                                    {{getErrorMessage(monthlyAttendanceForm, 'ReportDate')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <span class="material-icons action-btn"
+                                (click)="getVCMonthlyAttendanceReport()">save_alt</span>
+                        </div>
+
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

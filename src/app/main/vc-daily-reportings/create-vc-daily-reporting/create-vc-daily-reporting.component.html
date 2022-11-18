@@ -1,0 +1,336 @@
+<div id="vc-daily-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vc-daily-reporting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vcDailyReportingModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VC Daily Reporting
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VC Daily Reporting Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vc-daily-reporting-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVCDailyReportingDetails()">
+                <span>ADD</span>
+            </button>
+            <!-- [disabled]="vcDailyReportingForm.invalid" -->
+            <button mat-raised-button class="save-vc-daily-reporting-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateVCDailyReportingDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vcDailyReportingForm" [formGroup]="vcDailyReportingForm"
+                    class="vc-daily-reporting w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Reporting Date</mat-label>
+                            <input matInput [matDatepicker]="picker" name="reportDate" required [min]="minReportingDate"
+                                [max]="CurrentDate" formControlName="ReportDate" [disabled]="PageRights.IsReadOnly"
+                                (dateChange)="onChangeReportingDate()">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="vcDailyReportingForm.controls.ReportDate.invalid">
+                                {{getErrorMessage(vcDailyReportingForm, 'ReportDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Report Type</mat-label>
+                            <mat-select name="reportType" formControlName="ReportType" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeReportType($event.value)">
+                                <mat-option [value]="reportTypeItem.Id" *ngFor="let reportTypeItem of reportTypeList">
+                                    {{ reportTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcDailyReportingForm.controls.ReportType.invalid">
+                                {{getErrorMessage(vcDailyReportingForm, 'ReportType')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="vc-daily-type work-type">
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px" *ngIf="vcDailyReportingForm.controls.ReportType.value == '49'">
+                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Working Day Type</mat-label>
+                                <mat-select name="workingDayTypeIds" formControlName="WorkingDayTypeIds" multiple
+                                    [required]="vcDailyReportingForm.controls.ReportType.value == '49'"
+                                    appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                    (selectionChange)="onChangeWorkingType($event.value)">
+                                    <mat-option [value]="workTypeItem.Id" *ngFor="let workTypeItem of workTypeList">
+                                        {{ workTypeItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="vcDailyReportingForm.controls.WorkingDayTypeIds.invalid">
+                                    {{getErrorMessage(vcDailyReportingForm, 'WorkingDayTypeIds')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Industry Exposure Visit -->
+                    <fieldset formGroupName="industryExposureVisitGroup" *ngIf="isAllowIndustryExposureVisit">
+                        <legend>Industry Exposure Visit</legend>
+                        <div class="vc-daily-type industry-exposure-visit" *ngIf="isAllowIndustryExposureVisit">
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Type of Industry Linkage</mat-label>
+                                    <mat-select name="typeOfIndustryLinkage" formControlName="TypeOfIndustryLinkage"
+                                        required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="industryLinkageItem.Id"
+                                            *ngFor="let industryLinkageItem of industryLinkageList">
+                                            {{ industryLinkageItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.industryExposureVisitGroup.controls.TypeOfIndustryLinkage.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.industryExposureVisitGroup,
+                                        'TypeOfIndustryLinkage')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Contact Person Name</mat-label>
+                                    <input matInput name="contactPersonName" formControlName="ContactPersonName"
+                                        required>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonName.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.industryExposureVisitGroup,
+                                        'ContactPersonName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Contact Person Mobile</mat-label>
+                                    <input matInput name="contactPersonMobile" formControlName="ContactPersonMobile"
+                                        digitOnly maxlength="10" minlength="10" required>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonMobile.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.industryExposureVisitGroup,
+                                        'ContactPersonMobile')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Contact Person Email</mat-label>
+                                    <input matInput name="contactPersonEmail" formControlName="ContactPersonEmail"
+                                        required>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonEmail.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.industryExposureVisitGroup,
+                                        'ContactPersonEmail')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                    </fieldset>
+
+                    <!-- School -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="isAllowSchool">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+                            <mat-select name="schoolId" formControlName="SchoolId" [required]="isAllowSchool"
+                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of schoolList">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcDailyReportingForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(vcDailyReportingForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Work details -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="isAllowWorkDetails">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Work Details</mat-label>
+                            <input matInput name="workTypeDetails" formControlName="WorkTypeDetails">
+                            <mat-error *ngIf="vcDailyReportingForm.controls.WorkTypeDetails.invalid">
+                                {{getErrorMessage(vcDailyReportingForm, 'WorkTypeDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Holiday -->
+                    <fieldset formGroupName="holidayGroup" *ngIf="isAllowHoliday">
+                        <legend>Holiday</legend>
+                        <div class="vc-daily-type holiday"
+                            *ngIf="vcDailyReportingForm.controls.ReportType.value == '48'">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Holiday Type</mat-label>
+                                    <mat-select name="holidayTypeId" formControlName="HolidayTypeId"
+                                        [required]="isAllowHoliday" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="holidayTypeItem.Id"
+                                            *ngFor="let holidayTypeItem of holidayTypeList">
+                                            {{ holidayTypeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.holidayGroup, 'HolidayTypeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vcDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.value == '166' || vcDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.value == '167'">
+                                    <mat-label>Holiday Details</mat-label>
+                                    <input matInput name="holidayDetails" formControlName="HolidayDetails"
+                                        [required]="vcDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.value == '166' || vcDailyReportingForm.controls.holidayGroup.controls.HolidayTypeId.value == '167'">
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.holidayGroup.controls.HolidayDetails.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.holidayGroup,
+                                        'HolidayDetails')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Leave -->
+                    <fieldset formGroupName="leaveGroup" *ngIf="isAllowLeave">
+                        <legend>Leave</legend>
+                        <div class="vc-daily-type leave" *ngIf="vcDailyReportingForm.controls.ReportType.value == '47'">
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Type</mat-label>
+                                    <mat-select name="leaveTypeId" formControlName="LeaveTypeId"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveTypeItem.Id"
+                                            *ngFor="let leaveTypeItem of leaveTypeList">
+                                            {{ leaveTypeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveTypeId.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.leaveGroup, 'LeaveTypeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Mode</mat-label>
+                                    <mat-select name="leaveModeId" formControlName="LeaveModeId"
+                                        [required]="isAllowLeave" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveModeItem.Id"
+                                            *ngFor="let leaveModeItem of leaveModeList">
+                                            {{ leaveModeItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveModeId.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.leaveGroup, 'LeaveModeId')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Approval Status</mat-label>
+                                    <mat-select name="leaveApprovalStatus" formControlName="LeaveApprovalStatus"
+                                        required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                        <mat-option value="yes">Yes</mat-option>
+                                        <mat-option value="no">No</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveApprovalStatus.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.leaveGroup,
+                                        'LeaveApprovalStatus')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveApprovalStatus.value == 'yes'">
+                                    <mat-label>Leave Approver</mat-label>
+                                    <mat-select name="leaveApprover" formControlName="LeaveApprover" required
+                                        appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                        <mat-option [value]="leaveApproverItem.Id"
+                                            *ngFor="let leaveApproverItem of leaveApproverList">
+                                            {{ leaveApproverItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveApprover.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.leaveGroup, 'LeaveApprover')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Leave Reason</mat-label>
+                                    <input matInput name="leaveReason" formControlName="LeaveReason" required>
+                                    <mat-error
+                                        *ngIf="vcDailyReportingForm.controls.leaveGroup.controls.LeaveReason.invalid">
+                                        {{getErrorMessage(vcDailyReportingForm.controls.leaveGroup, 'LeaveReason')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

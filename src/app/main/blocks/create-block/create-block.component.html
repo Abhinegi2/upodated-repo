@@ -1,0 +1,127 @@
+<div id="block" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/blocks'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ blockModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Block
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Block Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-block-button" [disabled]="blockForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateBlockDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-block-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateBlockDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="blockForm" [formGroup]="blockForm" class="block w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Division</mat-label>
+
+                                <mat-select formControlName="DivisionId" name="divisionId" appearance="outline"
+                                    (selectionChange)="onChangeDivision($event.value)"
+                                    [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="divisionItem.Id" *ngFor="let divisionItem of divisionList">
+                                        {{ divisionItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="blockForm.controls.DivisionId.invalid">
+                                    {{getErrorMessage(blockForm, 'DivisionId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>District</mat-label>
+                                <mat-select formControlName="DistrictId" name="districtId" appearance="outline"
+                                    [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="districtItem.Id" *ngFor="let districtItem of districtList">
+                                        {{ districtItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="blockForm.controls.DistrictId.invalid">
+                                    {{getErrorMessage(blockForm, 'DistrictId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Block Name</mat-label>
+                                <input matInput name="blockName" formControlName="BlockName" required>
+                                <mat-error *ngIf="blockForm.controls.BlockName.invalid">{{getErrorMessage(blockForm,
+                                    'BlockName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="blockForm.controls.Description.invalid">{{getErrorMessage(blockForm,
+                                    'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

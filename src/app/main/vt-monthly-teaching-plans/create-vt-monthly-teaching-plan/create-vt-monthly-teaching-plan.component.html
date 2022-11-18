@@ -1,0 +1,212 @@
+<div id="vt-monthly-teaching-plan" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-monthly-teaching-plans'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtMonthlyTeachingPlanModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Monthly Teaching Plan
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Monthly Teaching Plan Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-monthly-teaching-plan-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVTMonthlyTeachingPlanDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-monthly-teaching-plan-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTMonthlyTeachingPlanDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtMonthlyTeachingPlanForm" [formGroup]="vtMonthlyTeachingPlanForm"
+                    class="vt-monthly-teaching-plan w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="20" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Month</mat-label>
+                            <mat-select name="month" formControlName="Month" appearance="outline" [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="monthItem.Name"
+                                    *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.Month.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'Month')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="40" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Week Start Date</mat-label>
+                            <input matInput name="weekStartDate" formControlName="WeekStartDate" required [max]="CurrentDate"
+                                [matDatepicker]="weekStartDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="weekStartDate"></mat-datepicker-toggle>
+                            <mat-datepicker #weekStartDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.WeekStartDate.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'WeekStartDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="40" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Weekend Date</mat-label>
+                            <input matInput name="weekendDate" formControlName="WeekendDate" required [max]="CurrentDate"
+                                [matDatepicker]="weekendDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="weekendDate"></mat-datepicker-toggle>
+                            <mat-datepicker #weekendDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.WeekendDate.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'WeekendDate')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Modules Planned</mat-label>
+                            <input matInput name="modulesPlanned" formControlName="ModulesPlanned">
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.ModulesPlanned.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'ModulesPlanned')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>IV Planned Date</mat-label>
+                            <input matInput name="ivPlannedDate" formControlName="IVPlannedDate" [max]="CurrentDate"
+                                [matDatepicker]="ivPlannedDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="ivPlannedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #ivPlannedDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.IVPlannedDate.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'IVPlannedDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>IV VC Attend</mat-label>
+                            <input matInput name="ivvcAttend" formControlName="IVVCAttend">
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.IVVCAttend.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'IVVCAttend')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>FV Planned Date</mat-label>
+                            <input matInput name="fvPlannedDate" formControlName="FVPlannedDate" [max]="CurrentDate"
+                                [matDatepicker]="fvPlannedDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="fvPlannedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #fvPlannedDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.FVPlannedDate.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'FVPlannedDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>FV Purpose</mat-label>
+                            <input matInput name="fvPurpose" formControlName="FVPurpose">
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.FVPurpose.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'FVPurpose')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>FV Location</mat-label>
+                            <input matInput name="fvLocation" formControlName="FVLocation">
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.FVLocation.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'FVLocation')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>GL Planned Date</mat-label>
+                            <input matInput name="glPlannedDate" formControlName="GLPlannedDate" [max]="CurrentDate"
+                                [matDatepicker]="glPlannedDate" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="glPlannedDate"></mat-datepicker-toggle>
+                            <mat-datepicker #glPlannedDate></mat-datepicker>
+
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.GLPlannedDate.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'GLPlannedDate')}}
+                            </mat-error>
+                        </mat-form-field>
+                   
+                        <mat-form-field appearance="outline"  fxFlex="77" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Other Details</mat-label>
+                            <input matInput name="otherDetails" formControlName="OtherDetails">
+                            <mat-error *ngIf="vtMonthlyTeachingPlanForm.controls.OtherDetails.invalid">
+                                {{getErrorMessage(vtMonthlyTeachingPlanForm, 'OtherDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

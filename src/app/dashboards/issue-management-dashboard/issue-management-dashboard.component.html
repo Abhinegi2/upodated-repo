@@ -1,0 +1,1001 @@
+<div id="issue-management-dashboard" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    ISSUE MANAGEMENT DASHBOARD
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)=toggleDisplayDivIf()><span>FILTERS</span></button>
+        </div>
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="isShowDivIf">
+            <div class="filter-content">
+                <form name="issueManagementDashboardForm" [formGroup]="issueManagementDashboardForm"
+                    class="summary-dashboard-view" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Month</mat-label>
+
+                            <mat-select formControlName="MonthId" name="monthId" appearance="fill">
+                                <mat-option [value]="monthItem.Id" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getIssueManagementDashboards()"><span>SEARCH</span></button>
+
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetDashboardFilters()"><span>CLEAR</span></button>
+
+                            <!-- <button mat-raised-button class="fuse-white filter-button"
+                                (click)="refreshSummaryDashboard()"><span>REFRESH</span></button> -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card" fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+            <!-- DETAILED GRAPH CONTENT CARD-->
+            <!-- <div class="content-card" fusePerfectScrollbar> -->
+            <!-- for classes card -->
+            <div
+                *ngIf="!totalCardClick && !glfvIssueCardClickCardClick && !toolsAndEquipmentsIssueCardClick && !labIssueCardClick 
+            && !paymentIssueCardClick && !syllabusIssueCardClick && !examIssueCardClick && !certificateIssueCardClick && !coordinatorIssueCardClick">
+
+                <div>
+                    <div fxFlex="100%">
+                        <div fxLayout="row" class="view-div">
+                            <div fxFlex="30%" class="mx-width">
+                                <p class="issue-management-div"> <b>ISSUE MANAGEMENT</b></p>
+                            </div>
+                            <div fxFlex="40%" class="mx-width">
+                                <P class="issue-raised">Issues Raised</P>
+                            </div>
+                            <div fxFlex="30%" class="issue-management-legend mx-width">
+                                <div class="total-graph-legend" style="background-color:#00ca64;"></div>
+                                <div class="text-legend"><small>LOW</small></div>
+                                <div class="total-graph-legend" style="background-color: #29ded8;"></div>
+                                <div><small>MEDIUM</small></div>
+                                <div class="total-graph-legend" style="background-color:#ff0043;"></div>
+                                <div><small>HIGH</small></div>
+                            </div>
+                        </div>
+                        <!-- <p style="text-align: center; width: 100%;padding: 10px;">Course Material Status(for classes)
+                        </p> -->
+                        <div *ngIf="issueManagementChartCount > 0">
+                            <mat-card class="issue-graph-card" (click)="onTotalCardClick()">
+                                <mat-card-content>
+                                    <ngx-charts-bar-vertical-2d [view]="viewGraph" [scheme]="colorSchemeGraph"
+                                        (window:resize)="onTotalIssueGraphResize($event)"
+                                        [results]="issueManagementChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                        [yAxis]="showYAxis" [barPadding]="2" [legend]="showLegend"
+                                        [showXAxisLabel]="showXAxisLabelGraph" [showYAxisLabel]="showYAxisLabelGraph"
+                                        [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel">
+                                    </ngx-charts-bar-vertical-2d>
+                                </mat-card-content>
+                            </mat-card>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- </div> -->
+                <!-- /DETAILED GRAPH CONTENT CARD -->
+                <!-- <div fxLayout="row" class="programme-information-title">
+                <h2 class="programme-information">PROGRAMME INFORMATION</h2>
+            </div> -->
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" class="issue-card-first-row">
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card">
+
+                            <mat-card-title class="card-title">
+                                <!-- <div style="width: 30px; height:30px; border-radius: 15px; background: red;"></div>  -->
+                                <span class="colored-label"></span>
+                                TOTAL
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{resolvedIssues}} / {{totalIssues}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0.16 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onGLFVIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                GUEST LECTURE / FIELD VISIT ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{glfvIssuesResolved}} / {{glfvIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onToolsAndEquipmentsIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                TOOLS AND EQUIPMENTS ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{teIssuesResolved}} / {{teIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onLabIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                LAB ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{labIssuesResolved}} / {{labIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onPaymentIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                PAYMENT ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{paymentIssuesResolved}} /
+                                    {{paymentIssuesTotal}}</b><small class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" class="issue-card-second-row">
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onSyllabusIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                SYLLABUS ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{syllabusIssuesResolved}} /
+                                    {{syllabusIssuesTotal}}</b><small class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0.45 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onExamIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                EXAM ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{examIssuesResolved}} / {{examIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onCertificateIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                CERTIFICATE ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{certificateIssueResolved}} /
+                                    {{certificateIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0 Days</small>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                    <div fxFlex="20%" fxLayoutAlign="center">
+                        <mat-card class="issue-dashboard-card" (click)="onCoordinatorIssueCardClick()">
+                            <mat-card-title class="card-title">
+                                <span class="colored-label"></span>
+                                COORDINATOR ISSUES
+                            </mat-card-title>
+                            <mat-card-content>
+                                <b class="card-bold-content">{{coordinatorIssuesResolved}} /
+                                    {{coordinatorIssuesTotal}}</b><small
+                                    class="card-resolved-content">RESOLVED</small><br>
+                                <small class="card-content-info"> Avg Resolution time: 0.02 Days</small>
+
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Total Issue -->
+
+            <div *ngIf="totalCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">ISSUE RAISED</span>
+                    </div>
+                    <div fxFlex="20%">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row">
+                    <div fxFlex="20%" class="check side">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of monthViewList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckByMonthView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="colorSchemeGraph.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedByMonthSelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Issue Raised
+                        </p>
+                        <mat-divider></mat-divider>
+                        <div *ngIf="issueManagementTimelineChartCount > 0">
+                            <ngx-charts-line-chart [view]="viewIssueRaisedGraph" [scheme]="colorSchemeGraph"
+                                [results]="issueManagementTimelineChart" [gradient]="gradient" [xAxis]="showXAxis"
+                                [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                                [barPadding]="2" [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                                [yAxisLabel]="yAxisLabel" (window:resize)="onResize($event)">
+                            </ngx-charts-line-chart>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">ISSUE TYPE</h3><br>
+                            <div *ngFor="let graph of graphArray">
+                                <mat-checkbox [value]="graph" class="checkbox-view" [checked]="true"
+                                    (change)="selectedValue($event, graph)">
+                                    {{graph}}
+                                </mat-checkbox>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guest Lecture/ Field Visit Issue Issue -->
+
+            <div *ngIf="glfvIssueCardClickCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">GUEST LECTURE / FIELD VISIT ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Guest Lecture / Field Visit Issues
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="resultData.length > 0">  -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                            (window:resize)="onResize($event)">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tools and Equipments Issue -->
+
+            <div *ngIf="toolsAndEquipmentsIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">TOOLS AND EQUIPMENTS ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Tools And Equipments Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                            (window:resize)="onResize($event)">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lab Issue -->
+
+            <div *ngIf="labIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">LAB ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Lab Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                            (window:resize)="onResize($event)">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Issue -->
+
+            <div *ngIf="paymentIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">PAYMENT ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Payment Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                            (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Syllabus Issue -->
+
+            <div *ngIf="syllabusIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" style="padding: 10px;" class="view-div">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">SYLLABUS ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Syllabus Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                            (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Issue -->
+
+            <div *ngIf="examIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">EXAM ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Exam Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                            (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Issue -->
+
+            <div *ngIf="certificateIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">CERTIFICATE ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Certificate Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                            (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coordinator Issue -->
+
+            <div *ngIf="coordinatorIssueCardClick">
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="graph-header mx-width">
+                        <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
+                                style="color: black !important;">ISSUE MANAGEMENT</a></span>
+                        <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        <!-- <span>
+                            <mat-icon class="right-arrow">arrow_right</mat-icon>
+                        </span> -->
+                        <span style="padding-top: 3px;">COORDINATOR ISSUES</span>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn">DOWNLOAD</button>
+                    </div>
+                </div>
+                <mat-divider></mat-divider>
+                <div fxLayout="row" class="view-div">
+                    <div fxFlex="20%" class="check side mx-width">
+                        <h2 class="hcolor">View</h2><br>
+                        <div *ngFor="let item of issueStatusList;let i = index" class="view-checkbox">
+                            <mat-checkbox (change)="onCheckView(item.name, $event)" [checked]="true"
+                                class="checkbox-view">
+                            </mat-checkbox>
+                            <div class="circle" [style.backgroundColor]="issueStatusColor.domain[i]"></div>
+                            {{item.name}}
+                        </div>
+
+                        <div>
+                            <h3 class="hcolor">RAISED BY</h3>
+                            <div *ngFor="let item of raisedBy;let i = index" class="view-checkbox">
+                                <mat-checkbox (change)="onRaisedBySelection()" [(ngModel)]="item.isChecked"
+                                    [checked]="item.isChecked" class="checkbox-view">
+                                </mat-checkbox>
+                                {{item.name}}
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="55%" class="mx-width">
+
+                        <p style="text-align: center; width: 100%;padding: 10px;">Coordinator Issue
+                        </p>
+                        <mat-divider></mat-divider>
+                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
+                        <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
+                            [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
+                            [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
+                            [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
+                            (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
+                        </ngx-charts-bar-vertical-stacked>
+                        <!-- </div> -->
+                    </div>
+                    <mat-divider [vertical]="true"></mat-divider>
+                    <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
+
+                        <div>
+                            <h3 class="hcolor">SEVERITY</h3><br>
+                            <div *ngFor="let severityItem of severityList">
+                                <mat-checkbox [value]="severityItem.value" class="checkbox-view"
+                                    [checked]="severityItem.isChecked" [(ngModel)]="severityItem.isChecked"
+                                    (change)="onIssueSeverityCheck()">
+                                    {{severityItem.name}}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

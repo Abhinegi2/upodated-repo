@@ -1,0 +1,54 @@
+@import "src/@fuse/scss/fuse";
+
+students-rollover {
+    #students-academic-rollover {
+        .top-bg {
+            @include media-breakpoint("lt-md") {
+                height: 256px;
+            }
+        }
+
+        >.center {
+            >.header {
+                .logo {
+                    .refresh-data {
+                        margin-left: 15px;
+                        background: transparent !important;
+                        color: #a4ef13 !important;
+                    }
+
+                    .refresh-data:hover {
+                        cursor: pointer;
+                    }
+                }
+
+                @include media-breakpoint("lt-md") {
+                    padding: 8px 0;
+                    height: 192px !important;
+                    min-height: 192px !important;
+                    max-height: 192px !important;
+                }
+            }
+        }
+
+        .ar-validation {
+            background-color: #f7f7f7;
+            height: 38px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 5px;
+
+            .ar-success {
+                color: green;
+            }
+
+            .ar-error {
+                color: red;
+            }
+        }
+    }
+
+    .vt-school-sector-table {
+        width: 100%;
+    }
+}

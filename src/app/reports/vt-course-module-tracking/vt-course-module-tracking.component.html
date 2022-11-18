@@ -1,0 +1,481 @@
+<div id="vt-course-module-tracking-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT COURSE MODULE TRACKING
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vt course module tracking">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'VTCourseModuleTracking', sheet: 'VTCourseModuleTracking', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card">
+            <div class="filter-content">
+                <form name="vtCourseModuleTrackingForm" [formGroup]="vtCourseModuleTrackingForm"
+                    class="vt-course-module-tracking-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>From Date</mat-label>
+                            <input matInput name="fromDate" formControlName="FromDate" [matDatepicker]="fromDate"
+                                [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                            <mat-datepicker #fromDate></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>To Date</mat-label>
+                            <input matInput name="toDate" formControlName="ToDate" [matDatepicker]="toDate"
+                                [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                            <mat-datepicker #toDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" appearance="outline"
+                                matTooltip="Select School" matTooltipPosition='above'
+                                (selectionChange)="onChangeSchool($event.value)" matTooltipClass="allow-cr"
+                                [disabled]="PageRights.IsReadOnly" #SelectSchool>
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="VTId"  appearance="outline"
+                                matTooltip="Select Vocational Trainer" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeVT($event.value)">
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill"
+                                (selectionChange)="onChangeClass($event.value)">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Section</mat-label>
+
+                            <mat-select formControlName="SectionId" name="sectionId" appearance="fill">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getVTCourseModuleTrackingReports()"><span>SEARCH</span></button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vt-course-module-tracking-report-table responsive-table" #table
+                [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[0]" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SrNo</mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking; let RowIndex = index;">
+                        <p class="text-truncate">{{vtCourseModuleTracking.SrNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VTPName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCMobile Column -->
+                <ng-container matColumnDef="VCMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VCMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VCEmail Column -->
+                <ng-container matColumnDef="VCEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VCEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTMobile Column -->
+                <ng-container matColumnDef="VTMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VTMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTEmail Column -->
+                <ng-container matColumnDef="VTEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VTEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTGender Column -->
+                <ng-container matColumnDef="VTGender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Gender
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.VTGender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMName Column -->
+                <ng-container matColumnDef="HMName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.HMName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMMobile Column -->
+                <ng-container matColumnDef="HMMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.HMMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HMEmail Column -->
+                <ng-container matColumnDef="HMEmail">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Email
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.HMEmail}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Job Role
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SchoolName Column -->
+                <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- UDISE Column -->
+                <ng-container matColumnDef="UDISE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UDISE</mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.UDISE}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class</mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectionName Column -->
+                <ng-container matColumnDef="SectionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Section
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.SectionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictName Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BlockName Column -->
+                <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Block</mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingDate Column -->
+                <ng-container matColumnDef="ReportingDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ReportingDate}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportingDay Column -->
+                <ng-container matColumnDef="ReportingDay">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Day
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ReportingDay}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ActivityType Column -->
+                <ng-container matColumnDef="ActivityType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Activity Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ActivityType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassType Column -->
+                <ng-container matColumnDef="ClassType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ClassType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassDuration Column -->
+                <ng-container matColumnDef="ClassDuration">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class Duration
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ClassDuration}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ModulesTaught Column -->
+                <ng-container matColumnDef="ModulesTaught">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Modules Taught
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ModulesTaught}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- UnitsTaught Column -->
+                <ng-container matColumnDef="UnitsTaught">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Units Taught
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.UnitsTaught}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SessionTaught Column -->
+                <ng-container matColumnDef="SessionTaught">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Session Taught
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.SessionTaught}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassPictureUrl Column -->
+                <ng-container matColumnDef="ClassPictureUrl">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class Picture Url
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.ClassPictureUrl}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- LessonPlanPictureUrl Column -->
+                <ng-container matColumnDef="LessonPlanPictureUrl">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Lesson Plan Picture Url
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.LessonPlanPictureUrl}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- EnrollmentBoys Column -->
+                <ng-container matColumnDef="EnrollmentBoys">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EnrollmentBoys
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.EnrollmentBoys}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- EnrollmentGirls Column -->
+                <ng-container matColumnDef="EnrollmentGirls">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Enrollment Girls
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.EnrollmentGirls}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- EnrollmentTotal Column -->
+                <ng-container matColumnDef="EnrollmentTotal">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EnrollmentTotal
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.EnrollmentTotal}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AttendanceBoys Column -->
+                <ng-container matColumnDef="AttendanceBoys">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Attendance Boys
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.AttendanceBoys}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AttendanceGirls Column -->
+                <ng-container matColumnDef="AttendanceGirls">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Attendance Girls
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.AttendanceGirls}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AttendanceTotal Column -->
+                <ng-container matColumnDef="AttendanceTotal">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Attendance Total
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtCourseModuleTracking">
+                        <p class="text-truncate">{{vtCourseModuleTracking.AttendanceTotal}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtCourseModuleTracking; columns: displayedColumns;"
+                    class="vt-course-module-tracking-report" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

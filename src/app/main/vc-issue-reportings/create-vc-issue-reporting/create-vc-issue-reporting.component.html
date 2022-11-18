@@ -1,0 +1,179 @@
+<div id="vc-issue-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vc-issue-reporting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vcIssueReportingModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VC Issue Reporting
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VC Issue Reporting Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vc-issue-reporting-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVCIssueReportingDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vc-issue-reporting-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateVCIssueReportingDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vcIssueReportingForm" [formGroup]="vcIssueReportingForm"
+                    class="vc-issue-reporting w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Reporting Date</mat-label>
+                            <input matInput [matDatepicker]="picker" name="issueReportDate" [min]="minReportingDate"
+                                [max]="CurrentDate" formControlName="IssueReportDate" required
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.IssueReportDate.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'IssueReportDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="65" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Main Issue</mat-label>
+                            <mat-select name="mainIssue" formControlName="MainIssue" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeMainIssue($event.value)">
+                                <mat-option [value]="mainIssueItem.Id" *ngFor="let mainIssueItem of mainIssueList">
+                                    {{ mainIssueItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.MainIssue.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'MainIssue')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Sub Issue</mat-label>
+                            <mat-select name="subIssue" formControlName="SubIssue" appearance="outline"
+                                required [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="subIssueItem.Id" *ngFor="let subIssueItem of subIssueList">
+                                    {{ subIssueItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.SubIssue.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'SubIssue')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Classes Affected</mat-label>
+                            <mat-select name="studentClass" formControlName="StudentClass" multiple appearance="outline"
+                                (selectionChange)="onStudentClassChange($event.value)"
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="213" (click)="selectAll(ev)" #ev>All Classes</mat-option>
+                                <mat-option [value]="studentClassItem.Name" [disabled]="studentClassItem.IsDisabled"
+                                    *ngFor="let studentClassItem of studentClassList">
+                                    {{ studentClassItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Months Affected</mat-label>
+                            <mat-select name="month" formControlName="Month" appearance="outline" multiple
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="monthItem.Name" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.Month.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'Month')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Students Affected</mat-label>
+                            <mat-select name="studentType" formControlName="StudentType" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="studentTypeItem.Id"
+                                    *ngFor="let studentTypeItem of studentTypeList">
+                                    {{ studentTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentType.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'StudentType')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>No of Student Affected</mat-label>
+                            <input matInput name="noOfStudents" formControlName="NoOfStudents" required digitOnly maxlength="4">
+                            <mat-error *ngIf="vcIssueReportingForm.controls.NoOfStudents.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'NoOfStudents')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Issue Details</mat-label>
+                            <input matInput name="issueDetails" formControlName="IssueDetails">
+                            <mat-error *ngIf="vcIssueReportingForm.controls.IssueDetails.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'IssueDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

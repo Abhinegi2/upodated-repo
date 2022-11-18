@@ -1,0 +1,104 @@
+<div id="change-login" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="UserModel.LandingPageUrl">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="subtitle secondary-text">
+                        <span>Change User LoginId</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="changeLoginForm" [formGroup]="changeLoginForm" class="change-login w-100-p p-24 mr-24"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Select Role</mat-label>
+
+                            <mat-select formControlName="RoleId" appearance="outline"
+                                (selectionChange)="onChangeRole($event.value)">
+                                <mat-option [value]="roleItem.Id" *ngFor="let roleItem of roleList">
+                                    {{ roleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="changeLoginForm.controls.RoleId.invalid">
+                                {{getErrorMessage(changeLoginForm, 'RoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                            <mat-label>Select User</mat-label>
+
+                            <mat-select formControlName="AccountId" required appearance="outline"
+                                matTooltip="Select user for changing Login Id" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectAccount>
+                                <mat-select-filter class="select-filter" *ngIf="SelectAccount.focused"
+                                    [array]="accountList" (filteredReturn)="this.filteredAccountItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="accountItem.Id" *ngFor="let accountItem of filteredAccountItems">
+                                    {{ accountItem.Name }}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="changeLoginForm.controls.AccountId.invalid">
+                                {{getErrorMessage(changeLoginForm, 'AccountId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-sm="100">
+                            <mat-label>New Login Id</mat-label>
+                            <input matInput name="newLoginId" formControlName="NewLoginId" required
+                                placeholder="Enter new Login Id" matTooltip="Enter new Login Id for change"
+                                matTooltipPosition='above' matTooltipClass="allow-cr">
+                            <mat-error *ngIf="changeLoginForm.controls.NewLoginId.invalid">
+                                {{getErrorMessage(changeLoginForm, 'NewLoginId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <button mat-raised-button color="accent" class="submit-button" aria-label="SUBMIT"
+                        (click)="submitChangingLoginId()">
+                        SUBMIT
+                    </button>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

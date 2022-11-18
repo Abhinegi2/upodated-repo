@@ -1,0 +1,311 @@
+<div id="vtp-bill-submission-status-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VTP BILL SUBMISSION STATUS REPORT
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a VTP Bill Submission Status">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <a *ngIf="PageRights.IsExport" class="export-excel"
+                    (click)="exporter.exportTable('xlsx', {fileName:'VTPBillSubmissionStatus', sheet: 'VTPBillSubmissionStatus', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+        </div>
+        <!-- / HEADER -->
+
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="isShowFilterContainer">
+            <div class="filter-content">
+                <form name="vtpBillSubmissionStatusForm" [formGroup]="vtpBillSubmissionStatusForm"
+                    class="vtp-bill-submission-status-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicyearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Month</mat-label>
+
+                            <mat-select formControlName="MonthId" name="monthId" appearance="fill">
+                                <mat-option [value]="monthItem.Id" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getVTPBillSubmissionStatusReports()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetReportFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vtp-bill-submission-status-report-table responsive-table" #table
+                [dataSource]="tableDataSource" matTableExporter #exporter="matTableExporter" [hiddenColumns]="[0]"
+                matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SrNo</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus; let RowIndex = index;">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.SrNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- MonthYear Column -->
+                <ng-container matColumnDef="MonthYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.MonthYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Month Column -->
+                <ng-container matColumnDef="Month">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.Month}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfSubmissionOfInvoice Column -->
+                <ng-container matColumnDef="DateOfSubmissionOfInvoice">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Date Of Submission Of
+                        Invoice</mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.DateOfSubmissionOfInvoice | date:
+                            Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PhaseName Column -->
+                <ng-container matColumnDef="PhaseName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Phase
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.PhaseName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- NameOfVTP Column -->
+                <ng-container matColumnDef="NameOfVTP">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.NameOfVTP}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CategoryName Column -->
+                <ng-container matColumnDef="CategoryName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Category
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.CategoryName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BillsForTheMonthYear Column -->
+                <ng-container matColumnDef="BillsForTheMonthYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Bills For The Month
+                        Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.BillsForTheMonthYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- InvoiceAmountInRs Column -->
+                <ng-container matColumnDef="InvoiceAmountInRs">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Invoice Amount In Rs
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.InvoiceAmountInRs}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DocumentsSubmittedRelatedToInvoice Column -->
+                <ng-container matColumnDef="DocumentsSubmittedRelatedToInvoice">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Documents Submitted
+                        Related To Invoice
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.DocumentsSubmittedRelatedToInvoice}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- NameOfTheVCwhoSubmittedTheInvoice Column -->
+                <ng-container matColumnDef="NameOfTheVCwhoSubmittedTheInvoice">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name Of The VC who
+                        Submitted The Invoice
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">
+                            {{vtpBillSubmissionStatus.NameOfTheVCwhoSubmittedTheInvoice}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Remarks Column -->
+                <ng-container matColumnDef="Remarks">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Remarks
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtpBillSubmissionStatus">
+                        <p class="text-truncate">{{vtpBillSubmissionStatus.Remarks}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtpBillSubmissionStatus; columns: displayedColumns;"
+                    class="vtp-bill-submission-status-report" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

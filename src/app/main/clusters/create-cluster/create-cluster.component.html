@@ -1,0 +1,144 @@
+<div id="cluster" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/clusters'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ clusterModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Cluster
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Cluster Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-cluster-button" [disabled]="clusterForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateClusterDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-cluster-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateClusterDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="clusterForm" [formGroup]="clusterForm" class="cluster w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Division</mat-label>
+
+                                <mat-select formControlName="DivisionId" name="divisionId" appearance="outline"
+                                    (selectionChange)="onChangeDivision($event.value)"
+                                    [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="divisionItem.Id" *ngFor="let divisionItem of divisionList">
+                                        {{ divisionItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="clusterForm.controls.DivisionId.invalid">
+                                    {{getErrorMessage(clusterForm, 'DivisionId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>District</mat-label>
+                                <mat-select formControlName="DistrictId" name="districtId" appearance="outline"
+                                    (selectionChange)="onChangeDistrict($event.value)"
+                                    [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="districtItem.Id" *ngFor="let districtItem of districtList">
+                                        {{ districtItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="clusterForm.controls.DistrictId.invalid">
+                                    {{getErrorMessage(clusterForm, 'DistrictId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            
+                        </div>
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Block</mat-label>
+                                <mat-select formControlName="BlockId" name="blockId" appearance="outline"
+                                    [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="blockItem.Id" *ngFor="let blockItem of blockList">
+                                        {{ blockItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="clusterForm.controls.BlockId.invalid">
+                                    {{getErrorMessage(clusterForm, 'BlockId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Cluster Name</mat-label>
+                                <input matInput name="clusterName" formControlName="ClusterName" required>
+                                <mat-error *ngIf="clusterForm.controls.ClusterName.invalid">{{getErrorMessage(clusterForm,
+                                    'ClusterName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="clusterForm.controls.Description.invalid">{{getErrorMessage(clusterForm,
+                                    'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

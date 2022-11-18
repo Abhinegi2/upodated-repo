@@ -1,0 +1,92 @@
+<div id="vt-monthly-attendance" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="subtitle secondary-text">
+                        <span>VT Monthly Attendance Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="monthlyAttendanceForm" [formGroup]="monthlyAttendanceForm"
+                    class="vt-monthly-attendance w-100-p" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px" *ngIf="this.UserModel.RoleCode == 'ADM'">
+                            <mat-form-field appearance="outline" fxFlex="45" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Select Vocational Trainer</mat-label>
+
+                                <mat-select formControlName="VTId" appearance="outline" required
+                                    matTooltip="Select Vocational Trainer" matTooltipPosition='above'
+                                    matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
+                                    <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
+                                        (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
+                                    </mat-select-filter>
+                                    <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredVTItems">
+                                        {{ vtItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="monthlyAttendanceForm.controls.VTId.invalid">
+                                    {{getErrorMessage(monthlyAttendanceForm, 'VTId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="45" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Report Month</mat-label>
+
+                                <input matInput name="reportDate" formControlName="ReportDate" required
+                                    [matDatepicker]="reportDate" [max]="CurrentDate">
+                                <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
+                                <mat-datepicker #reportDate startView="year" (yearSelected)="chosenYearHandler($event)"
+                                    (monthSelected)="chosenMonthHandler($event, reportDate)"></mat-datepicker>
+
+                                <mat-error *ngIf="monthlyAttendanceForm.controls.ReportDate.invalid">
+                                    {{getErrorMessage(monthlyAttendanceForm, 'ReportDate')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <span class="material-icons action-btn"
+                                (click)="getVTMonthlyAttendanceReport()">save_alt</span>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

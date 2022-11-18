@@ -1,0 +1,130 @@
+<div id="state" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/states'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ stateModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New State
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>State Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-state-button" [disabled]="stateForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateStateDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-state-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateStateDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="stateForm" [formGroup]="stateForm" class="state w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>State Code</mat-label>
+                                <input matInput name="stateCode" formControlName="StateCode" required>
+                                <mat-error *ngIf="stateForm.controls.StateCode.invalid">{{getErrorMessage(stateForm, 'StateCode')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="30" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>State Id</mat-label>
+                                <input matInput name="stateId" formControlName="StateId" required>
+                                <mat-error *ngIf="stateForm.controls.StateId.invalid">{{getErrorMessage(stateForm, 'StateId')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="35" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Country Code</mat-label>
+                                <input matInput name="countryCode" formControlName="CountryCode" required>
+                                <mat-error *ngIf="stateForm.controls.CountryCode.invalid">{{getErrorMessage(stateForm, 'CountryCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>State Name</mat-label>
+                                <input matInput name="stateName" formControlName="StateName" required>
+                                <mat-error *ngIf="stateForm.controls.StateName.invalid">{{getErrorMessage(stateForm, 'StateName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="stateForm.controls.Description.invalid">{{getErrorMessage(stateForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" class="pr-20" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Sequence No</mat-label>
+                                <input matInput name="sequenceNo" formControlName="SequenceNo" required>
+                                <mat-error *ngIf="stateForm.controls.SequenceNo.invalid">{{getErrorMessage(stateForm, 'SequenceNo')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

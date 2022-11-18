@@ -1,0 +1,315 @@
+<div id="school" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/schools'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ schoolModel.SchoolName }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New School
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>School Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-school-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateSchoolDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-school-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateSchoolDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="schoolForm" [formGroup]="schoolForm" class="school w-100-p p-24 mr-24" fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div class="required-mark">
+                        <span><span class="note">Notes: </span>All fields marked with an asterisk (<span
+                                class="asterisk-color">*</span>) are required.</span>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                            <mat-label>State</mat-label>
+                            <mat-select name="stateName" formControlName="StateName" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeState($event.value)">
+                                <mat-option *ngFor="let stateItem of stateList" [value]="stateItem.Id">
+                                    {{stateItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.StateName.invalid">
+                                {{getErrorMessage(schoolForm, 'StateName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="outline"
+                                (selectionChange)="onChangeDivision($event.value)" [disabled]="PageRights.IsReadOnly"
+                                required>
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.DivisionId.invalid">
+                                {{getErrorMessage(schoolForm, 'DivisionId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select name="districtCode" formControlName="DistrictCode" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeDistrict($event.value)">
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.DistrictCode.invalid">
+                                {{getErrorMessage(schoolForm, 'DistrictCode')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="20" fxFlex.lt-sm="100"
+                            fxFlex.lt-xs="20">
+                            <mat-label>Block</mat-label>
+                            <mat-select formControlName="BlockId" name="blockId" appearance="outline"
+                                (selectionChange)="onChangeBlock($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="blockItem.Id" *ngFor="let blockItem of blockList">
+                                    {{ blockItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.BlockId.invalid">
+                                {{getErrorMessage(schoolForm, 'BlockId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="20" fxFlex.lt-sm="100"
+                            fxFlex.lt-xs="20">
+                            <mat-label>Cluster</mat-label>
+                            <mat-select formControlName="ClusterId" name="clusterId" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="clusterItem.Id" *ngFor="let clusterItem of clusterList">
+                                    {{ clusterItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.ClusterId.invalid">
+                                {{getErrorMessage(schoolForm, 'ClusterId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="20" fxFlex.lt-sm="100"
+                            fxFlex.lt-xs="20">
+                            <mat-label>Village / Ward</mat-label>
+                            <input matInput name="village" formControlName="Village" placeholder="Ex. Desalpar Gunthli"
+                                matTooltip="Enter village name. Ensure first letter should be capital of each word."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Village.invalid">
+                                {{getErrorMessage(schoolForm, 'Village')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="20" fxFlex.lt-sm="100"
+                            fxFlex.lt-xs="20">
+                            <mat-label>Panchayat</mat-label>
+                            <input matInput name="panchayat" formControlName="Panchayat"
+                                placeholder="Ex. Desalpar Gunthli"
+                                matTooltip="Enter panchayat name. Ensure first letter should be capital of each word."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Panchayat.invalid">
+                                {{getErrorMessage(schoolForm, 'Panchayat')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Name</mat-label>
+                            <input matInput name="schoolName" required formControlName="SchoolName"
+                                placeholder="Ex. Adani Public School" matTooltip="School Name should be typed in Full, first letter of each word in 
+                                Capital followed by small letters. Please avoid commas and dots in name."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.SchoolName.invalid">
+                                {{getErrorMessage(schoolForm, 'SchoolName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Category</mat-label>
+                            <mat-select name="schoolCategoryId" formControlName="SchoolCategoryId" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="SchoolCategoryItem.Id"
+                                    *ngFor="let SchoolCategoryItem of schoolCategoryList">
+                                    {{ SchoolCategoryItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.SchoolCategoryId.invalid">
+                                {{getErrorMessage(schoolForm, 'SchoolCategoryId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>UDISE</mat-label>
+                            <input matInput name="udise" formControlName="Udise" digitOnly minlength="11" maxlength="11"
+                                required placeholder="Enter the 11 digit UDISE number"
+                                matTooltip="Enter the 11 digit UDISE number." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Udise.invalid">
+                                {{getErrorMessage(schoolForm, 'Udise')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.SchoolTypeId.invalid">
+                                {{getErrorMessage(schoolForm, 'SchoolManagementId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Type</mat-label>
+
+                            <mat-select formControlName="SchoolTypeId" name="schoolTypeId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="SchoolTypeItem.Id" *ngFor="let SchoolTypeItem of schoolTypeList">
+                                    {{ SchoolTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.SchoolTypeId.invalid">
+                                {{getErrorMessage(schoolForm, 'SchoolTypeId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Approval Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeAcademicYear($event.value)">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicyearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(schoolForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Approval Phase</mat-label>
+
+                            <mat-select formControlName="PhaseId" required name="phaseId"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="PhaseItem.Id" *ngFor="let PhaseItem of phaseList">
+                                    {{ PhaseItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.PhaseId.invalid">
+                                {{getErrorMessage(schoolForm, 'PhaseId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Pincode</mat-label>
+                            <input matInput name="pincode" formControlName="Pincode" digitOnly maxlength="6"
+                                matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Pincode.invalid">
+                                {{getErrorMessage(schoolForm, 'Pincode')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-label>Demography</mat-label>
+                        <mat-radio-group aria-labelledby="Select Demography" name="demography"
+                            formControlName="Demography" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100" fxLayoutGap="30px" class="demography-space"
+                            [disabled]="PageRights.IsReadOnly">
+                            <mat-radio-button value="Rural">Rural</mat-radio-button>
+                            <mat-radio-button value="Urban">Urban</mat-radio-button>
+                            <mat-radio-button value="Semi Urban">Semi Urban</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="schoolForm.controls.Demography.invalid">
+                            {{getErrorMessage(schoolForm, 'Demography')}}
+                        </mat-error>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <span class="checkbox-space">Is Implemented?</span>
+                        <mat-checkbox matInput formControlName="IsImplemented" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

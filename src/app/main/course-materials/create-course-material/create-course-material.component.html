@@ -1,0 +1,219 @@
+<div id="course-material" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/course-materials'"
+                    skipLocationChange="true" replaceUrl="false">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ courseMaterialModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Course Material
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Course Material Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-course-material-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateCourseMaterialDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-course-material-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateCourseMaterialDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="courseMaterialForm" [formGroup]="courseMaterialForm"
+                    class="course-material w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVTP($event.value)"
+                                [disabled]="PageRights.IsReadOnly" #SelectVTP>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused"
+                                    [array]="vtpFilterList" (filteredReturn)="vtpList = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.VTPId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'VTPId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVC($event.value)"
+                                [disabled]="PageRights.IsReadOnly" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="VCList"
+                                    (filteredReturn)="vcList = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.VCId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'VCId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" matTooltip="School" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="VTId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeAcademicYear()" #SelectVT>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVT.focused" [array]="VTList"
+                                    (filteredReturn)="vtList = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.VTId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'VTId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" appearance="outline" required
+                                (selectionChange)="onChangeAcademicYear()" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.ClassId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Receipt Date</mat-label>
+                            <input matInput name="receiptDate" formControlName="ReceiptDate" [max]="CurrentDate"
+                                [matDatepicker]="receiptDate"
+                                [required]="courseMaterialForm.controls.CMStatus.value == 'Yes'"
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
+                            <mat-datepicker #receiptDate></mat-datepicker>
+
+                            <mat-error *ngIf="courseMaterialForm.controls.ReceiptDate.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'ReceiptDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <div class="cm-status" style="width: 100%;">
+                            <mat-label fxFlex="35" class="radio-label-sc">Course Material Availability</mat-label>
+                            <mat-radio-group name="cmStatus" formControlName="CMStatus" required appearance="outline"
+                                fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                (change)="onChangeOnCMStatusType($event)" fxLayoutGap="20px" class="radio-space-sc"
+                                [disabled]="PageRights.IsReadOnly"
+                                [ngClass]="{'mat-form-field-invalid': courseMaterialForm.controls.CMStatus.touched && courseMaterialForm.controls.CMStatus.value == ''}">
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Details</mat-label>
+                            <input matInput name="details" formControlName="Details">
+                            <mat-error *ngIf="courseMaterialForm.controls.Details.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'Details')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

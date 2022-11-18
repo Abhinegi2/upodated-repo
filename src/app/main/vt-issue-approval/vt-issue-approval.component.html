@@ -1,0 +1,154 @@
+<div id="vt-issue-approval" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT ISSUE APPROVAL
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vt issue reporting">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="vt-issue-approval-table responsive-table" #table [dataSource]="tableDataSource" matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+ 
+                <!-- IssueReportDate Column -->
+                <ng-container matColumnDef="IssueReportDate">
+                    <mat-header-cell *matHeaderCellDef class="tab-col-15" mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        Issue Repor tDate</mat-header-cell>
+                    <mat-cell class="tab-col-15" *matCellDef="let vtIssueReporting">
+                        <p class="text-truncate">{{vtIssueReporting.IssueReportDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- MainIssue Column -->
+                <ng-container matColumnDef="MainIssue">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Main Issue
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting">
+                        <p class="text-truncate">{{vtIssueReporting.MainIssue}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- StudentClass Column -->
+                <ng-container matColumnDef="StudentClass">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Student Class
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.StudentClass}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- StudentType Column -->
+                <ng-container matColumnDef="StudentType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Student Type
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.StudentType}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- NoOfStudents Column -->
+                <ng-container matColumnDef="NoOfStudents">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>No Of Students
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.NoOfStudents}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IssueDetails Column -->
+                <ng-container matColumnDef="IssueDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Issue Details
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.IssueDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovalStatus Column -->
+                <ng-container matColumnDef="ApprovalStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approval Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.ApprovalStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovedDate Column -->
+                <ng-container matColumnDef="ApprovedDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approved Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.ApprovedDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vt-issue-reporting', 'view', vtIssueReporting.VTIssueReportingId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        
+                        <button *ngIf="vtIssueReporting.ApprovalStatus == null" mat-icon-button                         
+                        (click)="saveOrUpdateVTIssueApprovalDetails('Approved', vtIssueReporting.VTIssueReportingId)">
+                            <mat-icon color="primary">check</mat-icon>
+                        </button>
+
+                        <button *ngIf="vtIssueReporting.ApprovalStatus == null" mat-icon-button                        
+                        (click)="saveOrUpdateVTIssueApprovalDetails('Rejected', vtIssueReporting.VTIssueReportingId)">
+                            <mat-icon color="primary">close</mat-icon>
+                        </button>  
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtIssueReporting; columns: displayedColumns;" class="vt-issue-approval"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -1,0 +1,182 @@
+<div id="login" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+
+    <div id="login-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target == 'gj' || appInfo.target == 'lahi'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-gj.png">
+            </a>
+        </div>
+
+        <div class="login-desc-content">
+            <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                <h3>વ્યવસાયલક્ષી શિક્ષણ</h3>
+            </div>
+
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">                
+                યુવાનોની અભિપ્સાઓ અને સમાજમાં કૌશલ્યવાન યુવાધનની માંગને પહોંચી વળવા માટે, ભારત સરકાર દ્રારા વ્યક્તિગત ક્ષમતાઓ મુજબ અનુભવ અને પ્રેકટીકલ મહાવરા દ્રારા વ્યવસાયિક સજ્જતા દ્રારા વિદ્યાર્થીઓ માટેની વ્યવસાયિક તકોને વધારવા માટે ગુજરાત રાજયની માધ્યમિક અને ઉચ્ચતર માધ્યમિક શાળાઓમાં વ્યવસાયલક્ષી શિક્ષણ યોજના (વોકેશનલાઇઝેશન ઓફ સેકન્ડરી એન્ડ હાયર સેકન્ડરી સ્કીમ) દાખલ કરવામાં આવી છે.
+            </div>
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">                
+                ગુજરાત રાજયના 33 જિલ્લાઓમાં વોકેશનલ એજયુકેશન અંતર્ગત હાલ 934 માધ્યમિક અને ઉચ્ચતર માધ્યમિક શાળાઓમાં વ્યવસાયલક્ષી શિક્ષણને દાખલ કરેલ જેમાં
+            </div>
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                (1) Retail (2) Tourism (3) Beauty & Wellness (4) Agriculture (5) Electronics & Hardware (6) Automotive (7) Apparel (8) Healthcare (9) IT/ITES (10) BFSI (11) Sports, Physical Education, Fitness & Leisure (12) FOOD PROCESSING (13) Plumber
+            </div>
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                ટ્રેડ દાખલ કરવામાં આવ્યા. વોકેશનલ એજયુકેશનના અસરકારક અમલીકરણ માટે લાઈટહાઉસ પોર્ટલ શરૂ કરવામાં આવેલ છે.
+            </div>
+        </div>
+    </div>
+
+    <div id="login-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target == 'aws' || appInfo.target == 'demo'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-aws.png">
+            </a>
+        </div>
+
+        <div class="login-desc-content">
+            <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                <h3>Welcome To Vocational Education</h3>
+            </div>
+
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                This is Management Information System for M&E - Lighthouse
+            </div>
+        </div>
+    </div>
+
+    <div id="login-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target == 'jh'"
+        style="background-image: url('assets/images/logos/samagra-shiksha-abhiyan-jh-login.png'); background-position: center bottom; padding: 0 !important;">
+
+        <div class="jh-two-logo" style="padding: 15px !important; height: 240px;"
+            [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a style="float: left;" class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img style="width: 190px;" src="assets/images/logos/samagra-shiksha-abhiyan-jh-left.png">
+            </a>
+            <a style="float: right;" class="link" [routerLink]="['/login']" skipLocationChange="true"
+                replaceUrl="false">
+                <img style="width: 190px;" src="assets/images/logos/samagra-shiksha-abhiyan-jh-right.png">
+            </a>
+        </div>
+
+        <div class="login-desc-content" style="padding-left: 65px; padding-right: 20px;">
+            <div class="description" style="max-width: fit-content;"
+                [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                Government of Jharkhand is committed to enable growth of the state through skilling the youth.
+                A skilled and high productivity manpower base is a critical enabler in the growth of manufacturing,
+                services and agriculture. Vocational Education in higher secondary schools is an intervention to make
+                the youth skilled and employable at school level.
+            </div>
+        </div>
+    </div>
+
+    <div id="login-intro" fxFlex fxHide fxShow.gt-sm
+        *ngIf="appInfo.target != 'jh' && appInfo.target != 'gj' && appInfo.target != 'aws' && appInfo.target != 'demo' && appInfo.target != 'lahi'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-{{appInfo.target}}.png">
+            </a>
+        </div>
+
+        <div class="login-desc-content">
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                Ministry of Education is implementing the Vocationalization of Secondary and Higher Secondary
+                Education
+                under Samagra Shiksha. Its main objectives are to enhance the employability of youth through
+                demand-driven
+                competency based, modular vocational courses and to bridge the divide between academic and learning.
+            </div>
+        </div>
+    </div>
+
+    <div id="login-form-wrapper" fusePerfectScrollbar [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="login-form">
+
+            <div class="logo">
+                <img src="assets/images/logos/lighthouse-logo.png">
+            </div>
+
+            <div class="title">LOGIN TO YOUR ACCOUNT</div>
+
+            <form name="loginForm" novalidate [formGroup]="loginForm">
+                <mat-form-field appearance="outline">
+                    <mat-label>User Id</mat-label>
+                    <input matInput name="userId" formControlName="UserId" required>
+                    <mat-icon matSuffix class="secondary-text">mail</mat-icon>
+
+                    <mat-error *ngIf="loginForm.controls.UserId.invalid">
+                        {{getErrorMessage(loginForm, 'UserId')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="isVisiblePassword ? 'text' : 'password'" name="password"
+                        formControlName="Password" required>
+                    <mat-icon matSuffix (click)="setVisiblePassword()">{{isVisiblePassword ? 'visibility' :
+                        'visibility_off'}}
+                    </mat-icon>
+
+                    <mat-error *ngIf="loginForm.controls.Password.invalid">
+                        {{getErrorMessage(loginForm, 'Password')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="remember-forgot-password" fxLayout="row" fxLayout.xs="column"
+                    fxLayoutAlign="space-between center">
+                    <mat-checkbox formControlName="RememberMe" class="remember-me" aria-label="Remember Me">
+                        Remember Me
+                    </mat-checkbox>
+
+                    <a class="forgot-password" [routerLink]="'/forgot-password'">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <button mat-raised-button color="accent" class="submit-button" aria-label="LOGIN"
+                    [disabled]="loginForm.invalid" (click)="validateUserAuth()">
+                    LOGIN
+                </button>
+            </form>
+
+            <div class="complaint-registration">
+                <a class="link" [routerLink]="'/complaint-registration'">
+                    Complaint Registration
+                </a>
+                <!-- <a class="link" href="https://basic.pathways.net.in/login" target="_blank" style="float:right;font-size: large;">
+                   <b>Internship Portal</b> 
+                </a> -->
+            </div>
+
+            <div class="lahi-logo">
+                <div class="lahi-title">By : </div>
+                <img src="assets/images/logos/LALHI-logo.png">
+            </div>
+
+            <div class="lahi-version">
+                <div class="web-version">Web Version : {{ appInfo.version }}</div>
+                <div class="support-email">Email : {{ appInfo.email }}</div>
+            </div>
+
+            <!-- <div class="separator" fxHide>
+                <span class="text">OR</span>
+            </div> -->
+
+            <!-- <div fxLayout="column" fxLayoutAlign="start center" fxHide>
+                <button mat-raised-button class="google">
+                    Log in with Google
+                </button>
+
+                <button mat-raised-button class="facebook">
+                    Log in with Facebook
+                </button>
+            </div> -->
+
+            <!-- <div class="register" fxLayout="column" fxLayoutAlign="start start" fxHide>
+                <span class="text">Don't have an account?</span>
+                <a class="link" [routerLink]="'/new-account'">Create an account</a>
+            </div> -->
+        </div>
+    </div>
+</div>

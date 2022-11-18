@@ -1,0 +1,147 @@
+<div id="vc-issue-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    {{issueType}} ISSUE APPROVAL
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a issue reporting">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="issue-approval-table responsive-table" #table [dataSource]="tableDataSource" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <!-- IssueReportDate Column -->
+                <ng-container matColumnDef="IssueReportDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reporting Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.IssueReportDate | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReportedBy Column -->
+                <ng-container matColumnDef="ReportedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Issue Raised By
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.ReportedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IssueCategory Column -->
+                <ng-container matColumnDef="IssueCategory">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Issue Category
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.IssueCategory}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- MainIssue Column -->
+                <ng-container matColumnDef="MainIssue">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Main Issue
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting">
+                        <p class="text-truncate">{{issueReporting.MainIssue}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SubIssue Column -->
+                <ng-container matColumnDef="SubIssue">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sub Issue
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting">
+                        <p class="text-truncate">{{issueReporting.SubIssue}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovalStatus Column -->
+                <ng-container matColumnDef="ApprovalStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approval Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.ApprovalStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ApprovedDate Column -->
+                <ng-container matColumnDef="ApprovedDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approved Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.ApprovedDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView && issueType == 'VC'" mat-icon-button
+                            [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility </mat-icon>
+                        </button>
+
+                        <button *ngIf="PageRights.IsView && issueType == 'VT'" mat-icon-button
+                            [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+
+                        <button *ngIf="PageRights.IsView && issueType == 'HM'" mat-icon-button
+                            [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
+                            skipLocationChange="true" replaceUrl="false">
+                            <mat-icon color="primary">visibility </mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let issueReporting; columns: displayedColumns;" class="vc-issue-reporting"
+                    matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

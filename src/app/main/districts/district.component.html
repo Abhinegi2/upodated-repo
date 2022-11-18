@@ -1,0 +1,144 @@
+<div id="district" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    DISTRICTS
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <form [formGroup]="districtForm"> 
+                    <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon>search</mat-icon>
+                        <input formControlName="filterText" placeholder="Search for a districts">
+                    </div>
+                </form>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                class="add-district-button fuse-white mt-24 mt-md-0">
+                <span>ADD</span>
+            </button>
+
+            <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                <mat-icon> cloud_download</mat-icon>
+            </a>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table class="district-table responsive-table" [dataSource]="tableDataSource" matSort
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- StateName Column -->
+                <ng-container matColumnDef="StateName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>State</mat-header-cell>
+                    <mat-cell *matCellDef="let district">
+                        <p class="text-truncate">{{district.StateName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DivisionName Column -->
+                <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Division</mat-header-cell>
+                    <mat-cell *matCellDef="let district" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{district.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictCode Column -->
+                <ng-container matColumnDef="DistrictCode">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Code
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let district" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{district.DistrictCode}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DistrictName Column -->
+                <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let district">
+                        <p class="text-truncate">{{district.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="Description">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Description</mat-header-cell>
+                    <mat-cell *matCellDef="let district" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{district.Description}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let district" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="district.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!district.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let district" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/districts', 'view', district.DistrictCode]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/districts', 'edit', district.DistrictCode]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteDistrict(district.DistrictCode)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let district; columns: displayedColumns;" class="district" matRipple>
+                </mat-row>
+            </mat-table>
+ 
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

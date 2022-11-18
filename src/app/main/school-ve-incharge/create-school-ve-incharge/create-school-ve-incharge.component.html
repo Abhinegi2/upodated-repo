@@ -1,0 +1,252 @@
+<div id="school-ve-incharge" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/school-ve-incharge'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ schoolVEInchargeModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New School VE Incharge
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>School VE Incharge Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-school-veincharge-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateSchoolVEInchargeDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-school-veincharge-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateSchoolVEInchargeDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="schoolVEInchargeForm" [formGroup]="schoolVEInchargeForm"
+                    class="school-veincharge w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVTP($event.value)"
+                                [disabled]="PageRights.IsReadOnly" #SelectVTP>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused"
+                                    [array]="filteredVTPItems" (filteredReturn)="vtpList = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.VTPId.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'VTPId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" (selectionChange)="onChangeVC($event.value)"
+                                [disabled]="PageRights.IsReadOnly" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused"
+                                    [array]="filteredVCItems" (filteredReturn)="vcList = $event"
+                                    [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.VCId.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'VCId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" [required]="UserModel.RoleCode != 'VT'"
+                                appearance="outline" matTooltip="Select School" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool>
+
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>First Name</mat-label>
+                            <input matInput name="firstName" formControlName="FirstName" required
+                                placeholder="Ex. Rakesh" matTooltip="First letter should be capital."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.FirstName.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'FirstName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Middle Name</mat-label>
+                            <input matInput name="middleName" formControlName="MiddleName" placeholder="Ex. Kumar"
+                                matTooltip="First letter should be capital." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.MiddleName.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'MiddleName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput name="lastName" formControlName="LastName" placeholder="Ex. Nayak"
+                                matTooltip="First letter should be capital." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.LastName.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'LastName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>First Mobile Number</mat-label>
+                            <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.Mobile.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'Mobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Second Mobile Number</mat-label>
+                            <input matInput name="mobile1" formControlName="Mobile1" digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.Mobile1.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'Mobile1')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Gender</mat-label>
+                            <mat-select name="gender" formControlName="Gender" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
+                                    {{ genderItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.Gender.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'Gender')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Email</mat-label>
+                            <input matInput name="email" formControlName="Email" required
+                                placeholder="Ex. abc@test.com">
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.Email.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'Email')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Of Joining</mat-label>
+                            <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
+                                [max]="CurrentDate" [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfJoining></mat-datepicker>
+
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.DateOfJoining.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'DateOfJoining')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
+                            <mat-label>Date Of Resignation</mat-label>
+                            <input matInput name="dateOfResignationFromRoleSchool" [max]="CurrentDate"
+                                (dateChange)="onChangeDateEnableDisableCheckBox(schoolVEInchargeForm, $event)"
+                                formControlName="DateOfResignationFromRoleSchool"
+                                [matDatepicker]="dateOfResignationFromRoleSchool"
+                                [min]="schoolVEInchargeForm.controls.DateOfJoining.value"
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfResignationFromRoleSchool">
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #dateOfResignationFromRoleSchool></mat-datepicker>
+
+                            <mat-error *ngIf="schoolVEInchargeForm.controls.DateOfResignationFromRoleSchool.invalid">
+                                {{getErrorMessage(schoolVEInchargeForm, 'DateOfResignationFromRoleSchool')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-icon matDatepickerToggleIcon
+                            (click)="clearDateValueInFormControl(schoolVEInchargeForm, 'DateOfResignationFromRoleSchool', $event)"
+                            *ngIf="schoolVEInchargeForm.controls.DateOfResignationFromRoleSchool.value && PageRights.ActionType !='view'">
+                            clear</mat-icon>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

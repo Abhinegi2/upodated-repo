@@ -1,0 +1,228 @@
+<div id="hm-issue-reporting" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="backToApprovalPage">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ hmIssueReportingModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New HM Issue Reporting
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>{{type}} Issue Reporting Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-hm-issue-reporting-button"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateHMIssueReportingDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-hm-issue-reporting-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateHMIssueReportingDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="issueApprovalForm" [formGroup]="issueApprovalForm" class="hm-issue-reporting w-100-p p-24 mr-24" fxLayout="column"
+                fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Reporting Date</mat-label>
+                                <input matInput [matDatepicker]="issueReportDate" name="issueReportDate" [max]="CurrentDate" 
+                                formControlName="IssueReportDate" [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="issueReportDate"></mat-datepicker-toggle>
+                                <mat-datepicker #issueReportDate></mat-datepicker>
+                                <mat-error *ngIf="issueApprovalForm.controls.IssueReportDate.invalid">{{getErrorMessage(issueApprovalForm, 'IssueReportDate')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Main Issue</mat-label>
+                                <mat-select name="mainIssue" formControlName="MainIssue" appearance="outline" 
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeMainIssue($event.value)">
+                                    <mat-option [value]="mainIssueItem.Id"
+                                        *ngFor="let mainIssueItem of mainIssueList">
+                                        {{ mainIssueItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="issueApprovalForm.controls.MainIssue.invalid">{{getErrorMessage(issueApprovalForm, 'MainIssue')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                <mat-label>Sub Issue</mat-label>
+                                <mat-select name="subIssue" formControlName="SubIssue" appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                    <mat-option [value]="subIssueItem.Id"
+                                        *ngFor="let subIssueItem of subIssueList">
+                                        {{ subIssueItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="issueApprovalForm.controls.SubIssue.invalid">{{getErrorMessage(issueApprovalForm, 'SubIssue')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Classes Affected</mat-label>
+                                <mat-select name="studentClass" formControlName="StudentClass" multiple appearance="outline" [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="studentClassItem.Id"
+                                        *ngFor="let studentClassItem of studentClassList">
+                                        {{ studentClassItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="issueApprovalForm.controls.StudentClass.invalid">{{getErrorMessage(issueApprovalForm, 'StudentClass')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Months Affected</mat-label>
+                                <mat-select name="month" formControlName="Month" appearance="outline" multiple [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="monthItem.Name"
+                                        *ngFor="let monthItem of monthList">
+                                        {{ monthItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="issueApprovalForm.controls.Month.invalid">{{getErrorMessage(issueApprovalForm, 'Month')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Students Affected</mat-label>
+                                <mat-select name="studentType" formControlName="StudentType" appearance="outline" [disabled]="PageRights.IsReadOnly" required>
+                                    <mat-option [value]="studentTypeItem.Id"
+                                        *ngFor="let studentTypeItem of studentTypeList">
+                                        {{ studentTypeItem.Name }}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="issueApprovalForm.controls.StudentType.invalid">{{getErrorMessage(issueApprovalForm, 'StudentType')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>No of Student Affected</mat-label>
+                                <input matInput name="noOfStudents" formControlName="NoOfStudents" digitOnly>
+                                <mat-error *ngIf="issueApprovalForm.controls.NoOfStudents.invalid">{{getErrorMessage(issueApprovalForm, 'NoOfStudents')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                <mat-label>Issue Details</mat-label>
+                                <input matInput name="issueDetails" formControlName="IssueDetails">
+                                <mat-error *ngIf="issueApprovalForm.controls.IssueDetails.invalid">{{getErrorMessage(issueApprovalForm, 'IssueDetails')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Assign For Action</mat-label>
+                             <mat-select name="approvalStatus" formControlName="ApprovalStatus" appearance="outline"  required>
+                                <mat-option [value]="issueStatusItem.Id"
+                                    *ngFor="let issueStatusItem of issueStatusList">
+                                    {{ issueStatusItem.Name }}
+                                </mat-option>
+                            </mat-select> 
+                            <input matInput name="assignForAction" formControlName="AssignForAction">
+                            <mat-error *ngIf="issueApprovalForm.controls.AssignForAction.invalid">{{getErrorMessage(issueApprovalForm, 'AssignForAction')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Coordinator</mat-label>
+                            <input matInput name="vocationalCoordinator" formControlName="VocationalCoordinator">
+                            <mat-select name="vocationalCoordinator" formControlName="VocationalCoordinator" appearance="outline"  required>
+                                <mat-option [value]="issueStatusItem.Id"
+                                    *ngFor="let issueStatusItem of issueStatusList">
+                                    {{ issueStatusItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.VocationalCoordinator.invalid">{{getErrorMessage(issueApprovalForm, 'VocationalCoordinator')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        </div> -->
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Issue Status</mat-label>
+                            <mat-select name="approvalStatus" formControlName="ApprovalStatus" appearance="outline"  required>
+                                <mat-option [value]="issueStatusItem.Id"
+                                    *ngFor="let issueStatusItem of issueStatusList">
+                                    {{ issueStatusItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.ApprovalStatus.invalid">{{getErrorMessage(issueApprovalForm, 'ApprovalStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        </div>
+
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Remarks</mat-label>
+                            <input matInput name="remarks" formControlName="Remarks">
+                            <mat-error *ngIf="issueApprovalForm.controls.Remarks.invalid">{{getErrorMessage(issueApprovalForm, 'Remarks')}}
+                            </mat-error>
+                        </mat-form-field>
+                        </div>
+
+                        <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

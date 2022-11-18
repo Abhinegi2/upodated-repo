@@ -1,0 +1,111 @@
+<div id="user-otpdetail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/user-otpdetails'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ userOTPDetailModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New User OTPDetail
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>User OTPDetail Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-user-otpdetail-button" [disabled]="userOTPDetailForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateUserOTPDetailDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-user-otpdetail-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateUserOTPDetailDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="userOTPDetailForm" [formGroup]="userOTPDetailForm" class="user-otpdetail w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Mobile</mat-label>
+                                <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10" maxlength="10">
+                                <mat-error *ngIf="userOTPDetailForm.controls.Mobile.invalid">{{getErrorMessage(userOTPDetailForm, 'Mobile')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>OTPToken</mat-label>
+                                <input matInput name="otpToken" formControlName="OTPToken" required>
+                                <mat-error *ngIf="userOTPDetailForm.controls.OTPToken.invalid">{{getErrorMessage(userOTPDetailForm, 'OTPToken')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Expire On</mat-label>
+                                <input matInput name="expireOn" formControlName="ExpireOn" required>
+                                <mat-error *ngIf="userOTPDetailForm.controls.ExpireOn.invalid">{{getErrorMessage(userOTPDetailForm, 'ExpireOn')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Redeemed</span>
+                            <mat-checkbox matInput formControlName="IsRedeemed" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

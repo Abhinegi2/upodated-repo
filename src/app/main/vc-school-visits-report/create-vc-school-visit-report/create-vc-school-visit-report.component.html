@@ -1,0 +1,435 @@
+<div id="vc-school-visit-report" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vc-school-visit-reporting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vcSchoolVisitReportModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VC School Visit Reporting
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VC School Visit Reporting Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vc-school-visit-button" *ngIf="PageRights.ActionType ==='new'"
+                (click)="saveOrUpdateVCSchoolVisitReportDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vc-school-visit-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateVCSchoolVisitReportDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vcSchoolVisitReportForm" [formGroup]="vcSchoolVisitReportForm"
+                    class="vc-school-visit w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Name of VC</mat-label>
+                            <input matInput name="vcId" formControlName="VCName">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.VCName.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'VCName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Company Name</mat-label>
+                            <input matInput name="CompanyName" formControlName="CompanyName" required>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.CompanyName.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'CompanyName')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Month of Visit</mat-label>
+                            <mat-select name="month" formControlName="Month" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="monthItem.Name" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Month.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Month')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date of Visit</mat-label>
+
+                            <input matInput [matDatepicker]="visitDate" name="visitDate" [max]="CurrentDate"
+                                [min]="minReportingDate" formControlName="VisitDate" required
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="visitDate"></mat-datepicker-toggle>
+                            <mat-datepicker #visitDate></mat-datepicker>
+
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.VisitDate.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'VisitDate')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select School</mat-label>
+
+                            <mat-select formControlName="SchoolId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="
+                            filteredSchoolItems = $event" [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+
+                            <mat-select formControlName="DistrictCode" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" #SelectDistrict>
+                                <mat-select-filter class="select-filter" *ngIf="SelectDistrict.focused"
+                                    [array]="districtList" (filteredReturn)="
+                                    filteredDistrictItems = $event" [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="districtItem.Id"
+                                    *ngFor="let districtItem of filteredDistrictItems">
+                                    {{ districtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.DistrictCode.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'DistrictCode')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>E-mail of School</mat-label>
+                            <input matInput name="schoolEmailId" formControlName="SchoolEmailId" required>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.SchoolEmailId.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'SchoolEmailId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Name Of Principal</mat-label>
+                            <input matInput name="principalName" formControlName="PrincipalName" required>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.PrincipalName.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'PrincipalName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Phone No</mat-label>
+                            <input matInput name="principalPhoneNo" formControlName="PrincipalPhoneNo" required
+                                digitOnly minlength="10" maxlength="10">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.PrincipalPhoneNo.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'PrincipalPhoneNo')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.SectorId.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Job Role</mat-label>
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Trainer</mat-label>
+                            <mat-select formControlName="VTId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.VTId.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'VTId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Phone No</mat-label>
+                            <input matInput name="vtPhoneNo" formControlName="VTPhoneNo" required digitOnly
+                                minlength="10" maxlength="10">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.VTPhoneNo.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'VTPhoneNo')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Labs</mat-label>
+                            <mat-select name="labs" formControlName="Labs" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Labs.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Labs')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Books/Xerox</mat-label>
+                            <mat-select name="books" formControlName="Books" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Books.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Books')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>No Of Guest Lectures</mat-label>
+                            <input matInput name="noOfGLConducted" formControlName="NoOfGLConducted" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.NoOfGLConducted.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'NoOfGLConducted')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>No Of Industrial Visits</mat-label>
+                            <input matInput name="noOfIndustrialVisits" formControlName="NoOfIndustrialVisits" required
+                                digitOnly minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.NoOfIndustrialVisits.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'NoOfIndustrialVisits')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 9 Boys Count</mat-label>
+                            <input matInput name="class9Boys" formControlName="Class9Boys" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class9Boys.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class9Boys')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 9 Girls Count</mat-label>
+                            <input matInput name="class9Girls" formControlName="Class9Girls" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class9Girls.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class9Girls')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 10 Boys Count</mat-label>
+                            <input matInput name="class10Boys" formControlName="Class10Boys" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class10Boys.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class10Boys')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 10 Girls Count</mat-label>
+                            <input matInput name="class10Girls" formControlName="Class10Girls" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class10Girls.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class10Girls')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 11 Boys Count</mat-label>
+                            <input matInput name="class11Boys" formControlName="Class11Boys" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class11Boys.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class11Boys')}}
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 11 Girls Count</mat-label>
+                            <input matInput name="class11Girls" formControlName="Class11Girls" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class11Girls.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class11Girls')}}
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 12 Boys Count</mat-label>
+                            <input matInput name="class12Boys" formControlName="Class12Boys" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class12Boys.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class12Boys')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class 12 Girls Count</mat-label>
+                            <input matInput name="class12Girls" formControlName="Class12Girls" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.Class12Girls.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'Class12Girls')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Total Boys Count</mat-label>
+                            <input matInput name="totalBoys" formControlName="TotalBoys" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.TotalBoys.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'TotalBoys')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Total Girls Count</mat-label>
+                            <input matInput name="totalGirls" formControlName="TotalGirls" required digitOnly
+                                minlength="1" maxlength="4">
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.TotalGirls.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'TotalGirls')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Visit Photograph with Pricipal with GeoTag</mat-label>
+                            <ngx-mat-file-input name="svPhotoWithPrincipal" formControlName="SVPhotoWithPrincipalFile"
+                                [accept]="AllowedImageExtensions" [disabled]="PageRights.IsReadOnly"
+                                [required]="vcSchoolVisitReportForm.controls.IsSVPhotoWithPrincipal.value == false"
+                                (change)="uploadedSVPhotoWithPrincipalPhotoFile($event)">
+                            </ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.SVPhotoWithPrincipalFile.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'SVPhotoWithPrincipalFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="default-image-container" fxFlex="30">
+                            <mat-checkbox matInput formControlName="IsSVPhotoWithPrincipal"
+                                [disabled]="PageRights.IsReadOnly"
+                                (change)="setMandatoryFieldControl(vcSchoolVisitReportForm, 'SVPhotoWithStudentFile', $event)">
+                            </mat-checkbox>
+                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Visit Photograph with Students with GeoTag</mat-label>
+                            <ngx-mat-file-input name="svPhotoWithStudentFile" formControlName="SVPhotoWithStudentFile"
+                                [accept]="AllowedImageExtensions" [disabled]="PageRights.IsReadOnly"
+                                [required]="vcSchoolVisitReportForm.controls.IsSVPhotoWithStudents.value == false"
+                                (change)="uploadedSVPhotoWithStudentsPhotoFile($event)">
+                            </ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vcSchoolVisitReportForm.controls.SVPhotoWithStudentFile.invalid">
+                                {{getErrorMessage(vcSchoolVisitReportForm, 'SVPhotoWithStudentFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="default-image-container" fxFlex="30">
+                            <mat-checkbox matInput formControlName="IsSVPhotoWithStudents"
+                                [disabled]="PageRights.IsReadOnly"
+                                (change)="setMandatoryFieldControl(vcSchoolVisitReportForm, 'SVPhotoWithStudentFile', $event)">
+                            </mat-checkbox>
+                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                        </div>
+                    </div>
+
+                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+                        <span class="checkbox-space">Is Active?</span>
+                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                        </mat-checkbox>
+                    </div> -->
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

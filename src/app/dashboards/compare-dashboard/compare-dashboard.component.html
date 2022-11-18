@@ -1,0 +1,1127 @@
+<div id="compare-dashboard" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    COMPARE DASHBOARD
+                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+        </div>
+        <!-- / HEADER -->
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)=toggleDisplayDivIf()><span>FILTERS</span></button>
+        </div>
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="isShowDivIf">
+            <div class="filter-content">
+                <form name="compareDashboardForm" [formGroup]="compareDashboardForm" class="compare-dashboard-view"
+                    fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label> Month</mat-label>
+
+                            <mat-select formControlName="MonthId" name="monthId" appearance="fill">
+                                <mat-option [value]="monthItem.Id" *ngFor="let monthItem of monthList">
+                                    {{ monthItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Division</mat-label>
+
+                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
+                                (selectionChange)="onChangeDivision($event.value)"
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
+                                    {{ DivisionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>District</mat-label>
+                            <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
+                                appearance="fill" multiple
+                                [required]="Constants.UserRoleIds.includes(UserModel.RoleCode)">
+                                <mat-option (click)="toggleDistrictSelections($event)" [value]="0">All Districts
+                                </mat-option>
+                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
+                                    {{districtItem.Name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Management</mat-label>
+
+                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId"
+                                appearance="fill">
+                                <mat-option [value]="schoolManagementItem.Id"
+                                    *ngFor="let schoolManagementItem of schoolManagementList">
+                                    {{ schoolManagementItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="getCompareDashboards()"><span>SEARCH</span></button>
+
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetDashboardFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
+
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+            <div fxLayout="row" class="compare-header">
+                <div fxFlex="20%" class="input-row">
+                    <h2 class="compare-title">COMPARE</h2>
+                    <!-- <strong class="compare-title">COMPARE</strong> -->
+                </div>
+                <mat-divider [vertical]="true" class="compare-divider"></mat-divider>
+                <div fxFlex="30%" class="input-row for-row">
+                    <div fxLayout="row">
+                        <mat-label>FOR</mat-label>
+                    </div>
+                    <div fxLayout="row">
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="compareDashboardFor">
+                            <mat-radio-button value="ByVTP" (change)="onChangeFor($event.value)">VTP</mat-radio-button>
+                            <mat-radio-button value="BySector" style="margin-left:10px;"
+                                (change)="onChangeFor($event.value)">SECTORS</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+                <mat-divider [vertical]="true" class="compare-divider"></mat-divider>
+                <div fxFlex="50%" fxLayoutAlign="start center" class="input-row for-row" fxFlex="1 0 auto">
+                    <form name="compareDashboardForm" [formGroup]="compareDashboardForm" class="compare-dashboard-view"
+                        fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                        <mat-form-field class="pr-20" fxFlex="50" fxFlex.lt-md="45" fxFlex.lt-sm="80"
+                            class="choose-kpi">
+                            <mat-label>CHOOSE KPI</mat-label>
+                            <mat-select formControlName="ChooseKPI" name="choosekpi" required
+                                (selectionChange)="onChangeKPI($event.value, 'ByVTP')">
+                                <mat-option [value]="kpiItem.kpivalue" *ngFor="let kpiItem of kpiList">
+                                    {{ kpiItem.kpiLable }}
+                                </mat-option>
+                            </mat-select>
+                            <button matSuffix mat-icon-button type="button" aria-label="Clear"
+                                (click)="compareDashboardForm.controls.ChooseKPI.setValue('selectkpi'); $event.stopPropagation()"
+                                *ngIf="compareDashboardForm.controls.ChooseKPI.value">
+                                <!-- vocationalCoordinatorForm.controls.DateOfResignation.value -->
+                                <!-- (click)="form.controls.ChooseKPI.setValue(null); $event.stopPropagation()" *ngIf="form.controls.team.value" -->
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <!-- <mat-error *ngIf="schoolForm.controls.SchoolName.invalid">
+                            {{getErrorMessage(schoolForm, 'SchoolName')}}
+                        </mat-error> -->
+                        </mat-form-field>
+
+                    </form>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayout="column" fxLayoutAlign="center center"
+                *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'selectkpi'">
+                <mat-icon style="font-size: 36px; color: #0000008a;margin: 10px 0px;">filter_tilt_shift</mat-icon>
+                <h1 style="margin:0px;">Welcome to Compare</h1>
+                <p style="margin:0px;"> Use the tools above to select your comparison matrix</p>
+                <p style="margin:0px;">and KPI to view a detail analysis.</p>
+            </div>
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'school'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <!-- <div fxLayout="row" fxLayoutAlign="center center">
+                    <h3 style="font-weight: bold;">SCHOOLS</h3>
+                </div> -->
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">SCHOOLS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'Schools')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented </th>
+                            <td mat-cell *matCellDef="let school"> {{school.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- ApprovedSchools Column -->
+                        <ng-container matColumnDef="ApprovedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Approved </th>
+                            <td mat-cell *matCellDef="let school"> {{school.ApprovedSchools}} </td>
+                        </ng-container>
+
+                        <!-- JobRoleUnits Column -->
+                        <ng-container matColumnDef="JobRoleUnits">
+                            <th mat-header-cell *matHeaderCellDef> Job Role Units </th>
+                            <td mat-cell *matCellDef="let school"> {{school.JobRoleUnits}} </td>
+                        </ng-container>
+
+                        <!-- Class09 Column -->
+                        <ng-container matColumnDef="Class09">
+                            <th mat-header-cell *matHeaderCellDef> C9 </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Class09}} </td>
+                        </ng-container>
+
+                        <!-- Class10 Column -->
+                        <ng-container matColumnDef="Class10">
+                            <th mat-header-cell *matHeaderCellDef> C10 </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Class10}} </td>
+                        </ng-container>
+
+                        <!-- Class11 Column -->
+                        <ng-container matColumnDef="Class11">
+                            <th mat-header-cell *matHeaderCellDef> C11 </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Class11}} </td>
+                        </ng-container>
+
+                        <!-- Class12 Column -->
+                        <ng-container matColumnDef="Class12">
+                            <th mat-header-cell *matHeaderCellDef> C12 </th>
+                            <td mat-cell *matCellDef="let school"> {{school.Class12}} </td>
+                        </ng-container>
+
+                        <!-- StudentMale Column -->
+                        <!-- <ng-container matColumnDef="StudentMale">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div class="graph-legend" style="background-color:  #11d3d3;"></div>
+                                    <div class="text-legend"><small>Male</small></div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let school"> {{school.StudentMale}} </td>
+                        </ng-container> -->
+
+                        <!-- StudentFemale Column -->
+                        <!-- <ng-container matColumnDef="StudentFemale">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div class="graph-legend" style="background-color:  #6ec352;"></div>
+                                    <div class="text-legend"><small>Female</small></div>
+                                </div> 
+                            </th>
+                            <td mat-cell *matCellDef="let school"> {{school.StudentFemale}} </td>
+                        </ng-container> -->
+
+                        <!-- studentMaleFemale Column -->
+                        <ng-container matColumnDef="studentMaleFemale">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <div class="graph-legend" style="background-color:  #11d3d3;"></div>
+                                    <div class="text-legend"><small>Male</small></div>
+                                    <div class="graph-legend" style="background-color: #6ec352;"></div>
+                                    <div class="text-legend"><small>Female</small></div>
+                                </div>
+                            </th>
+                            <td mat-cell style="margin-left: 60px !important;" *matCellDef="let school">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-progress-bar mode="determinate"
+                                        value="{{school.StudentMale/(school.StudentMale + school.StudentFemale)*100}}"
+                                        class="gender-progress-bar"></mat-progress-bar>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <span style="margin-left: 10px;">{{school.StudentMale}}</span>
+                                    <span style="margin-left: 72px;">{{school.StudentFemale}}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- Header row first group -->
+                        <ng-container matColumnDef="header-row-first-group">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="left" [attr.colspan]="2">
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="header-row-sec-group">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="2">
+                                Schools
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="header-row-third-group">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="1">
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="header-row-forth-group">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="4">
+                                Number Of Classes
+                            </th>
+                        </ng-container>
+                        <ng-container matColumnDef="header-row-fifth-group">
+                            <th mat-header-cell *matHeaderCellDef [style.text-align]="center" [attr.colspan]="2">
+                                Number Of Student <br />
+                            </th>
+                        </ng-container>
+
+                        <tr mat-header-row class="first-header-row"
+                            *matHeaderRowDef="['header-row-first-group','header-row-sec-group','header-row-third-group','header-row-forth-group','header-row-fifth-group']">
+                        </tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'course material'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">COURSE MATERIAL</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'CourseMaterial')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="course-material-table compare-responsive-table">
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.Name}} </td>
+                        </ng-container>
+
+                        <!-- JobRoleTaught Column -->
+                        <ng-container matColumnDef="JobRoleTaught">
+                            <th mat-header-cell *matHeaderCellDef> Job Role Taught </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.JobRoleTaught}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- JobRoleUnits Column -->
+                        <ng-container matColumnDef="JobRoleUnits">
+                            <th mat-header-cell *matHeaderCellDef> Job Role Units </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.JobRoleUnits}} </td>
+                        </ng-container>
+
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th mat-header-cell *matHeaderCellDef> Classes </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.Classes}} </td>
+                        </ng-container>
+
+                        <!-- ClassesWithCM Column -->
+                        <ng-container matColumnDef="ClassesWithCM">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>
+                                    Classes with
+                                    <div>Course Material</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.ClassesWithCM}}
+                            </td>
+                        </ng-container>
+
+                        <!-- ClassesWithoutCM Column -->
+                        <ng-container matColumnDef="ClassesWithoutCM">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>
+                                    Classes without
+                                    <div>Course Material</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let courseMaterial">
+                                {{courseMaterial.ClassesWithoutCM}} </td>
+                        </ng-container>
+
+                        <!-- StatusNotReported Column -->
+                        <ng-container matColumnDef="StatusNotReported">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>
+                                    Status Not Reported
+                                    <div>(No. of Classes)</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let courseMaterial"> {{courseMaterial.StatusNotReported}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'tools and equipment'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">TOOLS AND EQUIPMENT</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'ToolsAndEquipment')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.Name}} </td>
+                        </ng-container>
+
+                        <!-- JobRoleTaught Column -->
+                        <ng-container matColumnDef="JobRoleTaught">
+                            <th mat-header-cell *matHeaderCellDef> Job Role Taught </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.JobRoleTaught}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- JobRoleUnits Column -->
+                        <ng-container matColumnDef="JobRoleUnits">
+                            <th mat-header-cell *matHeaderCellDef> Jobrole-Units </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.JobRoleUnits}} </td>
+                        </ng-container>
+
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th mat-header-cell *matHeaderCellDef> Classes </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.Classes}} </td>
+                        </ng-container>
+
+                        <!-- JobroleUnitsWithTE Column -->
+                        <ng-container matColumnDef="JobroleUnitsWithTE">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>Job Role Units With <div>Tools & Equipment</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.JobroleUnitsWithTE}}
+                            </td>
+                        </ng-container>
+
+                        <!-- JobroleUnitsWithoutTE Column -->
+                        <ng-container matColumnDef="JobroleUnitsWithoutTE">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>Job Role Units Without <div>Tools & Equipment</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.JobroleUnitsWithoutTE}}
+                            </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="StatusNotReported">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>Status Not Reported</div>
+                                <div>No. of Job Role Units</div>
+                            </th>
+                            <td mat-cell *matCellDef="let toolsEquipment"> {{toolsEquipment.StatusNotReported}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'student'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">STUDENTS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'Students')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let students"> {{students.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let students"> {{students.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let students"> {{students.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th mat-header-cell *matHeaderCellDef>Number of Classes </th>
+                            <td mat-cell *matCellDef="let students"> {{students.Classes}} </td>
+                        </ng-container>
+
+                        <!-- EnrollmentStudents Column -->
+                        <ng-container matColumnDef="EnrollmentStudents">
+                            <th mat-header-cell *matHeaderCellDef> Enrolled Students </th>
+                            <td mat-cell *matCellDef="let students"> {{students.EnrollmentStudents}} </td>
+                        </ng-container>
+
+                        <!-- StudentAttendance Column -->
+                        <ng-container matColumnDef="StudentAttendance">
+                            <th mat-header-cell *matHeaderCellDef> Student Attendance(%) </th>
+                            <td mat-cell *matCellDef="let students"> {{students.StudentAttendance}} </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'new enrolments & dropouts'"
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">NEW ENROLMENTS & DROPOUTS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'NewEnrolmentsAndDropouts')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.ImplementedSchools}} </td>
+                        </ng-container>
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Classes </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.Classes}} </td>
+                        </ng-container>
+
+                        <!-- NewEnrolments Column -->
+                        <ng-container matColumnDef="NewEnrolments">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> New Enrolments </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.NewEnrolments}} </td>
+                        </ng-container>
+
+                        <!-- Dropouts Column -->
+                        <ng-container matColumnDef="Dropouts">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Dropouts </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Dropouts}} </td>
+                        </ng-container>
+
+                        <!-- CurrentStudents Column -->
+                        <ng-container matColumnDef="CurrentStudents">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Current Student Count </th>
+                            <td mat-cell *matCellDef="let enrolment"> {{enrolment.CurrentStudents}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'guest lecture'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">GUEST LECTURE</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'GuestLecture')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>No of Classes </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.Classes}} </td>
+                        </ng-container>
+
+                        <!-- TotalGLConductedCount Column -->
+                        <ng-container matColumnDef="TotalGLConductedCount">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Total GL Conducted Count </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.TotalGLConductedCount}} </td>
+                        </ng-container>
+
+                        <!-- AverageGLConductedPerClass Column -->
+                        <ng-container matColumnDef="AverageGLConductedPerClass">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div> Average GL Conducted<div> Per Class</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let guest"> {{guest.AverageGLConductedPerClass}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'field visits'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">FIELD VISITS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'FieldVisit')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let field"> {{field.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef>{{typeOfKPI}}</th>
+                            <td mat-cell *matCellDef="let field"> {{field.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let field"> {{field.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- Classes Column -->
+                        <ng-container matColumnDef="Classes">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>Number of Classes </th>
+                            <td mat-cell *matCellDef="let field"> {{field.Classes}} </td>
+                        </ng-container>
+
+                        <!-- TotalFVConductedCount Column -->
+                        <ng-container matColumnDef="TotalFVConductedCount">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Total FV Conducted Count </th>
+                            <td mat-cell *matCellDef="let field"> {{field.TotalFVConductedCount}} </td>
+                        </ng-container>
+
+                        <!-- AverageFVConductedPerClass Column -->
+                        <ng-container matColumnDef="AverageFVConductedPerClass">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div> Average FV Conducted <div>Per Class</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let field"> {{field.AverageFVConductedPerClass}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'trainers'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">TRAINERS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'Trainers')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef> Implemented Schools </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- TrainersPlaced Column -->
+                        <ng-container matColumnDef="TrainersPlaced">
+                            <th mat-header-cell *matHeaderCellDef> Trainers Placed </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.TrainersPlaced}} </td>
+                        </ng-container>
+
+                        <!-- TrainersReporting Column -->
+                        <ng-container matColumnDef="TrainersReporting">
+                            <th mat-header-cell *matHeaderCellDef> Trainers Reporting </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.TrainersReporting}} </td>
+                        </ng-container>
+
+                        <!-- TrainerAttendance Column -->
+                        <ng-container matColumnDef="TrainerAttendance">
+                            <th mat-header-cell *matHeaderCellDef> Trainer Attendance(%) </th>
+                            <td mat-cell *matCellDef="let trainer"> {{trainer.TrainerAttendance}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'coordinators'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">COORDINATORS</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'Coordinators')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef>{{typeOfKPI}}</th>
+                            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                        </ng-container>
+
+                        <!-- Districts Column -->
+                        <ng-container matColumnDef="Districts">
+                            <th mat-header-cell *matHeaderCellDef> Districts </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Districts}} </td>
+                        </ng-container>
+
+                        <!-- SchoolsCovered Column -->
+                        <ng-container matColumnDef="SchoolsCovered">
+                            <th mat-header-cell *matHeaderCellDef> Schools Covered </th>
+                            <td mat-cell *matCellDef="let element"> {{element.SchoolsCovered}} </td>
+                        </ng-container>
+
+                        <!-- CoordinatorsPlaced Column -->
+                        <ng-container matColumnDef="CoordinatorsPlaced">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Coordinators Placed </th>
+                            <td mat-cell *matCellDef="let element"> {{element.CoordinatorsPlaced}} </td>
+                        </ng-container>
+
+                        <!-- CoordinatorsReporting Column -->
+                        <ng-container matColumnDef="CoordinatorsReporting">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Coordinators Reporting </th>
+                            <td mat-cell *matCellDef="let element"> {{element.CoordinatorsReporting}} </td>
+                        </ng-container>
+
+                        <!-- NoOfSchoolVisits Column -->
+                        <ng-container matColumnDef="NoOfSchoolVisits">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>No. of<div>School Visits</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.NoOfSchoolVisits}} </td>
+                        </ng-container>
+
+                        <!-- NoOfMeetingsHeld Column -->
+                        <ng-container matColumnDef="NoOfMeetingsHeld">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>No. of<div>Meetings Held</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.NoOfMeetingsHeld}} </td>
+                        </ng-container>
+
+                        <!-- NoOfOutreachActivities Column -->
+                        <ng-container matColumnDef="NoOfOutreachActivities">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>No. of<div>Outreach Activities</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.NoOfOutreachActivities}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+            <div *ngIf="compareDashboardForm.controls.ChooseKPI.value == 'reporting'" fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                <div fxLayout="row" class="view-div" style="padding: 10px;">
+                    <div fxFlex="80%" class="mx-width">
+                        <h3 style="font-weight: bold;">REPORTING</h3>
+                    </div>
+                    <div fxFlex="20%" class="mx-width">
+                        <button mat-raised-button color="primary" class="download-btn"
+                            (click)="exportFromKpisDataExcel(evt, 'Reporting')">DOWNLOAD</button>
+                    </div>
+                </div>
+                <div>
+                    <table mat-table [dataSource]="tableDataSource" class="mat-elevation-z8"
+                        class="school-table compare-responsive-table">
+
+                        <!--- Note that these columns can be defined in any order.
+                            The actual rendered columns are set as a property on the row definition" -->
+
+                        <!-- Id Column -->
+                        <ng-container matColumnDef="Id">
+                            <th mat-header-cell *matHeaderCellDef> Sr. No. </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Id}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                            <th mat-header-cell *matHeaderCellDef> {{typeOfKPI}} </th>
+                            <td mat-cell *matCellDef="let element"> {{element.Name}} </td>
+                        </ng-container>
+
+                        <!-- ImplementedSchools Column -->
+                        <ng-container matColumnDef="ImplementedSchools">
+                            <th mat-header-cell *matHeaderCellDef>
+                                <div>Implemented<div> Schools</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.ImplementedSchools}} </td>
+                        </ng-container>
+
+                        <!-- TrainersPlaced Column -->
+                        <ng-container matColumnDef="TrainersPlaced">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>Trainers<div> Placed</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TrainersPlaced}} </td>
+                        </ng-container>
+
+                        <!-- TotalVT Column -->
+                        <ng-container matColumnDef="TotalVT">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Total VT </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalVT}} </td>
+                        </ng-container>
+
+                        <!-- TrainersReporting Column -->
+                        <ng-container matColumnDef="TrainersReporting">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>Trainers Reporting<div>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <div class="graph-legend" style="background-color:  #11d3d3;"></div>
+                                            <div class="text-legend"><small> &lt;25% </small></div>
+                                            <div class="graph-legend" style="background-color: #6ec352;"></div>
+                                            <div class="text-legend"><small>26-50%</small></div>
+                                            <div class="graph-legend" style="background-color:  #6549ac;"></div>
+                                            <div class="text-legend"><small>51-75%</small></div>
+                                            <div class="graph-legend" style="background-color: #4420e6;"></div>
+                                            <div class="text-legend"><small>&gt;75%</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="margin-left: 60px !important;">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageLessThan25(element.TrainersReporting)"
+                                        class="trainers-reporting-progress-bar skyblue-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageInBetween26to50(element.TrainersReporting)"
+                                        class="trainers-reporting-progress-bar green-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageInBetween51to75(element.TrainersReporting)"
+                                        class="trainers-reporting-progress-bar purple-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageGreaterThan75(element.TrainersReporting)"
+                                        class="trainers-reporting-progress-bar blue-color"></mat-progress-bar>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <span style="margin-left: 10px;">{{element.TrainersReporting}}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <!-- CoordinatorsPlaced Column -->
+                        <ng-container matColumnDef="CoordinatorsPlaced">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>Coordinators<div>Placed</div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element"> {{element.CoordinatorsPlaced}} </td>
+                        </ng-container>
+
+                        <!-- TotalVC Column -->
+                        <ng-container matColumnDef="TotalVC">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef> Total VC </th>
+                            <td mat-cell *matCellDef="let element"> {{element.TotalVC}} </td>
+                        </ng-container>
+
+                        <!-- CoordinatorsReporting Column -->
+                        <ng-container matColumnDef="CoordinatorsReporting">
+                            <th [attr.rowspan]="2" mat-header-cell *matHeaderCellDef>
+                                <div>Coordinators Reporting<div>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <div class="graph-legend" style="background-color:  #11d3d3;"></div>
+                                            <div class="text-legend"><small> &lt;25% </small></div>
+                                            <div class="graph-legend" style="background-color: #6ec352;"></div>
+                                            <div class="text-legend"><small>26-50%</small></div>
+                                            <div class="graph-legend" style="background-color:  #6549ac;"></div>
+                                            <div class="text-legend"><small>51-75%</small></div>
+                                            <div class="graph-legend" style="background-color: #4420e6;"></div>
+                                            <div class="text-legend"><small>&gt;75%</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="margin-left: 60px !important;">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageLessThan25(element.CoordinatorsReporting)"
+                                        class="trainers-reporting-progress-bar skyblue-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageInBetween26to50(element.CoordinatorsReporting)"
+                                        class="trainers-reporting-progress-bar green-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageInBetween51to75(element.CoordinatorsReporting)"
+                                        class="trainers-reporting-progress-bar purple-color"></mat-progress-bar>
+
+                                    <mat-progress-bar mode="determinate" value="100"
+                                        *ngIf="percentageGreaterThan75(element.CoordinatorsReporting)"
+                                        class="trainers-reporting-progress-bar blue-color"></mat-progress-bar>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <span style="margin-left: 10px;">{{element.CoordinatorsReporting}}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0"
+                        [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                </div>
+            </div>
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+</div>

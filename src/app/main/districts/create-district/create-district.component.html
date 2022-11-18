@@ -1,0 +1,136 @@
+<div id="district" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/districts'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ districtModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New District
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>District Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-district-button" [disabled]="districtForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateDistrictDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-district-button" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateDistrictDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="districtForm" [formGroup]="districtForm" class="district w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                                <mat-label>State</mat-label>
+                                <mat-select name="stateName" formControlName="StateCode" required [disabled]="true">
+                                    <mat-option *ngFor="let stateItem of stateList" [value]="stateItem.Id">
+                                        {{stateItem.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="districtForm.controls.StateCode.invalid">
+                                    {{getErrorMessage(districtForm, 'StateCode')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="25" fxFlex.lt-sm="100">
+                                <mat-label>Division</mat-label>
+                                <mat-select name="divisionId" formControlName="DivisionId" required
+                                    [disabled]="PageRights.IsReadOnly">
+                                    <mat-option *ngFor="let divisionItem of divisionList" [value]="divisionItem.Id">
+                                        {{divisionItem.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="districtForm.controls.DivisionId.invalid">
+                                    {{getErrorMessage(districtForm, 'DivisionId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>District Code</mat-label>
+                                <input matInput name="districtCode" formControlName="DistrictCode" required>
+                                <mat-error *ngIf="districtForm.controls.DistrictCode.invalid">
+                                    {{getErrorMessage(districtForm, 'DistrictCode')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>District Name</mat-label>
+                                <input matInput name="districtName" formControlName="DistrictName" required>
+                                <mat-error *ngIf="districtForm.controls.DistrictName.invalid">
+                                    {{getErrorMessage(districtForm, 'DistrictName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                            fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="districtForm.controls.Description.invalid">
+                                    {{getErrorMessage(districtForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height"
+                            fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,292 @@
+<div id="person" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="subtitle secondary-text">
+                        <span>Person Details</span>
+                        <h2>{{'SAMPLE.HELLO' | translate}}</h2>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-person-button" (click)="saveOrUpdatePersonDetails()">
+                <span>ADD</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="personForm" [formGroup]="personForm" class="person w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>School Name</mat-label>
+                                <input matInput name="schoolName" formControlName="SchoolName" (focusout)="validateInputText($event)">
+                                <mat-error *ngIf="personForm.controls.SchoolName.invalid">
+                                    {{getErrorMessage(personForm, 'SchoolName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <div>School Name - Before: 
+                                <span style="background-color: cornflowerblue; color: crimson; width:150px;">{{personModel.SchoolName}}</span>
+                            </div>
+                            <div>School Name - After: 
+                                <span style="background-color: cornflowerblue; color: crimson; width:150px;">{{personModel.SchoolNameLabel}}</span>
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Name</mat-label>
+                                <input matInput name="name" formControlName="Name" required>
+                                <mat-error *ngIf="personForm.controls.Name.invalid">
+                                    {{getErrorMessage(personForm, 'Name')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Employee Code</mat-label>
+                                <input matInput name="employeeCode" formControlName="EmployeeCode" required>
+                                <mat-error *ngIf="personForm.controls.EmployeeCode.invalid">
+                                    {{getErrorMessage(personForm, 'EmployeeCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Gender</mat-label>
+                                <input matInput name="gender" formControlName="Gender" required>
+                                <mat-error *ngIf="personForm.controls.Gender.invalid">
+                                    {{getErrorMessage(personForm, 'Gender')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Mobile</mat-label>
+                                <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
+                                    maxlength="10">
+                                <mat-error *ngIf="personForm.controls.Mobile.invalid">
+                                    {{getErrorMessage(personForm, 'Mobile')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Telephone</mat-label>
+                                <input matInput name="telephone" formControlName="Telephone" required digitOnly
+                                    minlength="10" maxlength="11">
+                                <mat-error *ngIf="personForm.controls.Telephone.invalid">
+                                    {{getErrorMessage(personForm, 'Telephone')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Aadhaar Number</mat-label>
+                                <input matInput name="aadhaarNumber" formControlName="AadhaarNumber" digitOnly
+                                    minlength="12" maxlength="12" placeholder="0000-0000-0000"
+                                    pattern="^(\d{0,2}|\d{2}-\d{0,4})$">
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>PAN</mat-label>
+                                <input matInput name="pan" formControlName="PAN">
+                                <mat-error *ngIf="personForm.controls.PAN.invalid">
+                                    {{getErrorMessage(personForm, 'PAN')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Date Of Birth</mat-label>
+                                <input matInput name="dateOfBirth" formControlName="DateOfBirth"
+                                    [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                                <mat-datepicker #dateOfBirth></mat-datepicker>
+
+                                <mat-error *ngIf="personForm.controls.DateOfBirth.invalid">
+                                    {{getErrorMessage(personForm, 'DateOfBirth')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Email Id</mat-label>
+                                <input matInput name="emailId" formControlName="EmailId">
+                                <mat-error *ngIf="personForm.controls.EmailId.invalid">
+                                    {{getErrorMessage(personForm, 'EmailId')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Salary</mat-label>
+                                <input matInput name="salary" formControlName="Salary" digitOnly maxlength="15">
+                                <mat-error *ngIf="personForm.controls.Salary.invalid">
+                                    {{getErrorMessage(personForm, 'Salary')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Pincode</mat-label>
+                                <input matInput name="pincode" formControlName="Pincode" digitOnly minlength="6"
+                                    maxlength="6">
+                                <mat-error *ngIf="personForm.controls.Pincode.invalid">
+                                    {{getErrorMessage(personForm, 'Pincode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Valid From</mat-label>
+                                <input matInput name="validFrom" formControlName="ValidFrom" [matDatepicker]="validFrom"
+                                    [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
+                                <mat-datepicker #validFrom></mat-datepicker>
+
+                                <mat-error *ngIf="personForm.controls.ValidFrom.invalid">
+                                    {{getErrorMessage(personForm, 'ValidFrom')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Valid To</mat-label>
+                                <input matInput name="validTo" formControlName="ValidTo" [matDatepicker]="validTo"
+                                    [disabled]="PageRights.IsReadOnly">
+                                <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
+                                <mat-datepicker #validTo></mat-datepicker>
+
+                                <mat-error *ngIf="personForm.controls.ValidTo.invalid">
+                                    {{getErrorMessage(personForm, 'ValidTo')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="personForm.controls.Description.invalid">
+                                    {{getErrorMessage(personForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                fxFlex.lt-sm="100%">
+                                <mat-label>Remarks</mat-label>
+                                <input matInput name="remarks" formControlName="Remarks">
+                                <mat-error *ngIf="personForm.controls.Remarks.invalid">
+                                    {{getErrorMessage(personForm, 'Remarks')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
+
+<!-- 
+    <input type="text" digitOnly />
+
+    <h3>allows decimal input</h3>
+    <input id="decimal-number" type="text" digitOnly decimal="true" placeholder="000" />
+
+    <h3>allows to set decimal separator</h3>
+    <label for="digit-only-decimal-comma">
+        Digit Only input box that allows a <i>decimal point</i> using
+        <strong>a comma as the separator</strong>
+    </label>
+
+    <input id="digit-only-decimal-comma" type="text" digitOnly decimal="true" decimalSeparator="," placeholder="0,00"
+        pattern="[0-9]+([,][0-9]+)?" />
+
+    <h3>pull out the numeric keypad in mobile devices and tablets</h3>
+    <input type="text" name="zipcode" id="zipcode" placeholder="00000" maxlength="5" inputmode="numeric"
+        pattern="[0-9]*" digitOnly />
+
+    <h3>turn off browser autocomplete</h3>
+    <input ... autocomplete="off" />
+
+    <h3>Digit Only input only allows two decimal places</h3>
+    <input id="currency" type="text" name="currency" inputmode="numeric" pattern="^\d+(\.\d{1,2})?$" placeholder="0.00"
+        digitOnly decimal="true" />
+
+    <h3>input masked with pattern attribute: <code>##-####</code></h3>
+    <input id="org-dept" type="text" pattern="^(\d{0,2}|\d{2}-\d{0,4})$" name="org-dept" title="org-dept"
+        placeholder="00-0000" mask /> -->

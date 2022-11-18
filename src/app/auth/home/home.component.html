@@ -1,0 +1,162 @@
+<div id="home" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+    <div class="page-layout blank" fusePerfectScrollbar>
+        <div id="home" fxLayout="row" class="home-header">
+            <div fxFlex="30" fxLayoutAlign="start start" style="margin-left: 15px;">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-lahi.png" style="width:60%; height:120px">
+            </div>
+            <div fxFlex="40" fxLayoutAlign="center start">
+                <img src="assets/images/logos/lighthouse-logo.png" style="height:120px">
+            </div>
+            <div fxFlex="30" fxLayoutAlign="end start" style="margin-right: 15px;">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-jh.png" style="height:120px">
+            </div>
+        </div>
+
+        <div fxLayout="row">
+            <div style="width: 100%;background-color: #0e49b5;">
+                <mat-toolbar color="primary">
+                    <span class="menu-spacer"></span>
+                    <div fxLayoutAlign="end center" style="padding-right: 15px;">
+                        <a href="/login" style="font-size: 25px;color: white;" mat-button>Login</a>
+                    </div>
+                </mat-toolbar>
+            </div>
+        </div>
+
+        <div fxLayout="row">
+            <mat-carousel class="mat-carousel-style" timings="250ms ease-in" [autoplay]="true" interval="5000"
+                color="accent" maxWidth="auto" proportion="25" slides="11" [loop]="true" [hideArrows]="false"
+                [hideIndicators]="false" [useKeyboard]="true" [useMouseWheel]="false" orientation="ltr"
+                slideHeight="100%">
+
+                <mat-carousel-slide #matCarouselSlide *ngFor="let slide of slides; let i = index" [image]="slide.image"
+                    overlayColor="#00000040" [hideOverlay]="true">
+                </mat-carousel-slide>
+            </mat-carousel>
+        </div>
+
+        <div fxLayout="row" class="faq-row">
+            <div fxFlex="25%" class="faq-box">
+                <div class="imgbox">
+                    <div fxLayout="row">
+                        <div fxFlex="30%">
+                            <img src="assets/images/faqImages/hemantSoren1.jpg" class="img-index">
+                        </div>
+                        <div fxFlex="70%">
+                            <h5 class="index-h5">Shri Hemant Soren</h5>
+                            <p id="rahulsharma_depart">Hon'ble Chief Minister</p>
+                            <p style="font-size: 13px;">Goverment of Jharkhand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxFlex="25%" class="faq-box">
+                <div class="imgbox">
+                    <div fxLayout="row">
+                        <div fxFlex="30%">
+                            <img src="assets/images/faqImages/22.jpg" class="img-index">
+                        </div>
+                        <div fxFlex="70%">
+                            <h5 class="index-h5">Shri Jagarnath Mahto</h5>
+                            <p id="rahulsharma_depart">Minister of School Education and Literacy</p>
+                            <p style="font-size: 13px;">Government of Jharkhand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- </div>
+
+        <div fxLayout="row" class="faq-row"> -->
+            <div fxFlex="25%" class="faq-box">
+                <div class="imgbox">
+                    <div fxLayout="row">
+                        <div fxFlex="30%">
+                            <img src="assets/images/faqImages/2.jpg" class="img-index">
+                        </div>
+                        <div fxFlex="70%">
+                            <h5 class="index-h5">Shri K Ravi Kumar</h5>
+                            <p id="rahulsharma_depart">Secretary, Department of School Education & Literacy, GOJ.</p>
+                            <p style="font-size: 13px;">Government of Jharkhand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxFlex="25%" class="faq-box">
+                <div class="imgbox">
+                    <div fxLayout="row">
+                        <div fxFlex="30%">
+                            <img src="assets/images/faqImages/1.jpg" class="img-index">
+                        </div>
+                        <div fxFlex="70%">
+                            <h5 class="index-h5">Smt. Kiran Kumari Pasi</h5>
+                            <p id="rahulsharma_depart">State Project Director</p>
+                            <p style="font-size: 13px;"></p>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div fxLayout="row" class="contact-row">
+            <div fxFlex="14%" class="faq-box" style="margin-left:0%">
+                <img src="assets/images/faqImages/JEPC LOGO-1.png" style="margin-top: 30%; height: 156px;">
+            </div>
+
+            <div fxFlex="40%" class="faq-box" style="margin-left:0%">
+                <h2 style="font-size: 3rem;">Contact Us</h2>
+                <h4> Jharkhand Education Project Council, State Project Office,
+                    Old HEC High School JSCA Stadium Road, Sector 3,
+                    Dhurwa, Ranchi-843004, Jharkhand
+                </h4>
+                <p>
+                    <mat-icon> phone</mat-icon> 0651-2444501
+                </p>
+                <p>
+                    <mat-icon> mail_outline</mat-icon> Email ID: jepcranchi1@gmail.com
+                </p>
+            </div>
+
+            <div fxFlex="50%" class="faq-box" style="margin-right:9%">
+                <div class="socialicons">
+                    <h2 style="font-size: 3rem;">Social Links</h2>
+                    <ul class="list-unstyled">
+                        <li class="facebook social-icons"><a href="#">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li class="instagram social-icons"><a href="#">
+                                <i class="fa fa-instagram"></i>
+                            </a></li>
+                        <li class="twitter social-icons"><a href="#">
+                                <i class="fa fa-twitter"></i>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="row" style="background: #0f3752;">
+            <mat-toolbar style="background: #0f3752; color: white; padding: 10px;">
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutAlign.gt-xs="space-between center" fxFlex>
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="0 1 calc(25%)" fxFlex.lt-md="0 1 calc(50%)"
+                        fxFlex.lt-sm="100%">
+
+                        <p>Copyright © 2019. All Rights Reserved - Jharkhand Education Project Council </p>
+                    </div>
+                    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxFlex="0 1 calc(25%)" fxFlex.lt-md="0 1 calc(50%)" fxFlex.lt-sm="100%">
+                        <p>This site is best viewed in IE9+, Firefox 27.0+, Google Chrome 25.0+ and screen resolution 1280 x 768 size. </p>
+                    </div> -->
+                    <div fxLayout="row" fxLayoutAlign="end center" fxFlex="0 1 calc(25%)" fxFlex.lt-md="0 1 calc(50%)"
+                        fxFlex.lt-sm="100%">
+                        <img class="managed-by" src="assets/images/logos/LALHI-logo.jpg" />
+                    </div>
+                </div>
+            </mat-toolbar>
+        </div>
+
+    </div>
+</div>

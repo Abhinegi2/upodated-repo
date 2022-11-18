@@ -1,0 +1,507 @@
+<div id="vt-guest-lecture-conducted" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-guest-lecture-conducted'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ vtGuestLectureConductedModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New VT Guest Lecture Conducted
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>VT Guest Lecture Conducted Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-vt-guest-lecture-conducted-button"
+                *ngIf="PageRights.ActionType ==='new'" 
+                (click)="saveOrUpdateVTGuestLectureConductedDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-vt-guest-lecture-conducted-button"
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTGuestLectureConductedDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="vtGuestLectureConductedForm" [formGroup]="vtGuestLectureConductedForm"
+                    class="vt-guest-lecture-conducted w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
+                    fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Reporting Date</mat-label>
+                            <input matInput [matDatepicker]="picker" name="reportingDate" [min]="minReportingDate"
+                                [max]="CurrentDate" formControlName="ReportingDate" required
+                                [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.ReportingDate.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'ReportingDate')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Class Taught</mat-label>
+                            <mat-select name="classTaughtId" formControlName="ClassTaughtId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClassForTaught($event.value)"
+                                matTooltip="Select the Class for which Guest Lecture Conducted."
+                                matTooltipPosition="above">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.ClassTaughtId.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'ClassTaughtId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Section Taught</mat-label>
+                            <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeSectionForTaught($event.value)">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'SectionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecture Type</mat-label>
+                            <mat-select name="glType" formControlName="GLType" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                matTooltip="Please select the type of guest lecture conducted."
+                                matTooltipPosition="above">
+                                <mat-option [value]="glTypeItem.Id" *ngFor="let glTypeItem of glTypeList">
+                                    {{ glTypeItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLType.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLType')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="75" 
+                            fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecture Topic</mat-label>
+                            <input matInput name="glTopic" formControlName="GLTopic" required
+                                matTooltip="Please enter the topic of the guest lecture." matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLTopic.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLTopic')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75"
+                              fxFlex.lt-sm="100">
+                            <mat-label>Class duration in Minutes</mat-label>
+                            <input matInput name="classTime" formControlName="ClassTime" digitOnly maxlength="3"
+                                required matTooltip="Total duration of class in minutes"
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.ClassTime.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'ClassTime')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" 
+                           *ngIf="PageRights.IsReadOnly==false">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Modules Taught</mat-label>
+                            <mat-select name="moduleId" formControlName="ModuleId"
+                                [required]="unitSessionsModels.length==0" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeCourseModule($event.value)"
+                                matTooltip="Please select the course modules covered in guest lecture."
+                                matTooltipPosition="above">
+                                <mat-option [value]="moduleItem" *ngFor="let moduleItem of moduleTaughtList">
+                                    {{ moduleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.ModuleId.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'ModuleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Units Taught</mat-label>
+                            <mat-select name="unitId" formControlName="UnitId" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" [required]="unitSessionsModels.length==0"
+                                (selectionChange)="onChangeUnitsTaught($event.value)"
+                                matTooltip="Please select the course units covered in guest lecture."
+                                matTooltipPosition="above">
+                                <mat-option [value]="unitItem" *ngFor="let unitItem of unitList">
+                                    {{ unitItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.UnitId.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'UnitId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                        *ngIf="PageRights.IsReadOnly==false">
+                        <mat-form-field appearance="outline"  fxFlex="70" fxFlex.lt-md="75" 
+                           fxFlex.lt-sm="100">
+                            <mat-label>Sessions Taught</mat-label>
+                            <mat-select name="sessionIds" formControlName="SessionIds"
+                                [required]="unitSessionsModels.length==0" multiple appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                matTooltip="Please select the course sessions covered in guest lecture."
+                                matTooltipPosition="above">
+                                <mat-option [value]="sessionItem" *ngFor="let sessionItem of sessionList">
+                                    {{ sessionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.SessionIds.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'SessionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        <div class="add-course-taught">
+                            <span class="material-icons add-session" (click)="addUnitSession()">add_circle_outline</span>
+                            <span class="add-course-text">Kindly press "+" to add information</span>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-list fxFlex="70" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="mat-list-class">
+                            <mat-list-item *ngFor="let sessionItem of unitSessionsModels let sessionIndex=index;">
+                                <div style="float: left; width: 99%;">
+                                    <span style="width:5%"> {{sessionIndex + 1}}) </span>
+                                    <span style="width:20%; font-weight: bold;"> {{sessionItem.ModuleName}}- </span>
+                                    <span style="width:25%"> {{sessionItem.UnitName}}- </span>
+                                    <span style="width:50%"> {{sessionItem.SessionNames}} </span>
+                                </div>
+                                <div style="float: right; width: 10%;" *ngIf="PageRights.IsReadOnly==false">
+                                    <span class="material-icons remove-session"
+                                        (click)="removeUnitSession(sessionItem)">
+                                        remove_circle_outline
+                                    </span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline"  fxFlex="35" fxFlex.lt-md="75"
+                          fxFlex.lt-sm="100">
+                            <mat-label>GL Methodology</mat-label>
+                            <mat-select name="methodologyIds" formControlName="MethodologyIds" multiple required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly" (selectionChange)="onGLMethodologyChange($event.value)"
+                                matTooltip="Please select the methodology of the guest lecture as undertaken."
+                                matTooltipPosition="above">
+                                <mat-option [value]="glMethodlogyItem.Id"
+                                    *ngFor="let glMethodlogyItem of glMethodlogyList" [disabled]="glMethodlogyItem.IsDisabled">
+                                    {{ glMethodlogyItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.MethodologyIds.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'MethodologyIds')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline"  fxFlex="35" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>GL Photo</mat-label>
+                            <ngx-mat-file-input name="glLecturerPhotoFile" formControlName="GLLecturerPhotoFile"
+                                [accept]="AllowedImageExtensions" [disabled]="PageRights.IsReadOnly"
+                                [required]="vtGuestLectureConductedForm.controls.IsGLLecturerPhotoFile.value == false" 
+                                (change)="uploadedGuestLecturerPhotoInClassFile($event)">
+                            </ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLLecturerPhotoFile.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLLecturerPhotoFile')}}
+                            </mat-error>                            
+                        </mat-form-field>
+                        <!-- <span fxFlex="30" class="material-icons default-image" (click)="setDefaultImage(vtGuestLectureConductedForm, 'GLLecturerPhotoFile')">perm_media</span> -->
+                        <div class="default-image-container" fxFlex="30">                            
+                            <mat-checkbox matInput formControlName="IsGLLecturerPhotoFile" [disabled]="PageRights.IsReadOnly" (change)="setMandatoryFieldControl(vtGuestLectureConductedForm, 'GLLecturerPhotoFile', $event)">
+                            </mat-checkbox>
+                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                        *ngIf="vtGuestLectureConductedForm.controls.MethodologyIds.value == '173'">
+                        <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Methodology Details</mat-label>
+                            <input matInput name="glMethodologyDetails" formControlName="GLMethodologyDetails"
+                                matTooltip="If other, Please specify details." matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLMethodologyDetails.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLMethodologyDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                        *ngIf="vtGuestLectureConductedForm.controls.GLType.value == '181'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>GL Conducted By</mat-label>
+                            <mat-select name="glConductedBy" formControlName="GLConductedBy"
+                            [required]="vtGuestLectureConductedForm.controls.GLType.value == '181'" 
+                                appearance="outline" [disabled]="PageRights.IsReadOnly" 
+                                matTooltip="Guest lecture conducted by." matTooltipPosition="above">
+                                <mat-option [value]="glConductedByItem.Id"
+                                    *ngFor="let glConductedByItem of glConductedByList">
+                                    {{ glConductedByItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLConductedBy.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLConductedBy')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>GL Person Details</mat-label>
+                            <input matInput name="glPersonDetails" formControlName="GLPersonDetails" 
+                            [required]="vtGuestLectureConductedForm.controls.GLType.value == '181'"
+                            matTooltip="Please add details about the person
+                                        For example: Name of the person, Subject/ Sector Taught (For Teachers), 
+                                        Name of School (For Teachers), 
+                                        Designation, 
+                                        Qualification" matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLPersonDetails.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLPersonDetails')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                          *ngIf="vtGuestLectureConductedForm.controls.GLType.value == '180'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer</mat-label>
+                            <input matInput name="glName" formControlName="GLName"
+                                [required]="vtGuestLectureConductedForm.controls.GLType.value == '180'" matTooltip="Please enter the name of the guest lecturer
+                                        Do not add any title. 
+                                        Enter name as [First Name] [Middle Name] [Last Name]."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLName.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLName')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Qualification</mat-label>
+                            <input matInput name="glQualification" formControlName="GLQualification"
+                                [required]="vtGuestLectureConductedForm.controls.GLType.value == '180'"
+                                matTooltip="Please enter the qualification of the guest lecturer."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLQualification.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLQualification')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                           *ngIf="vtGuestLectureConductedForm.controls.GLType.value == '180'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                          fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Mobile</mat-label>
+                            <input matInput name="glMobile" formControlName="GLMobile" digitOnly maxlength="10"
+                                minlength="10" [required]="vtGuestLectureConductedForm.controls.GLType.value == '180'"
+                                matTooltip="Please enter the mobile number of the guest lecturer."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLMobile.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLMobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Email</mat-label>
+                            <input matInput name="glEmail" formControlName="GLEmail">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLEmail.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLEmail')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                          *ngIf="vtGuestLectureConductedForm.controls.GLType.value == '180'">
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75" 
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Work Experience</mat-label>
+                            <input matInput name="glWorkExperience" formControlName="GLWorkExperience" digitOnly
+                                maxlength="3" [required]="vtGuestLectureConductedForm.controls.GLType.value == '180'"
+                                matTooltip="Please enter the work experience (no. of years) of the guest lecturer."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLWorkExperience.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLWorkExperience')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                          fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Address</mat-label>
+                            <input matInput name="glAddress" formControlName="GLAddress"
+                                matTooltip="Please enter the address of the guest lecturer." matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLAddress.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLAddress')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="75" 
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecture Work Status</mat-label>
+                            <mat-select name="glWorkStatus" formControlName="GLWorkStatus" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                matTooltip="Select the working status of the guest lecturer."
+                                matTooltipPosition="above">
+                                <mat-option [value]="glWorkStatusItem.Id"
+                                    *ngFor="let glWorkStatusItem of glWorkStatusList">
+                                    {{ glWorkStatusItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLWorkStatus.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLWorkStatus')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                        *ngIf="vtGuestLectureConductedForm.controls.GLWorkStatus.value == '178' && vtGuestLectureConductedForm.controls.GLType.value == '180'">
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Company</mat-label>
+                            <input matInput name="glCompany" formControlName="GLCompany"
+                                [required]="vtGuestLectureConductedForm.controls.GLWorkStatus.value == '178' && vtGuestLectureConductedForm.controls.GLType.value == '180'"
+                                matTooltip="Please enter the organisation/ company name of the guest lecturer."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLCompany.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLCompany')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" 
+                            fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecture Designation</mat-label>
+                            <input matInput name="glDesignation" formControlName="GLDesignation"
+                                [required]="vtGuestLectureConductedForm.controls.GLWorkStatus.value == '178' && vtGuestLectureConductedForm.controls.GLType.value == '180'"
+                                matTooltip="Please enter the designation of the guest lecturer."
+                                matTooltipPosition="above">
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLDesignation.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLDesignation')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"
+                          *ngIf="vtGuestLectureConductedForm.controls.GLType.value == '180'">
+                        <mat-form-field appearance="outline"  fxFlex="70" fxFlex.lt-md="75"
+                           fxFlex.lt-sm="100">
+                            <mat-label>Guest Lecturer Photo</mat-label>
+                            <ngx-mat-file-input name="glPhotoFile" formControlName="GLPhotoFile"
+                                [accept]="AllowedImageExtensions" [disabled]="PageRights.IsReadOnly"
+                                [required]="vtGuestLectureConductedForm.controls.IsGLPhotoFile.value == false" 
+                                (change)="uploadedGuestLecturerPhotoFile($event)">
+                            </ngx-mat-file-input>
+                            <mat-icon matSuffix>folder</mat-icon>
+                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.GLPhotoFile.invalid">
+                                {{getErrorMessage(vtGuestLectureConductedForm, 'GLPhotoFile')}}
+                            </mat-error>
+                        </mat-form-field>
+                        <div class="default-image-container" fxFlex="30">                            
+                            <mat-checkbox matInput formControlName="IsGLPhotoFile" [disabled]="PageRights.IsReadOnly" (change)="setMandatoryFieldControl(vtGuestLectureConductedForm, 'GLPhotoFile', $event)">
+                            </mat-checkbox>
+                            <span class="checkbox-space">{{ Constants.Messages.DefaultImageText }}</span>
+                        </div>
+                    </div>
+                    <mat-divider>
+                    </mat-divider>
+                    <div fxLayout="row">
+                        <div>
+                            <span class="h2">Student Present</span>
+                        </div>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" 
+                        *ngIf="vtGuestLectureConductedForm.get('StudentAttendances') != null">
+                        <div formArrayName="StudentAttendances" class="student-list-group">
+                            <!-- iterate formArray -->
+                            <div style="background: #f3f3f3;"
+                                *ngFor="let studentItem of vtGuestLectureConductedForm.get('StudentAttendances').controls; let studentIndex=index">
+                                <!-- Use the index for each formGroup inside the formArray -->
+                                <div [formGroupName]="studentIndex" class="student-list">
+                                    <span>{{studentIndex+1}})</span>
+                                    <input formControlName="StudentName" [disabled]="true"
+                                        style="background: #f3f3f3;" />
+                                    <mat-slide-toggle formControlName="IsPresent" [checked]="IsPresent">
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- unpaid valid-- {{vtGuestLectureConductedForm.controls["GLConductedBy"].valid}}  <br>
+ 
+                    paid valid -- {{vtGuestLectureConductedForm.controls["GLName"].valid}}  <br> -->
+                </form>
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

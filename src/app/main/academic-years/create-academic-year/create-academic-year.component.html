@@ -1,0 +1,120 @@
+<div id="academic-year" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/academic-years'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ academicYearModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Academic Year
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Academic Year Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-academic-year-button" [disabled]="academicYearForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateAcademicYearDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-academic-year-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateAcademicYearDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="academicYearForm" [formGroup]="academicYearForm" class="academic-year w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Phase</mat-label>
+
+                            <mat-select formControlName="PhaseId" required name="phaseId"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="phaseItem.Id" *ngFor="let phaseItem of phaseList">
+                                    {{ phaseItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="academicYearForm.controls.PhaseId.invalid">
+                                {{getErrorMessage(academicYearForm, 'PhaseId')}}
+                            </mat-error>
+                        </mat-form-field>
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Year Name</mat-label>
+                                <input matInput name="yearName" formControlName="YearName" required>
+                                <mat-error *ngIf="academicYearForm.controls.YearName.invalid">{{getErrorMessage(academicYearForm, 'YearName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="academicYearForm.controls.Description.invalid">{{getErrorMessage(academicYearForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayofxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <span class="checkbox-space">Is Current Academic Year?</span>
+                            <mat-checkbox matInput formControlName="IsCurrentAcademicYear" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

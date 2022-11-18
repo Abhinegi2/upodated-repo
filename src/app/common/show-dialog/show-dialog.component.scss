@@ -1,0 +1,17 @@
+.dialog-message {
+    align-items: center;
+    display: flex;    
+}
+
+.dialog-message>span {
+    margin-left: 5px; 
+}
+
+.dialog-action {
+    float: right;
+    padding-top: 1px !important;
+}
+
+.dialog-close{
+    float: right;
+}

@@ -1,0 +1,152 @@
+<div id="country" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/countries'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
+                        {{ countryModel.Name }}
+                    </div>
+                    <div class="h2" *ngIf="PageRights.PageType ==='New'">
+                        New Country
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Country Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <button mat-raised-button class="add-country-button" [disabled]="countryForm.invalid"
+                *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateCountryDetails()">
+                <span>ADD</span>
+            </button>
+
+            <button mat-raised-button class="save-country-button" 
+                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateCountryDetails()">
+                <span>SAVE</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="countryForm" [formGroup]="countryForm" class="country w-100-p" fxLayout="column" fxFlex>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <div class="tab-content p-24" fusePerfectScrollbar>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Country Code</mat-label>
+                                <input matInput name="countryCode" formControlName="CountryCode" required>
+                                <mat-error *ngIf="countryForm.controls.CountryCode.invalid">{{getErrorMessage(countryForm, 'CountryCode')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Country Name</mat-label>
+                                <input matInput name="countryName" formControlName="CountryName" required>
+                                <mat-error *ngIf="countryForm.controls.CountryName.invalid">{{getErrorMessage(countryForm, 'CountryName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>ISDCode</mat-label>
+                                <input matInput name="isdCode" formControlName="ISDCode">
+                                <mat-error *ngIf="countryForm.controls.ISDCode.invalid">{{getErrorMessage(countryForm, 'ISDCode')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>ISOCode</mat-label>
+                                <input matInput name="isoCode" formControlName="ISOCode">
+                                <mat-error *ngIf="countryForm.controls.ISOCode.invalid">{{getErrorMessage(countryForm, 'ISOCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Currency Name</mat-label>
+                                <input matInput name="currencyName" formControlName="CurrencyName">
+                                <mat-error *ngIf="countryForm.controls.CurrencyName.invalid">{{getErrorMessage(countryForm, 'CurrencyName')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="pr-1" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Currency Code</mat-label>
+                                <input matInput name="currencyCode" formControlName="CurrencyCode">
+                                <mat-error *ngIf="countryForm.controls.CurrencyCode.invalid">{{getErrorMessage(countryForm, 'CurrencyCode')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Country Icon</mat-label>
+                                <input matInput name="countryIcon" formControlName="CountryIcon">
+                                <mat-error *ngIf="countryForm.controls.CountryIcon.invalid">{{getErrorMessage(countryForm, 'CountryIcon')}}
+                                </mat-error>
+                            </mat-form-field>
+                            
+                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100">
+                                <mat-label>Description</mat-label>
+                                <input matInput name="description" formControlName="Description">
+                                <mat-error *ngIf="countryForm.controls.Description.invalid">{{getErrorMessage(countryForm, 'Description')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <span class="checkbox-space">Is Active?</span>
+                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                    <!-- </mat-tab>
+                    </mat-tab-group> -->
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

@@ -1,0 +1,177 @@
+<div id="complaint-registration" class="inner-scroll" fxLayout="row" fxLayoutAlign="start">
+
+    <div id="complaint-registration-intro" fxFlex fxHide fxShow.gt-xs *ngIf="appInfo.target == 'gj' || appInfo.target == 'lahi'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-{{appInfo.target}}.png">
+            </a>
+        </div>
+
+        <div class="complaint-registration-desc-content">
+            <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                <h3>વ્યવસાયલક્ષી શિક્ષણ</h3>
+            </div>
+
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                યુવાનોની અભિપ્સાઓ અને સમાજમાં કૌશલ્યવાન યુવાધનની માંગને પહોંચી વળવા માટે, ભારત સરકાર દ્રારા વ્યક્તિગત
+                ક્ષમતાઓ મુજબ અનુભવ અને પ્રેકટીકલ મહાવરા દ્રારા વ્યવસાયિક સજ્જતા દ્રારા વિદ્યાર્થીઓ માટેની વ્યવસાયિક
+                તકોને
+                વધારવા માટે ગુજરાત રાજયની માધ્યમિક અને ઉચ્ચતર માધ્યમિક શાળાઓમાં વ્યવસાયલક્ષી શિક્ષણ યોજના (વોકેશનલાઇઝેશન
+                ઓફ
+                સેકન્ડરી એન્ડ હાયર સેકન્ડરી સ્કીમ) દાખલ કરવામાં આવી છે.<br />
+            </div>
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                ગુજરાત રાજયના 33 જિલ્લાઓમાં વોકેશનલ એજયુકેશન અંતર્ગત હાલ 260 માધ્યમિક અને ઉચ્ચતર માધ્યમિક શાળાઓમાં
+                વ્યવસાયલક્ષી શિક્ષણને દાખલ કરેલ જેમાં (1) Retail (2) Tourism (3) Beauty & Wellness (4) Agriculture (5)
+                Electronics & Hardware (6) Automotive (7) Apparel ટ્રેડ દાખલ કરવામાં આવ્યા. વોકેશનલ એજયુકેશનના અસરકારક
+                અમલીકરણ માટે લાઈટહાઉસ પોર્ટલ શરૂ કરવામાં આવેલ છે.
+            </div>
+        </div>
+    </div>
+
+    <div id="complaint-registration-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target == 'aws'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-aws.png">
+            </a>
+        </div>
+
+        <div class="complaint-registration-desc-content">
+            <div class="title" [@animate]="{value:'*',params:{delay:'50ms',y:'25px'}}">
+                <h3>Welcome To Vocational Education</h3>
+            </div>
+
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                This is Management Information System for M&E - Lighthouse
+            </div>
+        </div>
+    </div>
+
+    <div id="complaint-registration-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target == 'jh'"
+        style="background-image: url('assets/images/logos/samagra-shiksha-abhiyan-jh-login.png'); background-position: center bottom; padding: 0 !important;">
+
+        <div class="jh-two-logo" style="padding: 15px !important; height: 240px;"
+            [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a style="float: left;" class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img style="width: 190px;" src="assets/images/logos/samagra-shiksha-abhiyan-jh-left.png">
+            </a>
+            <a style="float: right;" class="link" [routerLink]="['/login']" skipLocationChange="true"
+                replaceUrl="false">
+                <img style="width: 190px;" src="assets/images/logos/samagra-shiksha-abhiyan-jh-right.png">
+            </a>
+        </div>
+
+        <div class="complaint-registration-desc-content" style="padding-left: 65px; padding-right: 20px;">
+            <div class="description" style="max-width: fit-content;"
+                [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                Government of Jharkhand is committed to enable growth of the state through skilling the youth.
+                A skilled and high productivity manpower base is a critical enabler in the growth of manufacturing,
+                services and agriculture. Vocational Education in higher secondary schools is an intervention to make
+                the youth skilled and employable at school level.
+            </div>
+        </div>
+    </div>
+
+    <div id="complaint-registration-intro" fxFlex fxHide fxShow.gt-sm *ngIf="appInfo.target != 'jh' && appInfo.target != 'gj' && appInfo.target != 'aws' && appInfo.target != 'lahi'">
+        <div class="lahi-left-logo" [@animate]="{value:'*',params:{scale:'0.2'}}">
+            <a class="link" [routerLink]="['/login']" skipLocationChange="true" replaceUrl="false">
+                <img src="assets/images/logos/samagra-shiksha-abhiyan-{{appInfo.target}}.png">
+            </a>
+        </div>
+
+        <div class="complaint-registration-desc-content">
+            <div class="description" [@animate]="{value:'*',params:{delay:'100ms',y:'25px'}}">
+                Ministry of Education is implementing the Vocationalization of Secondary and Higher Secondary
+                Education
+                under Samagra Shiksha. Its main objectives are to enhance the employability of youth through
+                demand-driven
+                competency based, modular vocational courses and to bridge the divide between academic and learning.
+            </div>
+        </div>
+    </div>
+
+    <div id="complaint-registration-form-wrapper" fusePerfectScrollbar
+        [@animate]="{value:'*',params:{delay:'300ms',x:'100%'}}">
+
+        <div id="complaint-registration-form">
+
+            <div class="logo">
+                <img src="assets/images/logos/lighthouse-logo.png">
+            </div>
+
+            <div class="title">Complaint Registration</div>
+
+            <form name="complaintRegistrationForm" [formGroup]="complaintRegistrationForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>User Type</mat-label>
+                    <mat-select name="userType" formControlName="UserType" required appearance="outline">
+                        <mat-option value="VC">Vocational Coordinator</mat-option>
+                        <mat-option value="VT">Vocational Trainer</mat-option>
+                        <mat-option value="HM">Head Master</mat-option>
+                        <mat-option value="DRP">District Resourse Person</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="complaintRegistrationForm.controls.UserType.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'UserType')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>User Name</mat-label>
+                    <input matInput name="userName" formControlName="UserName" required>
+                    <mat-error *ngIf="complaintRegistrationForm.controls.UserName.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'UserName')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email Id</mat-label>
+                    <input matInput name="EmailId" formControlName="EmailId" required>
+                    <mat-error *ngIf="complaintRegistrationForm.controls.EmailId.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'EmailId')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Subject</mat-label>
+                    <input matInput name="subject" formControlName="Subject" required>
+                    <mat-error *ngIf="complaintRegistrationForm.controls.Subject.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'Subject')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                    <mat-label>Issue Details</mat-label>
+                    <textarea matInput name="issueDetails" formControlName="IssueDetails" required 
+                    cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10"></textarea>
+                    <!-- <input matInput name="messageBody" formControlName="IssueDetails" required> -->
+                    <mat-error *ngIf="complaintRegistrationForm.controls.IssueDetails.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'IssueDetails')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                    <mat-label>ScreenshotFile</mat-label>
+                    <ngx-mat-file-input name="attachmentFile" formControlName="ScreenshotFile"
+                        [accept]="AllowedImageExtensions" (change)="uploadedScreenshotFile($event)">
+
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                    <mat-error *ngIf="complaintRegistrationForm.controls.ScreenshotFile.invalid">
+                        {{getErrorMessage(complaintRegistrationForm, 'ScreenshotFile')}}
+                    </mat-error>
+                </mat-form-field>
+
+                <button mat-raised-button class="submit-button" color="accent" aria-label="SUBMIT"
+                    (click)="complaintRegistration()">
+                    Submit
+                </button>
+            </form>
+
+            <div class="login" fxLayout="row" fxLayoutAlign="center center">
+                <a class="link" [routerLink]="'/login'">Go back to login</a>
+            </div>
+
+        </div>
+    </div>
+</div>
