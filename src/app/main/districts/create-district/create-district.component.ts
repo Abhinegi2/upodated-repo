@@ -109,7 +109,7 @@ export class CreateDistrictComponent extends BaseComponent<DistrictModel> implem
   createDistrictForm(): FormGroup {
     return this.formBuilder.group({
       DistrictCode: new FormControl(this.districtModel.DistrictCode),
-      StateCode: new FormControl({ value: this.UserModel.DefaultStateId, disabled: true }, Validators.required),
+      StateCode: new FormControl({ value: this.UserModel.DefaultStateId}, Validators.required),
       DivisionId: new FormControl({ value: this.districtModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DistrictName: new FormControl({ value: this.districtModel.DistrictName, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Description: new FormControl({ value: this.districtModel.Description, disabled: this.PageRights.IsReadOnly }),
