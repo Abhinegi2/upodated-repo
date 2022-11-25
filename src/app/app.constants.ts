@@ -59,7 +59,7 @@ export class AppConstants {
     public ServerDateFormat: string = "yyyy/MM/dd hh:mm:ss a";
     public ShortDateFormat: string = "dd/MM/yyyy";
     public FullDateFormat: string = "dd/MM/yyyy hh:mm:ss a";
-    public DefaultStateId: string = "MH";
+    public DefaultStateId: string = "DL";
     public BackDatedReportingDays: number = 45;
 
     public UserRoleIds: string = "Roles : DisRP,DisEO,BRP";
