@@ -90,6 +90,18 @@ import { EmployerComponent } from './employers/employer.component';
 import { CreateEmployerComponent } from './employers/create-employer/create-employer.component';
 import { EmployerService } from './employers/employer.service';
 
+import { SchoolSectorJobComponent } from './schoolsectorjobs/schoolsectorjob.component';
+import { CreateSchoolSectorJobComponent } from './schoolsectorjobs/create-schoolsectorjob/create-schoolsectorjob.component';
+import { SchoolSectorJobService } from './schoolsectorjobs/schoolsectorjob.service';
+
+import { GenericVTMappingComponent } from './genericvtmappings/genericvtmapping.component';
+import { CreateGenericVTMappingComponent } from './genericvtmappings/create-genericvtmapping/create-genericvtmapping.component';
+import { GenericVTMappingService } from './genericvtmappings/genericvtmapping.service';
+
+import { VTAcademicClassSectionComponent } from './vtacademicclasssections/vtacademicclasssection.component';
+import { CreateVTAcademicClassSectionComponent } from './vtacademicclasssections/create-vtacademicclasssection/create-vtacademicclasssection.component';
+import { VTAcademicClassSectionService } from './vtacademicclasssections/vtacademicclasssection.service';
+
 import { ForgotPasswordHistoryComponent } from './forgot-password-histories/forgot-password-history.component';
 import { CreateForgotPasswordHistoryComponent } from './forgot-password-histories/create-forgot-password-history/create-forgot-password-history.component';
 import { ForgotPasswordHistoryService } from './forgot-password-histories/forgot-password-history.service';
