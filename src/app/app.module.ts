@@ -40,6 +40,8 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FakeDbService } from './fake-db/fake-db.service';
 import { ProjectDashboardModule } from './dashboards/dashboard.module';
 import { CookieService } from 'ngx-cookie-service';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatTableExporterModule } from 'mat-table-exporter';
 
 export const MY_FORMATS = {
     parse: {
@@ -74,6 +76,9 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        // MatInputModule,
+        MatFormFieldModule,
+        // MatTableExporterModule,
         RouterModule.forRoot(appRoutes),
 
         TranslateModule.forRoot(),
