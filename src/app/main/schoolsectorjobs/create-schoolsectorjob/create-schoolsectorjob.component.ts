@@ -21,6 +21,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJobModel> implements OnInit {
   schoolsectorjobForm: FormGroup;
   schoolsectorjobModel: SchoolSectorJobModel;
+  minAllocationDate: Date;
 
 
   schoolList: [DropdownModel];

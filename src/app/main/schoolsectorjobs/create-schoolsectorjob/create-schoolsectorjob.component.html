@@ -103,60 +103,39 @@
                                 {{getErrorMessage(schoolsectorjobForm, 'JobRoleId')}}
                             </mat-error>
                         </mat-form-field>
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select State</mat-label>
-
-                            <mat-select name="stateCode" formControlName="StateCode" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="stateItem.Id" *ngFor="let stateItem of stateList">
-                                    {{ stateItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.StateCode.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'StateCode')}}</mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select Division</mat-label>
-
-                            <mat-select name="divisionId" formControlName="DivisionId" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeDivision($event.value)">
-                                <mat-option [value]="divisionItem.Id" *ngFor="let divisionItem of divisionList">
-                                    {{ divisionItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.DivisionId.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'DivisionId')}}
-                            </mat-error>
-                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select District</mat-label>
+                         fxLayoutGap.lt-md="0px">
+                      <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-label>Date Of Allocation</mat-label>
+                        <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
+                            [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
+                            [disabled]="PageRights.IsReadOnly">
+                        <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
+                        <mat-datepicker #dateOfAllocation></mat-datepicker>
+                        <mat-error *ngIf="schoolsectorjobForm.controls.DateOfAllocation.invalid">
+                            {{getErrorMessage(schoolsectorjobForm, 'DateOfAllocation')}}
+                        </mat-error>
+                      </mat-form-field>
 
-                            <mat-select name="districtCode" formControlName="DistrictCode" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="districtItem.Id" *ngFor="let districtItem of districtList">
-                                    {{ districtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.DistrictCode.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'DistrictCode')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Block Name</mat-label>
-                            <input matInput name="blockName" formControlName="BlockName" required
-                                matTooltip="Enter Block name. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.BlockName.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'BlockName')}}
-                            </mat-error>
-                        </mat-form-field> -->
+                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                        *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
+                        <mat-label>Date Of Removal</mat-label>
+                        <input matInput [matDatepicker]="picker1" name="dateOfRemoval" [max]="CurrentDate"
+                            (dateChange)="onChangeDateEnableDisableCheckBox(schoolsectorjobForm, $event)"
+                            [min]="schoolsectorjobForm.controls.DateOfAllocation.value"
+                            formControlName="DateOfRemoval" [disabled]="PageRights.IsReadOnly">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error *ngIf="schoolsectorjobForm.controls.DateOfRemoval.invalid">
+                            {{getErrorMessage(schoolsectorjobForm, 'DateOfRemoval')}}
+                        </mat-error>
+                     </mat-form-field>
+                     <mat-icon matDatepickerToggleIcon
+                        (click)="clearDateValueInFormControl(schoolsectorjobForm, 'DateOfRemoval', $event)"
+                        *ngIf="schoolsectorjobForm.controls.DateOfRemoval.value && PageRights.ActionType !='view'">
+                        clear</mat-icon>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="PageRights.ActionType !='new'">
