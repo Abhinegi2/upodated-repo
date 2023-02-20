@@ -22,9 +22,14 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
   schoolsectorjobForm: FormGroup;
   schoolsectorjobModel: SchoolSectorJobModel;
 
-  stateList: [DropdownModel];
-  divisionList: DropdownModel[];
-  districtList: DropdownModel[];
+
+  schoolList: [DropdownModel];
+  sectorList: DropdownModel[];
+  jobRoleList: DropdownModel[];
+
+  // stateList: [DropdownModel];
+  // divisionList: DropdownModel[];
+  // districtList: DropdownModel[];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -43,15 +48,15 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
 
   ngOnInit(): void {
 
-    this.schoolsectorjobService.getStateDivisions().subscribe(results => {
+    this.schoolsectorjobService.getSchoolSectorJob().subscribe(results => {
 
       if (results[0].Success) {
-        this.stateList = results[0].Results;
+        this.schoolList = results[0].Results;
       }
 
-      if (results[1].Success) {
-        this.divisionList = results[1].Results;
-      }
+      // if (results[1].Success) {
+      //   this.divisionList = results[1].Results;
+      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -73,9 +78,15 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
                   this.schoolsectorjobModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
+                this.onChangeSchool(this.schoolsectorjobModel.SchoolId).then(response => {
+                  this.onChangeSector(this.schoolsectorjobModel.SectorId).then(response => {
+                    this.schoolsectorjobForm = this.createSchoolSectorJobForm();
+                    this.IsLoading = true;
+                  });
+                });
 
-                this.schoolsectorjobForm = this.createSchoolSectorJobForm();                
-                this.onChangeDivision(this.schoolsectorjobModel.DivisionId);
+                // this.schoolsectorjobForm = this.createSchoolSectorJobForm();
+                // this.onChangeDivision(this.schoolsectorjobModel.DivisionId);
               });
           }
         }
@@ -85,24 +96,59 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
     this.schoolsectorjobForm = this.createSchoolSectorJobForm();
   }
 
-  onChangeState(stateId: any) {
-    this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-      this.divisionList = response.Results;
-      this.districtList = <DropdownModel[]>[];
+
+  onChangeSector(sectorId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: "Job Role" }).subscribe((response) => {
+        if (response.Success) {
+          this.jobRoleList = response.Results;
+
+          if (this.IsLoading) {
+            this.schoolsectorjobForm.controls['JobRoleId'].setValue(null);
+          }
+        }
+
+        resolve(true);
+      });
     });
   }
 
-  onChangeDivision(divisionId: any) {
-    var stateCode = this.schoolsectorjobForm.get('StateCode').value;
+  onChangeSchool(schoolId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
+        if (response.Success) {
+          this.sectorList = response.Results;
 
-    this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-      this.districtList = response.Results;
+          if (this.IsLoading) {
+            this.schoolsectorjobForm.controls['SectorId'].setValue(null);
+            this.schoolsectorjobForm.controls['JobRoleId'].setValue(null);
+            this.jobRoleList = <DropdownModel[]>[];
+          }
+        }
+
+        resolve(true);
+      });
     });
   }
+
+  // onChangeState(stateId: any) {
+  //   this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
+  //     this.divisionList = response.Results;
+  //     this.districtList = <DropdownModel[]>[];
+  //   });
+  // }
+
+  // onChangeDivision(divisionId: any) {
+  //   var stateCode = this.schoolsectorjobForm.get('StateCode').value;
+
+  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
+  //     this.districtList = response.Results;
+  //   });
+  // }
 
   saveOrUpdateSchoolSectorJobDetails() {
     if (!this.schoolsectorjobForm.valid) {
-      this.validateAllFormFields(this.schoolsectorjobForm);  
+      this.validateAllFormFields(this.schoolsectorjobForm);
       return;
     }
 
@@ -134,24 +180,11 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
   createSchoolSectorJobForm(): FormGroup {
     return this.formBuilder.group({
       SchoolSectorJobId: new FormControl(this.schoolsectorjobModel.SchoolSectorJobId),
-      StateCode: new FormControl({ value: this.schoolsectorjobModel.StateCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DivisionId: new FormControl({ value: this.schoolsectorjobModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DistrictCode: new FormControl({ value: this.schoolsectorjobModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      BlockName: new FormControl({ value: this.schoolsectorjobModel.BlockName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Address: new FormControl({ value: this.schoolsectorjobModel.Address, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      City: new FormControl({ value: this.schoolsectorjobModel.City, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Pincode: new FormControl({ value: this.schoolsectorjobModel.Pincode, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      BusinessType: new FormControl({ value: this.schoolsectorjobModel.BusinessType, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      EmployeeCount: new FormControl({ value: this.schoolsectorjobModel.EmployeeCount, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      Outlets: new FormControl({ value: this.schoolsectorjobModel.Outlets, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Contact1: new FormControl({ value: this.schoolsectorjobModel.Contact1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Mobile1: new FormControl({ value: this.schoolsectorjobModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-      Designation1: new FormControl({ value: this.schoolsectorjobModel.Designation1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      EmailId1: new FormControl({ value: this.schoolsectorjobModel.EmailId1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Email)]),
-      Contact2: new FormControl({ value: this.schoolsectorjobModel.Contact2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Mobile2: new FormControl({ value: this.schoolsectorjobModel.Mobile2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      Designation2: new FormControl({ value: this.schoolsectorjobModel.Designation2, disabled: this.PageRights.IsReadOnly },  Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      EmailId2: new FormControl({ value: this.schoolsectorjobModel.EmailId2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Email)),
+      SchoolId: new FormControl({ value: this.schoolsectorjobModel.SchoolId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SectorId: new FormControl({ value: this.schoolsectorjobModel.SectorId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      JobRoleId: new FormControl({ value: this.schoolsectorjobModel.JobRoleId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfAllocation: new FormControl({ value: new Date(this.schoolsectorjobModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfRemoval: new FormControl({ value: this.getDateValue(this.schoolsectorjobModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.schoolsectorjobModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }

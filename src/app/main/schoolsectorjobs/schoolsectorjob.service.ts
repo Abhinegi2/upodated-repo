@@ -75,11 +75,13 @@ export class SchoolSectorJobService {
             );
     }
 
-    getStateDivisions(): Observable<any[]> {
-        let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'States' });
-        let divisionRequest = this.http.GetMasterDataByType({ DataType: 'Divisions', SelectTitle: 'Division' });
+    getSchoolSectorJob(): Observable<any[]> {
+        // let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'States' });
+        // let divisionRequest = this.http.GetMasterDataByType({ DataType: 'Divisions', SelectTitle: 'Division' });
+        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' }, false);
+        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([stateRequest, divisionRequest]);
+        return forkJoin([schoolRequest, sectorRequest]);
     }
 }

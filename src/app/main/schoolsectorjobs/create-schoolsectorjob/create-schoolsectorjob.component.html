@@ -56,7 +56,55 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select School</mat-label>
+
+                            <mat-select formControlName="SchoolId" required appearance="outline"
+                                matTooltip="Select School" matTooltipPosition='above' matTooltipClass="allow-cr"
+                                [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.schoolList = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of schoolList">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolsectorjobForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(schoolsectorjobForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolsectorjobForm.controls.SectorId.invalid">
+                                {{getErrorMessage(schoolsectorjobForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolsectorjobForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(schoolsectorjobForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Select State</mat-label>
 
                             <mat-select name="stateCode" formControlName="StateCode" appearance="outline" required
@@ -81,12 +129,12 @@
                             <mat-error *ngIf="schoolsectorjobForm.controls.DivisionId.invalid">
                                 {{getErrorMessage(schoolsectorjobForm, 'DivisionId')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Select District</mat-label>
 
                             <mat-select name="districtCode" formControlName="DistrictCode" appearance="outline" required
@@ -108,154 +156,7 @@
                             <mat-error *ngIf="schoolsectorjobForm.controls.BlockName.invalid">
                                 {{getErrorMessage(schoolsectorjobForm, 'BlockName')}}
                             </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Address</mat-label>
-                            <input matInput name="address" formControlName="Address" required>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Address.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Address')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>City</mat-label>
-                            <input matInput name="city" formControlName="City">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.City.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'City')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput name="pincode" formControlName="Pincode" digitOnly minlength="6"
-                                maxlength="6" matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Pincode.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Pincode')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Business Type</mat-label>
-                            <input matInput name="businessType" formControlName="BusinessType" required
-                                matTooltip="Enter Nature/ Area of Business (Example - Travel Agency)"
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.BusinessType.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'BusinessType')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Employee Count</mat-label>
-                            <input matInput name="employeeCount" formControlName="EmployeeCount" required digitOnly>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.EmployeeCount.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'EmployeeCount')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Outlets</mat-label>
-                            <input matInput name="outlets" formControlName="Outlets"
-                                matTooltip="Enter other oulets location." matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Outlets.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Outlets')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact1</mat-label>
-                            <input matInput name="contact1" formControlName="Contact1" required
-                                matTooltip="Enter Name of the Primary Contact. First letter of each word should be capital."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Contact1.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Contact1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile1</mat-label>
-                            <input matInput name="mobile1" formControlName="Mobile1" required digitOnly minlength="10"
-                                maxlength="10" matTooltip="Enter Mobile Number." matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Mobile1.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Mobile1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation1</mat-label>
-                            <input matInput name="designation1" formControlName="Designation1" required
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Designation1.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Designation1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id1</mat-label>
-                            <input matInput name="emailId1" formControlName="EmailId1" required>
-                            <mat-error *ngIf="schoolsectorjobForm.controls.EmailId1.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'EmailId1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact2</mat-label>
-                            <input matInput name="contact2" formControlName="Contact2"
-                                matTooltip="Enter Name of the Secondary Contact. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Contact2.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Contact2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile2</mat-label>
-                            <input matInput name="mobile2" formControlName="Mobile2" digitOnly minlength="10"
-                                maxlength="10">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Mobile2.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Mobile2')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation2</mat-label>
-                            <input matInput name="designation2" formControlName="Designation2"
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.Designation2.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'Designation2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id2</mat-label>
-                            <input matInput name="emailId2" formControlName="EmailId2">
-                            <mat-error *ngIf="schoolsectorjobForm.controls.EmailId2.invalid">
-                                {{getErrorMessage(schoolsectorjobForm, 'EmailId2')}}
-                            </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="PageRights.ActionType !='new'">
