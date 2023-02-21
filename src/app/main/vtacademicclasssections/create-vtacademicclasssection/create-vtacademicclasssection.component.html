@@ -56,208 +56,101 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select State</mat-label>
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Academic Year</mat-label>
 
-                            <mat-select name="stateCode" formControlName="StateCode" appearance="outline" required
+                            <mat-select formControlName="AcademicYearId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeAcademicYear($event.value)">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Class</mat-label>
+
+                            <mat-select formControlName="ClassId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly || (PageRights.ActionType == 'edit' && UserModel.RoleCode == 'VT')">
+                                <!-- (selectionChange)="onChangeClass($event.value)"> -->
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.ClassId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Section</mat-label>
+
+                            <mat-select formControlName="SectionId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly || (PageRights.ActionType == 'edit' && UserModel.RoleCode == 'VT')">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.SectionId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'SectionId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="VTId" required appearance="outline"
+                                matTooltip="Select Vocational Trainer" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt
+                                (selectionChange)="onChangeVT($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
+                                    (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredVTItems">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.VTId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'VTId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Of Allocation</mat-label>
+                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
+                                [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                                 [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="stateItem.Id" *ngFor="let stateItem of stateList">
-                                    {{ stateItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.StateCode.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'StateCode')}}</mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select Division</mat-label>
-
-                            <mat-select name="divisionId" formControlName="DivisionId" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeDivision($event.value)">
-                                <mat-option [value]="divisionItem.Id" *ngFor="let divisionItem of divisionList">
-                                    {{ divisionItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.DivisionId.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'DivisionId')}}
+                            <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfAllocation></mat-datepicker>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.DateOfAllocation.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'DateOfAllocation')}}
                             </mat-error>
-                        </mat-form-field>
+                          </mat-form-field>
+    
+                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
+                            <mat-label>Date Of Removal</mat-label>
+                            <input matInput [matDatepicker]="picker1" name="dateOfRemoval" [max]="CurrentDate"
+                                (dateChange)="onChangeDateEnableDisableCheckBox(vtacademicclasssectionForm, $event)"
+                                [min]="vtacademicclasssectionForm.controls.DateOfAllocation.value"
+                                formControlName="DateOfRemoval" [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.DateOfRemoval.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'DateOfRemoval')}}
+                            </mat-error>
+                         </mat-form-field>
+
                     </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select District</mat-label>
-
-                            <mat-select name="districtCode" formControlName="DistrictCode" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="districtItem.Id" *ngFor="let districtItem of districtList">
-                                    {{ districtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.DistrictCode.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'DistrictCode')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Block Name</mat-label>
-                            <input matInput name="blockName" formControlName="BlockName" required
-                                matTooltip="Enter Block name. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.BlockName.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'BlockName')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Address</mat-label>
-                            <input matInput name="address" formControlName="Address" required>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Address.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Address')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>City</mat-label>
-                            <input matInput name="city" formControlName="City">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.City.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'City')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput name="pincode" formControlName="Pincode" digitOnly minlength="6"
-                                maxlength="6" matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Pincode.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Pincode')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Business Type</mat-label>
-                            <input matInput name="businessType" formControlName="BusinessType" required
-                                matTooltip="Enter Nature/ Area of Business (Example - Travel Agency)"
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.BusinessType.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'BusinessType')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Employee Count</mat-label>
-                            <input matInput name="employeeCount" formControlName="EmployeeCount" required digitOnly>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.EmployeeCount.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'EmployeeCount')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Outlets</mat-label>
-                            <input matInput name="outlets" formControlName="Outlets"
-                                matTooltip="Enter other oulets location." matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Outlets.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Outlets')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact1</mat-label>
-                            <input matInput name="contact1" formControlName="Contact1" required
-                                matTooltip="Enter Name of the Primary Contact. First letter of each word should be capital."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Contact1.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Contact1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile1</mat-label>
-                            <input matInput name="mobile1" formControlName="Mobile1" required digitOnly minlength="10"
-                                maxlength="10" matTooltip="Enter Mobile Number." matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Mobile1.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Mobile1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation1</mat-label>
-                            <input matInput name="designation1" formControlName="Designation1" required
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Designation1.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Designation1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id1</mat-label>
-                            <input matInput name="emailId1" formControlName="EmailId1" required>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.EmailId1.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'EmailId1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact2</mat-label>
-                            <input matInput name="contact2" formControlName="Contact2"
-                                matTooltip="Enter Name of the Secondary Contact. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Contact2.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Contact2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile2</mat-label>
-                            <input matInput name="mobile2" formControlName="Mobile2" digitOnly minlength="10"
-                                maxlength="10">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Mobile2.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Mobile2')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation2</mat-label>
-                            <input matInput name="designation2" formControlName="Designation2"
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.Designation2.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'Designation2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id2</mat-label>
-                            <input matInput name="emailId2" formControlName="EmailId2">
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.EmailId2.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'EmailId2')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
+                    
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="PageRights.ActionType !='new'">
                         <span class="checkbox-space">Is Active</span>
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">

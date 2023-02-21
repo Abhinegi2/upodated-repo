@@ -24,9 +24,10 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   vtacademicclasssectionForm: FormGroup;
   vtacademicclasssectionModel: VTAcademicClassSectionModel;
 
-  stateList: [DropdownModel];
-  divisionList: DropdownModel[];
-  districtList: DropdownModel[];
+  academicYearList: [DropdownModel];
+  classList: [DropdownModel];
+  sectionList: [DropdownModel];
+  vtList: [DropdownModel];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -45,14 +46,22 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   ngOnInit(): void {
 
-    this.vtacademicclasssectionService.getStateDivisions().subscribe(results => {
+    this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
 
       if (results[0].Success) {
-        this.stateList = results[0].Results;
+        this.academicYearList = results[0].Results;
       }
 
       if (results[1].Success) {
-        this.divisionList = results[1].Results;
+        this.classList = results[1].Results;
+      }
+
+      if (results[2].Success) {
+        this.sectionList = results[2].Results;
+      }
+
+      if (results[3].Success) {
+        this.vtList = results[3].Results;
       }
 
       this.route.paramMap.subscribe(params => {
@@ -77,7 +86,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                 }
 
                 this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();                
-                this.onChangeDivision(this.vtacademicclasssectionModel.DivisionId);
+                // this.onChangeDivision(this.vtacademicclasssectionModel.DivisionId);
               });
           }
         }
@@ -87,20 +96,15 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  onChangeState(stateId: any) {
-    this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-      this.divisionList = response.Results;
-      this.districtList = <DropdownModel[]>[];
-    });
-  }
+  
+ 
+  // onChangeDivision(divisionId: any) {
+  //   var stateCode = this.vtacademicclasssectionForm.get('StateCode').value;
 
-  onChangeDivision(divisionId: any) {
-    var stateCode = this.vtacademicclasssectionForm.get('StateCode').value;
-
-    this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-      this.districtList = response.Results;
-    });
-  }
+  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
+  //     this.districtList = response.Results;
+  //   });
+  // }
 
   saveOrUpdateVTAcademicClassSectionDetails() {
     if (!this.vtacademicclasssectionForm.valid) {
@@ -136,24 +140,12 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   createVTAcademicClassSectionForm(): FormGroup {
     return this.formBuilder.group({
       VTAcademicClassSectionId: new FormControl(this.vtacademicclasssectionModel.VTAcademicClassSectionId),
-      StateCode: new FormControl({ value: this.vtacademicclasssectionModel.StateCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DivisionId: new FormControl({ value: this.vtacademicclasssectionModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DistrictCode: new FormControl({ value: this.vtacademicclasssectionModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      BlockName: new FormControl({ value: this.vtacademicclasssectionModel.BlockName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Address: new FormControl({ value: this.vtacademicclasssectionModel.Address, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      City: new FormControl({ value: this.vtacademicclasssectionModel.City, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Pincode: new FormControl({ value: this.vtacademicclasssectionModel.Pincode, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      BusinessType: new FormControl({ value: this.vtacademicclasssectionModel.BusinessType, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      EmployeeCount: new FormControl({ value: this.vtacademicclasssectionModel.EmployeeCount, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      Outlets: new FormControl({ value: this.vtacademicclasssectionModel.Outlets, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Contact1: new FormControl({ value: this.vtacademicclasssectionModel.Contact1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Mobile1: new FormControl({ value: this.vtacademicclasssectionModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-      Designation1: new FormControl({ value: this.vtacademicclasssectionModel.Designation1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      EmailId1: new FormControl({ value: this.vtacademicclasssectionModel.EmailId1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Email)]),
-      Contact2: new FormControl({ value: this.vtacademicclasssectionModel.Contact2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Mobile2: new FormControl({ value: this.vtacademicclasssectionModel.Mobile2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      Designation2: new FormControl({ value: this.vtacademicclasssectionModel.Designation2, disabled: this.PageRights.IsReadOnly },  Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      EmailId2: new FormControl({ value: this.vtacademicclasssectionModel.EmailId2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Email)),
+      ademicYearId: new FormControl({ value: this.vtacademicclasssectionModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      ClassId: new FormControl({ value: this.vtacademicclasssectionModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
