@@ -75,11 +75,13 @@ export class VTAcademicClassSectionService {
             );
     }
 
-    getStateDivisions(): Observable<any[]> {
-        let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'States' });
-        let divisionRequest = this.http.GetMasterDataByType({ DataType: 'Divisions', SelectTitle: 'Division' });
+    getVTAcademicClassSection(userModel): Observable<any[]> {
+        let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', UserId: userModel.UserTypeId, SelectTitle: 'Academic Year' }, false);
+        let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
+        let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', SelectTitle: 'Section' });
+        let vtRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainersByVC', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Vocational Trainer' }, false);
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([stateRequest, divisionRequest]);
+        return forkJoin([academicYearRequest,classRequest,sectionRequest,vtRequest]);
     }
 }

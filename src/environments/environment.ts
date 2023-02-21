@@ -13,7 +13,7 @@ export const environment = {
     version: "2.21.2.07",
     ApiBaseUrl: "http://localhost:5013/LighthouseServices/"
     //ApiBaseUrl: "https://maharashtra.lighthouse.net.in/LighthouseServices/"
-    //ApiBaseUrl: "https://stg-mh.lighthouse.net.in/LighthouseServices/"
+    // ApiBaseUrl: "https://stg-dl.lighthouse.net.in/LighthouseServices/"
 };
 
 /* Build Project => ng build --prod --c/configuration=lahi  lahi | uat | gujarat | mh

@@ -95,6 +95,15 @@
                     </mat-cell>
                 </ng-container>
 
+                <ng-container matColumnDef="DateOfAllocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let schoolsectorjob" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{schoolsectorjob.DateOfAllocation | date: Constants.ShortDateFormat}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let schoolsectorjob" fxShow.gt-xs>
