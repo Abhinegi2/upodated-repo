@@ -60,8 +60,8 @@
                             <mat-label>Select Academic Year</mat-label>
 
                             <mat-select formControlName="AcademicYearId" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeAcademicYear($event.value)">
+                                [disabled]="PageRights.IsReadOnly">
+                                <!-- (selectionChange)="onChangeAcademicYear($event.value)"> -->
                                 <mat-option [value]="academicYearItem.Id"
                                     *ngFor="let academicYearItem of academicYearList">
                                     {{ academicYearItem.Name }}
@@ -76,7 +76,7 @@
                             <mat-label>Select Class</mat-label>
 
                             <mat-select formControlName="ClassId" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly || (PageRights.ActionType == 'edit' && UserModel.RoleCode == 'VT')">
+                                [disabled]="PageRights.IsReadOnly">
                                 <!-- (selectionChange)="onChangeClass($event.value)"> -->
                                 <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
                                     {{ classItem.Name }}
@@ -91,7 +91,7 @@
                             <mat-label>Select Section</mat-label>
 
                             <mat-select formControlName="SectionId" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly || (PageRights.ActionType == 'edit' && UserModel.RoleCode == 'VT')">
+                                [disabled]="PageRights.IsReadOnly">
                                 <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
                                     {{ sectionItem.Name }}
                                 </mat-option>
@@ -104,13 +104,14 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Select Vocational Trainer</mat-label>
 
                             <mat-select formControlName="VTId" required appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt
-                                (selectionChange)="onChangeVT($event.value)">
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
+                                <!-- (selectionChange)="onChangeVT($event.value)"> -->
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
                                 </mat-select-filter>
@@ -123,6 +124,31 @@
                             </mat-error>
                         </mat-form-field>
 
+                        
+                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
+                            <mat-label>Select Genric Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="GVTId" required appearance="outline"
+                                matTooltip="Select Genric Vocational Trainer" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGVT>
+                                <!-- (selectionChange)="onChangeVT($event.value)"> -->
+                                <mat-select-filter class="select-filter" *ngIf="SelectGVT.focused" [array]="gVtList"
+                                    (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="gvtItem.Id" *ngFor="let gvtItem of filteredGVTItems">
+                                    {{ gvtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.GVTId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'GVTId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Of Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
@@ -133,9 +159,9 @@
                             <mat-error *ngIf="vtacademicclasssectionForm.controls.DateOfAllocation.invalid">
                                 {{getErrorMessage(vtacademicclasssectionForm, 'DateOfAllocation')}}
                             </mat-error>
-                          </mat-form-field>
-    
-                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
                             *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
                             <mat-label>Date Of Removal</mat-label>
                             <input matInput [matDatepicker]="picker1" name="dateOfRemoval" [max]="CurrentDate"
@@ -147,7 +173,7 @@
                             <mat-error *ngIf="vtacademicclasssectionForm.controls.DateOfRemoval.invalid">
                                 {{getErrorMessage(vtacademicclasssectionForm, 'DateOfRemoval')}}
                             </mat-error>
-                         </mat-form-field>
+                        </mat-form-field>
 
                     </div>
                     
