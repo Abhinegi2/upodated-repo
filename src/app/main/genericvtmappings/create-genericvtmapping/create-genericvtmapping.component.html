@@ -56,20 +56,19 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select State</mat-label>
 
-                            <mat-select name="stateCode" formControlName="StateCode" appearance="outline" required
+                             <!-- <div class="cm-status" style="width: 100%;"> -->
+                            <mat-label fxFlex="35" class="radio-label-sc">User Type</mat-label>
+                            <mat-radio-group name="utStatus" formControlName="UTStatus" required appearance="outline"
+                                fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                 fxLayoutGap="20px" class="radio-space-sc"
                                 [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="stateItem.Id" *ngFor="let stateItem of stateList">
-                                    {{ stateItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="genericvtmappingForm.controls.StateCode.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'StateCode')}}</mat-error>
-                        </mat-form-field>
+                                <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                <mat-radio-button value="No">No</mat-radio-button>
+                            </mat-radio-group>
+                            <!-- </div> -->
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Select Division</mat-label>
 
                             <mat-select name="divisionId" formControlName="DivisionId" appearance="outline" required
@@ -81,187 +80,95 @@
                             <mat-error *ngIf="genericvtmappingForm.controls.DivisionId.invalid">
                                 {{getErrorMessage(genericvtmappingForm, 'DivisionId')}}
                             </mat-error>
-                        </mat-form-field>
-                    </div>
+                        </mat-form-field> -->
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select District</mat-label>
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Training Provider</mat-label>
 
-                            <mat-select name="districtCode" formControlName="DistrictCode" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="districtItem.Id" *ngFor="let districtItem of districtList">
-                                    {{ districtItem.Name }}
+                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'" appearance="outline"
+                                 [disabled]="PageRights.IsReadOnly" #SelectVTP>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused"
+                                    [array]="vtpFilterList" (filteredReturn)="vtpList = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
+                                    {{ vtpItem.Name }}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="genericvtmappingForm.controls.DistrictCode.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'DistrictCode')}}
+                            <mat-error *ngIf="genericvtmappingForm.controls.VTPId.invalid">
+                                {{getErrorMessage(genericvtmappingForm, 'VTPId')}}
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Block Name</mat-label>
-                            <input matInput name="blockName" formControlName="BlockName" required
-                                matTooltip="Enter Block name. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.BlockName.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'BlockName')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Coordinator</mat-label>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Address</mat-label>
-                            <input matInput name="address" formControlName="Address" required>
-                            <mat-error *ngIf="genericvtmappingForm.controls.Address.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Address')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>City</mat-label>
-                            <input matInput name="city" formControlName="City">
-                            <mat-error *ngIf="genericvtmappingForm.controls.City.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'City')}}
+                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'" appearance="outline"
+                              [disabled]="PageRights.IsReadOnly" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="vcList = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="genericvtmappingForm.controls.VCId.invalid">
+                                {{getErrorMessage(genericvtmappingForm, 'VCId')}}
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput name="pincode" formControlName="Pincode" digitOnly minlength="6"
-                                maxlength="6" matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Pincode.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Pincode')}}
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Generic Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="GenericVTId" [required]="UserModel.RoleCode != 'VT'" appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" #SelectGenericVTId>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="GenericvtList"
+                                    (filteredReturn)="vcList = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="GenericVTItem.Id" *ngFor="let vcItem of vcList">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="genericvtmappingForm.controls.VCId.invalid">
+                                {{getErrorMessage(genericvtmappingForm, 'GenericVTId')}}
                             </mat-error>
                         </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Business Type</mat-label>
-                            <input matInput name="businessType" formControlName="BusinessType" required
-                                matTooltip="Enter Nature/ Area of Business (Example - Travel Agency)"
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.BusinessType.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'BusinessType')}}
-                            </mat-error>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Date Of Allocation</mat-label>
+                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
+                            [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
+                            [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfAllocation></mat-datepicker>
+                            <mat-error *ngIf="genericvtmappingForm.controls.DateOfAllocation.invalid">
+                              {{getErrorMessage(genericvtmappingForm, 'DateOfAllocation')}}
+                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Employee Count</mat-label>
-                            <input matInput name="employeeCount" formControlName="EmployeeCount" required digitOnly>
-                            <mat-error *ngIf="genericvtmappingForm.controls.EmployeeCount.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'EmployeeCount')}}
-                            </mat-error>
-                        </mat-form-field>
+                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                        *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
+                        <mat-label>Date Of Removal</mat-label>
+                        <input matInput [matDatepicker]="picker1" name="dateOfRemoval" [max]="CurrentDate"
+                            (dateChange)="onChangeDateEnableDisableCheckBox(genericvtmappingForm, $event)"
+                            [min]="genericvtmappingForm.controls.DateOfAllocation.value"
+                            formControlName="DateOfRemoval" [disabled]="PageRights.IsReadOnly">
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error *ngIf="genericvtmappingForm.controls.DateOfRemoval.invalid">
+                            {{getErrorMessage(genericvtmappingForm, 'DateOfRemoval')}}
+                        </mat-error>
+                     </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Outlets</mat-label>
-                            <input matInput name="outlets" formControlName="Outlets"
-                                matTooltip="Enter other oulets location." matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Outlets.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Outlets')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact1</mat-label>
-                            <input matInput name="contact1" formControlName="Contact1" required
-                                matTooltip="Enter Name of the Primary Contact. First letter of each word should be capital."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Contact1.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Contact1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile1</mat-label>
-                            <input matInput name="mobile1" formControlName="Mobile1" required digitOnly minlength="10"
-                                maxlength="10" matTooltip="Enter Mobile Number." matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Mobile1.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Mobile1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation1</mat-label>
-                            <input matInput name="designation1" formControlName="Designation1" required
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Designation1.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Designation1')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id1</mat-label>
-                            <input matInput name="emailId1" formControlName="EmailId1" required>
-                            <mat-error *ngIf="genericvtmappingForm.controls.EmailId1.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'EmailId1')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Contact2</mat-label>
-                            <input matInput name="contact2" formControlName="Contact2"
-                                matTooltip="Enter Name of the Secondary Contact. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Contact2.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Contact2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile2</mat-label>
-                            <input matInput name="mobile2" formControlName="Mobile2" digitOnly minlength="10"
-                                maxlength="10">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Mobile2.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Mobile2')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Designation2</mat-label>
-                            <input matInput name="designation2" formControlName="Designation2"
-                                matTooltip="First letter should be capital of each word." matTooltipPosition="above">
-                            <mat-error *ngIf="genericvtmappingForm.controls.Designation2.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'Designation2')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Email Id2</mat-label>
-                            <input matInput name="emailId2" formControlName="EmailId2">
-                            <mat-error *ngIf="genericvtmappingForm.controls.EmailId2.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'EmailId2')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto" *ngIf="PageRights.ActionType !='new'">
-                        <span class="checkbox-space">Is Active</span>
-                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
-                        </mat-checkbox>
+                     fxLayoutGap.lt-md="0px">
+                      <span class="checkbox-space">Is Active?</span>
+                      <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
+                      </mat-checkbox>
                     </div>
                 </form>
 

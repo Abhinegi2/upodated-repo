@@ -21,10 +21,20 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMappingModel> implements OnInit {
   genericvtmappingForm: FormGroup;
   genericvtmappingModel: GenericVTMappingModel;
+  vtpId: string;
+  vcId: string;
+  GenericvtList: string;
+  vtpList: DropdownModel[];
+  vtpFilterList: any;
+  vcList: DropdownModel[];
+  VCList: any = [];
+  minAllocationDate: Date;
 
-  stateList: [DropdownModel];
-  divisionList: DropdownModel[];
-  districtList: DropdownModel[];
+
+
+  // stateList: [DropdownModel];
+  // divisionList: DropdownModel[];
+  // districtList: DropdownModel[];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -43,15 +53,25 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
 
   ngOnInit(): void {
 
-    this.genericvtmappingService.getStateDivisions().subscribe(results => {
+    this.genericvtmappingService.getGenericVTMapping(this.UserModel).subscribe(results => {
 
       if (results[0].Success) {
-        this.stateList = results[0].Results;
+        this.GenericvtList = results[0].Results;
       }
 
       if (results[1].Success) {
-        this.divisionList = results[1].Results;
+        this.vcList = results[1].Results;
+        // this.vcList = this.vcFilterList.slice();
       }
+
+      if (results[2].Success) {
+        this.vtpFilterList = results[2].Results;
+        this.vtpList = this.vtpFilterList.slice();
+      }
+
+      // if (results[1].Success) {
+      //   this.divisionList = results[1].Results;
+      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -74,9 +94,9 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.PageRights.IsReadOnly = true;
                 }
 
-                this.genericvtmappingForm = this.createGenericVTMappingForm();                
-                this.onChangeDivision(this.genericvtmappingModel.DivisionId);
-              });
+              //   this.genericvtmappingForm = this.createGenericVTMappingForm();                
+              //   this.onChangeDivision(this.genericvtmappingModel.DivisionId);
+               });
           }
         }
       });
@@ -85,20 +105,20 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     this.genericvtmappingForm = this.createGenericVTMappingForm();
   }
 
-  onChangeState(stateId: any) {
-    this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-      this.divisionList = response.Results;
-      this.districtList = <DropdownModel[]>[];
-    });
-  }
+  // onChangeState(stateId: any) {
+  //   this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
+  //     this.divisionList = response.Results;
+  //     this.districtList = <DropdownModel[]>[];
+  //   });
+  // }
 
-  onChangeDivision(divisionId: any) {
-    var stateCode = this.genericvtmappingForm.get('StateCode').value;
+  // onChangeDivision(divisionId: any) {
+  //   var stateCode = this.genericvtmappingForm.get('StateCode').value;
 
-    this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-      this.districtList = response.Results;
-    });
-  }
+  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
+  //     this.districtList = response.Results;
+  //   });
+  // }
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
@@ -134,24 +154,8 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   createGenericVTMappingForm(): FormGroup {
     return this.formBuilder.group({
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
-      StateCode: new FormControl({ value: this.genericvtmappingModel.StateCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DivisionId: new FormControl({ value: this.genericvtmappingModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DistrictCode: new FormControl({ value: this.genericvtmappingModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      BlockName: new FormControl({ value: this.genericvtmappingModel.BlockName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Address: new FormControl({ value: this.genericvtmappingModel.Address, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      City: new FormControl({ value: this.genericvtmappingModel.City, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Pincode: new FormControl({ value: this.genericvtmappingModel.Pincode, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      BusinessType: new FormControl({ value: this.genericvtmappingModel.BusinessType, disabled: this.PageRights.IsReadOnly }, [Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars), Validators.required]),
-      EmployeeCount: new FormControl({ value: this.genericvtmappingModel.EmployeeCount, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      Outlets: new FormControl({ value: this.genericvtmappingModel.Outlets, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Contact1: new FormControl({ value: this.genericvtmappingModel.Contact1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      Mobile1: new FormControl({ value: this.genericvtmappingModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-      Designation1: new FormControl({ value: this.genericvtmappingModel.Designation1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
-      EmailId1: new FormControl({ value: this.genericvtmappingModel.EmailId1, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Email)]),
-      Contact2: new FormControl({ value: this.genericvtmappingModel.Contact2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      Mobile2: new FormControl({ value: this.genericvtmappingModel.Mobile2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
-      Designation2: new FormControl({ value: this.genericvtmappingModel.Designation2, disabled: this.PageRights.IsReadOnly },  Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)),
-      EmailId2: new FormControl({ value: this.genericvtmappingModel.EmailId2, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Email)),
+      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
+      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
