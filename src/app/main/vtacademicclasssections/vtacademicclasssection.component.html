@@ -58,64 +58,67 @@
             <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- StateName Column -->
-                <ng-container matColumnDef="StateName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>State</mat-header-cell>
-                    <mat-cell *matCellDef="let vtacademicclasssection">
-                        <p class="text-truncate">{{vtacademicclasssection.StateName}}</p>
+                <!-- SrNo Column -->
+                <ng-container matColumnDef="SrNo">
+                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Sr No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let rowIndex = index" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{ (SearchBy.PageIndex * SearchBy.PageSize) + rowIndex + 1 }}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DivisionName Column -->
-                <ng-container matColumnDef="DivisionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                <!-- GenericVTName Column -->
+                <ng-container matColumnDef="GenericVTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>GenericVTName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.GenericVTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection">
-                        <p class="text-truncate">{{vtacademicclasssection.DivisionName}}</p>
+                        <p class="text-truncate">{{vtacademicclasssection.VTName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DistrictName Column -->
-                <ng-container matColumnDef="DistrictName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
+                <!-- VTEmailId Column -->
+                <ng-container matColumnDef="VTEmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT EmailId
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.VTEmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.DistrictName}}</p>
+                        <p class="text-truncate">{{vtacademicclasssection.AcademicYear}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- BlockName Column -->
-                <ng-container matColumnDef="BlockName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
-                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.BlockName}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- BusinessType Column -->
-                <ng-container matColumnDef="BusinessType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>BusinessType
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Class
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.BusinessType}}</p>
+                        <p class="text-truncate">{{vtacademicclasssection.ClassName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- EmployeeCount Column -->
-                <ng-container matColumnDef="EmployeeCount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>EmployeeCount
+                <!-- SectionName Column -->
+                <ng-container matColumnDef="SectionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.EmployeeCount}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Outlets Column -->
-                <ng-container matColumnDef="Outlets">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Outlets
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.Outlets}}</p>
+                        <p class="text-truncate">{{vtacademicclasssection.SectionName}}</p>
                     </mat-cell>
                 </ng-container>
 

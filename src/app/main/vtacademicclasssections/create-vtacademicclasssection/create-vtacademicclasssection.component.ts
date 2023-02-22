@@ -23,11 +23,16 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcademicClassSectionModel> implements OnInit {
   vtacademicclasssectionForm: FormGroup;
   vtacademicclasssectionModel: VTAcademicClassSectionModel;
+  minAllocationDate: Date;
 
   academicYearList: [DropdownModel];
   classList: [DropdownModel];
   sectionList: [DropdownModel];
   vtList: [DropdownModel];
+  filteredVTItems: any;
+
+  gvtList: [DropdownModel];
+  filteredGVTItems: any;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -62,6 +67,12 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
+        this.filteredVTItems = this.vtList.slice();
+      }
+
+      if (results[4].Success) {
+        this.gvtList = results[4].Results;
+        this.filteredGVTItems = this.gvtList.slice();
       }
 
       this.route.paramMap.subscribe(params => {
@@ -85,7 +96,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                   this.PageRights.IsReadOnly = true;
                 }
 
-                this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();                
+                this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
                 // this.onChangeDivision(this.vtacademicclasssectionModel.DivisionId);
               });
           }
@@ -96,8 +107,8 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  
- 
+
+
   // onChangeDivision(divisionId: any) {
   //   var stateCode = this.vtacademicclasssectionForm.get('StateCode').value;
 
@@ -108,7 +119,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   saveOrUpdateVTAcademicClassSectionDetails() {
     if (!this.vtacademicclasssectionForm.valid) {
-      this.validateAllFormFields(this.vtacademicclasssectionForm);  
+      this.validateAllFormFields(this.vtacademicclasssectionForm);
       return;
     }
 
@@ -140,11 +151,12 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   createVTAcademicClassSectionForm(): FormGroup {
     return this.formBuilder.group({
       VTAcademicClassSectionId: new FormControl(this.vtacademicclasssectionModel.VTAcademicClassSectionId),
-      ademicYearId: new FormControl({ value: this.vtacademicclasssectionModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      AcademicYearId: new FormControl({ value: this.vtacademicclasssectionModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       ClassId: new FormControl({ value: this.vtacademicclasssectionModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }, Validators.required),
+      GVTId: new FormControl({ value: this.vtacademicclasssectionModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
