@@ -105,13 +105,34 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
                         
+
+                        
+                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
+                            <mat-label>Select Genric Vocational Trainer</mat-label>
+
+                            <mat-select formControlName="GVTId" required appearance="outline"
+                                matTooltip="Select Genric Vocational Trainer" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
+                              
+                                <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
+                                    (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="gvtItem.Id" *ngFor="let gvtItem of filteredGVTItems">
+                                    {{ gvtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.GVTId.invalid">
+                                {{getErrorMessage(vtacademicclasssectionForm, 'GVTId')}}
+                            </mat-error>
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Select Vocational Trainer</mat-label>
 
                             <mat-select formControlName="VTId" required appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
-                                <!-- (selectionChange)="onChangeVT($event.value)"> -->
+
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
                                 </mat-select-filter>
@@ -124,26 +145,6 @@
                             </mat-error>
                         </mat-form-field>
 
-                        
-                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
-                            <mat-label>Select Genric Vocational Trainer</mat-label>
-
-                            <mat-select formControlName="GVTId" required appearance="outline"
-                                matTooltip="Select Genric Vocational Trainer" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGVT>
-                                <!-- (selectionChange)="onChangeVT($event.value)"> -->
-                                <mat-select-filter class="select-filter" *ngIf="SelectGVT.focused" [array]="gVtList"
-                                    (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="gvtItem.Id" *ngFor="let gvtItem of filteredGVTItems">
-                                    {{ gvtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.GVTId.invalid">
-                                {{getErrorMessage(vtacademicclasssectionForm, 'GVTId')}}
-                            </mat-error>
-                        </mat-form-field>
-
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -151,7 +152,7 @@
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Of Allocation</mat-label>
-                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
+                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
                                 [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                                 [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
