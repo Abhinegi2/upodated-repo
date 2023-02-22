@@ -23,18 +23,13 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   genericvtmappingModel: GenericVTMappingModel;
   vtpId: string;
   vcId: string;
-  GenericvtList: string;
+  gvtList: [DropdownModel];
+  filteredGVTItems: any;
   vtpList: DropdownModel[];
   vtpFilterList: any;
   vcList: DropdownModel[];
-  VCList: any = [];
+  vcFilterList: any;
   minAllocationDate: Date;
-
-
-
-  // stateList: [DropdownModel];
-  // divisionList: DropdownModel[];
-  // districtList: DropdownModel[];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -56,22 +51,19 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     this.genericvtmappingService.getGenericVTMapping(this.UserModel).subscribe(results => {
 
       if (results[0].Success) {
-        this.GenericvtList = results[0].Results;
+        this.gvtList = results[0].Results;
+        this.filteredGVTItems = this.gvtList.slice();
       }
 
       if (results[1].Success) {
-        this.vcList = results[1].Results;
-        // this.vcList = this.vcFilterList.slice();
+        this.vcFilterList = results[1].Results;
+        this.vcList = this.vcFilterList.slice();
       }
 
       if (results[2].Success) {
         this.vtpFilterList = results[2].Results;
         this.vtpList = this.vtpFilterList.slice();
       }
-
-      // if (results[1].Success) {
-      //   this.divisionList = results[1].Results;
-      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -94,9 +86,9 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.PageRights.IsReadOnly = true;
                 }
 
-              //   this.genericvtmappingForm = this.createGenericVTMappingForm();                
-              //   this.onChangeDivision(this.genericvtmappingModel.DivisionId);
-               });
+                //   this.genericvtmappingForm = this.createGenericVTMappingForm();                
+                //   this.onChangeDivision(this.genericvtmappingModel.DivisionId);
+              });
           }
         }
       });
@@ -122,7 +114,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
-      this.validateAllFormFields(this.genericvtmappingForm);  
+      this.validateAllFormFields(this.genericvtmappingForm);
       return;
     }
 
@@ -156,6 +148,9 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
       VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
+      GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
