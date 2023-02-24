@@ -90,6 +90,18 @@ import { EmployerComponent } from './employers/employer.component';
 import { CreateEmployerComponent } from './employers/create-employer/create-employer.component';
 import { EmployerService } from './employers/employer.service';
 
+import { SchoolSectorJobComponent } from './schoolsectorjobs/schoolsectorjob.component';
+import { CreateSchoolSectorJobComponent } from './schoolsectorjobs/create-schoolsectorjob/create-schoolsectorjob.component';
+import { SchoolSectorJobService } from './schoolsectorjobs/schoolsectorjob.service';
+
+import { GenericVTMappingComponent } from './genericvtmappings/genericvtmapping.component';
+import { CreateGenericVTMappingComponent } from './genericvtmappings/create-genericvtmapping/create-genericvtmapping.component';
+import { GenericVTMappingService } from './genericvtmappings/genericvtmapping.service';
+
+import { VTAcademicClassSectionComponent } from './vtacademicclasssections/vtacademicclasssection.component';
+import { CreateVTAcademicClassSectionComponent } from './vtacademicclasssections/create-vtacademicclasssection/create-vtacademicclasssection.component';
+import { VTAcademicClassSectionService } from './vtacademicclasssections/vtacademicclasssection.service';
+
 import { ForgotPasswordHistoryComponent } from './forgot-password-histories/forgot-password-history.component';
 import { CreateForgotPasswordHistoryComponent } from './forgot-password-histories/create-forgot-password-history/create-forgot-password-history.component';
 import { ForgotPasswordHistoryService } from './forgot-password-histories/forgot-password-history.service';
@@ -463,6 +475,18 @@ const routes: Routes = [
     { path: RouteConstants.Employer.New, component: CreateEmployerComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.Employer.Edit, component: CreateEmployerComponent, canActivate: [AuthGuardService] },
 
+    { path: RouteConstants.SchoolSectorJob.List, component: SchoolSectorJobComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.SchoolSectorJob.New, component: CreateSchoolSectorJobComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.SchoolSectorJob.Edit, component: CreateSchoolSectorJobComponent, canActivate: [AuthGuardService] },
+
+    { path: RouteConstants.VTAcademicClassSection.List, component: VTAcademicClassSectionComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.VTAcademicClassSection.New, component: CreateVTAcademicClassSectionComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.VTAcademicClassSection.Edit, component: CreateVTAcademicClassSectionComponent, canActivate: [AuthGuardService] },
+
+    { path: RouteConstants.GenericVTMapping.List, component: GenericVTMappingComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.GenericVTMapping.New, component: CreateGenericVTMappingComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.GenericVTMapping.Edit, component: CreateGenericVTMappingComponent, canActivate: [AuthGuardService] },
+    
     { path: RouteConstants.ForgotPasswordHistory.List, component: ForgotPasswordHistoryComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.ForgotPasswordHistory.New, component: CreateForgotPasswordHistoryComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.ForgotPasswordHistory.Edit, component: CreateForgotPasswordHistoryComponent, canActivate: [AuthGuardService] },
@@ -781,6 +805,12 @@ const routes: Routes = [
         CreateEmployeeComponent,
         EmployerComponent,
         CreateEmployerComponent,
+        SchoolSectorJobComponent,
+        CreateSchoolSectorJobComponent,
+        VTAcademicClassSectionComponent,
+        CreateVTAcademicClassSectionComponent,
+        GenericVTMappingComponent,
+        CreateGenericVTMappingComponent,
         ForgotPasswordHistoryComponent,
         CreateForgotPasswordHistoryComponent,
         HeadMasterComponent,
@@ -1022,6 +1052,12 @@ const routes: Routes = [
         CreateEmployeeComponent,
         EmployerComponent,
         CreateEmployerComponent,
+        SchoolSectorJobComponent,
+        CreateSchoolSectorJobComponent,
+        VTAcademicClassSectionComponent,
+        CreateVTAcademicClassSectionComponent,
+        GenericVTMappingComponent,
+        CreateGenericVTMappingComponent,
         ForgotPasswordHistoryComponent,
         CreateForgotPasswordHistoryComponent,
         HeadMasterComponent,
@@ -1199,6 +1235,9 @@ const routes: Routes = [
         DivisionService,
         EmployeeService,
         EmployerService,
+        SchoolSectorJobService,
+        VTAcademicClassSectionService,
+        GenericVTMappingService,
         ForgotPasswordHistoryService,
         HeadMasterService,
         HMIssueReportingService,
