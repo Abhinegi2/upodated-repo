@@ -58,66 +58,49 @@
             <mat-table matTableExporter class="genericvtmapping-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- StateName Column -->
-                <ng-container matColumnDef="StateName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>State</mat-header-cell>
+                <!-- UserType Column -->
+                <ng-container matColumnDef="UserType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserType</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.StateName}}</p>
+                        <p class="text-truncate">{{genericvtmapping.UserType}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DivisionName Column -->
-                <ng-container matColumnDef="DivisionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
-                    </mat-header-cell>
+
+                <!-- UserName Column -->
+                <ng-container matColumnDef="UserName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserName</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.DivisionName}}</p>
+                        <p class="text-truncate">{{genericvtmapping.UserName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DistrictName Column -->
-                <ng-container matColumnDef="DistrictName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
+                 <!-- GenericVTName Column -->
+                 <ng-container matColumnDef="GenericVTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>GenericVTName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.GenericVTName}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- EmailId Column -->
+                <ng-container matColumnDef="EmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EmailId</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.EmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfAllocation Column -->
+                <ng-container matColumnDef="DateOfAllocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
                     </mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{genericvtmapping.DistrictName}}</p>
+                        <p class="text-truncate">{{genericvtmapping.DateOfAllocation | date: Constants.ShortDateFormat}}
+                        </p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- BlockName Column -->
-                <ng-container matColumnDef="BlockName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{genericvtmapping.BlockName}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- BusinessType Column -->
-                <ng-container matColumnDef="BusinessType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>BusinessType
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{genericvtmapping.BusinessType}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- EmployeeCount Column -->
-                <ng-container matColumnDef="EmployeeCount">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>EmployeeCount
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{genericvtmapping.EmployeeCount}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Outlets Column -->
-                <ng-container matColumnDef="Outlets">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Outlets
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{genericvtmapping.Outlets}}</p>
-                    </mat-cell>
-                </ng-container>
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">

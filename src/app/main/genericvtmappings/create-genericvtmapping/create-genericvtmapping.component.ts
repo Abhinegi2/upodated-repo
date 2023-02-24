@@ -21,14 +21,13 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMappingModel> implements OnInit {
   genericvtmappingForm: FormGroup;
   genericvtmappingModel: GenericVTMappingModel;
-  vtpId: string;
-  vcId: string;
+  UserId: string;
+  userList: DropdownModel[];
+  userFilterList: any;
   gvtList: [DropdownModel];
   filteredGVTItems: any;
-  vtpList: DropdownModel[];
-  vtpFilterList: any;
-  vcList: DropdownModel[];
-  vcFilterList: any;
+
+
   minAllocationDate: Date;
 
   constructor(public commonService: CommonService,
@@ -55,16 +54,6 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.filteredGVTItems = this.gvtList.slice();
       }
 
-      if (results[1].Success) {
-        this.vcFilterList = results[1].Results;
-        this.vcList = this.vcFilterList.slice();
-      }
-
-      if (results[2].Success) {
-        this.vtpFilterList = results[2].Results;
-        this.vtpList = this.vtpFilterList.slice();
-      }
-
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -86,8 +75,8 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.PageRights.IsReadOnly = true;
                 }
 
-                //   this.genericvtmappingForm = this.createGenericVTMappingForm();                
-                //   this.onChangeDivision(this.genericvtmappingModel.DivisionId);
+                this.genericvtmappingForm = this.createGenericVTMappingForm();
+                this.onChangeUserType(this.genericvtmappingModel.UserType);
               });
           }
         }
@@ -97,20 +86,22 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     this.genericvtmappingForm = this.createGenericVTMappingForm();
   }
 
-  // onChangeState(stateId: any) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-  //     this.divisionList = response.Results;
-  //     this.districtList = <DropdownModel[]>[];
-  //   });
-  // }
+  onChangeUserType(usertype: any) {
+    if (usertype == 'VC') {
 
-  // onChangeDivision(divisionId: any) {
-  //   var stateCode = this.genericvtmappingForm.get('StateCode').value;
+      this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', SelectTitle: 'VocationalCoordinator' }).subscribe((response: any) => {
+        this.userFilterList = response.Results;
+        this.userList = this.userFilterList.slice();
+      });
 
-  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-  //     this.districtList = response.Results;
-  //   });
-  // }
+    } else if (usertype == 'VTP') {
+
+      this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VocationalTrainingProvider' }).subscribe((response: any) => {
+        this.userFilterList = response.Results;
+        this.userList = this.userFilterList.slice();
+      });
+    }
+  }
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
@@ -146,8 +137,8 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   createGenericVTMappingForm(): FormGroup {
     return this.formBuilder.group({
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
-      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
-      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
+      UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
+      UserId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
