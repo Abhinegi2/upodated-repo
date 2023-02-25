@@ -84,17 +84,7 @@
                     </mat-cell>
                 </ng-container>
 
-                
-                <!-- IsActive Column -->
-                <ng-container matColumnDef="IsActive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let schoolsectorjob" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="schoolsectorjob.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!schoolsectorjob.IsActive" class="active-icon red-500 s-16">close</mat-icon>
-                    </mat-cell>
-                </ng-container>
-
+                <!-- Date Of Allocation Column -->
                 <ng-container matColumnDef="DateOfAllocation">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
                     </mat-header-cell>

@@ -97,7 +97,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                 }
 
                 this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
-                // this.onChangeDivision(this.vtacademicclasssectionModel.DivisionId);
               });
           }
         }
@@ -106,16 +105,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
-
-
-
-  // onChangeDivision(divisionId: any) {
-  //   var stateCode = this.vtacademicclasssectionForm.get('StateCode').value;
-
-  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-  //     this.districtList = response.Results;
-  //   });
-  // }
 
   saveOrUpdateVTAcademicClassSectionDetails() {
     if (!this.vtacademicclasssectionForm.valid) {
