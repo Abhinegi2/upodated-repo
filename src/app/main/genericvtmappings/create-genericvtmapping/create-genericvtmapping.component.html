@@ -62,11 +62,8 @@
                             <mat-select name="UserType" formControlName="UserType"
                                 required appearance="outline" [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeUserType($event.value)">
                                 <mat-option value="VC">Vocational Coordinator</mat-option>
-                                <mat-option value="VTP">Vocational Trainer Provider</mat-option>
+                                <mat-option value="VTP">Vocational Training Provider</mat-option>
                             </mat-select>
-                            <!-- <mat-error *ngIf="genericvtmappingForm.controls.VTPId.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'VTPId')}}
-                            </mat-error> -->
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" *ngIf="genericvtmappingForm.controls.UserType.value == 'VC' || genericvtmappingForm.controls.UserType.value == 'VTP'">
@@ -92,10 +89,10 @@
                         fxLayoutGap.lt-md="0px" *ngIf="genericvtmappingForm.controls.UserType.value == 'VC' || genericvtmappingForm.controls.UserType.value == 'VTP'">
 
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
-                            <mat-label>Select Genric Vocational Trainer</mat-label>
+                            <mat-label>Select Generic Vocational Trainer</mat-label>
     
                             <mat-select formControlName="GVTId" required appearance="outline"
-                                matTooltip="Select Genric Vocational Trainer" matTooltipPosition='above'
+                                matTooltip="Select Generic Vocational Trainer" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
                               
                                 <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
@@ -110,7 +107,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Date Of Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"

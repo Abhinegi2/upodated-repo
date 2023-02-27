@@ -29,7 +29,7 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
 
   ngOnInit(): void {
     this.schoolsectorjobService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName','DateOfAllocation', 'IsActive', 'Actions'];
+      this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName','DateOfAllocation', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

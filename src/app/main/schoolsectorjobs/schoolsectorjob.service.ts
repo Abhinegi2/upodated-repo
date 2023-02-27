@@ -76,8 +76,6 @@ export class SchoolSectorJobService {
     }
 
     getSchoolSectorJob(): Observable<any[]> {
-        // let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'States' });
-        // let divisionRequest = this.http.GetMasterDataByType({ DataType: 'Divisions', SelectTitle: 'Division' });
         let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' }, false);
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
 

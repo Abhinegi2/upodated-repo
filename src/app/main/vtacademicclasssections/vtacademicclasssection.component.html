@@ -88,12 +88,19 @@
 
                 <!-- VTEmailId Column -->
                 <ng-container matColumnDef="VTEmailId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT EmailId
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection">
                         <p class="text-truncate">{{vtacademicclasssection.VTEmailId}}</p>
                     </mat-cell>
                 </ng-container>
+                <!-- <ng-container matColumnDef="VTEmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let  vtacademicclasssection">
+                        <p class="text-truncate">{{vtSchoolSector.VTEmailId}}</p>
+                    </mat-cell>
+                </ng-container> -->
 
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
@@ -119,16 +126,6 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vtacademicclasssection.SectionName}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- IsActive Column -->
-                <ng-container matColumnDef="IsActive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="active-icon red-500 s-16">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
