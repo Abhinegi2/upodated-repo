@@ -90,6 +90,14 @@ import { EmployerComponent } from './employers/employer.component';
 import { CreateEmployerComponent } from './employers/create-employer/create-employer.component';
 import { EmployerService } from './employers/employer.service';
 
+import { VocationalcoordinatordetailComponent } from './vocationalcoordinatordetails/vocationalcoordinatordetail.component';
+import { CreateVocationalcoordinatordetailComponent } from './vocationalcoordinatordetails/create-vocationalcoordinatordetail/create-vocationalcoordinatordetail.component';
+import { VocationalcoordinatordetailService } from './vocationalcoordinatordetails/vocationalcoordinatordetail.service';
+
+import { VocationaltrainerdetailComponent } from './vocationaltrainerdetails/vocationaltrainerdetail.component';
+import { CreateVocationaltrainerdetailComponent } from './vocationaltrainerdetails/create-vocationaltrainerdetail/create-vocationaltrainerdetail.component';
+import { VocationaltrainerdetailService } from './vocationaltrainerdetails/vocationaltrainerdetail.service';
+
 import { SchoolSectorJobComponent } from './schoolsectorjobs/schoolsectorjob.component';
 import { CreateSchoolSectorJobComponent } from './schoolsectorjobs/create-schoolsectorjob/create-schoolsectorjob.component';
 import { SchoolSectorJobService } from './schoolsectorjobs/schoolsectorjob.service';
@@ -475,6 +483,14 @@ const routes: Routes = [
     { path: RouteConstants.Employer.New, component: CreateEmployerComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.Employer.Edit, component: CreateEmployerComponent, canActivate: [AuthGuardService] },
 
+    { path: RouteConstants.Vocationaltrainerdetail.List, component: VocationaltrainerdetailComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.Vocationaltrainerdetail.New, component: CreateVocationaltrainerdetailComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.Vocationaltrainerdetail.Edit, component: CreateVocationaltrainerdetailComponent, canActivate: [AuthGuardService] },
+
+    { path: RouteConstants.Vocationalcoordinatordetail.List, component: VocationalcoordinatordetailComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.Vocationalcoordinatordetail.New, component: CreateVocationalcoordinatordetailComponent, canActivate: [AuthGuardService] },
+    { path: RouteConstants.Vocationalcoordinatordetail.Edit, component: CreateVocationalcoordinatordetailComponent, canActivate: [AuthGuardService] },
+
     { path: RouteConstants.SchoolSectorJob.List, component: SchoolSectorJobComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.SchoolSectorJob.New, component: CreateSchoolSectorJobComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.SchoolSectorJob.Edit, component: CreateSchoolSectorJobComponent, canActivate: [AuthGuardService] },
@@ -805,6 +821,10 @@ const routes: Routes = [
         CreateEmployeeComponent,
         EmployerComponent,
         CreateEmployerComponent,
+        VocationalcoordinatordetailComponent,
+        CreateVocationalcoordinatordetailComponent,
+        VocationaltrainerdetailComponent,
+        CreateVocationaltrainerdetailComponent,
         SchoolSectorJobComponent,
         CreateSchoolSectorJobComponent,
         VTAcademicClassSectionComponent,
@@ -1052,6 +1072,10 @@ const routes: Routes = [
         CreateEmployeeComponent,
         EmployerComponent,
         CreateEmployerComponent,
+        VocationaltrainerdetailComponent,
+        CreateVocationaltrainerdetailComponent,
+        VocationalcoordinatordetailComponent,
+        CreateVocationalcoordinatordetailComponent,
         SchoolSectorJobComponent,
         CreateSchoolSectorJobComponent,
         VTAcademicClassSectionComponent,
@@ -1235,6 +1259,8 @@ const routes: Routes = [
         DivisionService,
         EmployeeService,
         EmployerService,
+        VocationalcoordinatordetailService,
+        VocationaltrainerdetailService,
         SchoolSectorJobService,
         VTAcademicClassSectionService,
         GenericVTMappingService,

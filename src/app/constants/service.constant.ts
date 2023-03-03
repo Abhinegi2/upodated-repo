@@ -183,6 +183,22 @@ export class ServiceConstants {
         Delete: "Employer/DeleteEmployerById"
     };
 
+    public Vocationalcoordinatordetail = {
+        GetAll: "Vocationalcoordinatordetail/GetVocationalcoordinatordetails",
+        GetAllByCriteria: "Vocationalcoordinatordetail/GetVocationalcoordinatordetailsByCriteria",
+        GetById: "Vocationalcoordinatordetail/GetVocationalcoordinatordetailById",
+        CreateOrUpdate: "Vocationalcoordinatordetail/CreateOrUpdateVocationalcoordinatordetailDetails",
+        Delete: "Vocationalcoordinatordetail/DeleteVocationalcoordinatordetailById"
+    };
+    
+    public Vocationaltrainerdetail = {
+        GetAll: "Vocationaltrainerdetail/GetVocationaltrainerdetails",
+        GetAllByCriteria: "Vocationaltrainerdetail/GetVocationaltrainerdetailsByCriteria",
+        GetById: "Vocationaltrainerdetail/GetVocationaltrainerdetailById",
+        CreateOrUpdate: "Vocationaltrainerdetail/CreateOrUpdateVocationaltrainerdetailDetails",
+        Delete: "Vocationaltrainerdetail/DeleteVocationaltrainerdetailById"
+    };
+
     public SchoolSectorJob = {
         GetAll: "SchoolSectorJob/GetSchoolSectorJobs",
         GetAllByCriteria: "SchoolSectorJob/GetSchoolSectorJobsByCriteria",
