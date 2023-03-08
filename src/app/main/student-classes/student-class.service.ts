@@ -78,14 +78,34 @@ export class StudentClassService {
     }
 
     getDropdownforStudentClass(userModel: UserModel): Observable<any[]> {
-        let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYearsByVT', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
-        let academicYearAllRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
-        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
+        let SchoolRequest = this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'School' }, false);
         let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'StudentGender', SelectTitle: 'Gender' });
+        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
+        let AcademicYears = this.http.GetMasterDataByType({ DataType: 'AcademicYears', ParentId: userModel.EmailId, SelectTitle: 'Academic Years' });
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
-        let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
+
+        //let jobroleRequest = this.http.GetMasterDataByType({ DataType: 'JobRoles', SelectTitle: 'JobRole' });
+
+
+        // let schoolsForVTRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsForVT', UserId: userModel.UserTypeId, SelectTitle: 'School' }, false);
+
+        // let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYearsByVT', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
+        // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([academicYearRequest, vtpRequest, sectorRequest, genderRequest, academicYearAllRequest, classRequest]);
+        return forkJoin([
+            SchoolRequest,
+            genderRequest,
+            sectorRequest,
+            AcademicYears,
+            classRequest
+            // sectorRequest,
+            // academicYearByGVT,
+            // allAcademicYears,
+            // classRequest,
+            // schoolsForVTRequest,
+            //academicYearRequest,
+            // vtpRequest
+        ]);
     }
 }
