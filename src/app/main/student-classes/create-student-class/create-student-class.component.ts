@@ -191,11 +191,15 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['ClassId'].setValue(null);
     this.studentClassForm.controls['SectionId'].setValue(null);
 
+
+
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors' }).subscribe((response) => {
         if (response.Success) {
           this.sectorList = response.Results;
+          this.studentClassForm.controls['SectorId'].enable();
+
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School is not mapped with any <b>Sector</b> and <b>JobRole</b>.<br><br> Please visit the <a href='/schoolsectorjobs'><b>School Sector JobRole</b></a> page and assign a Sector & Jobrole to the required School."]);
             this.dialogService.openShowDialog(errorMessages);
@@ -234,6 +238,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
         if (response.Success) {
           this.jobRoleList = response.Results;
+          this.studentClassForm.controls['JobRoleId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['JobRoleId'].setValue(this.jobRoleList[1].Id);
@@ -263,6 +268,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         if (response.Success) {
 
           this.academicYearList = response.Results;
+          this.studentClassForm.controls['AcademicYearId'].enable();
 
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School Sector JobRole is not mapped with any <b>Academic Class Section</b>.<br><br> Please visit the <a href='/vtacademicclasssections'><b>VT Academic Class Sections</b></a> page."]);
@@ -295,6 +301,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
+          this.studentClassForm.controls['ClassId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
 
@@ -314,15 +321,20 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   onChangeClass(classId): Promise<any> {
 
+    var SchoolInput = this.studentClassForm.get('SchoolId').value;
+    var SectorInput = this.studentClassForm.get('SectorId').value;
+    var JobRoleInput = this.studentClassForm.get('JobRoleId').value;
     var AcademicYearInput = this.studentClassForm.get('AcademicYearId').value;
+
     this.studentClassForm.controls['SectionId'].setValue(null);
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
 
-      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: AcademicYearInput, DataTypeID2: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: SchoolInput, DataTypeID2: SectorInput, DataTypeID3: JobRoleInput, DataTypeID4: AcademicYearInput, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
+          this.studentClassForm.controls['SectionId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['SectionId'].setValue(response.Results[1].Id);
