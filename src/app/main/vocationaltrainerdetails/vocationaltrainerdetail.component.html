@@ -60,32 +60,32 @@
 
                 <!-- StateName Column -->
                 <ng-container matColumnDef="StateName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>State</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Email</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
-                        <p class="text-truncate">{{vocationaltrainerdetail.StateName}}</p>
+                        <p class="text-truncate">{{vocationaltrainerdetail.Email}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- DivisionName Column -->
                 <ng-container matColumnDef="DivisionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Gender
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
-                        <p class="text-truncate">{{vocationaltrainerdetail.DivisionName}}</p>
+                        <p class="text-truncate">{{vocationaltrainerdetail.Gender}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- DistrictName Column -->
                 <ng-container matColumnDef="DistrictName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vocationaltrainerdetail.DistrictName}}</p>
+                        <p class="text-truncate">{{vocationaltrainerdetail.SocialCategory}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- BlockName Column -->
-                <ng-container matColumnDef="BlockName">
+                <!-- <ng-container matColumnDef="BlockName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationaltrainerdetail.BlockName}}</p>
@@ -93,31 +93,31 @@
                 </ng-container>
 
                 <!-- BusinessType Column -->
-                <ng-container matColumnDef="BusinessType">
+                <!-- <ng-container matColumnDef="BusinessType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>BusinessType
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationaltrainerdetail.BusinessType}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- EmployeeCount Column -->
-                <ng-container matColumnDef="EmployeeCount">
+                <!-- <ng-container matColumnDef="EmployeeCount">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>EmployeeCount
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationaltrainerdetail.EmployeeCount}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- Outlets Column -->
-                <ng-container matColumnDef="Outlets">
+                <!-- <ng-container matColumnDef="Outlets">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Outlets
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationaltrainerdetail.Outlets}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">

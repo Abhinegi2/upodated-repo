@@ -29,7 +29,7 @@ export class VocationaltrainerdetailComponent extends BaseListComponent<Vocation
 
   ngOnInit(): void {
     this.vocationaltrainerdetailService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['StateName', 'DivisionName', 'DistrictName', 'BlockName', 'BusinessType', 'EmployeeCount', 'Outlets', 'IsActive', 'Actions'];
+      this.displayedColumns = ['Email','Gender','SocialCategory', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

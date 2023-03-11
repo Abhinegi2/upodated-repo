@@ -75,11 +75,17 @@ export class VocationaltrainerdetailService {
             );
     }
 
-    getStateDivisions(): Observable<any[]> {
-        let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'States' });
-        let divisionRequest = this.http.GetMasterDataByType({ DataType: 'Divisions', SelectTitle: 'Division' });
-
+    getDropdownforVocationalTrainerDetail(userModel): Observable<any[]> {
+        // let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProvidersByUserId', RoleId: userModel.RoleCode, UserId: userModel.UserTypeId, SelectTitle: 'Vocational Training Provider' });
+        let vtRequest = this.http.GetMasterDataByType({ DataType: 'AccountsByVocationalTrainers', SelectTitle: 'Vocational Coordinator' }, false);
+        let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
+        // let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
+        let academicQualificationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AcademicQualification', SelectTitle: 'Academic Qualification' });
+        let professionalQualificationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'ProfessionalQualification', SelectTitle: 'Professional Qualification' });
+        let industryTrainingExperienceRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'IndustryTrainingExperience', SelectTitle: 'Industry Training Experience' });
+        let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' });
+        // let vcRequest = this.http.GetMasterDataByType({ DataType: 'VocationalCoordinators', SelectTitle: 'Vocational Coordinator' }, false);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([stateRequest, divisionRequest]);
+        return forkJoin([ socialCategoryRequest, academicQualificationRequest, professionalQualificationRequest, industryTrainingExperienceRequest, genderRequest,vtRequest]);
     }
 }
