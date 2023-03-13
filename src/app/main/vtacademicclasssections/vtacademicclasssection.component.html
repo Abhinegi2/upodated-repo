@@ -17,7 +17,7 @@
                     shopping_basket
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    VTACADEMICCLASSSECTIONS
+                    VT ACADEMIC CLASS SECTIONS
                     <a [routerLink]="['./']" skipLocationChange="true" replaceUrl="false"
                         class="refresh-data mt-24 mt-md-0">
                         <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
@@ -55,17 +55,8 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
+            <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[9]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
-
-                <!-- SrNo Column -->
-                <ng-container matColumnDef="SrNo">
-                    <mat-header-cell *matHeaderCellDef fxHide fxShow.gt-xs>Sr No
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let rowIndex = index" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{ (SearchBy.PageIndex * SearchBy.PageSize) + rowIndex + 1 }}</p>
-                    </mat-cell>
-                </ng-container>
 
                 <!-- GenericVTName Column -->
                 <ng-container matColumnDef="GenericVTName">
@@ -88,7 +79,7 @@
 
                 <!-- VTEmailId Column -->
                 <ng-container matColumnDef="VTEmailId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT EmailId
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection">
                         <p class="text-truncate">{{vtacademicclasssection.VTEmailId}}</p>
@@ -122,13 +113,30 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- IsActive Column -->
-                <ng-container matColumnDef="IsActive">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
+                <!-- DateOfAllocation Column -->
+                <ng-container matColumnDef="DateOfAllocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfAllocation
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <p class="text-truncate">{{vtacademicclasssection.DateOfAllocation | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfRemoval Column -->
+                <ng-container matColumnDef="DateOfRemoval">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfRemoval
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.DateOfRemoval | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="active-icon green s-16">check</mat-icon>
+                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="active-icon red s-16">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 

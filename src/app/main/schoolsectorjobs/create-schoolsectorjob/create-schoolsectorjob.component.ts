@@ -28,10 +28,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
 
-  // stateList: [DropdownModel];
-  // divisionList: DropdownModel[];
-  // districtList: DropdownModel[];
-
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -54,10 +50,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
       if (results[0].Success) {
         this.schoolList = results[0].Results;
       }
-
-      // if (results[1].Success) {
-      //   this.divisionList = results[1].Results;
-      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -87,7 +79,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
                 });
 
                 // this.schoolsectorjobForm = this.createSchoolSectorJobForm();
-                // this.onChangeDivision(this.schoolsectorjobModel.DivisionId);
               });
           }
         }
@@ -131,21 +122,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
       });
     });
   }
-
-  // onChangeState(stateId: any) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-  //     this.divisionList = response.Results;
-  //     this.districtList = <DropdownModel[]>[];
-  //   });
-  // }
-
-  // onChangeDivision(divisionId: any) {
-  //   var stateCode = this.schoolsectorjobForm.get('StateCode').value;
-
-  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-  //     this.districtList = response.Results;
-  //   });
-  // }
 
   saveOrUpdateSchoolSectorJobDetails() {
     if (!this.schoolsectorjobForm.valid) {

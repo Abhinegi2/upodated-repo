@@ -6,6 +6,9 @@ export class StudentClassModel {
     StudentId: string;
     VTId: string;
     SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    // GVTId: string;
     AcademicYearId: string;
     ClassId: string;
     SectionId: string;
@@ -20,14 +23,20 @@ export class StudentClassModel {
     DropoutReason: string;
     IsActive: boolean;
     RequestType: any;
-    VTPId:string;
-    VCId:string;
+    VTPId: string;
+    VCId: string;
     constructor(studentClassItem?: any) {
         studentClassItem = studentClassItem || {};
 
         this.StudentId = studentClassItem.StudentId || FuseUtils.NewGuid();
         this.VTId = studentClassItem.VTId || FuseUtils.NewGuid();
         this.SchoolId = studentClassItem.SchoolId || FuseUtils.NewGuid();
+        this.SectorId = studentClassItem.SectorId || '';
+        this.SectorId = studentClassItem.SectorId || '';
+        this.JobRoleId = studentClassItem.JobRoleId || '';
+
+        // this.GVTId = studentClassItem.GVTId || '';
+
         this.AcademicYearId = studentClassItem.AcademicYearId || '';
         this.ClassId = studentClassItem.ClassId || '';
         this.SectionId = studentClassItem.SectionId || '';
