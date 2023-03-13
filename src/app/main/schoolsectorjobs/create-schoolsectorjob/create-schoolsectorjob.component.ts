@@ -89,6 +89,25 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
   }
 
 
+  onChangeSchool(schoolId): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({ DataType: 'Sectors', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
+        if (response.Success) {
+          this.sectorList = response.Results;
+
+          if (this.IsLoading) {
+            this.schoolsectorjobForm.controls['SectorId'].setValue(null);
+            this.schoolsectorjobForm.controls['JobRoleId'].setValue(null);
+            this.jobRoleList = <DropdownModel[]>[];
+          }
+        }
+
+        resolve(true);
+      });
+    });
+  }
+
+
   onChangeSector(sectorId): Promise<any> {
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: "Job Role" }).subscribe((response) => {
@@ -105,23 +124,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
     });
   }
 
-  onChangeSchool(schoolId): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
-        if (response.Success) {
-          this.sectorList = response.Results;
-
-          if (this.IsLoading) {
-            this.schoolsectorjobForm.controls['SectorId'].setValue(null);
-            this.schoolsectorjobForm.controls['JobRoleId'].setValue(null);
-            this.jobRoleList = <DropdownModel[]>[];
-          }
-        }
-
-        resolve(true);
-      });
-    });
-  }
 
   saveOrUpdateSchoolSectorJobDetails() {
     if (!this.schoolsectorjobForm.valid) {

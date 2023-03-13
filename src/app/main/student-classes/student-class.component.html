@@ -239,6 +239,15 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- VTEmailId Column -->
+                <ng-container matColumnDef="VTEmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.VTEmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- StudentName Column -->
                 <ng-container matColumnDef="StudentName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Name

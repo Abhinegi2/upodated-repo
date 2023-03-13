@@ -12,5 +12,5 @@ export const environment = {
     email: "support.mh.lighthouse@lend-a-hand-India.org",
     version: "2.21.2.02",
     //ApiBaseUrl: "https://maharashtra.lighthouse.net.in/LighthouseServices/"
-    ApiBaseUrl: "https://stg-mh.lighthouse.net.in/LighthouseServices/"
+    ApiBaseUrl: "https://stg-dl.lighthouse.net.in/LighthouseServices/"
 };
