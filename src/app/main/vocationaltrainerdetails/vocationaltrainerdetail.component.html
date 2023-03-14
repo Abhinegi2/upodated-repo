@@ -59,6 +59,14 @@
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- Email Column -->
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.Name}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Email Column -->
                 <ng-container matColumnDef="Email">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Email</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
@@ -81,6 +89,22 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationaltrainerdetail.SocialCategory}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfJoining</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfJoining}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfResignation}}</p>
                     </mat-cell>
                 </ng-container>
 
