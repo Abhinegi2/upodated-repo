@@ -29,7 +29,8 @@ export class VocationalcoordinatordetailComponent extends BaseListComponent<Voca
 
   ngOnInit(): void {
     this.vocationalcoordinatordetailService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['Gender', 'IsActive', 'Actions'];
+      this.displayedColumns = ['Name','EmailId','Gender','DateOfJoining','DateOfResignation','IsActive', 'Actions'];
+      console.log(response);
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

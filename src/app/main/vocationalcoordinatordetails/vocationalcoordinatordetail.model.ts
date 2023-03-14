@@ -23,19 +23,19 @@ export class VocationalcoordinatordetailModel {
         vocationalcoordinatordetailItem = vocationalcoordinatordetailItem || {};
 
         this.VocationalcoordinatordetailId = vocationalcoordinatordetailItem.VocationalcoordinatordetailId || FuseUtils.NewGuid();
-        this.VCId = vocationalcoordinatordetailItem .VCId || '';
+        this.VCId = vocationalcoordinatordetailItem.VCId || '';
         // this.VTPId = vocationalcoordinatordetailItem .VTPId || '';
         // this.FirstName = vocationalcoordinatordetailItem .FirstName || '';
-        this.MiddleName = vocationalcoordinatordetailItem .MiddleName || '';
+        this.MiddleName = vocationalcoordinatordetailItem.MiddleName || '';
         // this.LastName = vocationalcoordinatordetailItem .LastName || '';
         // this.FullName = vocationalcoordinatordetailItem .FullName || '';
         // this.Mobile = vocationalcoordinatordetailItem .Mobile || '';
-        this.Mobile1 = vocationalcoordinatordetailItem .Mobile1 || '';
+        this.Mobile1 = vocationalcoordinatordetailItem.Mobile1 || '';
         // this.EmailId = vocationalcoordinatordetailItem .EmailId || '';
         // this.NatureOfAppointment = vocationalcoordinatordetailItem .NatureOfAppointment || '';
-        this.Gender = vocationalcoordinatordetailItem .Gender || '';
-        this.DateOfJoining = vocationalcoordinatordetailItem .DateOfJoining || '';
-        this.DateOfResignation = vocationalcoordinatordetailItem .DateOfResignation || '';
+        this.Gender = vocationalcoordinatordetailItem.Gender || '';
+        this.DateOfJoining = vocationalcoordinatordetailItem.DateOfJoining || '';
+        this.DateOfResignation = vocationalcoordinatordetailItem.DateOfResignation || '';
         this.IsActive = vocationalcoordinatordetailItem.IsActive || true;
         this.RequestType = 0; // New
     }

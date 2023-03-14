@@ -58,11 +58,48 @@
             <mat-table matTableExporter class="vocationalcoordinatordetail-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- StateName Column -->
-                <ng-container matColumnDef="StateName">
+                <!-- Vocational Coordinator Column -->
+
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalcoordinatordetail">
+                        <p class="text-truncate">{{vocationalcoordinatordetail.UserName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Vocational Coordinator EmailId -->
+
+                <ng-container matColumnDef="EmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalcoordinatordetail">
+                        <p class="text-truncate">{{vocationalcoordinatordetail.EmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Vocational Coordinator Gender -->
+
+                <ng-container matColumnDef="Gender">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Gneder</mat-header-cell>
                     <mat-cell *matCellDef="let vocationalcoordinatordetail">
                         <p class="text-truncate">{{vocationalcoordinatordetail.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Vocational Coordinator DateOfJoining -->
+
+                <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfJoining</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalcoordinatordetail">
+                        <p class="text-truncate">{{vocationalcoordinatordetail.DateOfJoining}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Vocational Coordinator DateOfRegination -->
+
+                <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalcoordinatordetail">
+                        <p class="text-truncate">{{vocationalcoordinatordetail.DateOfResignation}}</p>
                     </mat-cell>
                 </ng-container>
 
