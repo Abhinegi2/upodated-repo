@@ -58,16 +58,16 @@
             <mat-table matTableExporter class="vocationaltrainerdetail-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- StateName Column -->
-                <ng-container matColumnDef="StateName">
+                <!-- Email Column -->
+                <ng-container matColumnDef="Email">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Email</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
                         <p class="text-truncate">{{vocationaltrainerdetail.Email}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DivisionName Column -->
-                <ng-container matColumnDef="DivisionName">
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Gender
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
@@ -75,8 +75,8 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- DistrictName Column -->
-                <ng-container matColumnDef="DistrictName">
+                <!-- SocialCategory Column -->
+                <ng-container matColumnDef="SocialCategory">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
