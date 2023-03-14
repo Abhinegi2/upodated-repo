@@ -58,7 +58,7 @@
             <mat-table matTableExporter class="vocationaltrainerdetail-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- Email Column -->
+                <!-- Name Column -->
                 <ng-container matColumnDef="Name">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
@@ -92,7 +92,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Email Column -->
+                <!-- DateOfJoining Column -->
                 <ng-container matColumnDef="DateOfJoining">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfJoining</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
@@ -100,13 +100,62 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Email Column -->
+                <!-- DateOfResignation Column -->
                 <ng-container matColumnDef="DateOfResignation">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
                     <mat-cell *matCellDef="let vocationaltrainerdetail">
                         <p class="text-truncate">{{vocationaltrainerdetail.DateOfResignation}}</p>
                     </mat-cell>
                 </ng-container>
+
+                <!-- AadhaarNumber Column -->
+                <ng-container matColumnDef="AadhaarNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Aadhaar Number</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.AadhaarNumber}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AcademicQualification Column -->
+                <ng-container matColumnDef="AcademicQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Qualification</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.AcademicQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfBirth Column -->
+                <ng-container matColumnDef="DateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfBirth</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfBirth}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProfessionalQualification Column -->
+                <ng-container matColumnDef="ProfessionalQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>ProfessionalQualification</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.ProfessionalQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProfessionalQualificationDetails Column -->
+                <ng-container matColumnDef="ProfessionalQualificationDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>ProfessionalQualificationDetails</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.ProfessionalQualificationDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- TrainingExperienceMonths Column -->
+                <ng-container matColumnDef="TrainingExperienceMonths">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>TrainingExperienceMonths</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.TrainingExperienceMonths}}</p>
+                    </mat-cell>
+                </ng-container>
+
 
                 <!-- BlockName Column -->
                 <!-- <ng-container matColumnDef="BlockName">
