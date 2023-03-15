@@ -43,7 +43,7 @@ export class CreateStudentClassDetailComponent extends BaseComponent<StudentClas
   ngOnInit(): void {
     this.studentClassDetailService.getDropdownforStudentClassDetails(this.UserModel).subscribe((results) => {
       if (results[0].Success) {
-        results[0].Results.unshift({ VTId: null, StudentName: 'Select Student', Description: "", SequenceNo: 1 });
+        // results[0].Results.unshift({ VTId: null, StudentName: 'Select Student', Description: "", SequenceNo: 1 });
         this.studentList = results[0].Results;
       }
 
