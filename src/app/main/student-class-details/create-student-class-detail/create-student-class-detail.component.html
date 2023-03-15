@@ -60,8 +60,8 @@
                             <mat-label>Select Student Name</mat-label>
                             <mat-select formControlName="StudentId" appearance="outline"
                                 [disabled]="PageRights.ActionType !='new'" required>
-                                <mat-option [value]="studentItem.StudentId" *ngFor="let studentItem of studentList">
-                                    {{ studentItem.StudentName }}
+                                <mat-option [value]="studentItem.Id" *ngFor="let studentItem of studentList">
+                                    {{ studentItem.Name }}
                                 </mat-option>
                             </mat-select>
                             <mat-error *ngIf="studentClassDetailForm.controls.StudentId.invalid">
