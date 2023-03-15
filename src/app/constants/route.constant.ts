@@ -60,6 +60,16 @@ export const RouteConstants = {
         New: 'employers/:actionType',
         Edit: 'employers/:actionType/:employerId'
     },
+    Vocationalcoordinatordetail: {
+        List: 'vocationalcoordinatordetails',
+        New: 'vocationalcoordinatordetails/:actionType',
+        Edit: 'vocationalcoordinatordetails/:actionType/:vocationalcoordinatordetailId'
+    },
+    Vocationaltrainerdetail: {
+    List: 'vocationaltrainerdetails',
+    New: 'vocationaltrainerdetails/:actionType',
+    Edit: 'vocationaltrainerdetails/:actionType/:vocationaltrainerdetailId'
+},
     SchoolSectorJob: {
         List: 'schoolsectorjobs',
         New: 'schoolsectorjobs/:actionType',

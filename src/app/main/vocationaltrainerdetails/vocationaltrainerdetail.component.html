@@ -1,0 +1,239 @@
+<div id="vocationaltrainerdetail" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VOCATIONALTRAINERDETAILS
+                    <a [routerLink]="['./']" skipLocationChange="true" replaceUrl="false"
+                        class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vocationaltrainerdetails">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                    class="add-vocationaltrainerdetail-button fuse-white mt-24 mt-md-0">
+                    <span>ADD</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exporter.exportTable('xlsx', {fileName:'Vocationaltrainerdetails', sheet: 'Vocationaltrainerdetails', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vocationaltrainerdetail-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
+            matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="Name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.Name}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- Email Column -->
+                <ng-container matColumnDef="Email">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Email</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.Email}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Gender
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SocialCategory Column -->
+                <ng-container matColumnDef="SocialCategory">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationaltrainerdetail.SocialCategory}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfJoining Column -->
+                <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfJoining</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfJoining}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfResignation Column -->
+                <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfResignation}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AadhaarNumber Column -->
+                <ng-container matColumnDef="AadhaarNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Aadhaar Number</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.AadhaarNumber}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AcademicQualification Column -->
+                <ng-container matColumnDef="AcademicQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Qualification</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.AcademicQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfBirth Column -->
+                <ng-container matColumnDef="DateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfBirth</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.DateOfBirth}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProfessionalQualification Column -->
+                <ng-container matColumnDef="ProfessionalQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>ProfessionalQualification</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.ProfessionalQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ProfessionalQualificationDetails Column -->
+                <ng-container matColumnDef="ProfessionalQualificationDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>ProfessionalQualificationDetails</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.ProfessionalQualificationDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- TrainingExperienceMonths Column -->
+                <ng-container matColumnDef="TrainingExperienceMonths">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>TrainingExperienceMonths</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail">
+                        <p class="text-truncate">{{vocationaltrainerdetail.TrainingExperienceMonths}}</p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- BlockName Column -->
+                <!-- <ng-container matColumnDef="BlockName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Block</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationaltrainerdetail.BlockName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- BusinessType Column -->
+                <!-- <ng-container matColumnDef="BusinessType">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>BusinessType
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationaltrainerdetail.BusinessType}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <!-- EmployeeCount Column -->
+                <!-- <ng-container matColumnDef="EmployeeCount">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>EmployeeCount
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationaltrainerdetail.EmployeeCount}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <!-- Outlets Column -->
+                <!-- <ng-container matColumnDef="Outlets">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Outlets
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationaltrainerdetail.Outlets}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="vocationaltrainerdetail.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!vocationaltrainerdetail.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationaltrainerdetail" fxShow.gt-xs>
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vocationaltrainerdetails', 'view', vocationaltrainerdetail.VocationaltrainerdetailId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                            [routerLink]="['/vocationaltrainerdetails', 'edit', vocationaltrainerdetail.VocationaltrainerdetailId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon color="primary">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteVocationaltrainerdetail(vocationaltrainerdetail.VocationaltrainerdetailId)"
+                            *ngIf="PageRights.IsDelete">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vocationaltrainerdetail; columns: displayedColumns;" class="vocationaltrainerdetail" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
