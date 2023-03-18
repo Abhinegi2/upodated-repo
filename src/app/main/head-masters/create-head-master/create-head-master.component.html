@@ -152,19 +152,6 @@
                                 {{getErrorMessage(headMasterForm, 'LastName')}}
                             </mat-error>
                         </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Gender</mat-label>
-                            <mat-select name="gender" formControlName="Gender" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
-                                    {{ genderItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="headMasterForm.controls.Gender.invalid">
-                                {{getErrorMessage(headMasterForm, 'Gender')}}
-                            </mat-error>
-                        </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -186,6 +173,22 @@
                                 {{getErrorMessage(headMasterForm, 'Mobile1')}}
                             </mat-error>
                         </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Gender</mat-label>
+                            <mat-select name="gender" formControlName="Gender" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
+                                    {{ genderItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="headMasterForm.controls.Gender.invalid">
+                                {{getErrorMessage(headMasterForm, 'Gender')}}
+                            </mat-error>
+                        </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Email</mat-label>
@@ -195,11 +198,6 @@
                                 {{getErrorMessage(headMasterForm, 'Email')}}
                             </mat-error>
                         </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
