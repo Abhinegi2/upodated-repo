@@ -3,7 +3,7 @@ import { FuseUtils } from '@fuse/utils';
 export class HeadMasterModel {
     AcademicYearId: string;
     HMId: string;
-    VTId: string;
+    // VTId: string;
     SchoolId: string;
     FirstName: string;
     MiddleName: string;
@@ -18,17 +18,17 @@ export class HeadMasterModel {
     DateOfResignation: Date;
     IsActive: boolean;
     RequestType: any;
-    VTPId: string;
-    VCId: string;
+    // VTPId: string;
+    // VCId: string;
 
     constructor(headMasterItem?: any) {
         headMasterItem = headMasterItem || {};
 
         this.AcademicYearId = ''
         this.HMId = headMasterItem.HMId || FuseUtils.NewGuid();
-        this.VCId = headMasterItem.VTId || '';
-        this.VTPId = headMasterItem.VTId || '';
-        this.VTId = headMasterItem.VTId || '';
+        // this.VCId = headMasterItem.VTId || '';
+        // this.VTPId = headMasterItem.VTId || '';
+        // this.VTId = headMasterItem.VTId || '';
         this.SchoolId = headMasterItem.VTSchoolSectorId || '';
         this.FirstName = headMasterItem.FirstName || '';
         this.MiddleName = headMasterItem.MiddleName || '';
@@ -48,8 +48,8 @@ export class HeadMasterModel {
     getHeadMasterTestData(): any {
         this.AcademicYearId = '';
         this.HMId = FuseUtils.NewGuid();
-        this.VCId = '70e40e43-6f4f-40d8-8553-f4e7d285213d';
-        this.VTPId = '7e1dab6c-6928-4ef6-9530-8c075af28542';
+        // this.VCId = '70e40e43-6f4f-40d8-8553-f4e7d285213d';
+        // this.VTPId = '7e1dab6c-6928-4ef6-9530-8c075af28542';
         this.FirstName = 'Aakash';
         this.MiddleName = 'D';
         this.LastName = 'Sharma';
