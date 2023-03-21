@@ -25,7 +25,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
   accountModel: AccountModel;
   roleList: DropdownModel[];
 
-  roleNotAdmin = ['980200d7-de58-4140-ab62-845e5eec08d1', 'cd6b4973-f87f-4887-bff2-6146447d11df'];
+  roleNotAdmin = ['980200d7-de58-4140-ab62-845e5eec08d1', '259b3087-4e2a-435a-accc-cf8980ffbcca', 'cd6b4973-f87f-4887-bff2-6146447d11df'];
   stateList: [DropdownModel];
   divisionList: DropdownModel[];
   districtList: DropdownModel[];
