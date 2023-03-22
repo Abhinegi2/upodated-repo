@@ -41,6 +41,7 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
     this.dataTypetList = <DropdownModel[]>[
       { Id: '', Name: 'Select Excel Template' },
       { Id: 'Schools', Name: '01-Schools', Template: '01_Schools_Template.xlsx' },
+      { Id: 'SchoolSectorJobRole', Name: '02-SchoolSectorJobRole', Template: '02_SchoolsSectorJobRole_Template.xlsx' },
       { Id: 'SectorJobRoles', Name: '02-Sector Job Roles', Template: '02_SectorJobRoles_Template.xlsx' },
       { Id: 'VocationalTrainingProviders', Name: '03-Vocational Training Providers', Template: '03_VocationalTrainingProviders_Template.xlsx' },
       { Id: 'VTPSectors', Name: '04-VTP Sectors', Template: '04_VTPSectors_Template.xlsx' },
@@ -48,7 +49,9 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'VocationalCoordinators', Name: '06-Vocational Coordinators', Template: '06_VocationalCoordinators_Template.xlsx' },
       { Id: 'VCSchoolSectors', Name: '07-VC School Sectors', Template: '07_VCSchoolSectors_Template.xlsx' },
       { Id: 'VocationalTrainers', Name: '08-Vocational Trainers', Template: '08_VocationalTrainers_Template.xlsx' },
+      { Id: 'VTAcademicClassSection', Name: '08-VT Academic Class Section', Template: '08_VTAcademicClassSection_Template.xlsx' },
       { Id: 'VTSchoolSectors', Name: '09-VT School Sectors', Template: '09_VTSchoolSectors_Template.xlsx' },
+      { Id: 'GenericVTMapping', Name: '10-Generic VT Mapping', Template: '10_GenericVTMapping_Template.xlsx' },
       { Id: 'HeadMasters', Name: '10-Head Masters', Template: '10_HeadMasters_Template.xlsx' },
       { Id: 'SchoolVEIncharges', Name: '11-School VE Incharges', Template: '11_SchoolVEIncharges_Template.xlsx' },
       { Id: 'VTClasses', Name: '12-VT Classes', Template: '12_VTClasses_Template.xlsx' },
