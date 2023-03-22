@@ -85,10 +85,7 @@ export class StudentClassService {
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
 
         //let jobroleRequest = this.http.GetMasterDataByType({ DataType: 'JobRoles', SelectTitle: 'JobRole' });
-
-
         // let schoolsForVTRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsForVT', UserId: userModel.UserTypeId, SelectTitle: 'School' }, false);
-
         // let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYearsByVT', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
         // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
 

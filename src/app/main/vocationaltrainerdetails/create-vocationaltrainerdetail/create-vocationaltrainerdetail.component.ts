@@ -28,12 +28,12 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
   professionalQualificationList: [DropdownModel];
   industryTrainingExperienceList: [DropdownModel];
   genderList: [DropdownModel];
-  vtList:[DropdownModel];
+  vtList: [DropdownModel];
   filteredVTItems: any;
   vocationalCoordinatorList: any;
   // vcList: [DropdownModel];
   // filteredVCItems;
-  
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -121,7 +121,7 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
                 // this.onChangeVTP(this.vocationaltrainerdetailModel.VTPId);
 
 
-                this.vocationaltrainerdetailForm = this.createVocationaltrainerdetailForm();                
+                this.vocationaltrainerdetailForm = this.createVocationaltrainerdetailForm();
                 // this.onChangeDivision(this.vocationaltrainerdetailModel.DivisionId);
               });
           }
@@ -157,7 +157,7 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
 
   saveOrUpdateVocationaltrainerdetailDetails() {
     if (!this.vocationaltrainerdetailForm.valid) {
-      this.validateAllFormFields(this.vocationaltrainerdetailForm);  
+      this.validateAllFormFields(this.vocationaltrainerdetailForm);
       return;
     }
 

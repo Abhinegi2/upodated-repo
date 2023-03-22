@@ -21,14 +21,16 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTrainerModel> implements OnInit {
   vocationalTrainerForm: FormGroup;
   vocationalTrainerModel: VocationalTrainerModel;
-  vtpList: [DropdownModel];
+  // vtpList: [DropdownModel];
   socialCategoryList: [DropdownModel];
-  natureOfAppointmentList: [DropdownModel];
+  // natureOfAppointmentList: [DropdownModel];
   academicQualificationList: [DropdownModel];
   professionalQualificationList: [DropdownModel];
   industryTrainingExperienceList: [DropdownModel];
   genderList: [DropdownModel];
-  vocationalCoordinatorList: any;
+  // vocationalCoordinatorList: any;
+  vtList: [DropdownModel];
+  filteredVTItems: any;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -50,32 +52,37 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
 
   ngOnInit(): void {
     this.vocationalTrainerService.getDropdownforVocationalTrainer(this.UserModel).subscribe((results) => {
+      // if (results[0].Success) {
+      //   this.vtpList = results[0].Results;
+      // }
+
       if (results[0].Success) {
-        this.vtpList = results[0].Results;
+        this.vtList = results[0].Results;
+        this.filteredVTItems = this.vtList.slice();
       }
 
       if (results[1].Success) {
         this.socialCategoryList = results[1].Results;
       }
 
+      // if (results[2].Success) {
+      //   this.natureOfAppointmentList = results[2].Results;
+      // }
+
       if (results[2].Success) {
-        this.natureOfAppointmentList = results[2].Results;
+        this.academicQualificationList = results[2].Results;
       }
 
       if (results[3].Success) {
-        this.academicQualificationList = results[3].Results;
+        this.professionalQualificationList = results[3].Results;
       }
 
       if (results[4].Success) {
-        this.professionalQualificationList = results[4].Results;
+        this.industryTrainingExperienceList = results[4].Results;
       }
 
       if (results[5].Success) {
-        this.industryTrainingExperienceList = results[5].Results;
-      }
-
-      if (results[6].Success) {
-        this.genderList = results[6].Results;
+        this.genderList = results[5].Results;
       }
 
       this.route.paramMap.subscribe(params => {
@@ -105,7 +112,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
                   this.onChangeDateEnableDisableCheckBox(this.vocationalTrainerForm, dateOfResignationCtrl);
                 }
 
-                this.onChangeVTP(this.vocationalTrainerModel.VTPId);
+                // this.onChangeVTP(this.vocationalTrainerModel.VTPId);
                 this.vocationalTrainerForm = this.createVocationalTrainerForm();
               });
           }
@@ -114,14 +121,14 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     });
   }
 
-  onChangeVTP(vtpId) {
-    this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinatorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.LoginId, ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }).subscribe((response) => {
-      if (response.Success) {
-        this.vocationalCoordinatorList = response.Results;
-      }
-    });
+  // onChangeVTP(vtpId) {
+  //   this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinatorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.LoginId, ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }).subscribe((response) => {
+  //     if (response.Success) {
+  //       this.vocationalCoordinatorList = response.Results;
+  //     }
+  //   });
 
-  }
+  // }
 
   saveOrUpdateVocationalTrainerDetails() {
     if (!this.vocationalTrainerForm.valid) {
@@ -157,21 +164,22 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
   //Create vocationalTrainer form and returns {FormGroup}
   createVocationalTrainerForm(): FormGroup {
     return this.formBuilder.group({
-      VTId: new FormControl(this.vocationalTrainerModel.VTId),
+      // VTId: new FormControl(this.vocationalTrainerModel.VTId),
+      VTId: new FormControl({ value: this.vocationalTrainerModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       AcademicYearId: new FormControl(this.vocationalTrainerModel.AcademicYearId),
-      VTPId: new FormControl({ value: this.vocationalTrainerModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VCId: new FormControl({ value: this.vocationalTrainerModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      FirstName: new FormControl({ value: this.vocationalTrainerModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      MiddleName: new FormControl({ value: this.vocationalTrainerModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      LastName: new FormControl({ value: this.vocationalTrainerModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      FullName: new FormControl({ value: this.vocationalTrainerModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
-      Mobile: new FormControl({ value: this.vocationalTrainerModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
-      Mobile1: new FormControl({ value: this.vocationalTrainerModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      // VTPId: new FormControl({ value: this.vocationalTrainerModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      // VCId: new FormControl({ value: this.vocationalTrainerModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      // FirstName: new FormControl({ value: this.vocationalTrainerModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      // MiddleName: new FormControl({ value: this.vocationalTrainerModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      // LastName: new FormControl({ value: this.vocationalTrainerModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      // FullName: new FormControl({ value: this.vocationalTrainerModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
+      // Mobile: new FormControl({ value: this.vocationalTrainerModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      // Mobile1: new FormControl({ value: this.vocationalTrainerModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Email: new FormControl({ value: this.vocationalTrainerModel.Email, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       Gender: new FormControl({ value: this.vocationalTrainerModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.vocationalTrainerModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
       SocialCategory: new FormControl({ value: this.vocationalTrainerModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
-      NatureOfAppointment: new FormControl({ value: this.vocationalTrainerModel.NatureOfAppointment, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
+      // NatureOfAppointment: new FormControl({ value: this.vocationalTrainerModel.NatureOfAppointment, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       AcademicQualification: new FormControl({ value: this.vocationalTrainerModel.AcademicQualification, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       ProfessionalQualification: new FormControl({ value: this.vocationalTrainerModel.ProfessionalQualification, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       ProfessionalQualificationDetails: new FormControl({ value: this.vocationalTrainerModel.ProfessionalQualificationDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),

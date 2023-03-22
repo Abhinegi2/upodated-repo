@@ -81,6 +81,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         }
       }
 
+      console.log(this.UserModel);
 
       if (results[1].Success) {
         this.genderList = results[1].Results;

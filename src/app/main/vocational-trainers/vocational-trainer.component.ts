@@ -139,7 +139,18 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
-      this.displayedColumns = ['VTPName', 'VCName', 'VTName', 'Mobile', 'Email', 'Gender', 'SocialCategory', 'NatureOfAppointment', 'IsResigned', 'IsActive', 'Actions'];
+      this.displayedColumns = [
+        // 'VTPName',
+        // 'VCName',
+        'VTName',
+        'Mobile',
+        'Email',
+        'Gender',
+        'SocialCategory',
+        // 'NatureOfAppointment',
+        // 'IsResigned',
+        'IsActive',
+        'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

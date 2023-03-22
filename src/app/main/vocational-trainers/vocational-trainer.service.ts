@@ -78,9 +78,10 @@ export class VocationalTrainerService {
     }
 
     getDropdownforVocationalTrainer(userModel: UserModel): Observable<any[]> {
-        let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProvidersByUserId', RoleId: userModel.RoleCode, UserId: userModel.UserTypeId, SelectTitle: 'Vocational Training Provider' });
+        // let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProvidersByUserId', RoleId: userModel.RoleCode, UserId: userModel.UserTypeId, SelectTitle: 'Vocational Training Provider' });
+        let vtRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: 'VT', SelectTitle: 'Vocational Trainer' }, false);
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
-        let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
+        // let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
         let academicQualificationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AcademicQualification', SelectTitle: 'Academic Qualification' });
         let professionalQualificationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'ProfessionalQualification', SelectTitle: 'Professional Qualification' });
         let industryTrainingExperienceRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'IndustryTrainingExperience', SelectTitle: 'Industry Training Experience' });
@@ -88,14 +89,14 @@ export class VocationalTrainerService {
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([vtpRequest, socialCategoryRequest, natureOfAppointmentRequest, academicQualificationRequest, professionalQualificationRequest, industryTrainingExperienceRequest, genderRequest, academicYearRequest]);
+        return forkJoin([vtRequest, socialCategoryRequest, academicQualificationRequest, professionalQualificationRequest, industryTrainingExperienceRequest, genderRequest, academicYearRequest]);
     }
 
     getInitVocationalTrainersData(userModel: UserModel): Observable<any[]> {
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' });
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
         let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
-       
+
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([academicYearRequest, vtpRequest, socialCategoryRequest]);
     }
