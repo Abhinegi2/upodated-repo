@@ -56,7 +56,7 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>First Name</mat-label>
                             <input matInput name="firstName" formControlName="FirstName" required
@@ -65,9 +65,9 @@
                             <mat-error *ngIf="vocationalTrainerForm.controls.FirstName.invalid">
                                 {{getErrorMessage(vocationalTrainerForm, 'FirstName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Middle Name</mat-label>
                             <input matInput name="middleName" formControlName="MiddleName" placeholder="Ex. Kumar"
@@ -85,10 +85,26 @@
                             <mat-error *ngIf="vocationalTrainerForm.controls.LastName.invalid">
                                 {{getErrorMessage(vocationalTrainerForm, 'LastName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Trainer</mat-label>
+  
+                              <mat-select formControlName="VTId" required appearance="outline" matTooltip="Select Vocational Trainer" matTooltipPosition='above'
+                                  matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
+                                  <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList" 
+                                    (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
+                                  </mat-select-filter>
+                                  <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredVTItems">
+                                      {{ vtItem.Name }}
+                                  </mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="vocationalTrainerForm.controls.VTId.invalid">
+                                  {{getErrorMessage(vocationalTrainerForm, 'VTId')}}
+                              </mat-error>
+                          </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    <!-- <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
@@ -109,7 +125,7 @@
                                 {{getErrorMessage(vocationalTrainerForm, 'Mobile1')}}
                             </mat-error>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
@@ -254,7 +270,7 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    <!-- <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100">
@@ -303,7 +319,7 @@
                                 {{getErrorMessage(vocationalTrainerForm, 'VCId')}}
                             </mat-error>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">

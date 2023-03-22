@@ -123,29 +123,29 @@
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
-        <div class="content-card">
+        <div class="content-card" style="width: 100%;">
 
             <mat-table matTableExporter class="vocational-coordinator-table responsive-table" #table
                 #exporter="matTableExporter" [hiddenColumns]="[8]" [dataSource]="tableDataSource" matSort
-                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}" style="width: 100%;">
 
                 <!-- NatureOfAppointment Column -->
-                <ng-container matColumnDef="NatureOfAppointment">
+                <!-- <ng-container matColumnDef="NatureOfAppointment">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Nature Of Appointment
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalCoordinator.NatureOfAppointment}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTPName Column -->
-                <ng-container matColumnDef="VTPName">
+                <!-- <ng-container matColumnDef="VTPName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator">
                         <p class="text-truncate">{{vocationalCoordinator.VTPName}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- FullName Column -->
                 <ng-container matColumnDef="FullName">
@@ -182,14 +182,14 @@
                 </ng-container>
 
                 <!-- DateOfJoining Column -->
-                <ng-container matColumnDef="DateOfJoining">
+                <!-- <ng-container matColumnDef="DateOfJoining">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Joining
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalCoordinator.DateOfJoining | date: Constants.ShortDateFormat
                             }}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- IsResigned Column -->
                 <ng-container matColumnDef="IsResigned">

@@ -57,7 +57,20 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50"
+
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+                            <mat-select formControlName="VCId" appearance="fill" #SelectVC appearance="outline">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVcItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>First Name</mat-label>
                             <input matInput name="firstName" formControlName="FirstName" placeholder="Ex. Rakesh"
@@ -66,9 +79,9 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.FirstName.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'FirstName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Middle Name</mat-label>
                             <input matInput name="middleName" formControlName="MiddleName" placeholder="Ex. Kumar"
@@ -88,7 +101,7 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.LastName.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'LastName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -142,7 +155,7 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Nature Of Appointment</mat-label>
                             <mat-select name="natureOfAppointment" formControlName="NatureOfAppointment" required
@@ -154,9 +167,9 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.NatureOfAppointment.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'NatureOfAppointment')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100"
                             *ngIf="vocationalCoordinatorForm.controls.NatureOfAppointment.value == 58">
                             <mat-label>Select VTP</mat-label>
@@ -170,7 +183,7 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.VTPId.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'VTPId')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
