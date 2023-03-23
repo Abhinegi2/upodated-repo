@@ -79,7 +79,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>Vocational Training Provider</mat-label>
 
                             <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
@@ -91,8 +91,8 @@
                                     {{ vtpItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
-
+                        </mat-form-field> -->
+<!-- 
                         <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>Vocational Coordinator</mat-label>
 
@@ -105,7 +105,7 @@
                                     {{ vcItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field fxFlex="35" fxFlex.lt-md="15" fxFlex.lt-sm="100">
                             <mat-label>School</mat-label>
@@ -113,7 +113,7 @@
                             <mat-select formControlName="SchoolId" appearance="fill" matTooltip="Select School"
                                 matTooltipPosition='above' matTooltipClass="allow-cr" #SelectSchool>
                                 <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
-                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [array]="schoolList"
                                     [displayMember]="'Name'"></mat-select-filter>
                                 <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
                                     {{ schoolItem.Name }}
