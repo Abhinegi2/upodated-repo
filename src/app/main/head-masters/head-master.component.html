@@ -92,7 +92,7 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field> -->
-<!-- 
+                        <!-- 
                         <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>Vocational Coordinator</mat-label>
 
@@ -226,13 +226,13 @@
                 </ng-container>
 
                 <!-- IsResigned Column -->
-                <ng-container matColumnDef="IsResigned">
+                <!-- <ng-container matColumnDef="IsResigned">
                     <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
                     </mat-header-cell>
                     <mat-cell *matCellDef="let headMaster" class="text-center">
                         <span>{{ (headMaster.IsResigned ? 'Yes' : 'No') }}</span>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">
@@ -254,7 +254,7 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR' || UserModel.RoleCode == 'ADM')"
                             mat-icon-button [routerLink]="['/head-masters', 'edit', headMaster.HMId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>

@@ -143,7 +143,16 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     };
 
     this.headMasterService.GetAllByCriteria(hmParams).subscribe(response => {
-      this.displayedColumns = ['SchoolName', 'FullName', 'Mobile', 'Email', 'Gender', 'YearsInSchool', 'IsResigned', 'IsActive', 'Actions'];
+      this.displayedColumns = [
+        'SchoolName',
+        'FullName',
+        'Mobile',
+        'Email',
+        'Gender',
+        'YearsInSchool',
+        // 'IsResigned',
+        'IsActive',
+        'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -163,9 +172,10 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         }
       });
       this.IsLoading = false;
-    }, error => {
-      console.log(error);
-    });
+    },
+      error => {
+        console.log(error);
+      });
   }
 
   onLoadHeadMastersByFilters(): any {

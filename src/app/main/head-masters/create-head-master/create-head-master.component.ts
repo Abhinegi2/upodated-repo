@@ -31,7 +31,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   filteredSchoolItems: any;
 
   // vtList: DropdownModel[];
-  VtId: any;  
+  VtId: any;
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -74,12 +74,12 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
             //   this.commonService.getVocationalTrainingProvidersByUserId(this.UserModel).then(vtpResp => {
             //     this.headMasterModel.VTPId = vtpResp[0].Id;
 
-                // this.onChangeVTP(this.headMasterModel.VTPId).then(vcResp => {
-                //   this.headMasterModel.VCId = this.UserModel.UserTypeId;
-                //   this.headMasterForm = this.createHeadMasterForm();
+            // this.onChangeVTP(this.headMasterModel.VTPId).then(vcResp => {
+            //   this.headMasterModel.VCId = this.UserModel.UserTypeId;
+            //   this.headMasterForm = this.createHeadMasterForm();
 
-                //   this.onChangeVC(this.headMasterModel.VCId);
-                // });
+            //   this.onChangeVC(this.headMasterModel.VCId);
+            // });
             //   });
             // }
 
@@ -89,7 +89,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
             this.headMasterService.getHeadMasterById(hmId)
               .subscribe((response: any) => {
                 this.headMasterModel = response.Result;
-
+                console.log(response.Result);
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
                   this.headMasterModel.RequestType = this.Constants.PageType.Edit;
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
@@ -99,11 +99,11 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
                 this.onChangeDateCalculateYear(this.headMasterModel.DateOfJoining);
                 // this.onChangeVTP(this.headMasterModel.VTPId).then(vtpResp => {
-                  // this.onChangeVC(this.headMasterModel.VCId).then(vcResp => {
-                    // this.onChangeSchool(this.headMasterModel.SchoolId).then(sResp => {
-                    //   this.headMasterForm = this.createHeadMasterForm();
-                    // });
-                  // });
+                // this.onChangeVC(this.headMasterModel.VCId).then(vcResp => {
+                // this.onChangeSchool(this.headMasterModel.SchoolId).then(sResp => {
+                this.headMasterForm = this.createHeadMasterForm();
+                // });
+                // });
                 // });
               });
           }
@@ -153,7 +153,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
   //     this.commonService.GetMasterDataByType({ DataType: 'TrainersBySchool', ParentId: schoolId, /*SelectTitle: 'Vocational Trainer'*/ }, false).subscribe((response: any) => {
   //       if (response.Success) {
-          // this.vtList = response.Results;
+  // this.vtList = response.Results;
   //       }
 
   //       this.IsLoading = false;
@@ -171,7 +171,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   }
 
   saveOrUpdateHeadMasterDetails() {
-    if (!this.headMasterForm.valid) { 
+    if (!this.headMasterForm.valid) {
       this.validateAllFormFields(this.headMasterForm);
 
       return;
@@ -179,7 +179,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
     this.headMasterModel.YearsInSchool = this.headMasterForm.get("YearsInSchool").value;
     this.setValueFromFormGroup(this.headMasterForm, this.headMasterModel);
-    this.headMasterModel.AcademicYearId = this.UserModel.AcademicYearId;
+    // this.headMasterModel.AcademicYearId = this.UserModel.AcademicYearId;
 
     // if (this.UserModel.RoleCode == 'VT') {
     //   this.headMasterModel.VTId = this.UserModel.UserTypeId;
