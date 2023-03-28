@@ -213,6 +213,24 @@
                     </mat-cell>
                 </ng-container>
 
+                 <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Sector Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRole Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- ClassName Column -->
                 <ng-container matColumnDef="ClassName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class</mat-header-cell>
