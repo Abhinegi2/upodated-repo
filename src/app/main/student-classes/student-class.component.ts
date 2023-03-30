@@ -151,7 +151,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     }
 
     this.studentClassService.GetAllByCriteria(studentParams).subscribe(response => {
-      this.displayedColumns = ['StudentName', 'AcademicYear', 'SchoolName', 'ClassName', 'SectionName', 'VTName', 'VTEmailId', 'Gender', 'DateOfEnrollment', 'IsActive', 'Actions'];
+      this.displayedColumns = ['StudentName', 'AcademicYear', 'SchoolName', 'ClassName','SectorName', 'SectionName', 'JobRoleName', 'VTName', 'VTEmailId', 'Gender', 'DateOfEnrollment', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
