@@ -266,6 +266,24 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- Sector Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SectorName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- JobRoleName Column -->
+                  <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRoleName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- DateOfEnrollment Column -->
                 <ng-container matColumnDef="DateOfEnrollment">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Enrollment
