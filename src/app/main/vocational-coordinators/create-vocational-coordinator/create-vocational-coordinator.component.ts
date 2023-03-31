@@ -47,7 +47,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
   ngOnInit(): void {
 
-    this.vocationalCoordinatorService.getDropdownforVocationalCoordinators().subscribe((results: any) => {
+    this.vocationalCoordinatorService.getDropdownforVocationalCoordinators(this.UserModel).subscribe((results: any) => {
 
       if (results[0].Success) {
         this.genderList = results[0].Results;

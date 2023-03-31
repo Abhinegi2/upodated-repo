@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { forkJoin, Observable } from "rxjs";
 import { retry, catchError, tap } from "rxjs/operators";
+import { UserModel } from "app/models/user.model";
 import { BaseService } from 'app/services/base.service';
 
 @Injectable()
@@ -75,12 +76,12 @@ export class VocationalCoordinatorService {
             );
     }
 
-    getDropdownforVocationalCoordinators(): Observable<any[]> {
+    getDropdownforVocationalCoordinators(userModel: UserModel): Observable<any[]> {
         // let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'Vocational Training Provider' });
         // let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
         let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' });
-        let vcRequest = this.http.GetMasterDataByType({ DataType: ' VocationalCoordinatorDetails', SelectTitle: 'Vocational Coordinator Name' }, false);
-
+        //let vcRequest = this.http.GetMasterDataByType({ DataType: ' VocationalCoordinatorDetails', SelectTitle: 'Vocational Coordinator Name' }, false);
+        let vcRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: userModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }, false);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([genderRequest, vcRequest]);
     }

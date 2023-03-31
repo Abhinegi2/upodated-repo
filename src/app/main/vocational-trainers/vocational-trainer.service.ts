@@ -79,7 +79,8 @@ export class VocationalTrainerService {
 
     getDropdownforVocationalTrainer(userModel: UserModel): Observable<any[]> {
         // let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProvidersByUserId', RoleId: userModel.RoleCode, UserId: userModel.UserTypeId, SelectTitle: 'Vocational Training Provider' });
-        let vtRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: 'VT', SelectTitle: 'Vocational Trainer' }, false);
+        //let vtRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: 'VT', SelectTitle: 'Vocational Trainer' }, false);
+        let vtRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: userModel.RoleCode, ParentId: 'Vocational Trainer', SelectTitle: 'Vocational Trainer' }, false);
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
         // let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
         let academicQualificationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AcademicQualification', SelectTitle: 'Academic Qualification' });
