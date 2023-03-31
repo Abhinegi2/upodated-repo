@@ -181,6 +181,30 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- StateName Column -->
+                <ng-container matColumnDef="StateName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>StateName</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalCoordinator">
+                        <p class="text-truncate">{{vocationalCoordinator.StateName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DivisionName Column -->
+                  <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DivisionName</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalCoordinator">
+                        <p class="text-truncate">{{vocationalCoordinator.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DistrictName Column -->
+                  <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>DistrictName</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalCoordinator">
+                        <p class="text-truncate">{{vocationalCoordinator.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- DateOfJoining Column -->
                 <!-- <ng-container matColumnDef="DateOfJoining">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Joining

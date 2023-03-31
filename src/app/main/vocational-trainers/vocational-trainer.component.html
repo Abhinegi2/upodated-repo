@@ -203,6 +203,78 @@
                     </mat-cell>
                 </ng-container>
 
+                 <!-- DateOfBirth Column -->
+                 <ng-container matColumnDef="DateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- AcademicQualification Column -->
+                 <ng-container matColumnDef="AcademicQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>AcademicQualification
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.AcademicQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                   <!-- ProfessionalQualification Column -->
+                   <ng-container matColumnDef="ProfessionalQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>ProfessionalQualification
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.ProfessionalQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IndustryExperienceMonths Column -->
+                <ng-container matColumnDef="IndustryExperienceMonths">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IndustryExperienceMonths
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.IndustryExperienceMonths}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- ProfessionalQualificationDetails Column -->
+                 <ng-container matColumnDef="ProfessionalQualificationDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>ProfessionalQualificationDetails
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.ProfessionalQualificationDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- StateName Column -->
+                  <ng-container matColumnDef="StateName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>StateName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.StateName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Division Column -->
+                  <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DivisionName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Districts Column -->
+                  <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DistrictName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- SocialCategory Column -->
                 <ng-container matColumnDef="SocialCategory">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Social Category

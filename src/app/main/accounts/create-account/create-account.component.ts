@@ -269,7 +269,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
 
       workLocationForm: this.formBuilder.group({
         AccountId: new FormControl(this.accountModel.AccountId),
-        StateCode: new FormControl({ value: this.UserModel.DefaultStateId, disabled: (this.UserModel.DefaultStateId != '') }),
+        StateCode: new FormControl({ value: this.UserModel.DefaultStateId='DL', disabled: (this.UserModel.DefaultStateId ='DL') }),
         DivisionId: new FormControl({ value: this.workLocationModel.DivisionId, disabled: this.PageRights.IsReadOnly }),
         DistrictId: new FormControl({ value: this.workLocationModel.DistrictId, disabled: this.PageRights.IsReadOnly }),
         BlockId: new FormControl({ value: this.workLocationModel.BlockId, disabled: this.PageRights.IsReadOnly }),
