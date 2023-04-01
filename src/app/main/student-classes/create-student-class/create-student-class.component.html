@@ -236,6 +236,15 @@
                             </mat-error>
                         </mat-form-field>
 
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Mobile Number</mat-label>
+                            <input matInput name="mobile" formControlName="Mobile" digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="studentClassForm.controls.Mobile.invalid">
+                                {{getErrorMessage(studentClassForm, 'Mobile')}}
+                            </mat-error>
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Of Enrollment</mat-label>
                             <input matInput [matDatepicker]="dateOfEnrollment" name="dateOfEnrollment" required
@@ -285,15 +294,6 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile Number</mat-label>
-                            <input matInput name="mobile" formControlName="Mobile" digitOnly minlength="10"
-                                maxlength="10" placeholder="Ex. 9800098000">
-                            <mat-error *ngIf="studentClassForm.controls.Mobile.invalid">
-                                {{getErrorMessage(studentClassForm, 'Mobile')}}
-                            </mat-error>
-                        </mat-form-field>
 
                         <span class="checkbox-space">Is Active?</span>
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
