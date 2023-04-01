@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { VocationalTrainerService } from '../vocational-trainer.service';
 import { VocationalTrainerModel } from '../vocational-trainer.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { AccountService } from 'app/main/accounts/account.service';
 
 @Component({
   selector: 'vocational-trainer',
@@ -21,6 +22,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTrainerModel> implements OnInit {
   vocationalTrainerForm: FormGroup;
   vocationalTrainerModel: VocationalTrainerModel;
+  // accountModel: AccountModel;
   // vtpList: [DropdownModel];
   socialCategoryList: [DropdownModel];
   // natureOfAppointmentList: [DropdownModel];
@@ -38,7 +40,9 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     public snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute,
+
     private vocationalTrainerService: VocationalTrainerService,
+    private accountService: AccountService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -46,6 +50,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     // Set the default vocationalTrainer Model
     this.vocationalTrainerModel = new VocationalTrainerModel();
     //this.vocationalTrainerModel = new VocationalTrainerModel().getVocationalTrainerTestData();
+    // this.accountModel = new AccountModel();
 
     this.vocationalTrainerForm = this.createVocationalTrainerForm();
   }
@@ -113,6 +118,8 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
                 }
 
                 // this.onChangeVTP(this.vocationalTrainerModel.VTPId);
+                this.onChangeVT(this.vocationalTrainerModel.VTId);
+
                 this.vocationalTrainerForm = this.createVocationalTrainerForm();
               });
           }
@@ -127,8 +134,22 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
   //       this.vocationalCoordinatorList = response.Results;
   //     }
   //   });
-
   // }
+
+  onChangeVT(accountId) {
+
+    this.accountService.getAccountById(accountId).subscribe((response: any) => {
+      var accountModel = response.Result;
+
+      this.vocationalTrainerForm.controls['Email'].setValue(accountModel.EmailId);
+      this.vocationalTrainerForm.controls['Email'].disable();
+
+      console.log(accountModel.EmailId);
+      console.log(accountModel.Mobile);
+
+    });
+  }
+
 
   saveOrUpdateVocationalTrainerDetails() {
     if (!this.vocationalTrainerForm.valid) {
