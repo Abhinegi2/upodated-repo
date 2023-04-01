@@ -58,15 +58,32 @@
             <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[9]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
-                <!-- GenericVTName Column -->
-                <ng-container matColumnDef="GenericVTName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>GenericVTName
+                 <!-- SchoolName Column -->
+                 <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> SchoolName
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vtacademicclasssection.GenericVTName}}</p>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.SchoolName}}</p>
                     </mat-cell>
                 </ng-container>
 
+                 <!-- SectorName Column -->
+                 <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> SectorName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- JobRoleName Column -->
+                 <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> JobRoleName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
 
                 <!-- VTName Column -->
                 <ng-container matColumnDef="VTName">

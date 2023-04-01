@@ -29,7 +29,8 @@ export class VTAcademicClassSectionComponent extends BaseListComponent<VTAcademi
 
   ngOnInit(): void {
     this.vtacademicclasssectionService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['GenericVTName', 'AcademicYear', 'ClassName', 'SectionName', 'VTName', 'VTEmailId', 'DateOfAllocation', 'DateOfRemoval', 'IsActive', 'Actions'];
+      console.log(response);
+      this.displayedColumns = ['SchoolName', 'AcademicYear', 'ClassName', 'SectorName', 'JobRoleName', 'SectionName', 'VTName', 'VTEmailId', 'DateOfAllocation', 'DateOfRemoval', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
