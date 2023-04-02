@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { VocationalCoordinatorService } from '../vocational-coordinator.service';
 import { VocationalCoordinatorModel } from '../vocational-coordinator.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { AccountService } from 'app/main/accounts/account.service';
 
 @Component({
   selector: 'vocational-coordinator',
@@ -34,6 +35,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
     private zone: NgZone,
     private route: ActivatedRoute,
     private vocationalCoordinatorService: VocationalCoordinatorService,
+    private accountService: AccountService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -79,6 +81,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
             this.vocationalCoordinatorService.getVocationalCoordinatorById(vcId)
               .subscribe((response: any) => {
+                console.log(response);
                 this.vocationalCoordinatorModel = response.Result;
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
@@ -87,9 +90,9 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
+                this.onChangeVC(this.vocationalCoordinatorModel.VCId);
 
                 // this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
-                // this.onChangeVC(this.vocationalCoordinatorModel.VCId);
                 // this.onChangeVC().then(response => {
                 // this.onChangeSector(this.schoolsectorjobModel.SectorId).then(response => {
                 this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
@@ -104,11 +107,18 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
   }
 
 
-  // onChangeVC(VCId) {
-  //   // var VCName = this.vocationalCoordinatorForm.controls['VCId'].html();
-  //   var selectedValue = this.vocationalCoordinatorService.getDropDownText(this.mySelect, VCId)[0].name;
-  //   console.log(selectedValue);
-  // }
+  onChangeVC(VCId) {
+    this.accountService.getAccountById(VCId).subscribe((response: any) => {
+      var accountModel = response.Result;
+      this.vocationalCoordinatorForm.controls['EmailId'].setValue(accountModel.EmailId);
+      this.vocationalCoordinatorForm.controls['EmailId'].disable();
+      this.vocationalCoordinatorForm.controls['Mobile'].setValue(accountModel.Mobile);
+      this.vocationalCoordinatorForm.controls['Mobile'].disable();
+    });
+    // // var VCName = this.vocationalCoordinatorForm.controls['VCId'].html();
+    // var selectedValue = this.vocationalCoordinatorService.getDropDownText(this.mySelect, VCId)[0].name;
+    // console.log(selectedValue);
+  }
 
 
   saveOrUpdateVocationalCoordinatorDetails() {
