@@ -26,7 +26,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
   natureOfAppointmentList: [DropdownModel];
   genderList: [DropdownModel];
   vcList: [DropdownModel];
-  filteredVCItems;
+  filteredVcItems;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -57,7 +57,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
       if (results[1].Success) {
         this.vcList = results[1].Results;
-        this.filteredVCItems = this.vcList.slice();
+        this.filteredVcItems = this.vcList.slice();
       }
 
 

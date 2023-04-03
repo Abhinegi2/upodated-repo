@@ -208,7 +208,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth}}</p>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth  | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
 
