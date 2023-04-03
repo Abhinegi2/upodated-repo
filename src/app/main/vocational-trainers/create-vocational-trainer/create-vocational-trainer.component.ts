@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { VocationalTrainerService } from '../vocational-trainer.service';
 import { VocationalTrainerModel } from '../vocational-trainer.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { AccountService } from 'app/main/accounts/account.service';
 
 @Component({
   selector: 'vocational-trainer',
@@ -21,6 +22,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTrainerModel> implements OnInit {
   vocationalTrainerForm: FormGroup;
   vocationalTrainerModel: VocationalTrainerModel;
+  // accountModel: AccountModel;
   // vtpList: [DropdownModel];
   socialCategoryList: [DropdownModel];
   // natureOfAppointmentList: [DropdownModel];
@@ -38,7 +40,9 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     public snackBar: MatSnackBar,
     private zone: NgZone,
     private route: ActivatedRoute,
+
     private vocationalTrainerService: VocationalTrainerService,
+    private accountService: AccountService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -46,6 +50,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     // Set the default vocationalTrainer Model
     this.vocationalTrainerModel = new VocationalTrainerModel();
     //this.vocationalTrainerModel = new VocationalTrainerModel().getVocationalTrainerTestData();
+    // this.accountModel = new AccountModel();
 
     this.vocationalTrainerForm = this.createVocationalTrainerForm();
   }
@@ -113,6 +118,8 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
                 }
 
                 // this.onChangeVTP(this.vocationalTrainerModel.VTPId);
+                this.onChangeVT(this.vocationalTrainerModel.VTId);
+
                 this.vocationalTrainerForm = this.createVocationalTrainerForm();
               });
           }
@@ -127,8 +134,18 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
   //       this.vocationalCoordinatorList = response.Results;
   //     }
   //   });
-
   // }
+
+  onChangeVT(accountId) {
+    this.accountService.getAccountById(accountId).subscribe((response: any) => {
+      var accountModel = response.Result;
+      this.vocationalTrainerForm.controls['Email'].setValue(accountModel.EmailId);
+      this.vocationalTrainerForm.controls['Email'].disable();
+      this.vocationalTrainerForm.controls['Mobile'].setValue(accountModel.Mobile);
+      this.vocationalTrainerForm.controls['Mobile'].disable();
+    });
+  }
+
 
   saveOrUpdateVocationalTrainerDetails() {
     if (!this.vocationalTrainerForm.valid) {
@@ -173,8 +190,8 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
       // MiddleName: new FormControl({ value: this.vocationalTrainerModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       // LastName: new FormControl({ value: this.vocationalTrainerModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       // FullName: new FormControl({ value: this.vocationalTrainerModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
-      // Mobile: new FormControl({ value: this.vocationalTrainerModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
-      // Mobile1: new FormControl({ value: this.vocationalTrainerModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      Mobile: new FormControl({ value: this.vocationalTrainerModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      Mobile1: new FormControl({ value: this.vocationalTrainerModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Email: new FormControl({ value: this.vocationalTrainerModel.Email, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       Gender: new FormControl({ value: this.vocationalTrainerModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.vocationalTrainerModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
