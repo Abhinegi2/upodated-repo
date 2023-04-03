@@ -52,18 +52,18 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'GenericVTMapping', Name: '10-Generic VT Mapping', Template: '10_GenericVTMapping_Template.xlsx' },
       { Id: 'Students', Name: '11-Students', Template: '11_Students_Template.xlsx' },
       { Id: 'Employer', Name: '12-Employer', Template: '12_Employers_Template.xlsx' },
+      { Id: 'Division', Name: '13-Division', Template: '13_Divisions_Template.xlsx' },
+      { Id: 'District', Name: '14-District', Template: '14_Districts_Template.xlsx' },
+      { Id: 'Block', Name: '15-Block', Template: '15_Blocks_Template.xlsx' },
 
-      { Id: 'VCSchoolSectors', Name: '13-VC School Sectors Obsolete', Template: '13_VCSchoolSectors_Template_Obsolete.xlsx' },
-      { Id: 'VTSchoolSectors', Name: '14-VT School Sectors Obsolete', Template: '14_VTSchoolSectors_Template_Obsolete.xlsx' },
-      { Id: 'VTPSectors', Name: '15-VTP Sectors Obsolete', Template: '15_VTPSectors_Template_Obsolete.xlsx' },
-      { Id: 'VTClasses', Name: '16-VT Classes Obsolete', Template: '16_VTClasses_Template_Obsolete.xlsx' },
-      { Id: 'SchoolVTPSectors', Name: '17-School VTP Sectors Obsolete', Template: '17_SchoolVTPSectors_Template_Obsolete.xlsx' },
+      { Id: 'VCSchoolSectors', Name: '16-VC School Sectors Obsolete', Template: '16_VCSchoolSectors_Template_Obsolete.xlsx' },
+      { Id: 'VTSchoolSectors', Name: '17-VT School Sectors Obsolete', Template: '17_VTSchoolSectors_Template_Obsolete.xlsx' },
+      { Id: 'VTPSectors', Name: '18-VTP Sectors Obsolete', Template: '18_VTPSectors_Template_Obsolete.xlsx' },
+      { Id: 'VTClasses', Name: '19-VT Classes Obsolete', Template: '19_VTClasses_Template_Obsolete.xlsx' },
+      { Id: 'SchoolVTPSectors', Name: '20-School VTP Sectors Obsolete', Template: '20_SchoolVTPSectors_Template_Obsolete.xlsx' },
       
-      { Id: 'SchoolVEIncharges', Name: '11-School VE Incharges(Not available)', Template: '18_SchoolVEIncharges_Template.xlsx' },
-      
-      
-      
-      
+      { Id: 'SchoolVEIncharges', Name: '21-School VE Incharges(Not available)', Template: '21_SchoolVEIncharges_Template.xlsx' },
+       
     ]
   }
 
