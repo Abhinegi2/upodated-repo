@@ -96,9 +96,12 @@ export class VocationalTrainerService {
     getInitVocationalTrainersData(userModel: UserModel): Observable<any[]> {
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' });
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
-        let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
+        // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([academicYearRequest, vtpRequest, socialCategoryRequest]);
+        return forkJoin([
+            academicYearRequest,
+            // vtpRequest, 
+            socialCategoryRequest]);
     }
 }

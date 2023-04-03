@@ -10,6 +10,8 @@ import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { UserModel } from 'app/models/user.model';
 import { AuthenticationService } from 'app/services/authentication.service';
 
+import { CommonService } from 'app/services/common.service';
+
 @Component({
     selector: 'navbar-vertical-style-1',
     templateUrl: './style-1.component.html',
@@ -20,6 +22,7 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
     fuseConfig: any;
     navigation: any;
     currentUser: UserModel;
+    schoolName: any;
 
     // Private
     private _fusePerfectScrollbar: FusePerfectScrollbarDirective;
@@ -39,8 +42,10 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
         private _fuseSidebarService: FuseSidebarService,
         private _router: Router,
         private authenticationService: AuthenticationService,
+        public commonService: CommonService,
     ) {
         // Set the private defaults
+        // super(commonService);
         this._unsubscribeAll = new Subject();
         this.currentUser = new UserModel();
     }
@@ -120,8 +125,20 @@ export class NavbarVerticalStyle1Component implements OnInit, OnDestroy {
             });
 
         var _currentUser = this.authenticationService.getCurrentUser();
-        if(_currentUser!=null){
+        console.log(_currentUser);
+        if (_currentUser != null) {
             this.currentUser = _currentUser;
+            console.log('here');
+            if (_currentUser.RoleCode == 'HM') {
+                this.commonService.GetMasterDataByType({ DataType: 'SchoolOfHM', ParentId: _currentUser.UserTypeId, SelectTitle: 'School' }).subscribe((response: any) => {
+                    this.schoolName = response.Results;
+                    if (this.schoolName.length == 2) {
+                        this.schoolName = this.schoolName[1].Name;
+                    }
+                    console.log(this.schoolName);
+                    console.log(this.schoolName[1].Name);
+                });
+            }
         }
     }
 

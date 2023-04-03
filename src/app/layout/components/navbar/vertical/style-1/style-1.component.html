@@ -29,6 +29,7 @@
 
         <div class="h3 username" style="color: black !important">{{currentUser.FirstName}} {{currentUser.LastName}}</div>
         <div class="h5 email hint-text mt-8" style="color: black !important">{{currentUser.EmailId}}</div>
+        <div class="h6 state hint-text mt-8 mb-5" *ngIf="schoolName" style="color: black !important">{{schoolName}}</div>
         <!-- <div class="avatar-container" [ngClass]="fuseConfig.layout.navbar.primaryBackground">
             <img class="avatar" src="assets/images/avatars/Velazquez.jpg">
         </div> -->

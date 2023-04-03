@@ -43,6 +43,7 @@
         || item.title === 'VT Classes (Obsolete)'
         || item.title === 'VC School Sectors (Obsolete)'
         || item.title === 'School VTP Sectors (Obsolete)'
+        || item.title === 'Student Class Details'
          ? 'red-text' : ''" class="nav-link-title" [translate]="item.translate">{{(item.translate | translate) || item.title}}</span>
 
         <span class="nav-link-badge"  *ngIf="item.badge" [translate]="item.badge.translate"

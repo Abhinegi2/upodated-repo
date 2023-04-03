@@ -62,13 +62,13 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         this.academicYearList = results[0].Results;
       }
 
-      if (results[1].Success) {
-        this.vtpList = results[1].Results;
-        this.filteredVTPItems = this.vtpList.slice();
-      }
+      // if (results[1].Success) {
+      //   this.vtpList = results[1].Results;
+      //   this.filteredVTPItems = this.vtpList.slice();
+      // }
 
-      if (results[2].Success) {
-        this.socialCategoryList = results[2].Results;
+      if (results[1].Success) {
+        this.socialCategoryList = results[1].Results;
       }
 
       let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
