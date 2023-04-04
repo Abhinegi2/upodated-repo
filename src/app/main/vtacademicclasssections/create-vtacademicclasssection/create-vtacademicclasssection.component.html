@@ -134,7 +134,7 @@
 
                             <mat-select formControlName="VTId" appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt (selectionChange)="onChangeVT($event.value)">
 
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
