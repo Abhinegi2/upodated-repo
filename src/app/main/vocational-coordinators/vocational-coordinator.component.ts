@@ -136,7 +136,6 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
         'FullName',
         'Mobile',
         'EmailId',
-        'Gender',
         'StateName',
         'DivisionName',
         'DistrictName',
