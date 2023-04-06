@@ -130,12 +130,14 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
     };
 
     this.vocationalCoordinatorService.GetAllByCriteria(vcParams).subscribe(response => {
+      console.log(response);
       this.displayedColumns = [
         // 'NatureOfAppointment', 
         // 'VTPName',
         'FullName',
         'Mobile',
         'EmailId',
+        'Gender',
         'StateName',
         'DivisionName',
         'DistrictName',
