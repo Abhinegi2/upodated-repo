@@ -83,7 +83,6 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       }
 
       this.getUploadedFileData(event, this.Constants.DocumentType.BulkUploadData).then((response: FileUploadModel) => {
-        console.log(response);
         this.fileUploadModel = response;
       });
 
