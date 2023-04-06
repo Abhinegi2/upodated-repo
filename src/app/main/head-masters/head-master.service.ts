@@ -83,7 +83,7 @@ export class HeadMasterService {
         let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }, false);
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' }, false);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([schoolRequest, genderRequest, vtpRequest, sectorRequest]);
+        return forkJoin([schoolRequest, genderRequest,vtpRequest, sectorRequest]);
     }
 
     getInitHeadMastersData(userModel: UserModel): Observable<any[]> {

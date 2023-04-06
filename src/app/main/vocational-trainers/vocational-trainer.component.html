@@ -284,6 +284,15 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- DateOfJoining Column -->
+                  <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfJoining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfJoining  | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- NatureOfAppointment Column -->
                 <!-- <ng-container matColumnDef="NatureOfAppointment">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Nature Of Appointment

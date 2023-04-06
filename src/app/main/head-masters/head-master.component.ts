@@ -150,6 +150,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         'Email',
         'Gender',
         'YearsInSchool',
+        'DateOfJoining',
         // 'IsResigned',
         'IsActive',
         'Actions'];
