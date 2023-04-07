@@ -14,7 +14,7 @@ export class VocationalCoordinatorModel {
     // NatureOfAppointment: string;
     Gender: string;
     DateOfJoining: Date;
-    DateOfResignation?: Date;
+    DateOfResignation: Date;
     IsActive: boolean;
     RequestType: any;
 

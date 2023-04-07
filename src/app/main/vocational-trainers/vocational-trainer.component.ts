@@ -139,7 +139,6 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
-      console.log(response);
       this.displayedColumns = [
         // 'VTPName',
         // 'VCName',
@@ -157,6 +156,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         'DivisionName',
         'DistrictName',
         'DateOfJoining',
+        'DateOfResignation',
         // 'NatureOfAppointment',
         // 'IsResigned',
         'IsActive',

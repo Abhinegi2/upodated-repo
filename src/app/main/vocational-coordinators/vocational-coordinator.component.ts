@@ -140,7 +140,8 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
         'StateName',
         'DivisionName',
         'DistrictName',
-        // 'DateOfJoining',
+        'DateOfResignation',
+        'DateOfJoining',
         'IsResigned',
         'IsActive',
         'Actions'];

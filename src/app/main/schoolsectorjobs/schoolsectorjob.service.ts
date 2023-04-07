@@ -75,8 +75,8 @@ export class SchoolSectorJobService {
             );
     }
 
-    getSchoolSectorJob(): Observable<any[]> {
-        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' }, false);
+    getSchoolSectorJob(userModel): Observable<any[]> {
+        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, RoleId:userModel.RoleCode, SelectTitle: 'School' }, false);
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6

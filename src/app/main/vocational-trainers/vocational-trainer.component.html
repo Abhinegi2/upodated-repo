@@ -293,6 +293,14 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- DateOfResignation Column -->
+                  <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.DateOfResignation | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- NatureOfAppointment Column -->
                 <!-- <ng-container matColumnDef="NatureOfAppointment">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Nature Of Appointment
@@ -333,9 +341,9 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit"
                             mat-icon-button [routerLink]="['/vocational-trainers', 'edit', vocationalTrainer.VTId]"
-                            skipLocationChange="true" replaceUrl="false">
+                            skipLocationChange="true" replaceUrl="false">   
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
