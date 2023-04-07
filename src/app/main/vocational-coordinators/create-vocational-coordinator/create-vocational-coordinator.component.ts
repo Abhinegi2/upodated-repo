@@ -168,6 +168,9 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
       // NatureOfAppointment: new FormControl({ value: this.vocationalCoordinatorModel.NatureOfAppointment, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100)]),
       Gender: new FormControl({ value: this.vocationalCoordinatorModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(50)]),
       DateOfJoining: new FormControl({ value: new Date(this.vocationalCoordinatorModel.DateOfJoining), disabled: this.PageRights.IsReadOnly }, Validators.required),
+      //DateOfJoining2: new FormControl({ value: new Date(this.vocationalCoordinatorModel.DateOfJoining2), disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+
       DateOfResignation: new FormControl({ value: this.getDateValue(this.vocationalCoordinatorModel.DateOfResignation), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vocationalCoordinatorModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
