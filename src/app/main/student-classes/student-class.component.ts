@@ -55,6 +55,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe(results => {
+
       if (results[2].Success) {
         this.sectorList = results[2].Results;
       }

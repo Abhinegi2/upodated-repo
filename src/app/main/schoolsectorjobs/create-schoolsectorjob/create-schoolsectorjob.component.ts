@@ -46,6 +46,7 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
   ngOnInit(): void {
 
     this.schoolsectorjobService.getSchoolSectorJob(this.UserModel).subscribe(results => {
+
       if (results[0].Success) {
         this.schoolList = results[0].Results;
       }
