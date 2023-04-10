@@ -2,9 +2,8 @@ import { FuseUtils } from '@fuse/utils';
 
 export class GenericVTMappingModel {
     GenericVTMappingId: string;
-    VTPId: string;
     UserType: string;
-    VCId: string;
+    UserId: string;
     GVTId: string;
     DateOfAllocation: Date;
     DateOfRemoval?: Date;
@@ -15,10 +14,8 @@ export class GenericVTMappingModel {
         genericvtmappingItem = genericvtmappingItem || {};
 
         this.GenericVTMappingId = genericvtmappingItem.GenericVTMappingId || FuseUtils.NewGuid();
-        this.VTPId = genericvtmappingItem.VTId || '';
         this.UserType = genericvtmappingItem.UserType || '';
-
-        this.VCId = genericvtmappingItem.VTId || '';
+        this.UserId = genericvtmappingItem.UserId || '';
         this.GVTId = genericvtmappingItem.GVTId || '';
         this.DateOfAllocation = genericvtmappingItem.DateOfAllocation || '';
         this.DateOfRemoval = genericvtmappingItem.DateOfRemoval || '';
