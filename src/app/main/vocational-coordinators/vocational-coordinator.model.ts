@@ -7,7 +7,7 @@ export class VocationalCoordinatorModel {
     // FirstName: string;
     // MiddleName: string;
     // LastName: string;
-    // FullName: string;
+    FullName: string;
     Mobile: string;
     Mobile1: string;
     EmailId: string;
@@ -27,7 +27,7 @@ export class VocationalCoordinatorModel {
         // this.FirstName = vocationalCoordinatorItem.FirstName || '';
         // this.MiddleName = vocationalCoordinatorItem.MiddleName || '';
         // this.LastName = vocationalCoordinatorItem.LastName || '';
-        // this.FullName = vocationalCoordinatorItem.FullName || '';
+        this.FullName = vocationalCoordinatorItem.FullName || '';
         this.Mobile = vocationalCoordinatorItem.Mobile || '';
         this.Mobile1 = vocationalCoordinatorItem.Mobile1 || '';
         this.EmailId = vocationalCoordinatorItem.EmailId || '';

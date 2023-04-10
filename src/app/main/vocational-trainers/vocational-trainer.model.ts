@@ -5,9 +5,9 @@ export class VocationalTrainerModel {
     VTId: string;
     VCId: string;
     VTPId: string;
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
+ // FirstName: string;
+ // MiddleName: string;
+ // LastName: string;
     FullName: string;
     Mobile: string;
     Mobile1: string;
@@ -34,9 +34,9 @@ export class VocationalTrainerModel {
         this.VTId = vocationalTrainerItem.VTId || FuseUtils.NewGuid();
         this.VCId = vocationalTrainerItem.VCId || '';
         this.VTPId = vocationalTrainerItem.VTPId || '';
-        this.FirstName = vocationalTrainerItem.FirstName || '';
-        this.MiddleName = vocationalTrainerItem.MiddleName || '';
-        this.LastName = vocationalTrainerItem.LastName || '';
+     // this.FirstName = vocationalTrainerItem.FirstName || '';
+     // this.MiddleName = vocationalTrainerItem.MiddleName || '';
+     // this.LastName = vocationalTrainerItem.LastName || '';
         this.FullName = vocationalTrainerItem.FullName || '';
         this.Mobile = vocationalTrainerItem.Mobile || '';
         this.Mobile1 = vocationalTrainerItem.Mobile1 || '';
@@ -61,9 +61,9 @@ export class VocationalTrainerModel {
         this.VTId = FuseUtils.NewGuid();
         this.VCId = '1398448d-96f8-4c0f-9c62-a51ff0579379';
         this.VTPId = '10f9cec0-043f-40a1-9109-fbf81954d038';
-        this.FirstName = 'Aarti';
-        this.MiddleName = 'Sunder';
-        this.LastName = 'Patil';
+     // this.FirstName = 'Aarti';
+     // this.MiddleName = 'Sunder';
+     // this.LastName = 'Patil';
         this.FullName = 'Aarti Sunder Patil';
         this.Mobile = '9665818833';
         this.Mobile1 = '9665818834';
