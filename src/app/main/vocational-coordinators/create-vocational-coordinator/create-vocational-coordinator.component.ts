@@ -55,10 +55,15 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
         this.genderList = results[0].Results;
       }
 
-      if (results[1].Success) {
-        this.vcList = results[1].Results;
+      if (results[2].Success) {
+        this.vcList = results[2].Results;
         this.filteredVcItems = this.vcList.slice();
       }
+
+      // if (results[2].Success) {
+      //   this.vcList = results[2].Results;
+      //   this.filteredVcItems = this.vcList.slice();
+      // }
 
 
       // if (results[0].Success) {
@@ -81,11 +86,15 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
             this.vocationalCoordinatorService.getVocationalCoordinatorById(vcId)
               .subscribe((response: any) => {
-                console.log(response);
                 this.vocationalCoordinatorModel = response.Result;
 
-                if (this.PageRights.ActionType == this.Constants.Actions.Edit)
+                if (this.PageRights.ActionType == this.Constants.Actions.Edit){
+                if (results[1].Success) {
+                  this.vcList = results[1].Results;
+                  this.filteredVcItems = this.vcList.slice();
+                }
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.Edit;
+              }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
@@ -161,7 +170,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
       // FirstName: new FormControl({ value: this.vocationalCoordinatorModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       // MiddleName: new FormControl({ value: this.vocationalCoordinatorModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       // LastName: new FormControl({ value: this.vocationalCoordinatorModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // FullName: new FormControl({ value: this.vocationalCoordinatorModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
+      FullName: new FormControl({ value: this.vocationalCoordinatorModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Mobile: new FormControl({ value: this.vocationalCoordinatorModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.vocationalCoordinatorModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       EmailId: new FormControl({ value: this.vocationalCoordinatorModel.EmailId, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.required, Validators.maxLength(50), Validators.pattern(this.Constants.Regex.Email)]),
