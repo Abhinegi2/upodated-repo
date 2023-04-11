@@ -77,8 +77,8 @@ export class VTAcademicClassSectionService {
 
     getVTAcademicClassSection(userModel): Observable<any[]> {
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'CurrentAcademicYear', UserId: userModel.UserTypeId, SelectTitle: 'Academic Year' }, false);
-        let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
-        let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', SelectTitle: 'Section' });
+        let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Classes' });
+        let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Section' });
         let vtRequest = this.http.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: userModel.RoleCode, ParentId: 'Vocational Trainer', SelectTitle: 'Vocational Trainer' }, false);
         let gvtRequest = this.http.GetMasterDataByType({ DataType: 'GenericVocationalTrainers', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Generic Vocational Trainer' }, false);
 

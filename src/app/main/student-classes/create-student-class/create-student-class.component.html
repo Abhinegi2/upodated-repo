@@ -130,7 +130,7 @@
                             <mat-label>Select Job Role</mat-label>
 
                             <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole()">
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
                                 <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
                                     {{ jobRoleItem.Name }}
                                 </mat-option>

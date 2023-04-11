@@ -8,7 +8,7 @@ export class StudentClassModel {
     SchoolId: string;
     SectorId: string;
     JobRoleId: string;
-    // GVTId: string;
+    GVTId: string;
     AcademicYearId: string;
     ClassId: string;
     SectionId: string;
@@ -44,7 +44,7 @@ export class StudentClassModel {
         this.SectorId = studentClassItem.SectorId || '';
         this.JobRoleId = studentClassItem.JobRoleId || '';
 
-        // this.GVTId = studentClassItem.GVTId || '';
+        this.GVTId = studentClassItem.GVTId || '';
 
         this.AcademicYearId = studentClassItem.AcademicYearId || '';
         this.ClassId = studentClassItem.ClassId || '';

@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { GenericVTMappingService } from '../genericvtmapping.service';
 import { GenericVTMappingModel } from '../genericvtmapping.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { VocationalCoordinatorService } from 'app/main/vocational-coordinators/vocational-coordinator.service';
 
 @Component({
   selector: 'genericvtmapping',
@@ -37,6 +38,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     private zone: NgZone,
     private route: ActivatedRoute,
     private genericvtmappingService: GenericVTMappingService,
+    private vocationalCoordinatorService: VocationalCoordinatorService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -75,8 +77,11 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.PageRights.IsReadOnly = true;
                 }
 
-                this.genericvtmappingForm = this.createGenericVTMappingForm();
                 this.onChangeUserType(this.genericvtmappingModel.UserType);
+                this.onChangeUser(this.genericvtmappingModel.UserId);
+
+                this.genericvtmappingForm = this.createGenericVTMappingForm();
+
               });
           }
         }
@@ -89,7 +94,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   onChangeUserType(usertype: any) {
     if (usertype == 'VC') {
 
-      this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', SelectTitle: 'VocationalCoordinator' }).subscribe((response: any) => {
+      this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: this.UserModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }).subscribe((response: any) => {
         this.userFilterList = response.Results;
         this.userList = this.userFilterList.slice();
       });
@@ -100,6 +105,26 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.userFilterList = response.Results;
         this.userList = this.userFilterList.slice();
       });
+    }
+  }
+
+  onChangeUser(accountId) {
+
+    var usertype = this.genericvtmappingForm.get('UserType').value;
+
+    console.log(usertype, accountId);
+
+    if (usertype == 'VC') {
+      this.vocationalCoordinatorService.getVocationalCoordinatorById(accountId).subscribe((response: any) => {
+        var VcModel = response.Result;
+        if (VcModel == null) {
+          var errorMessages = this.getHtmlMessage(["The selected VC details are not present in <b>Vocational Coordinator</b>.<br><br> Please visit the <a href='/vocational-coordinators'><b>Vocational Coordinator</b></a> page and provide required details for the selected VC."]);
+          this.dialogService.openShowDialog(errorMessages);
+          this.genericvtmappingForm.controls['UserId'].setValue(null);
+        }
+      });
+    } else if (usertype == 'VTP') {
+
     }
   }
 
@@ -138,7 +163,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     return this.formBuilder.group({
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
       UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
-      UserId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
+      UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
