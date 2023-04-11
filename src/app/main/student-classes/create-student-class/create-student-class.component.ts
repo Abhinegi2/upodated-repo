@@ -33,6 +33,18 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   genderList: [DropdownModel];
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
+  
+  socialCategoryList: [DropdownModel];
+  // assessmentToBeConductedList: [DropdownModel];
+  // CSWNStatus: [DropdownModel];
+  // Stream: [DropdownModel];
+  // vtpList: DropdownModel[];
+  // vtpId: string;
+  // getGVTId: string;
+
+  // vcList: DropdownModel[];
+  // vcId: string;
+  // vtList: DropdownModel[];
 
   vtId: any;
 
@@ -62,7 +74,8 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe((results) => {
-
+console.log(results);
+console.log(this.studentClassModel);
       if (results[0].Success) {
         this.schoolList = results[0].Results;
         this.filteredSchoolItems = this.schoolList.slice();
@@ -77,6 +90,57 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       if (results[1].Success) {
         this.genderList = results[1].Results;
       }
+
+      if (results[5].Success) {
+        this.socialCategoryList = results[5].Results;
+      }
+
+      // if (results[8].Success) {
+      //   this.assessmentToBeConductedList = results[8].Results;
+      // }
+
+      // if (results[6].Success) {
+      //   this.CSWNStatus = results[6].Results;
+      // }
+
+      // if (results[7].Success) {
+      //   this.Stream = results[7].Results;
+      // }
+
+      // if (this.UserModel.RoleCode == 'VT') {
+      //   if (results[4].Success) {
+      //     this.classList = results[4].Results;
+      //   }
+      // } else {
+      //   if (results[4].Success) {
+      //     this.classList = results[4].Results;
+      //   }
+      // }
+
+      // if (this.UserModel.RoleCode == 'VT') {
+      //   if (results[2].Success) {
+      //     this.academicYearList = results[2].Results;
+      //   }
+      // } else {
+      //   if (results[3].Success) {
+      //     this.academicYearList = results[3].Results;
+      //   }
+      // }
+
+
+
+      // if (results[4].Success) {
+      //   this.vtpList = results[4].Results;
+      // }
+
+      // if (results[5].Success) {
+      //   this.academicYearAllList = results[5].Results;
+      // }
+
+      // let currentYearItem = this.academicYearAllList.find(ay => ay.IsSelected == true)
+      // if (currentYearItem != null) {
+      //   this.currentAcademicYearId = currentYearItem.Id;
+      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -396,7 +460,9 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   //Create studentClass form and returns {FormGroup}
   createStudentClassForm(): FormGroup {
+    console.log(this.studentClassModel);
     return this.formBuilder.group({
+      
       StudentId: new FormControl(this.studentClassModel.StudentId),
       //for PMU(GTVID)
       SchoolId: new FormControl({ value: this.studentClassModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
@@ -412,7 +478,24 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       LastName: new FormControl({ value: this.studentClassModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       FullName: new FormControl({ value: this.studentClassModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Gender: new FormControl({ value: this.studentClassModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+
       Mobile: new FormControl({ value: this.studentClassModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+      AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+      DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+
+      // SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+
+      CSWNStatus:new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+
+      SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
+      WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+    StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+
       DateOfEnrollment: new FormControl({ value: new Date(this.studentClassModel.DateOfEnrollment), disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfDropout: new FormControl({ value: this.getDateValue(this.studentClassModel.DateOfDropout), disabled: this.PageRights.IsReadOnly }),
       DropoutReason: new FormControl({ value: this.studentClassModel.DropoutReason, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(350)]),
@@ -423,6 +506,10 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       VCId: new FormControl({ value: this.studentClassModel.VCId, disabled: this.PageRights.IsReadOnly }),
 
       VTId: new FormControl({ value: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentClassModel.VTId), disabled: this.PageRights.IsReadOnly }),
+      
+      HaveVE: new FormControl({ value: this.studentClassModel.HaveVE, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+      SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+
     });
   }
 }

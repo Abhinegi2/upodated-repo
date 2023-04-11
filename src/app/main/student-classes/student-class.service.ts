@@ -83,6 +83,10 @@ export class StudentClassService {
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         let AcademicYears = this.http.GetMasterDataByType({ DataType: 'AcademicYears', ParentId: userModel.EmailId, SelectTitle: 'Academic Years' });
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
+        let cswnRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CSWNStatus',parentId:'CSWNStatus', SelectTitle: 'CSWNStatus' });
+        let streamRequest = this.http.GetMasterDataByType({ DataType: 'DataValues',parentId:'Stream', SelectTitle: 'Stream' });
+        let assessmentToBeConductedRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AssessmentToBeConducted', SelectTitle: 'Assessment To Be Conducted' });
+        let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
 
         //let jobroleRequest = this.http.GetMasterDataByType({ DataType: 'JobRoles', SelectTitle: 'JobRole' });
         // let schoolsForVTRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsForVT', UserId: userModel.UserTypeId, SelectTitle: 'School' }, false);
@@ -95,7 +99,11 @@ export class StudentClassService {
             genderRequest,
             sectorRequest,
             AcademicYears,
-            classRequest
+            classRequest,
+            socialCategoryRequest,
+            cswnRequest,
+            streamRequest,
+            assessmentToBeConductedRequest
             // sectorRequest,
             // academicYearByGVT,
             // allAcademicYears,

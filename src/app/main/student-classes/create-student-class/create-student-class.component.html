@@ -223,6 +223,16 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
+                        
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>StudentUniqueId</mat-label>
+                            <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" required digitOnly minlength="10"
+                                maxlength="10" placeholder="Ex. 9800098000">
+                            <mat-error *ngIf="studentClassForm.controls.StudentUniqueId.invalid">
+                                {{getErrorMessage(studentClassForm, 'StudentUniqueId')}}
+                            </mat-error>
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Gender</mat-label>
                             <mat-select name="gender" formControlName="Gender" required appearance="outline"
@@ -259,6 +269,104 @@
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-label>Assessment To Be Conducted</mat-label>
+                        <mat-select name="assessmentToBeConducted" formControlName="AssessmentToBeConducted"
+                            required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="studentClassForm.controls.AssessmentToBeConducted.invalid">
+                            {{getErrorMessage(studentClassForm, 'AssessmentToBeConducted')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-label>CSWN Status</mat-label>
+                        <mat-select name="cswnStatus" formControlName="CSWNStatus"
+                            required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                            <mat-option value="Yes">Yes</mat-option>
+                            <mat-option value="No">No</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="studentClassForm.controls.CSWNStatus.invalid">
+                            {{getErrorMessage(studentClassForm, 'CSWNStatus')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-label>Stream</mat-label>
+                        <mat-select name="stream" formControlName="Stream" required appearance="outline"
+                            [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="   Stream.Id" *ngFor="let StreamItem of Stream">
+                                    {{    StreamItem.Name }}
+                                </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="studentClassForm.controls.Stream.invalid">
+                            {{getErrorMessage(studentClassForm, 'Stream')}}
+                        </mat-error>
+                    </mat-form-field> -->
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>WhatappNo</mat-label>
+                        <input matInput name="whatappNo" formControlName="WhatappNo" digitOnly minlength="10"
+                            maxlength="10" placeholder="Ex. 9800098000">
+                        <mat-error *ngIf="studentClassForm.controls.WhatappNo.invalid">
+                            {{getErrorMessage(studentClassForm, 'WhatappNo')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                fxLayoutGap.lt-md="0px">
+                <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                fxFlex.lt-sm="100">
+                <mat-label>Date Of Birth</mat-label>
+                <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
+                    [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                <mat-datepicker #dateOfBirth></mat-datepicker>
+
+                <mat-error *ngIf="studentClassForm.controls.DateOfBirth.invalid">
+                    {{getErrorMessage(studentClassForm, 'DateOfBirth')}}
+                </mat-error>
+            </mat-form-field>
+
+                <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                fxFlex.lt-sm="100">
+                <mat-label>Social Category</mat-label>
+                <mat-select name="socialCategory" formControlName="SocialCategory" required
+                    appearance="outline" [disabled]="PageRights.IsReadOnly">
+                    <mat-option [value]="socialCategoryItem.Id"
+                        *ngFor="let socialCategoryItem of  socialCategoryList">
+                        {{ socialCategoryItem.Name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="studentClassForm.controls.SocialCategory.invalid">
+                    {{getErrorMessage(studentClassForm, 'SocialCategory')}}
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                <mat-label>Stream</mat-label>
+                <mat-select name="stream" formControlName="Stream"
+                    required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                    <mat-option value="Science PCB">Science PCB</mat-option>
+                    <mat-option value="Science PCM">Science PCM</mat-option>
+                    <mat-option value="Science PCMB">Science PCMB</mat-option>
+                    <mat-option value="Arts & Humanities">Arts & Humanities</mat-option>
+                    <mat-option value="Commarce">Commarce</mat-option>
+                    <mat-option value="Others">Others</mat-option>
+                </mat-select>
+                <mat-error *ngIf="studentClassForm.controls.Stream.invalid">
+                    {{getErrorMessage(studentClassForm, 'Stream')}}
+                </mat-error>
+            </mat-form-field>
+
+            </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px"
                         *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
                         <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
@@ -292,8 +400,42 @@
                         </mat-form-field>
                     </div>
 
+
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
+                    fxLayoutGap.lt-md="0px">
+                        <mat-label>Did students have a VE in 9th & 10th?</mat-label>
+                        <mat-radio-group aria-labelledby="HaveVE" name="HaveVE"
+                            formControlName="HaveVE" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
+                            fxFlex.lt-sm="100" fxLayoutGap="30px" class="HaveVE-space"
+                            [disabled]="PageRights.IsReadOnly">
+                            <mat-radio-button value="Yes">Yes</mat-radio-button>
+                            <mat-radio-button value="No">No</mat-radio-button>
+                        </mat-radio-group>
+                        <mat-error *ngIf="studentClassForm.controls.HaveVE.invalid">
+                            {{getErrorMessage(studentClassForm, 'HaveVE')}}
+                        </mat-error>
+
+                        
+                </div>
+                
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                fxLayoutGap.lt-md="0px">
+                <mat-label>Is the student continuing the same trade?</mat-label>
+                <mat-radio-group aria-labelledby="SameTrade" name="SameTrade"
+                    formControlName="SameTrade" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
+                    fxFlex.lt-sm="100" fxLayoutGap="30px" class="SameTrade-space"
+                    [disabled]="PageRights.IsReadOnly">
+                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                    <mat-radio-button value="No">No</mat-radio-button>
+                </mat-radio-group>
+                <mat-error *ngIf="studentClassForm.controls.SameTrade.invalid">
+                    {{getErrorMessage(studentClassForm, 'SameTrade')}}
+                </mat-error>
+                </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">    
+
 
                         <span class="checkbox-space">Is Active?</span>
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
