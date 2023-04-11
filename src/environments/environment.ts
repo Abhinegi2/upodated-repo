@@ -4,13 +4,14 @@ export const environment = {
     demo: false,
     lahi: false,
     gj: false,
-    mh: true,
+    mh: false,
+    dl: true,
     jh: false,
     od: false,
     production: false,
-    target: "mh",
-    email: "support.mh.lighthouse@lend-a-hand-India.org",
-    version: "2.21.2.07",
+    target: "dl",
+    email: "support.dl.lighthouse@lend-a-hand-India.org",
+    version: "3.0",
     ApiBaseUrl: "http://localhost:5013/LighthouseServices/"
     //ApiBaseUrl: "https://maharashtra.lighthouse.net.in/LighthouseServices/"
     // ApiBaseUrl: "https://stg-dl.lighthouse.net.in/LighthouseServices/"

@@ -42,13 +42,18 @@
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                 </a>
 
-                <button mat-raised-button class="fuse-white filter-button"
+                <!-- <button mat-raised-button class="fuse-white filter-button"
                     (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button> -->
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
+                    replaceUrl="true" class="add-vocational-coordinator-button fuse-white mt-24 mt-md-0">
+                    <span>{{'CREATE NEW VC'}}</span>
                 </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
-                    replaceUrl="false" class="add-vocational-coordinator-button fuse-white mt-24 mt-md-0">
-                    <span>{{'VC.ADD_NEW_VC' | translate}}</span>
+                    replaceUrl="false" class="fuse-white mt-24 mt-md-0">
+                    <span>{{'ADD VC DETAILS'}}</span>
                 </button>
 
                 <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">

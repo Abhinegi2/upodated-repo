@@ -50,13 +50,13 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
   ngOnInit(): void {
 
     this.vocationalCoordinatorService.getDropdownforVocationalCoordinators(this.UserModel).subscribe((results: any) => {
-
+      console.log(results);
       if (results[0].Success) {
         this.genderList = results[0].Results;
       }
 
       if (results[2].Success) {
-        this.vcList = results[2].Results;
+        this.vcList = results[1].Results;
         this.filteredVcItems = this.vcList.slice();
       }
 
@@ -88,13 +88,13 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
               .subscribe((response: any) => {
                 this.vocationalCoordinatorModel = response.Result;
 
-                if (this.PageRights.ActionType == this.Constants.Actions.Edit){
-                if (results[1].Success) {
-                  this.vcList = results[1].Results;
-                  this.filteredVcItems = this.vcList.slice();
-                }
+                if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
+                  if (results[2].Success) {
+                    this.vcList = results[2].Results;
+                    this.filteredVcItems = this.vcList.slice();
+                  }
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.Edit;
-              }
+                }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;

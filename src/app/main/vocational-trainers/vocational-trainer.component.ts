@@ -123,9 +123,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.IsLoading = true;
 
     let vtParams: any = {
-      AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
-      VTPId: this.vtFilterForm.controls["VTPId"].value,
-      VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
+      UserTypeId: this.UserModel.UserTypeId,
+      // AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
+      // VTPId: this.vtFilterForm.controls["VTPId"].value,
+      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
       Status: this.vtFilterForm.controls["Status"].value,
       Name: this.vtSearchForm.controls["SearchText"].value,
@@ -134,9 +135,9 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
       PageSize: this.SearchBy.PageSize
     };
 
-    if (this.UserModel.RoleCode == "HM") {
-      vtParams.HMId = this.UserModel.UserTypeId;
-    }
+    // if (this.UserModel.RoleCode == "HM") {
+    //   vtParams.HMId = this.UserModel.UserTypeId;
+    // }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
       this.displayedColumns = [

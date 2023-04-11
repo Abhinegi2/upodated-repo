@@ -257,10 +257,21 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
+
+      var schoolId = this.studentClassForm.get('SchoolId').value;
+      var sectorId = this.studentClassForm.get('SectorId').value;
+      var jobRoleId = this.studentClassForm.get('JobRoleId').value;
+    }
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      schoolId = this.studentClassModel.SchoolId;
+      sectorId = this.studentClassModel.SectorId;
+      jobRoleId = this.studentClassModel.JobRoleId;
+      academicYearId = this.studentClassModel.AcademicYearId;
     }
 
     let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
           // this.studentClassForm.controls['ClassId'].enable();
