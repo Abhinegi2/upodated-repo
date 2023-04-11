@@ -257,12 +257,103 @@
                     </mat-cell>
                 </ng-container>
 
+                    <!-- StudentUniqueId Column -->
+                    <ng-container matColumnDef="StudentUniqueId">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>StudentUniqueId
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.StudentUniqueId}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                      <!-- WhatappNo Column -->
+                      <ng-container matColumnDef="WhatappNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>What'sAppNo
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.WhatappNo}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                      <!-- HaveVE Column -->
+                <ng-container matColumnDef="HaveVE">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Did students have a VE in 9th & 10th?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.HaveVE}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                
+                      <!-- CSWNStatus Column -->
+                      <ng-container matColumnDef="CSWNStatus">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CSWNStatus
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.CSWNStatus}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- JobRoleName Column -->
+                    <ng-container matColumnDef="JobRoleName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRoleName
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.JobRoleName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- AssessmentToBeConducted Column -->
+                    <ng-container matColumnDef="AssessmentToBeConducted">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>AssessmentToBeConducted
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.AssessmentToBeConducted}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- DateOfBirth Column -->
+                     <ng-container matColumnDef="DateOfBirth">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.DateOfBirth | date: "dd/MM/yyyy"}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                   <!-- SameTrade Column -->
+                   <ng-container matColumnDef="SameTrade">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is the student continuing the same trade?
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SameTrade}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                   <!-- SocialCategory Column -->
+                   <ng-container matColumnDef="SocialCategory">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.SocialCategory}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- Gender Column -->
                 <ng-container matColumnDef="Gender">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Gender
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{studentClass.Gender}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Stream Column -->
+                <ng-container matColumnDef="Stream">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Stream
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.Stream}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -275,14 +366,7 @@
                     </mat-cell>
                 </ng-container>
 
-                  <!-- JobRoleName Column -->
-                  <ng-container matColumnDef="JobRoleName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRole
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{studentClass.JobRoleName}}</p>
-                    </mat-cell>
-                </ng-container>
+               
 
                 <!-- DateOfEnrollment Column -->
                 <ng-container matColumnDef="DateOfEnrollment">
