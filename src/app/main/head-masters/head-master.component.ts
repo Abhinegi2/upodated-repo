@@ -128,6 +128,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.IsLoading = true;
 
     let hmParams = {
+      UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
       VTPId: this.hmFilterForm.controls["VTPId"].value,
       VCId: this.hmFilterForm.controls["VCId"].value,
@@ -294,6 +295,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.IsLoading = true;
 
     let hmParams = {
+      UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
       VTPId: this.hmFilterForm.controls["VTPId"].value,
       VCId: this.hmFilterForm.controls["VCId"].value,
