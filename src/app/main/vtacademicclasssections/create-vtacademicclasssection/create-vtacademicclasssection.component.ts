@@ -54,7 +54,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   ngOnInit(): void {
 
     this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
-
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
       }

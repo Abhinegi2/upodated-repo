@@ -73,4 +73,5 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
         }
       });
   }
+
 }

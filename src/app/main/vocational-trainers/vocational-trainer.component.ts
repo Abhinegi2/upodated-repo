@@ -158,6 +158,8 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         'DistrictName',
         'DateOfJoining',
         'DateOfResignation',
+        'CreatedBy',
+        'UpdatedBy',
         // 'NatureOfAppointment',
         // 'IsResigned',
         'IsActive',
