@@ -29,6 +29,7 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
 
   ngOnInit(): void {
     this.schoolsectorjobService.GetAllByCriteria(this.SearchBy).subscribe(response => {
+      console.log(this.UserModel);
       this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName', 'DateOfAllocation', 'DateOfRemoval', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
@@ -73,4 +74,8 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
         }
       });
   }
+
+  //  isUserEditable(roleCode){
+  //   return roleCode === 'PMU';
+  // }
 }

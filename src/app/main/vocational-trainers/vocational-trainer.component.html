@@ -298,6 +298,24 @@
                     </mat-cell>
                 </ng-container>
 
+                    <!-- CreatedBy Column -->
+                    <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- UpdatedBy Column -->
+                <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                   <!-- DateOfResignation Column -->
                   <ng-container matColumnDef="DateOfResignation">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>

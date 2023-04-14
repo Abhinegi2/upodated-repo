@@ -257,6 +257,24 @@
                     </mat-cell>
                 </ng-container>
 
+                    <!-- CreatedBy Column -->
+                    <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- UpdatedBy Column -->
+                <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                     <!-- StudentUniqueId Column -->
                     <ng-container matColumnDef="StudentUniqueId">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>StudentUniqueId
