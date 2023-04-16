@@ -70,8 +70,8 @@
                             <mat-label>Select User</mat-label>
 
                             <mat-select formControlName="UserId" appearance="outline"
-                              [disabled]="PageRights.IsReadOnly" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="userList"
+                              [disabled]="PageRights.IsReadOnly" #SelectUser (selectionChange)="onChangeUser($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectUser.focused" [array]="userList"
                                     (filteredReturn)="userList = $event" [displayMember]="'Name'" >
                                 </mat-select-filter>
                                 <mat-option [value]="userItem.Id" *ngFor="let userItem of userList">

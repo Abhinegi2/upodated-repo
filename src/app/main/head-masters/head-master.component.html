@@ -225,6 +225,35 @@
                     </mat-cell>
                 </ng-container>
 
+                    <!-- DateOfJoining Column -->
+                    <ng-container matColumnDef="DateOfJoining">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfJoining
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{headMaster.DateOfJoining  | date: Constants.ShortDateFormat}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- CreatedBy Column -->
+                     <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let headMaster">
+                            <p class="text-truncate">{{headMaster.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- UpdatedBy Column -->
+                    <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster">
+                        <p class="text-truncate">{{headMaster.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+                    
+
+
                 <!-- IsResigned Column -->
                 <!-- <ng-container matColumnDef="IsResigned">
                     <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?

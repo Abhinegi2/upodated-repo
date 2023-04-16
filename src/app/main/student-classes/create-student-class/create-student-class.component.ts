@@ -12,6 +12,7 @@ import { StudentClassModel } from '../student-class.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { StringNullableChain } from 'lodash';
 import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
+import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
 
 @Component({
   selector: 'student-class',
@@ -25,16 +26,18 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   studentClassModel: StudentClassModel;
   currentAcademicYearId: string;
 
-  // academicYearAllList: [DropdownModel];
   academicYearList: [DropdownModel];
-  // vtAcademicYearList: [DropdownModel];
 
   classList: [DropdownModel];
   sectionList: [DropdownModel];
   genderList: [DropdownModel];
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
-
+  
+  socialCategoryList: [DropdownModel];
+  // assessmentToBeConductedList: [DropdownModel];
+  // CSWNStatus: [DropdownModel];
+  // Stream: [DropdownModel];
   // vtpList: DropdownModel[];
   // vtpId: string;
   // getGVTId: string;
@@ -42,6 +45,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   // vcList: DropdownModel[];
   // vcId: string;
   // vtList: DropdownModel[];
+
   vtId: any;
 
   schoolList: DropdownModel[];
@@ -58,6 +62,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     private zone: NgZone,
     private route: ActivatedRoute,
     private studentClassService: StudentClassService,
+    private schoolsectorjobService: SchoolSectorJobService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -69,7 +74,8 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe((results) => {
-
+console.log(results);
+console.log(this.studentClassModel);
       if (results[0].Success) {
         this.schoolList = results[0].Results;
         this.filteredSchoolItems = this.schoolList.slice();
@@ -81,11 +87,25 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         }
       }
 
-      console.log(this.UserModel);
-
       if (results[1].Success) {
         this.genderList = results[1].Results;
       }
+
+      if (results[5].Success) {
+        this.socialCategoryList = results[5].Results;
+      }
+
+      // if (results[8].Success) {
+      //   this.assessmentToBeConductedList = results[8].Results;
+      // }
+
+      // if (results[6].Success) {
+      //   this.CSWNStatus = results[6].Results;
+      // }
+
+      // if (results[7].Success) {
+      //   this.Stream = results[7].Results;
+      // }
 
       // if (this.UserModel.RoleCode == 'VT') {
       //   if (results[4].Success) {
@@ -128,22 +148,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.studentClassModel = new StudentClassModel();
-
-            // if (this.UserModel.RoleCode == 'VC') {
-            //   this.commonService.getVocationalTrainingProvidersByUserId(this.UserModel).then(vtpResp => {
-            //     this.studentClassModel.VTPId = vtpResp[0].Id;
-
-            //     this.onChangeVTP(this.studentClassModel.VTPId).then(vcResp => {
-            //       this.studentClassModel.VCId = this.UserModel.UserTypeId;
-            //       this.studentClassForm = this.createStudentClassForm();
-
-            //       // this.onChangeVC(this.studentClassModel.VCId);
-            //     });
-            //   });
-            // } else if (this.UserModel.RoleCode == 'VT') {
-            //   this.vtId = this.UserModel.UserTypeId;
-            // }
-
           } else {
             var studentId: string = params.get('studentId')
 
@@ -151,20 +155,19 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
               this.studentClassModel = response.Result;
 
-              if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
+              if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.studentClassModel.RequestType = this.Constants.PageType.Edit;
                 this.setDropoutReasonValidators();
+                this.setSectorJobRole(this.studentClassModel.GVTId);
               }
               else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.studentClassModel.RequestType = this.Constants.PageType.View;
                 this.PageRights.IsReadOnly = true;
               }
 
-              // this.vtId = this.studentClassModel.VTId;
-              // this.onChangeVTP(this.studentClassModel.VTPId).then(vtpResp => {
               this.onChangeSchool(this.studentClassModel.SchoolId).then(sResp => {
                 this.onChangeSector(this.studentClassModel.SectorId).then(vvResp => {
-                  this.onChangeJobRole().then(vvResp => {
+                  this.onChangeJobRole(this.studentClassModel.JobRoleId).then(vvResp => {
                     this.onChangeAcademicYear(this.studentClassModel.AcademicYearId).then(vResp => {
                       this.onChangeClass(this.studentClassModel.ClassId).then(cResp => {
                         this.studentClassForm = this.createStudentClassForm();
@@ -173,7 +176,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
                   });
                 });
               });
-              // });
             });
           }
         }
@@ -181,9 +183,26 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     });
   }
 
-  // onChangeVTByClass(Vtid) {
-  //   this.vtId = Vtid;
-  // }
+  setEditInputValidation() {
+    this.studentClassForm.controls['SchoolId'].disable();
+    this.studentClassForm.controls['SectorId'].disable();
+    this.studentClassForm.controls['JobRoleId'].disable();
+    this.studentClassForm.controls['AcademicYearId'].disable();
+    this.studentClassForm.controls['ClassId'].disable();
+    this.studentClassForm.controls['SectionId'].disable();
+  }
+
+  setSectorJobRole(schoolsectorjobId) {
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      this.schoolsectorjobService.getSchoolSectorJobById(schoolsectorjobId)
+        .subscribe((response: any) => {
+          var schoolsectorjobModel = response.Result;
+          this.studentClassModel.SchoolId = schoolsectorjobModel.SchoolId;
+          this.studentClassModel.SectorId = schoolsectorjobModel.SectorId;
+          this.studentClassModel.JobRoleId = schoolsectorjobModel.JobRoleId;
+        });
+    }
+  }
 
   onChangeSchool(schoolId): Promise<any> {
     this.studentClassForm.controls['SectorId'].setValue(null);
@@ -192,14 +211,12 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['ClassId'].setValue(null);
     this.studentClassForm.controls['SectionId'].setValue(null);
 
-
-
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors' }).subscribe((response) => {
         if (response.Success) {
           this.sectorList = response.Results;
-          this.studentClassForm.controls['SectorId'].enable();
+          // this.studentClassForm.controls['SectorId'].enable();
 
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School is not mapped with any <b>Sector</b> and <b>JobRole</b>.<br><br> Please visit the <a href='/schoolsectorjobs'><b>School Sector JobRole</b></a> page and assign a Sector & Jobrole to the required School."]);
@@ -209,17 +226,12 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['SectorId'].setValue(this.sectorList[1].Id);
             this.studentClassForm.controls['SectorId'].disable();
-
             this.onChangeSector(this.sectorList[1].Id);
+
           }
         }
         resolve(true);
       });
-
-      // let vtRequest = null;
-      // if (this.UserModel.RoleCode == 'HM') {
-      //   vtRequest = this.commonService.GetVTBySchoolIdHMId(this.currentAcademicYearId, this.UserModel.UserTypeId, this.vcId, schoolId);
-      // }
 
     });
     return promise;
@@ -227,25 +239,32 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   onChangeSector(sectorId): Promise<any> {
 
-    this.studentClassForm.controls['JobRoleId'].setValue(null);
-    this.studentClassForm.controls['AcademicYearId'].setValue(null);
-    this.studentClassForm.controls['ClassId'].setValue(null);
-    this.studentClassForm.controls['SectionId'].setValue(null);
+    if (this.PageRights.ActionType == this.Constants.Actions.New) {
+      this.studentClassForm.controls['JobRoleId'].setValue(null);
+      this.studentClassForm.controls['AcademicYearId'].setValue(null);
+      this.studentClassForm.controls['ClassId'].setValue(null);
+      this.studentClassForm.controls['SectionId'].setValue(null);
 
-    var SchoolInput = this.studentClassForm.get('SchoolId').value;
+      schoolId = this.studentClassForm.get('SchoolId').value;
+    }
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      var schoolId = this.studentClassModel.SchoolId;
+      sectorId = this.studentClassModel.SectorId;
+    }
 
     return new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'JobRolesBySSJ', DataTypeID1: SchoolInput, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role" }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'JobRolesBySSJ', DataTypeID1: schoolId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role" }).subscribe((response) => {
 
         if (response.Success) {
           this.jobRoleList = response.Results;
-          this.studentClassForm.controls['JobRoleId'].enable();
+          console.log(this.jobRoleList);
+          // this.studentClassForm.controls['JobRoleId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['JobRoleId'].setValue(this.jobRoleList[1].Id);
             this.studentClassForm.controls['JobRoleId'].disable();
-
-            this.onChangeJobRole();
+            this.onChangeJobRole(this.jobRoleList[1].Id);
           }
         }
 
@@ -255,37 +274,41 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   }
 
 
-  onChangeJobRole(): Promise<any> {
-    this.studentClassForm.controls['AcademicYearId'].setValue(null);
-    this.studentClassForm.controls['ClassId'].setValue(null);
-    this.studentClassForm.controls['SectionId'].setValue(null);
+  onChangeJobRole(jobRoleId): Promise<any> {
 
-    var SchoolInput = this.studentClassForm.get('SchoolId').value;
-    var SectorInput = this.studentClassForm.get('SectorId').value;
-    var JobRoleInput = this.studentClassForm.get('JobRoleId').value;
+    if (this.PageRights.ActionType == this.Constants.Actions.New) {
+      this.studentClassForm.controls['AcademicYearId'].setValue(null);
+      this.studentClassForm.controls['ClassId'].setValue(null);
+      this.studentClassForm.controls['SectionId'].setValue(null);
+
+      var schoolId = this.studentClassForm.get('SchoolId').value;
+      var sectorId = this.studentClassForm.get('SectorId').value;
+    }
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      schoolId = this.studentClassModel.SchoolId;
+      sectorId = this.studentClassModel.SectorId;
+      jobRoleId = this.studentClassModel.JobRoleId;
+    }
 
     return new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'YearsBySSJ', DataTypeID1: SchoolInput, DataTypeID2: SectorInput, DataTypeID3: JobRoleInput, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years" }).subscribe((response) => {
-        if (response.Success) {
+      this.commonService.GetMasterDataByType({ DataType: 'YearsBySSJ', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years" }).subscribe((response) => {
 
+        if (response.Success) {
           this.academicYearList = response.Results;
-          this.studentClassForm.controls['AcademicYearId'].enable();
+          // this.studentClassForm.controls['AcademicYearId'].enable();
 
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School Sector JobRole is not mapped with any <b>Academic Class Section</b>.<br><br> Please visit the <a href='/vtacademicclasssections'><b>VT Academic Class Sections</b></a> page."]);
             this.dialogService.openShowDialog(errorMessages);
             this.studentClassForm.controls['JobRoleId'].setValue(null);
-
           }
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-
             this.studentClassForm.controls['AcademicYearId'].setValue(response.Results[1].Id);
             this.studentClassForm.controls['AcademicYearId'].disable();
-
             this.onChangeAcademicYear(response.Results[1].Id);
           }
-
         }
         resolve(true);
       });
@@ -295,20 +318,31 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   }
 
   onChangeAcademicYear(academicYearId): Promise<any> {
-    this.studentClassForm.controls['ClassId'].setValue(null);
-    this.studentClassForm.controls['SectionId'].setValue(null);
+    if (this.PageRights.ActionType == this.Constants.Actions.New) {
+      this.studentClassForm.controls['ClassId'].setValue(null);
+      this.studentClassForm.controls['SectionId'].setValue(null);
+
+      var schoolId = this.studentClassForm.get('SchoolId').value;
+      var sectorId = this.studentClassForm.get('SectorId').value;
+      var jobRoleId = this.studentClassForm.get('JobRoleId').value;
+    }
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      schoolId = this.studentClassModel.SchoolId;
+      sectorId = this.studentClassModel.SectorId;
+      jobRoleId = this.studentClassModel.JobRoleId;
+      academicYearId = this.studentClassModel.AcademicYearId;
+    }
 
     let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
-          this.studentClassForm.controls['ClassId'].enable();
+          // this.studentClassForm.controls['ClassId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-
             this.studentClassForm.controls['ClassId'].setValue(response.Results[1].Id);
             this.studentClassForm.controls['ClassId'].disable();
-
             this.onChangeClass(response.Results[1].Id);
           }
         }
@@ -322,20 +356,30 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   onChangeClass(classId): Promise<any> {
 
-    var SchoolInput = this.studentClassForm.get('SchoolId').value;
-    var SectorInput = this.studentClassForm.get('SectorId').value;
-    var JobRoleInput = this.studentClassForm.get('JobRoleId').value;
-    var AcademicYearInput = this.studentClassForm.get('AcademicYearId').value;
+    if (this.PageRights.ActionType == this.Constants.Actions.New) {
 
-    this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['SectionId'].setValue(null);
+
+      var schoolId = this.studentClassForm.get('SchoolId').value;
+      var sectorId = this.studentClassForm.get('SectorId').value;
+      var jobRoleId = this.studentClassForm.get('JobRoleId').value;
+      var academicYearId = this.studentClassForm.get('AcademicYearId').value;
+    }
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      schoolId = this.studentClassModel.SchoolId;
+      sectorId = this.studentClassModel.SectorId;
+      jobRoleId = this.studentClassModel.JobRoleId;
+      academicYearId = this.studentClassModel.AcademicYearId;
+    }
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
 
-      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: SchoolInput, DataTypeID2: SectorInput, DataTypeID3: JobRoleInput, DataTypeID4: AcademicYearInput, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, DataTypeID4: academicYearId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-          this.studentClassForm.controls['SectionId'].enable();
+          // this.studentClassForm.controls['SectionId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['SectionId'].setValue(response.Results[1].Id);
@@ -345,62 +389,14 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         resolve(true);
       });
     });
+
+    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
+      this.studentClassForm.controls['SectionId'].disable();
+      this.setEditInputValidation();
+    }
     return promise;
+
   }
-
-
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     let vcRequest = null;
-  //     if (this.UserModel.RoleCode == 'HM') {
-  //       vcRequest = this.commonService.GetVCByHMId(this.currentAcademicYearId, this.UserModel.UserTypeId, vtpId);
-  //     }
-  //     else {
-  //       vcRequest = this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }, false);
-  //     }
-
-  //     vcRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vtList = [];
-  //         this.vcList = [];
-  //         this.filteredSchoolItems = [];
-
-  //         this.vcList = response.Results;
-  //       }
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVC(vcId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     let schoolRequest = null;
-  //     if (this.UserModel.RoleCode == 'HM') {
-  //       schoolRequest = this.commonService.GetSchoolByHMId(this.currentAcademicYearId, this.UserModel.UserTypeId, vcId);
-  //     }
-  //     else {
-  //       schoolRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVC', ParentId: vcId, SelectTitle: 'School' }, false);
-  //     }
-
-  //     schoolRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vcId = vcId;
-  //         this.schoolList = response.Results;
-  //         this.filteredSchoolItems = this.schoolList.slice();
-  //         this.IsLoading = false;
-  //       }
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
 
   saveOrUpdateStudentClassDetails() {
     if (!this.studentClassForm.valid) {
@@ -475,7 +471,9 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   //Create studentClass form and returns {FormGroup}
   createStudentClassForm(): FormGroup {
+    console.log(this.studentClassModel);
     return this.formBuilder.group({
+      
       StudentId: new FormControl(this.studentClassModel.StudentId),
       //for PMU(GTVID)
       SchoolId: new FormControl({ value: this.studentClassModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
@@ -491,7 +489,24 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       LastName: new FormControl({ value: this.studentClassModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       FullName: new FormControl({ value: this.studentClassModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Gender: new FormControl({ value: this.studentClassModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+
       Mobile: new FormControl({ value: this.studentClassModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+      AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+      DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+
+      // SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+
+      CSWNStatus:new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+
+      SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
+      WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+    StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+
+
       DateOfEnrollment: new FormControl({ value: new Date(this.studentClassModel.DateOfEnrollment), disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfDropout: new FormControl({ value: this.getDateValue(this.studentClassModel.DateOfDropout), disabled: this.PageRights.IsReadOnly }),
       DropoutReason: new FormControl({ value: this.studentClassModel.DropoutReason, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(350)]),
@@ -502,6 +517,10 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       VCId: new FormControl({ value: this.studentClassModel.VCId, disabled: this.PageRights.IsReadOnly }),
 
       VTId: new FormControl({ value: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentClassModel.VTId), disabled: this.PageRights.IsReadOnly }),
+      
+      HaveVE: new FormControl({ value: this.studentClassModel.HaveVE, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+      SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+
     });
   }
 }

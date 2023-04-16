@@ -105,7 +105,7 @@ export class CreateDivisionComponent extends BaseComponent<DivisionModel> implem
   createDivisionForm(): FormGroup {
     return this.formBuilder.group({
       DivisionId: new FormControl(this.divisionModel.DivisionId),
-      StateCode: new FormControl({ value: this.UserModel.DefaultStateId}),
+      StateCode: new FormControl({ value: this.UserModel.DefaultStateId='DL', disabled: (this.UserModel.DefaultStateId ='DL') }),
       DivisionName: new FormControl({ value: this.divisionModel.DivisionName, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Description: new FormControl({ value: this.divisionModel.Description, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.divisionModel.IsActive, disabled: this.PageRights.IsReadOnly }),

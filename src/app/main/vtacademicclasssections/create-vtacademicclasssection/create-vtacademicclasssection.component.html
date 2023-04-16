@@ -132,9 +132,9 @@
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Select Vocational Trainer</mat-label>
 
-                            <mat-select formControlName="VTId" required appearance="outline"
+                            <mat-select formControlName="VTId" appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt (selectionChange)="onChangeVT($event.value)">
 
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">

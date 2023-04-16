@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { VTAcademicClassSectionService } from '../vtacademicclasssection.service';
 import { VTAcademicClassSectionModel } from '../vtacademicclasssection.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { VocationalTrainerService } from 'app/main/vocational-trainers/vocational-trainer.service';
 
 
 
@@ -41,6 +42,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     private zone: NgZone,
     private route: ActivatedRoute,
     private vtacademicclasssectionService: VTAcademicClassSectionService,
+    private vocationalTrainerService: VocationalTrainerService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -52,7 +54,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   ngOnInit(): void {
 
     this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
-
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
       }
@@ -96,6 +97,8 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                   this.PageRights.IsReadOnly = true;
                 }
 
+                this.onChangeVT(this.vtacademicclasssectionModel.VTId);
+
                 this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
               });
           }
@@ -104,6 +107,18 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     });
 
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
+  }
+
+
+  onChangeVT(accountId) {
+    this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
+      var VtModel = response.Result;
+      if (VtModel == null) {
+        var errorMessages = this.getHtmlMessage(["The selected VT details are not present in <b>Vocational Trainner</b>.<br><br> Please visit the <a href='/vocational-trainers'><b>Vocational Trainer</b></a> page and provide required details for the selected VT."]);
+        this.dialogService.openShowDialog(errorMessages);
+        this.vtacademicclasssectionForm.controls['VTId'].setValue(null);
+      }
+    });
   }
 
   saveOrUpdateVTAcademicClassSectionDetails() {

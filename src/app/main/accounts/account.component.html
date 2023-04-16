@@ -109,17 +109,25 @@
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let account">
+
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/users', 'view', account.AccountId]" skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit && 'Roles : VC, VT, HM'.indexOf(account.RoleCode) == -1" mat-icon-button
+
+                        <button *ngIf="PageRights.IsEdit && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button
                         [routerLink]="['/users', 'edit', account.AccountId]" skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">edit</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsDelete && 'Roles : VC, VT, HM'.indexOf(account.RoleCode) == -1" mat-icon-button (click)="onDeleteAccount(account.AccountId)">
+
+                        <button *ngIf="PageRights.IsDelete && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button (click)="onDeleteAccount(account.AccountId)">
                             <mat-icon color="warn">delete_outline</mat-icon>
                         </button>
+
+                        <!-- <button *ngIf="account.AccountType=='Vocational Trainer'" mat-raised-button [routerLink]="['/vocational-trainers', 'edit', account.AccountId]" 
+                        skipLocationChange="true" replaceUrl="false" class="add-vocational-trainer-button fuse-white mt-24 mt-md-0">
+                            <span>{{'Add VT Details'}}</span>
+                        </button> -->
                     </mat-cell>
                 </ng-container>
 

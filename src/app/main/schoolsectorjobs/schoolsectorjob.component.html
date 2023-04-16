@@ -38,7 +38,7 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
-                <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
                     class="add-schoolsectorjob-button fuse-white mt-24 mt-md-0">
                     <span>ADD</span>
                 </button>
@@ -60,7 +60,7 @@
 
                 <!-- SchoolName Column -->
                 <ng-container matColumnDef="SchoolName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School Name</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>School</mat-header-cell>
                     <mat-cell *matCellDef="let schoolsectorjob">
                         <p class="text-truncate">{{schoolsectorjob.SchoolName}}</p>
                     </mat-cell>
@@ -122,7 +122,8 @@
                             replaceUrl="false">
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                        <button *ngIf="PageRights.IsEdit"
+                        mat-icon-button
                             [routerLink]="['/schoolsectorjobs', 'edit', schoolsectorjob.SchoolSectorJobId]" skipLocationChange="true"
                             replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>

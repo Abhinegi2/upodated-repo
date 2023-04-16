@@ -42,13 +42,18 @@
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                 </a>
 
-                <button mat-raised-button class="fuse-white filter-button"
+                <!-- <button mat-raised-button class="fuse-white filter-button"
                     (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button> -->
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
+                    replaceUrl="true" class="add-vocational-coordinator-button fuse-white mt-24 mt-md-0">
+                    <span>{{'CREATE NEW VC'}}</span>
                 </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
-                    replaceUrl="false" class="add-vocational-coordinator-button fuse-white mt-24 mt-md-0">
-                    <span>{{'VC.ADD_NEW_VC' | translate}}</span>
+                    replaceUrl="false" class="fuse-white mt-24 mt-md-0">
+                    <span>{{'ADD VC DETAILS'}}</span>
                 </button>
 
                 <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
@@ -183,7 +188,7 @@
 
                   <!-- StateName Column -->
                 <ng-container matColumnDef="StateName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>StateName</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>State</mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator">
                         <p class="text-truncate">{{vocationalCoordinator.StateName}}</p>
                     </mat-cell>
@@ -191,7 +196,7 @@
 
                   <!-- DivisionName Column -->
                   <ng-container matColumnDef="DivisionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>DivisionName</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Division</mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator">
                         <p class="text-truncate">{{vocationalCoordinator.DivisionName}}</p>
                     </mat-cell>
@@ -199,21 +204,39 @@
 
                   <!-- DistrictName Column -->
                   <ng-container matColumnDef="DistrictName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>DistrictName</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>District</mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator">
                         <p class="text-truncate">{{vocationalCoordinator.DistrictName}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- DateOfJoining Column -->
-                <!-- <ng-container matColumnDef="DateOfJoining">
+                <ng-container matColumnDef="DateOfJoining">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Joining
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalCoordinator.DateOfJoining | date: Constants.ShortDateFormat
                             }}</p>
                     </mat-cell>
-                </ng-container> -->
+                </ng-container>
+
+                     <!-- CreatedBy Column -->
+                     <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalCoordinator">
+                            <p class="text-truncate">{{vocationalCoordinator.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- UpdatedBy Column -->
+                <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalCoordinator">
+                        <p class="text-truncate">{{vocationalCoordinator.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
 
                 <!-- IsResigned Column -->
                 <ng-container matColumnDef="IsResigned">
@@ -221,6 +244,14 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalCoordinator" class="text-center">
                         <span>{{ (vocationalCoordinator.IsResigned ? 'Yes' : 'No') }}</span>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DateOfResignation Column -->
+                  <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalCoordinator">
+                        <p class="text-truncate">{{vocationalCoordinator.DateOfResignation | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
 

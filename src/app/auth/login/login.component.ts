@@ -234,9 +234,15 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
               let passwordExpiredOn = new Date(logResp.Result.PasswordExpiredOn);
               let currentDate = new Date();
 
+              var dpasswordExpiredOn = true;
+
               if (passwordExpiredOn < currentDate) {
                 this.router.navigateByUrl(RouteConstants.Account.ResetPassword);
               }
+              // if (dpasswordExpiredOn = true) {
+              //   this.router.navigateByUrl(RouteConstants.Account.ResetPassword);
+              // }
+
               else {
                 // login successful so redirect to return url
                 this.router.navigateByUrl(currentUser.LandingPageUrl);

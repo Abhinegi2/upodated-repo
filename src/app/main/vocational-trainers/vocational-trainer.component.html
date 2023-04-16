@@ -42,13 +42,18 @@
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                 </a>
 
-                <button mat-raised-button class="fuse-white filter-button"
-                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                <!-- <button mat-raised-button class="fuse-white filter-button"
+                    (click)="IsShowFilter=!IsShowFilter"><span>Filters</span>
+                </button> -->
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
+                    replaceUrl="true" class="use-white mt-24 mt-md-0">
+                    <span>{{'CREATE NEW VT'}}</span>
                 </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
                     replaceUrl="false" class="add-vocational-trainer-button fuse-white mt-24 mt-md-0">
-                    <span>{{'VT.ADD_NEW_VT' | translate}}</span>
+                    <span>{{'ADD VT DETAILS'}}</span>
                 </button>
 
                 <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
@@ -208,7 +213,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth}}</p>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth  | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -250,7 +255,7 @@
 
                   <!-- StateName Column -->
                   <ng-container matColumnDef="StateName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>StateName
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>State
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalTrainer.StateName}}</p>
@@ -259,7 +264,7 @@
 
                   <!-- Division Column -->
                   <ng-container matColumnDef="DivisionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DivisionName
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Division
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalTrainer.DivisionName}}</p>
@@ -268,7 +273,7 @@
 
                   <!-- Districts Column -->
                   <ng-container matColumnDef="DistrictName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DistrictName
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalTrainer.DistrictName}}</p>
@@ -281,6 +286,41 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vocationalTrainer.SocialCategory}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DateOfJoining Column -->
+                  <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfJoining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfJoining  | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- CreatedBy Column -->
+                    <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- UpdatedBy Column -->
+                <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DateOfResignation Column -->
+                  <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.DateOfResignation | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -324,9 +364,9 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit"
                             mat-icon-button [routerLink]="['/vocational-trainers', 'edit', vocationalTrainer.VTId]"
-                            skipLocationChange="true" replaceUrl="false">
+                            skipLocationChange="true" replaceUrl="false">   
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
