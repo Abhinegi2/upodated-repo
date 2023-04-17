@@ -17,7 +17,7 @@
                     shopping_basket
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    GENERICVTMAPPINGS
+                    VC/VTP MAPPINGS
                     <a [routerLink]="['./']" skipLocationChange="true" replaceUrl="false"
                         class="refresh-data mt-24 mt-md-0">
                         <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
@@ -31,7 +31,7 @@
                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon>search</mat-icon>
                     <input #filter (keyup)="applySearchFilter($event.target.value)"
-                        placeholder="Search for a genericvtmappings">
+                        placeholder="Search for a VC/VTP Mapping">
                 </div>
             </div>
             <!-- / SEARCH -->
