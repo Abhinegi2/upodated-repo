@@ -29,7 +29,7 @@ export class EmployerComponent extends BaseListComponent<EmployerModel> implemen
 
   ngOnInit(): void {
     this.employerService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['StateName', 'DivisionName', 'DistrictName', 'BlockName', 'BusinessType', 'EmployeeCount', 'Outlets', 'IsActive', 'Actions'];
+      this.displayedColumns = ['StateName', 'DivisionName', 'DistrictName', 'BlockName', 'BusinessType', 'EmployeeCount', 'Outlets', 'CreatedBy', 'UpdatedBy',  'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

@@ -254,14 +254,14 @@
                     
 
 
-                <!-- IsResigned Column -->
-                <!-- <ng-container matColumnDef="IsResigned">
-                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
+                <!-- DateOfResignationFromSchool Column -->
+                <ng-container matColumnDef="DateOfResignationFromSchool">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">DateOfResignation
                     </mat-header-cell>
                     <mat-cell *matCellDef="let headMaster" class="text-center">
-                        <span>{{ (headMaster.IsResigned ? 'Yes' : 'No') }}</span>
+                        <span>{{ (headMaster.DateOfResignationFromSchool) }}</span>
                     </mat-cell>
-                </ng-container> -->
+                </ng-container>
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">
@@ -283,13 +283,13 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR' || UserModel.RoleCode == 'ADM')"
+                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR' || UserModel.RoleCode == 'ADM') && headMaster.IsActive"
                             mat-icon-button [routerLink]="['/head-masters', 'edit', headMaster.HMId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsDelete && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsDelete && headMaster.IsActive && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
                             mat-icon-button color="warn" (click)="onDeleteHeadMaster(headMaster.HMId)">
                             <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>

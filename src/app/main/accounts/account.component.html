@@ -88,6 +88,22 @@
                     </mat-cell>
                 </ng-container>
 
+                        <!-- CreatedBy Column -->
+                        <ng-container matColumnDef="CreatedBy">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy</mat-header-cell>
+                            <mat-cell *matCellDef="let account">
+                                <p class="text-truncate">{{account.CreatedBy}}</p>
+                            </mat-cell>
+                        </ng-container>
+
+                <!-- UpdatedBy Column -->
+                 <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let account">
+                        <p class="text-truncate">{{account.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- IsLocked Column -->
                 <ng-container matColumnDef="IsLocked">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Locked?</mat-header-cell>
@@ -101,8 +117,8 @@
                 <ng-container matColumnDef="IsActive">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?</mat-header-cell>
                     <mat-cell *matCellDef="let account" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="account.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!account.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <mat-icon *ngIf="account.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!account.IsActive" class="data-inactive s-20">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
@@ -112,16 +128,16 @@
 
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/users', 'view', account.AccountId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
 
-                        <button *ngIf="PageRights.IsEdit && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button
+                        <button *ngIf="PageRights.IsEdit && account.IsActive && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button
                         [routerLink]="['/users', 'edit', account.AccountId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
 
-                        <button *ngIf="PageRights.IsDelete && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button (click)="onDeleteAccount(account.AccountId)">
-                            <mat-icon color="warn">delete_outline</mat-icon>
+                        <button *ngIf="PageRights.IsDelete && account.IsActive && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button (click)="onDeleteAccount(account.AccountId)">
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
 
                         <!-- <button *ngIf="account.AccountType=='Vocational Trainer'" mat-raised-button [routerLink]="['/vocational-trainers', 'edit', account.AccountId]" 
