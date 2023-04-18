@@ -29,7 +29,7 @@ export class AccountComponent extends BaseListComponent<AccountModel> implements
 
   ngOnInit(): void {
       this.accountService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['LoginId', 'UserName', 'EmailId', 'Mobile', 'AccountType', 'Actions'];
+      this.displayedColumns = ['LoginId', 'UserName', 'EmailId', 'Mobile', 'AccountType', 'CreatedBy', 'UpdatedBy', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

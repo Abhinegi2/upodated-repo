@@ -29,7 +29,7 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   ngOnInit(): void {
     this.genericvtmappingService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['UserType', 'UserName', 'EmailId', 'GenericVTName', 'DateOfAllocation', 'Actions'];
+      this.displayedColumns = ['UserType', 'UserName', 'EmailId', 'GenericVTName', 'DateOfAllocation',  'CreatedBy', 'UpdatedBy', 'DateOfRemoval','IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

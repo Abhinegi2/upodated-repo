@@ -396,6 +396,16 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- DateOfEnrollment Column -->
+                <ng-container matColumnDef="DateOfDropout">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Dropout
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.DateOfDropout | date: Constants.ShortDateFormat }}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">
                     <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?

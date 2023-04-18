@@ -124,8 +124,24 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IsActive
                     </mat-header-cell>
                     <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="employer.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!employer.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <mat-icon *ngIf="employer.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!employer.IsActive" class="data-inactive s-20">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- CreatedBy Column -->
+                  <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- UpdatedBy Column -->
+                  <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let employer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{employer.UpdatedBy}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -135,16 +151,16 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/employers', 'view', employer.EmployerId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                             [routerLink]="['/employers', 'edit', employer.EmployerId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteEmployer(employer.EmployerId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-20">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

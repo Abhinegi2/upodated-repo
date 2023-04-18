@@ -139,6 +139,24 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- CreatedBy Column -->
+                  <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- UpdatedBy Column -->
+                  <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- DateOfRemoval Column -->
                 <ng-container matColumnDef="DateOfRemoval">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfRemoval
@@ -152,8 +170,8 @@
                 <ng-container matColumnDef="IsActive">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active?</mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="active-icon green s-16">check</mat-icon>
-                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="active-icon red s-16">close</mat-icon>
+                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="data-inactive s-20">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
@@ -163,16 +181,16 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vtacademicclasssections', 'view', vtacademicclasssection.VTAcademicClassSectionId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                        <button *ngIf="PageRights.IsEdit && vtacademicclasssection.IsActive" mat-icon-button
                             [routerLink]="['/vtacademicclasssections', 'edit', vtacademicclasssection.VTAcademicClassSectionId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteVTAcademicClassSection(vtacademicclasssection.VTAcademicClassSectionId)"
-                            *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            *ngIf="PageRights.IsDelete && vtacademicclasssection.IsActive">
+                            <mat-icon class="data-delete s-20">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

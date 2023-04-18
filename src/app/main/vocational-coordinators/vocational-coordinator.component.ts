@@ -140,12 +140,12 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
         'StateName',
         'DivisionName',
         'DistrictName',
-        'DateOfResignation',
         'DateOfJoining',
         'CreatedBy',
         'UpdatedBy',
-        'IsResigned',
+        'DateOfResignation',
         'IsActive',
+       // 'IsResigned',
         'Actions'];
 
       this.tableDataSource.data = response.Results;
