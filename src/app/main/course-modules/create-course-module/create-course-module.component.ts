@@ -115,7 +115,7 @@ export class CreateCourseModuleComponent extends BaseComponent<CourseModuleModel
 
   saveOrUpdateCourseModuleDetails(): void {
     this.setValueFromFormGroup(this.courseModuleForm, this.courseModuleModel);
-    
+
     this.courseModuleModel.Sessions = [];
     this.sessionList.forEach((sessionItem, sIndex) => {
       this.courseModuleModel.Sessions.push({ SessionName: sessionItem.SessionName, DisplayOrder: sIndex + 1 });
@@ -152,7 +152,7 @@ export class CreateCourseModuleComponent extends BaseComponent<CourseModuleModel
       SectorId: new FormControl({ value: this.courseModuleModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.courseModuleModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
       UnitName: new FormControl({ value: this.courseModuleModel.UnitName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(250)]),
-      DisplayOrder: new FormControl({ value: this.courseModuleModel.DisplayOrder, disabled: this.PageRights.IsReadOnly },[Validators.required, Validators.maxLength(2)]),
+      DisplayOrder: new FormControl({ value: this.courseModuleModel.DisplayOrder, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(2)]),
       Sessions: new FormControl({ value: this.courseModuleModel.Sessions, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.courseModuleModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });

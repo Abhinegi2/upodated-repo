@@ -33,7 +33,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   genderList: [DropdownModel];
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
-  
+
   socialCategoryList: [DropdownModel];
   // assessmentToBeConductedList: [DropdownModel];
   // CSWNStatus: [DropdownModel];
@@ -74,8 +74,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe((results) => {
-console.log(results);
-console.log(this.studentClassModel);
+
       if (results[0].Success) {
         this.schoolList = results[0].Results;
         this.filteredSchoolItems = this.schoolList.slice();
@@ -473,7 +472,7 @@ console.log(this.studentClassModel);
   createStudentClassForm(): FormGroup {
     console.log(this.studentClassModel);
     return this.formBuilder.group({
-      
+
       StudentId: new FormControl(this.studentClassModel.StudentId),
       //for PMU(GTVID)
       SchoolId: new FormControl({ value: this.studentClassModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
@@ -499,12 +498,12 @@ console.log(this.studentClassModel);
 
       // SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
 
-      CSWNStatus:new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+      CSWNStatus: new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
 
       SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
 
-    StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
 
 
       DateOfEnrollment: new FormControl({ value: new Date(this.studentClassModel.DateOfEnrollment), disabled: this.PageRights.IsReadOnly }, Validators.required),
@@ -517,7 +516,7 @@ console.log(this.studentClassModel);
       VCId: new FormControl({ value: this.studentClassModel.VCId, disabled: this.PageRights.IsReadOnly }),
 
       VTId: new FormControl({ value: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentClassModel.VTId), disabled: this.PageRights.IsReadOnly }),
-      
+
       HaveVE: new FormControl({ value: this.studentClassModel.HaveVE, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
       SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
 
