@@ -40,7 +40,7 @@
                             <mat-label>Data Type</mat-label>
                             <mat-select name="contentType" formControlName="ContentType" appearance="outline" required
                                 matTooltip="Select Data Type" matTooltipPosition="above">
-                                <mat-option [value]="contentTypeItem" *ngFor="let contentTypeItem of dataTypetList">
+                                <mat-option [value]="contentTypeItem" *ngFor="let contentTypeItem of dataTypetList" >
                                     {{ contentTypeItem.Name }}
                                 </mat-option>
                             </mat-select>

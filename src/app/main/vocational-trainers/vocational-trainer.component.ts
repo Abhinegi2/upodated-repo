@@ -160,9 +160,9 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         'DateOfResignation',
         'CreatedBy',
         'UpdatedBy',
+        'IsActive',
         // 'NatureOfAppointment',
         // 'IsResigned',
-        'IsActive',
         'Actions'];
 
       this.tableDataSource.data = response.Results;

@@ -154,8 +154,9 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         'DateOfJoining',
         'CreatedBy',
         'UpdatedBy',
-        // 'IsResigned',
+        'DateOfResignationFromSchool',
         'IsActive',
+        // 'IsResigned',
         'Actions'];
 
       this.tableDataSource.data = response.Results;
