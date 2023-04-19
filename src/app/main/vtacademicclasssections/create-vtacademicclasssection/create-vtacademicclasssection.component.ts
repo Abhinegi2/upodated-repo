@@ -34,6 +34,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   gvtList: [DropdownModel];
   filteredGVTItems: any;
+  selectedVTId: null;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -109,7 +110,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-
   onChangeVT(accountId) {
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
@@ -118,6 +118,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         this.dialogService.openShowDialog(errorMessages);
         this.vtacademicclasssectionForm.controls['VTId'].setValue(null);
       }
+      this.selectedVTId = accountId;
     });
   }
 

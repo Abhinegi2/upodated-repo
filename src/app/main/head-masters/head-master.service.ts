@@ -78,7 +78,7 @@ export class HeadMasterService {
     }
 
     getDropdownforHeadMaster(userModel: UserModel): Observable<any[]> {
-        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', RoleId: userModel.UserTypeId, SelectTitle: 'School' }, false);
+        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', ParentId: userModel.UserTypeId, RoleId: userModel.RoleCode,  SelectTitle: 'School' }, false);
         let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' }, false);
         let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }, false);
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' }, false);

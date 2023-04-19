@@ -364,13 +364,13 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR') && vocationalTrainer.IsActive"
+                            *ngIf="PageRights.IsEdit && vocationalTrainer.IsActive"
                             mat-icon-button [routerLink]="['/vocational-trainers', 'edit', vocationalTrainer.VTId]"
                             skipLocationChange="true" replaceUrl="false">   
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsDelete && vocationalTrainer.IsActive && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsDelete && vocationalTrainer.IsActive "
                             mat-icon-button color="warn" (click)="onDeleteVocationalTrainer(vocationalTrainer.VTId)">
                             <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
