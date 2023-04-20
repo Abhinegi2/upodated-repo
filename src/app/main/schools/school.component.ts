@@ -135,7 +135,6 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
     };
 
     this.schoolService.GetAllByCriteria(schoolParams).subscribe(response => {
-      console.log(response);
       this.displayedColumns = ['SchoolUniqueId', 'SchoolName', 'Udise', 'SchoolManagement', 'CategoryName', 'DivisionName', 'DistrictName', 'BlockName', 'CreatedBy','UpdatedBy', 'IsImplemented','IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;

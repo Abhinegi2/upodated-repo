@@ -285,6 +285,15 @@
                     </ng-container>
 
                       <!-- WhatappNo Column -->
+                      <ng-container matColumnDef="Mobile">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.Mobile}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                      <!-- WhatappNo Column -->
                       <ng-container matColumnDef="WhatappNo">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>What'sAppNo
                         </mat-header-cell>

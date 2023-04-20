@@ -108,7 +108,7 @@
                             fxFlex.lt-xs="20">
                             <mat-label>Block</mat-label>
                             <mat-select formControlName="BlockId" name="blockId" appearance="outline"
-                                (selectionChange)="onChangeBlock($event.value)" [disabled]="PageRights.IsReadOnly" required>
+                                (selectionChange)="onChangeBlock($event.value)" [disabled]="PageRights.IsReadOnly">
                                 <mat-option [value]="blockItem.Id" *ngFor="let blockItem of blockList">
                                     {{ blockItem.Name }}
                                 </mat-option>
@@ -122,7 +122,7 @@
                             fxFlex.lt-xs="20">
                             <mat-label>Cluster</mat-label>
                             <mat-select formControlName="ClusterId" name="clusterId" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly" required>
+                                [disabled]="PageRights.IsReadOnly">
                                 <mat-option [value]="clusterItem.Id" *ngFor="let clusterItem of clusterList">
                                     {{ clusterItem.Name }}
                                 </mat-option>
@@ -279,7 +279,7 @@
                         <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Pincode</mat-label>
                             <input matInput name="pincode" formControlName="Pincode" digitOnly maxlength="6"
-                                matTooltip="Enter the 6 digit pincode." matTooltipPosition="above" required>
+                                matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
                             <mat-error *ngIf="schoolForm.controls.Pincode.invalid">
                                 {{getErrorMessage(schoolForm, 'Pincode')}}
                             </mat-error>

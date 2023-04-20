@@ -207,6 +207,25 @@
                         <p class="text-truncate">{{vocationalTrainer.Gender}}</p>
                     </mat-cell>
                 </ng-container>
+   
+                
+                  <!-- SectorName Column -->
+                  <ng-container matColumnDef="SectorName" *ngIf="UserModel.RoleCode == 'HM'">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SectorName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- JobeRoleName Column -->
+                  <ng-container matColumnDef="JobRoleName" *ngIf="UserModel.RoleCode == 'HM'">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRoleName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
 
                  <!-- DateOfBirth Column -->
                  <ng-container matColumnDef="DateOfBirth">

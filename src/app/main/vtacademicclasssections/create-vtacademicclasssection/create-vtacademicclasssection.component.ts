@@ -34,7 +34,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   gvtList: [DropdownModel];
   filteredGVTItems: any;
-  selectedVTId: null;
+  selectedVTId: any = null;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -111,6 +111,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   }
 
   onChangeVT(accountId) {
+    console.log(accountId);
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
       if (VtModel == null) {

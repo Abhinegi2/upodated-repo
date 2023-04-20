@@ -152,7 +152,6 @@
                             <mat-label>Date Of Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
                                 [min]="minAllocationDate" [max]="CurrentDate" [required]="selectedVTId != null" formControlName="DateOfAllocation"
-                                
                                 [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocation></mat-datepicker>
