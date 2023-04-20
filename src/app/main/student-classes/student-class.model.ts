@@ -17,7 +17,11 @@ export class StudentClassModel {
     LastName: string;
     FullName: string;
     Gender: string;
+    FatherName:string
+    MotherName:string
+    GuardianName:string;
     Mobile: string;
+    SecondMobileNo: string;
     AssessmentToBeConducted: string;
     DateOfBirth: Date;
     Stream: string;
@@ -55,6 +59,10 @@ export class StudentClassModel {
         this.LastName = studentClassItem.LastName || '';
         this.FullName = studentClassItem.FullName || '';
         this.Gender = studentClassItem.Gender || '';
+        this.FatherName = studentClassItem.FatherName || '';
+        this.SecondMobileNo = studentClassItem.SecondMobileNo || '';
+        this.MotherName = studentClassItem.MotherName || '';
+        this.GuardianName = studentClassItem.GuardianName || '';
         this.Mobile = studentClassItem.Mobile || '';
         this.SameTrade = studentClassItem.SameTrade || '';
         this.StudentUniqueId = studentClassItem.StudentUniqueId || '';
