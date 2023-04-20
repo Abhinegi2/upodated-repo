@@ -144,7 +144,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     };
 
     this.headMasterService.GetAllByCriteria(hmParams).subscribe(response => {
-      console.log(response);
       this.displayedColumns = [
         'SchoolName',
         'FullName',
