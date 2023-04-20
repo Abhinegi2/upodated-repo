@@ -22,6 +22,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 export class CourseMaterialComponent extends BaseListComponent<CourseMaterialModel> implements OnInit {
   courseMaterialSearchForm: FormGroup;
   courseMaterialFilterForm: FormGroup;
+  currentUser: string;
 
   academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
@@ -54,6 +55,8 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
       }
+
+      this.currentUser = this.UserModel.UserId;
 
       // if (results[1].Success) {
       //   this.vtpList = results[1].Results;
@@ -135,8 +138,14 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
     // this.SearchBy.HMId = this.UserModel.RoleCode == 'HM' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['HMId'].value;
     // this.SearchBy.SchoolId = this.courseMaterialFilterForm.controls['SchoolId'].value;
 
+    this.SearchBy.UserTypeId = this.UserModel.UserTypeId;
+    this.SearchBy.RoleId = this.UserModel.RoleCode;
+
     this.courseMaterialService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['AcademicYear', 'VCName', 'VTName', 'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'Actions'];
+      this.displayedColumns = ['AcademicYear', 'VCName',
+        // 'VTName', 
+        'VTPName',
+        'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'CreatedBy', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;

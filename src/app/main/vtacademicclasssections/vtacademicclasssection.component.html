@@ -178,6 +178,8 @@
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxShow.gt-xs>
+                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="data-inactive s-20">close</mat-icon>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vtacademicclasssections', 'view', vtacademicclasssection.VTAcademicClassSectionId]" skipLocationChange="true"
                             replaceUrl="false">

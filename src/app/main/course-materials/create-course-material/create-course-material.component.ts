@@ -23,19 +23,20 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
   courseMaterialForm: FormGroup;
   courseMaterialModel: CourseMaterialModel;
 
-  currentAcademicYearId: string;
-  academicYearAllList: [DropdownModel];
-
-  academicYearList: [DropdownModel];
-  classList: [DropdownModel];
-  sectionList: [DropdownModel];
-
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
-  schoolId: string;
-
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
+  academicYearList: [DropdownModel];
+  classList: [DropdownModel];
+
+  SchoolInputId: string;
+  SectorInputId: string;
+  JobRoleInputId: string;
+  AcademicYearInputId: string;
+  ClassInputId: string;
+
+  CanUserChangeInput: boolean;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -61,6 +62,7 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
       if (results[0].Success) {
         this.schoolList = results[0].Results;
         this.filteredSchoolItems = this.schoolList.slice();
+        this.loadFormInputs(this.schoolList, 'SchoolId');
       }
 
       this.route.paramMap.subscribe(params => {
@@ -69,6 +71,8 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.courseMaterialModel = new CourseMaterialModel();
+
+            this.CanUserChangeInput = true;
 
           } else {
             var courseMaterialId: string = params.get('courseMaterialId')
@@ -79,29 +83,30 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
                   this.courseMaterialModel.RequestType = this.Constants.PageType.Edit;
-                  this.setSectorJobRole(this.courseMaterialModel.SSJId);
                 }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.courseMaterialModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
 
+                this.schoolsectorjobService.getSchoolSectorJobById(this.courseMaterialModel.SSJId)
+                  .subscribe((response: any) => {
+                    var schoolsectorjobModel = response.Result;
 
-                if (this.schoolList.length == 1 && this.UserModel.RoleCode == 'VT') {
-                  this.courseMaterialForm.controls['SchoolId'].setValue(this.schoolList[0].Id);
-                  this.courseMaterialForm.controls['SchoolId'].disable();
-                  // this.onChangeSchool(this.schoolList[0].Id);
-                }
+                    this.courseMaterialModel.SchoolId = schoolsectorjobModel.SchoolId;
+                    this.courseMaterialModel.SectorId = schoolsectorjobModel.SectorId;
+                    this.courseMaterialModel.JobRoleId = schoolsectorjobModel.JobRoleId;
 
-                this.onChangeSchool(this.schoolList[0].Id).then(sResp => {
-                  this.onChangeSector(this.courseMaterialModel.SectorId).then(vvResp => {
-                    this.onChangeJobRole(this.courseMaterialModel.JobRoleId).then(vvResp => {
-                      this.onChangeAcademicYear(this.courseMaterialModel.AcademicYearId).then(vResp => {
-                        this.courseMaterialForm = this.createCourseMaterialForm();
+                    this.onChangeSchool(this.courseMaterialModel.SchoolId).then(sResp => {
+                      this.onChangeSector(this.courseMaterialModel.SectorId).then(vvResp => {
+                        this.onChangeJobRole(this.courseMaterialModel.JobRoleId).then(vvResp => {
+                          this.onChangeAcademicYear(this.courseMaterialModel.AcademicYearId).then(vResp => {
+                            this.courseMaterialForm = this.createCourseMaterialForm();
+                          });
+                        });
                       });
                     });
                   });
-                });
               });
           }
         }
@@ -109,52 +114,24 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
     });
   }
 
-
-  setEditInputValidation() {
-    this.courseMaterialForm.controls['SchoolId'].disable();
-    this.courseMaterialForm.controls['SectorId'].disable();
-    this.courseMaterialForm.controls['JobRoleId'].disable();
-    this.courseMaterialForm.controls['AcademicYearId'].disable();
-    this.courseMaterialForm.controls['ClassId'].disable();
-    this.courseMaterialForm.controls['SectionId'].disable();
-  }
-
-  setSectorJobRole(schoolsectorjobId) {
-    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
-      this.schoolsectorjobService.getSchoolSectorJobById(schoolsectorjobId)
-        .subscribe((response: any) => {
-          var schoolsectorjobModel = response.Result;
-
-          this.courseMaterialModel.SchoolId = schoolsectorjobModel.SchoolId;
-          this.courseMaterialModel.SectorId = schoolsectorjobModel.SectorId;
-          this.courseMaterialModel.JobRoleId = schoolsectorjobModel.JobRoleId;
-        });
-    }
-  }
-
   onChangeSchool(schoolId): Promise<any> {
-    this.courseMaterialForm.controls['SectorId'].setValue(null);
-    this.courseMaterialForm.controls['JobRoleId'].setValue(null);
-    this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
-    this.courseMaterialForm.controls['ClassId'].setValue(null);
-    this.courseMaterialForm.controls['SectionId'].setValue(null);
+    this.resetInputsAfter('School');
+    this.setFormInputs();
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
+      }).subscribe((response) => {
         if (response.Success) {
           this.sectorList = response.Results;
 
           if (response.Results.length == 1) {
-            var errorMessages = this.getHtmlMessage(["The selected School is not mapped with any <b>Sector</b> and <b>JobRole</b>.<br><br> Please visit the <a href='/schoolsectorjobs'><b>School Sector JobRole</b></a> page and assign a Sector & Jobrole to the required School."]);
-            this.dialogService.openShowDialog(errorMessages);
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
             this.courseMaterialForm.controls['SchoolId'].setValue(null);
-          } else if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-            console.log(this.sectorList[1].Id);
-            this.courseMaterialForm.controls['SectorId'].setValue(this.sectorList[1].Id);
-            this.courseMaterialForm.controls['SectorId'].disable();
-            this.onChangeSector(this.sectorList[1].Id);
           }
+
+          this.loadFormInputs(response.Results, 'SectorId');
         }
         resolve(true);
       });
@@ -164,32 +141,17 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
   }
 
   onChangeSector(sectorId): Promise<any> {
-
-    if (this.PageRights.ActionType == this.Constants.Actions.New) {
-      this.courseMaterialForm.controls['JobRoleId'].setValue(null);
-      this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
-      this.courseMaterialForm.controls['ClassId'].setValue(null);
-      this.courseMaterialForm.controls['SectionId'].setValue(null);
-
-      schoolId = this.courseMaterialForm.get('SchoolId').value;
-    }
-
-    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
-      var schoolId = this.courseMaterialModel.SchoolId;
-      sectorId = this.courseMaterialModel.SectorId;
-    }
+    this.resetInputsAfter('Sector');
+    this.setFormInputs();
 
     return new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'JobRolesBySSJ', DataTypeID1: schoolId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role" }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
+      }).subscribe((response) => {
 
         if (response.Success) {
           this.jobRoleList = response.Results;
-
-          if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-            this.courseMaterialForm.controls['JobRoleId'].setValue(this.jobRoleList[1].Id);
-            this.courseMaterialForm.controls['JobRoleId'].disable();
-            this.onChangeJobRole(this.jobRoleList[1].Id);
-          }
+          this.loadFormInputs(response.Results, 'JobRoleId');
         }
 
         resolve(true);
@@ -199,39 +161,23 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
 
 
   onChangeJobRole(jobRoleId): Promise<any> {
-
-    if (this.PageRights.ActionType == this.Constants.Actions.New) {
-      this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
-      this.courseMaterialForm.controls['ClassId'].setValue(null);
-      this.courseMaterialForm.controls['SectionId'].setValue(null);
-
-      var schoolId = this.courseMaterialForm.get('SchoolId').value;
-      var sectorId = this.courseMaterialForm.get('SectorId').value;
-    }
-
-    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
-      schoolId = this.courseMaterialModel.SchoolId;
-      sectorId = this.courseMaterialModel.SectorId;
-      jobRoleId = this.courseMaterialModel.JobRoleId;
-    }
+    this.resetInputsAfter('JobRole');
+    this.setFormInputs();
 
     return new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'YearsBySSJ', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years" }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
+      }).subscribe((response) => {
 
         if (response.Success) {
           this.academicYearList = response.Results;
 
           if (response.Results.length == 1) {
-            var errorMessages = this.getHtmlMessage(["The selected School Sector JobRole is not mapped with any <b>Academic Class Section</b>.<br><br> Please visit the <a href='/vtacademicclasssections'><b>VT Academic Class Sections</b></a> page."]);
-            this.dialogService.openShowDialog(errorMessages);
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
             this.courseMaterialForm.controls['JobRoleId'].setValue(null);
           }
 
-          if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-            this.courseMaterialForm.controls['AcademicYearId'].setValue(response.Results[1].Id);
-            this.courseMaterialForm.controls['AcademicYearId'].disable();
-            this.onChangeAcademicYear(response.Results[1].Id);
-          }
+          this.loadFormInputs(response.Results, 'AcademicYearId');
         }
         resolve(true);
       });
@@ -240,36 +186,96 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
 
 
   onChangeAcademicYear(academicYearId): Promise<any> {
-    if (this.PageRights.ActionType == this.Constants.Actions.New) {
-      this.courseMaterialForm.controls['ClassId'].setValue(null);
-      this.courseMaterialForm.controls['SectionId'].setValue(null);
-
-      var schoolId = this.courseMaterialForm.get('SchoolId').value;
-      var sectorId = this.courseMaterialForm.get('SectorId').value;
-      var jobRoleId = this.courseMaterialForm.get('JobRoleId').value;
-    }
-
-    if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
-      schoolId = this.courseMaterialModel.SchoolId;
-      sectorId = this.courseMaterialModel.SectorId;
-      jobRoleId = this.courseMaterialModel.JobRoleId;
-      academicYearId = this.courseMaterialModel.AcademicYearId;
-    }
+    this.resetInputsAfter('AcademicYear');
+    this.setFormInputs();
 
     let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes'
+      }).subscribe((response) => {
+
         if (response.Success) {
           this.classList = response.Results;
-
-          if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
-            this.courseMaterialForm.controls['ClassId'].setValue(response.Results[1].Id);
-            this.courseMaterialForm.controls['ClassId'].disable();
-          }
+          this.loadFormInputs(response.Results, 'ClassId');
         }
         resolve(true);
       });
     });
+
+    this.setUserAction();
+
     return promise;
+  }
+
+  setFormInputs() {
+    this.SchoolInputId = this.CanUserChangeInput == true ? this.courseMaterialForm.get('SchoolId').value : this.courseMaterialModel.SchoolId;
+    this.SectorInputId = this.CanUserChangeInput == true ? this.courseMaterialForm.get('SectorId').value : this.courseMaterialModel.SectorId;
+    this.JobRoleInputId = this.CanUserChangeInput == true ? this.courseMaterialForm.get('JobRoleId').value : this.courseMaterialModel.JobRoleId;
+    this.AcademicYearInputId = this.CanUserChangeInput == true ? this.courseMaterialForm.get('AcademicYearId').value : this.courseMaterialModel.AcademicYearId;
+    this.ClassInputId = this.CanUserChangeInput == true ? this.courseMaterialForm.get('ClassId').value : this.courseMaterialModel.ClassId;
+  }
+
+  loadFormInputs(response, InputName) {
+
+    if (!this.PageRights.IsReadOnly) {
+      this.courseMaterialForm.controls[InputName].enable();
+    }
+
+    if (response.length == 2) {
+      var inputId = response[1].Id;
+      this.courseMaterialForm.controls[InputName].setValue(inputId);
+      this.courseMaterialForm.controls[InputName].disable();
+      if (InputName == 'SchoolId') {
+        this.onChangeSchool(inputId);
+      } else if (InputName == 'SectorId') {
+        this.onChangeSector(inputId);
+      } else if (InputName == 'JobRoleId') {
+        this.onChangeJobRole(inputId);
+      } else if (InputName == 'AcademicYearId') {
+        this.onChangeAcademicYear(inputId);
+      }
+    }
+  }
+
+  resetInputsAfter(input) {
+
+    if (input == 'School') {
+      this.courseMaterialForm.controls['SectorId'].setValue(null);
+      this.courseMaterialForm.controls['JobRoleId'].setValue(null);
+      this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
+      this.courseMaterialForm.controls['ClassId'].setValue(null);
+    }
+
+    if (input == 'Sector') {
+      this.courseMaterialForm.controls['JobRoleId'].setValue(null);
+      this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
+      this.courseMaterialForm.controls['ClassId'].setValue(null);
+    }
+
+    if (input == 'JobRole') {
+      this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
+      this.courseMaterialForm.controls['ClassId'].setValue(null);
+    }
+
+    if (input == 'AcademicYear') {
+      this.courseMaterialForm.controls['ClassId'].setValue(null);
+    }
+  }
+
+  setUserAction() {
+    this.CanUserChangeInput = true;
+  }
+
+
+  onChangeOnCMStatusType(chk) {
+    if (chk.value == "No") {
+      this.courseMaterialForm.controls["ReceiptDate"].clearValidators();
+    }
+    else {
+      this.courseMaterialForm.controls["ReceiptDate"].setValidators([Validators.required]);
+    }
+
+    this.courseMaterialForm.controls["ReceiptDate"].updateValueAndValidity();
   }
 
   saveOrUpdateCourseMaterialDetails() {
@@ -317,16 +323,5 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
       CMStatus: new FormControl({ value: this.courseMaterialModel.CMStatus, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Details: new FormControl({ value: this.courseMaterialModel.Details, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350))
     });
-  }
-
-  onChangeOnCMStatusType(chk) {
-    if (chk.value == "No") {
-      this.courseMaterialForm.controls["ReceiptDate"].clearValidators();
-    }
-    else {
-      this.courseMaterialForm.controls["ReceiptDate"].setValidators([Validators.required]);
-    }
-
-    this.courseMaterialForm.controls["ReceiptDate"].updateValueAndValidity();
   }
 }

@@ -4,6 +4,13 @@ export class VTIssueReportingModel {
     VTIssueReportingId: string;
     AcademicYearId: string;
     VTId: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    ClassId: string;
+    SSJId: string;
+
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
@@ -26,6 +33,9 @@ export class VTIssueReportingModel {
         this.VTIssueReportingId = vtIssueReportingItem.VTIssueReportingId || FuseUtils.NewGuid();
         this.AcademicYearId = vtIssueReportingItem.AcademicYearId || '';
         this.VTId = vtIssueReportingItem.VTId || '';
+
+        this.SSJId = vtIssueReportingItem.SSJId || '';
+
         this.IssueReportDate = vtIssueReportingItem.IssueReportDate || '';
         this.MainIssue = vtIssueReportingItem.MainIssue || '';
         this.SubIssue = vtIssueReportingItem.SubIssue || '';

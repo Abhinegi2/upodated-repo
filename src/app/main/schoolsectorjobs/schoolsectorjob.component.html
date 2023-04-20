@@ -125,18 +125,19 @@
                 </ng-container>
 
                 <!-- IsActive Column -->
-                <ng-container matColumnDef="IsActive">
+                <!-- <ng-container matColumnDef="IsActive">
                     <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let schoolsectorjob" class="text-center">
-                        <mat-icon *ngIf="schoolsectorjob.IsActive" class="data-active s-20">check</mat-icon>
-                        <mat-icon *ngIf="!schoolsectorjob.IsActive" class="data-inactive s-20">close</mat-icon>
-                    </mat-cell>
-                </ng-container>
+                    
+                </ng-container> -->
 
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let schoolsectorjob" fxShow.gt-xs>
+                        <!-- <mat-cell *matCellDef="let schoolsectorjob" class="text-center"> -->
+                            <mat-icon *ngIf="schoolsectorjob.IsActive" class="data-active s-20">check</mat-icon>
+                            <mat-icon *ngIf="!schoolsectorjob.IsActive" class="data-inactive s-20">close</mat-icon>
+                        <!-- </mat-cell> -->
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/schoolsectorjobs', 'view', schoolsectorjob.SchoolSectorJobId]" skipLocationChange="true"
                             replaceUrl="false">
