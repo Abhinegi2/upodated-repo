@@ -171,20 +171,17 @@
                                 {{getErrorMessage(schoolForm, 'SchoolName')}}
                             </mat-error>
                         </mat-form-field>
-
+                       
                         <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>School Category</mat-label>
-                            <mat-select name="schoolCategoryId" formControlName="SchoolCategoryId" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="SchoolCategoryItem.Id"
-                                    *ngFor="let SchoolCategoryItem of schoolCategoryList">
-                                    {{ SchoolCategoryItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="schoolForm.controls.SchoolCategoryId.invalid">
-                                {{getErrorMessage(schoolForm, 'SchoolCategoryId')}}
+                            <mat-label>SchoolUniqueId</mat-label>
+                            <input matInput name="SchoolUniqueId" formControlName="SchoolUniqueId" digitOnly minlength="11" maxlength="11"
+                                required placeholder="Enter the 11 digit SchoolUniqueId number"
+                                matTooltip="Enter the 11 digit SchoolUniqueId number." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.SchoolUniqueId.invalid">
+                                {{getErrorMessage(schoolForm, 'Udise')}}
                             </mat-error>
                         </mat-form-field>
+                       
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -231,6 +228,21 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School Category</mat-label>
+                            <mat-select name="schoolCategoryId" formControlName="SchoolCategoryId" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="SchoolCategoryItem.Id"
+                                    *ngFor="let SchoolCategoryItem of schoolCategoryList">
+                                    {{ SchoolCategoryItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="schoolForm.controls.SchoolCategoryId.invalid">
+                                {{getErrorMessage(schoolForm, 'SchoolCategoryId')}}
+                            </mat-error>
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Approval Year</mat-label>
 
