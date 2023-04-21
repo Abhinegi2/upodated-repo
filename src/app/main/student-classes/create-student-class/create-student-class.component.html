@@ -219,7 +219,45 @@
                                 {{getErrorMessage(studentClassForm, 'LastName')}}
                             </mat-error>
                         </mat-form-field>
-                    </div>
+                </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>StudentUniqueId</mat-label>
+                        <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" required
+                            maxlength="25" placeholder="Ex. Ab0098000">
+                        <mat-error *ngIf="studentClassForm.controls.StudentUniqueId.invalid">
+                            {{getErrorMessage(studentClassForm, 'StudentUniqueId')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-label>Gender</mat-label>
+                        <mat-select name="gender" formControlName="Gender" required appearance="outline"
+                            [disabled]="PageRights.IsReadOnly">
+                            <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
+                                {{ genderItem.Name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="studentClassForm.controls.Gender.invalid">
+                            {{getErrorMessage(studentClassForm, 'Gender')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                    fxFlex.lt-sm="100">
+                    <mat-label>Date Of Birth</mat-label>
+                    <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
+                        [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                    <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
+                    <mat-datepicker #dateOfBirth></mat-datepicker>
+    
+                    <mat-error *ngIf="studentClassForm.controls.DateOfBirth.invalid">
+                        {{getErrorMessage(studentClassForm, 'DateOfBirth')}}
+                    </mat-error>
+                </mat-form-field>
+                </div>
                     
                 <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
@@ -235,7 +273,7 @@
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                        <mat-label>Mohter Name</mat-label>
+                        <mat-label>Mother Name</mat-label>
                         <input matInput name="motherName" formControlName="MotherName" required placeholder="Ex. Kumari"
                             matTooltip="First letter should be capital." matTooltipPosition="above">
                         <mat-error *ngIf="studentClassForm.controls.MotherName.invalid">
@@ -267,40 +305,23 @@
                                 {{getErrorMessage(studentClassForm, 'AssessmentToBeConducted')}}
                             </mat-error>
                         </mat-form-field>
-                        
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>StudentUniqueId</mat-label>
-                            <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" required
-                                maxlength="25" placeholder="Ex. Ab0098000">
-                            <mat-error *ngIf="studentClassForm.controls.StudentUniqueId.invalid">
-                                {{getErrorMessage(studentClassForm, 'StudentUniqueId')}}
-                            </mat-error>
-                        </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Gender</mat-label>
-                            <mat-select name="gender" formControlName="Gender" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="genderItem.Id" *ngFor="let genderItem of genderList">
-                                    {{ genderItem.Name }}
-                                </mat-option>
+                            <mat-label>Stream</mat-label>
+                            <mat-select name="stream" formControlName="Stream"
+                                required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Science PCB">Science PCB</mat-option>
+                                <mat-option value="Science PCM">Science PCM</mat-option>
+                                <mat-option value="Science PCMB">Science PCMB</mat-option>
+                                <mat-option value="Arts & Humanities">Arts Humanities</mat-option>
+                                <mat-option value="Commarce">Commarce</mat-option>
+                                <mat-option value="Others">Others</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="studentClassForm.controls.Gender.invalid">
-                                {{getErrorMessage(studentClassForm, 'Gender')}}
+                            <mat-error *ngIf="studentClassForm.controls.Stream.invalid">
+                                {{getErrorMessage(studentClassForm, 'Stream')}}
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Date Of Enrollment</mat-label>
-                            <input matInput [matDatepicker]="dateOfEnrollment" name="dateOfEnrollment" required
-                                [max]="CurrentDate" formControlName="DateOfEnrollment"
-                                [disabled]="PageRights.IsReadOnly">
-                            <mat-datepicker-toggle matSuffix [for]="dateOfEnrollment"></mat-datepicker-toggle>
-                            <mat-datepicker #dateOfEnrollment></mat-datepicker>
-                            <mat-error *ngIf="studentClassForm.controls.DateOfEnrollment.invalid">
-                                {{getErrorMessage(studentClassForm, 'DateOfEnrollment')}}
-                            </mat-error>
-                        </mat-form-field>
                     </div>
 
                 <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -322,22 +343,19 @@
                             {{getErrorMessage(studentClassForm, 'SecondMobileNo')}}
                         </mat-error>
                     </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>WhatappNo</mat-label>
+                        <input matInput name="whatappNo" formControlName="WhatappNo" digitOnly minlength="10"
+                            maxlength="10" placeholder="Ex. 9800098000">
+                        <mat-error *ngIf="studentClassForm.controls.WhatappNo.invalid">
+                            {{getErrorMessage(studentClassForm, 'WhatappNo')}}
+                        </mat-error>
+                    </mat-form-field>
                 </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                        <mat-label>CSWN Status</mat-label>
-                        <mat-select name="cswnStatus" formControlName="CSWNStatus"
-                            required appearance="outline" [disabled]="PageRights.IsReadOnly">
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="studentClassForm.controls.CSWNStatus.invalid">
-                            {{getErrorMessage(studentClassForm, 'CSWNStatus')}}
-                        </mat-error>
-                    </mat-form-field>
 
                     <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Stream</mat-label>
@@ -351,62 +369,49 @@
                             {{getErrorMessage(studentClassForm, 'Stream')}}
                         </mat-error>
                     </mat-form-field> -->
-
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                        <mat-label>WhatappNo</mat-label>
-                        <input matInput name="whatappNo" formControlName="WhatappNo" digitOnly minlength="10"
-                            maxlength="10" placeholder="Ex. 9800098000">
-                        <mat-error *ngIf="studentClassForm.controls.WhatappNo.invalid">
-                            {{getErrorMessage(studentClassForm, 'WhatappNo')}}
-                        </mat-error>
-                    </mat-form-field>
                 </div>
 
-                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                 fxLayoutGap.lt-md="0px">
-                <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
-                fxFlex.lt-sm="100">
-                <mat-label>Date Of Birth</mat-label>
-                <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
-                    [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
-                <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
-                <mat-datepicker #dateOfBirth></mat-datepicker>
 
-                <mat-error *ngIf="studentClassForm.controls.DateOfBirth.invalid">
-                    {{getErrorMessage(studentClassForm, 'DateOfBirth')}}
-                </mat-error>
-            </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                    <mat-label>CSWN Status</mat-label>
+                    <mat-select name="cswnStatus" formControlName="CSWNStatus"
+                        required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                        <mat-option value="Yes">Yes</mat-option>
+                        <mat-option value="No">No</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="studentClassForm.controls.CSWNStatus.invalid">
+                        {{getErrorMessage(studentClassForm, 'CSWNStatus')}}
+                    </mat-error>
+                </mat-form-field>
 
-                <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
-                fxFlex.lt-sm="100">
-                <mat-label>Social Category</mat-label>
-                <mat-select name="socialCategory" formControlName="SocialCategory" required
-                    appearance="outline" [disabled]="PageRights.IsReadOnly">
-                    <mat-option [value]="socialCategoryItem.Id"
-                        *ngFor="let socialCategoryItem of  socialCategoryList">
-                        {{ socialCategoryItem.Name }}
-                    </mat-option>
-                </mat-select>
-                <mat-error *ngIf="studentClassForm.controls.SocialCategory.invalid">
-                    {{getErrorMessage(studentClassForm, 'SocialCategory')}}
-                </mat-error>
-            </mat-form-field>
+                    <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                    fxFlex.lt-sm="100">
+                    <mat-label>Social Category</mat-label>
+                    <mat-select name="socialCategory" formControlName="SocialCategory" required
+                        appearance="outline" [disabled]="PageRights.IsReadOnly">
+                        <mat-option [value]="socialCategoryItem.Id"
+                            *ngFor="let socialCategoryItem of  socialCategoryList">
+                            {{ socialCategoryItem.Name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="studentClassForm.controls.SocialCategory.invalid">
+                        {{getErrorMessage(studentClassForm, 'SocialCategory')}}
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                <mat-label>Stream</mat-label>
-                <mat-select name="stream" formControlName="Stream"
-                    required appearance="outline" [disabled]="PageRights.IsReadOnly">
-                    <mat-option value="Science PCB">Science PCB</mat-option>
-                    <mat-option value="Science PCM">Science PCM</mat-option>
-                    <mat-option value="Science PCMB">Science PCMB</mat-option>
-                    <mat-option value="Arts & Humanities">Arts Humanities</mat-option>
-                    <mat-option value="Commarce">Commarce</mat-option>
-                    <mat-option value="Others">Others</mat-option>
-                </mat-select>
-                <mat-error *ngIf="studentClassForm.controls.Stream.invalid">
-                    {{getErrorMessage(studentClassForm, 'Stream')}}
-                </mat-error>
-            </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                    <mat-label>Date Of Enrollment</mat-label>
+                    <input matInput [matDatepicker]="dateOfEnrollment" name="dateOfEnrollment" required
+                        [max]="CurrentDate" formControlName="DateOfEnrollment"
+                        [disabled]="PageRights.IsReadOnly">
+                    <mat-datepicker-toggle matSuffix [for]="dateOfEnrollment"></mat-datepicker-toggle>
+                    <mat-datepicker #dateOfEnrollment></mat-datepicker>
+                    <mat-error *ngIf="studentClassForm.controls.DateOfEnrollment.invalid">
+                        {{getErrorMessage(studentClassForm, 'DateOfEnrollment')}}
+                    </mat-error>
+                </mat-form-field>
 
             </div>
 

@@ -259,6 +259,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
       UserId: new FormControl({ value: this.accountModel.UserId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(40)]),
       UserName: new FormControl({ value: this.accountModel.UserName, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       FirstName: new FormControl({ value: this.accountModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
+      MiddleName: new FormControl({ value: this.accountModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
       LastName: new FormControl({ value: this.accountModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
       RoleId: new FormControl({ value: this.accountModel.RoleId, disabled: this.PageRights.IsReadOnly }),
       Designation: new FormControl({ value: this.accountModel.Designation, disabled: this.PageRights.IsReadOnly }),
