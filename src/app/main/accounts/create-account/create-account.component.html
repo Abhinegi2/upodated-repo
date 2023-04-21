@@ -86,6 +86,14 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Middle Name</mat-label>
+                                    <input matInput name="middleName" formControlName="MiddleName">
+                                    <mat-error *ngIf="accountForm.controls.MiddleName.invalid">
+                                        {{getErrorMessage(accountForm, 'MiddleName')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                     <mat-label>Last Name</mat-label>
                                     <input matInput name="lastName" formControlName="LastName" required>
                                     <mat-error *ngIf="accountForm.controls.LastName.invalid">
