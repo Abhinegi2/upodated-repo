@@ -436,6 +436,16 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       });
   }
 
+  // generateStudentUniqueId(){
+
+  //   var Org_Identfier = 1;
+  //   var vocational = 1;
+  //   var Enrolment_Year = 2323;
+  //   var Class_Idenfier = 09;
+  //   var 
+
+  // }
+
   setDropoutReasonValidators() {
     const dropoutReasonControl = this.studentClassForm.get('DropoutReason');
 
@@ -489,8 +499,12 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       FullName: new FormControl({ value: this.studentClassModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Gender: new FormControl({ value: this.studentClassModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
 
-      Mobile: new FormControl({ value: this.studentClassModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      FatherName: new FormControl({ value: this.studentClassModel.FatherName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      MotherName: new FormControl({ value: this.studentClassModel.MotherName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      GuardianName: new FormControl({ value: this.studentClassModel.GuardianName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
 
+      Mobile: new FormControl({ value: this.studentClassModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      SecondMobileNo: new FormControl({ value: this.studentClassModel.SecondMobileNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
 
@@ -501,10 +515,9 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       CSWNStatus: new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
 
       SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
-      WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
 
-      StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
-
+      WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(25), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(25), Validators.pattern(this.Constants.Regex.AlphaNumeric)]),
 
       DateOfEnrollment: new FormControl({ value: new Date(this.studentClassModel.DateOfEnrollment), disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfDropout: new FormControl({ value: this.getDateValue(this.studentClassModel.DateOfDropout), disabled: this.PageRights.IsReadOnly }),

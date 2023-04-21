@@ -8,7 +8,7 @@ export class VTIssueReportingModel {
     SchoolId: string;
     SectorId: string;
     JobRoleId: string;
-    ClassId: string;
+    // ClassId: string;
     SSJId: string;
 
     IssueReportDate: any;
@@ -33,9 +33,7 @@ export class VTIssueReportingModel {
         this.VTIssueReportingId = vtIssueReportingItem.VTIssueReportingId || FuseUtils.NewGuid();
         this.AcademicYearId = vtIssueReportingItem.AcademicYearId || '';
         this.VTId = vtIssueReportingItem.VTId || '';
-
         this.SSJId = vtIssueReportingItem.SSJId || '';
-
         this.IssueReportDate = vtIssueReportingItem.IssueReportDate || '';
         this.MainIssue = vtIssueReportingItem.MainIssue || '';
         this.SubIssue = vtIssueReportingItem.SubIssue || '';

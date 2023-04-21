@@ -220,14 +220,58 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
+                    
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+
+                    <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>Father Name</mat-label>
+                        <input matInput name="fatherName" formControlName="FatherName" required
+                            placeholder="Ex. Rakesh" matTooltip="First letter should be capital."
+                            matTooltipPosition="above">
+                        <mat-error *ngIf="studentClassForm.controls.FatherName.invalid">
+                            {{getErrorMessage(studentClassForm, 'FatherName')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>Mohter Name</mat-label>
+                        <input matInput name="motherName" formControlName="MotherName" required placeholder="Ex. Kumari"
+                            matTooltip="First letter should be capital." matTooltipPosition="above">
+                        <mat-error *ngIf="studentClassForm.controls.MotherName.invalid">
+                            {{getErrorMessage(studentClassForm, 'MotherName')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>Guardian Name</mat-label>
+                        <input matInput name="guardianName" formControlName="GuardianName" required placeholder="Nayak"
+                            matTooltip="First letter should be capital." matTooltipPosition="above">
+                        <mat-error *ngIf="studentClassForm.controls.GuardianName.invalid">
+                            {{getErrorMessage(studentClassForm, 'GuardianName')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Assessment To Be Conducted</mat-label>
+                            <mat-select name="assessmentToBeConducted" formControlName="AssessmentToBeConducted"
+                                required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                <mat-option value="Yes">Yes</mat-option>
+                                <mat-option value="No">No</mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="studentClassForm.controls.AssessmentToBeConducted.invalid">
+                                {{getErrorMessage(studentClassForm, 'AssessmentToBeConducted')}}
+                            </mat-error>
+                        </mat-form-field>
                         
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>StudentUniqueId</mat-label>
-                            <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" required digitOnly minlength="10"
-                                maxlength="10" placeholder="Ex. 9800098000">
+                            <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" required
+                                maxlength="25" placeholder="Ex. Ab0098000">
                             <mat-error *ngIf="studentClassForm.controls.StudentUniqueId.invalid">
                                 {{getErrorMessage(studentClassForm, 'StudentUniqueId')}}
                             </mat-error>
@@ -246,15 +290,6 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Mobile Number</mat-label>
-                            <input matInput name="mobile" formControlName="Mobile" digitOnly minlength="10"
-                                maxlength="10" placeholder="Ex. 9800098000">
-                            <mat-error *ngIf="studentClassForm.controls.Mobile.invalid">
-                                {{getErrorMessage(studentClassForm, 'Mobile')}}
-                            </mat-error>
-                        </mat-form-field>
-
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Of Enrollment</mat-label>
                             <input matInput [matDatepicker]="dateOfEnrollment" name="dateOfEnrollment" required
@@ -268,20 +303,29 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-
-                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                        <mat-label>Assessment To Be Conducted</mat-label>
-                        <mat-select name="assessmentToBeConducted" formControlName="AssessmentToBeConducted"
-                            required appearance="outline" [disabled]="PageRights.IsReadOnly">
-                            <mat-option value="Yes">Yes</mat-option>
-                            <mat-option value="No">No</mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="studentClassForm.controls.AssessmentToBeConducted.invalid">
-                            {{getErrorMessage(studentClassForm, 'AssessmentToBeConducted')}}
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>First Mobile Number</mat-label>
+                        <input matInput name="mobile" formControlName="Mobile" digitOnly minlength="10"
+                            maxlength="10" placeholder="Ex. 9800098000"  required >
+                        <mat-error *ngIf="studentClassForm.controls.Mobile.invalid">
+                            {{getErrorMessage(studentClassForm, 'Mobile')}}
                         </mat-error>
                     </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <mat-label>Second Mobile Number</mat-label>
+                        <input matInput name="SecondMobileNo" formControlName="SecondMobileNo" digitOnly minlength="10" [required]="studentClassForm.get('AssessmentToBeConducted').value === 'Yes'"
+                            maxlength="10" placeholder="Ex. 9800098000">
+                        <mat-error *ngIf="studentClassForm.controls.SecondMobileNo.invalid">
+                            {{getErrorMessage(studentClassForm, 'SecondMobileNo')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
 
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>CSWN Status</mat-label>
@@ -355,7 +399,7 @@
                     <mat-option value="Science PCB">Science PCB</mat-option>
                     <mat-option value="Science PCM">Science PCM</mat-option>
                     <mat-option value="Science PCMB">Science PCMB</mat-option>
-                    <mat-option value="Arts & Humanities">Arts & Humanities</mat-option>
+                    <mat-option value="Arts & Humanities">Arts Humanities</mat-option>
                     <mat-option value="Commarce">Commarce</mat-option>
                     <mat-option value="Others">Others</mat-option>
                 </mat-select>

@@ -150,8 +150,8 @@
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Date Of Allocation</mat-label>
-                            <input matInput [matDatepicker]="dateOfAllocation" required name="dateOfAllocation"
-                                [min]="minAllocationDate" [max]="CurrentDate" required formControlName="DateOfAllocation"
+                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
+                                [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                                 [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocation></mat-datepicker>

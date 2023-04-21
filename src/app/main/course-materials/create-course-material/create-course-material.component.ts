@@ -35,7 +35,6 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
   JobRoleInputId: string;
   AcademicYearInputId: string;
   ClassInputId: string;
-
   CanUserChangeInput: boolean;
 
   constructor(public commonService: CommonService,

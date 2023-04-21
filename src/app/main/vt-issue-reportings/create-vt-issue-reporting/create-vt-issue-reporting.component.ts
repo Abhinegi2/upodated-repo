@@ -229,7 +229,9 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
 
         if (response.Success) {
           this.classList = response.Results;
-          // this.loadFormInputs(response.Results, 'ClassId');
+          // this.classList = response.Results.split(',');
+
+          // this.loadFormInputs(response.Results, 'StudentClass');
         }
         resolve(true);
       });
@@ -245,7 +247,7 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     this.SectorInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('SectorId').value : this.vtIssueReportingModel.SectorId;
     this.JobRoleInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('JobRoleId').value : this.vtIssueReportingModel.JobRoleId;
     this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('AcademicYearId').value : this.vtIssueReportingModel.AcademicYearId;
-    this.ClassInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('ClassId').value : this.vtIssueReportingModel.ClassId;
+    this.ClassInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('StudentClass').value : this.vtIssueReportingModel.StudentClass;
   }
 
   loadFormInputs(response, InputName) {
@@ -276,22 +278,22 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
       this.vtIssueReportingForm.controls['SectorId'].setValue(null);
       this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['ClassId'].setValue(null);
+      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['ClassId'].setValue(null);
+      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['ClassId'].setValue(null);
+      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
 
     if (input == 'AcademicYear') {
-      this.vtIssueReportingForm.controls['ClassId'].setValue(null);
+      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
   }
 
@@ -344,7 +346,7 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     this.vtIssueReportingModel.StudentClass = studentClass.join(',');
     this.vtIssueReportingModel.Month = month.join(',');
     this.vtIssueReportingModel.VTId = this.UserModel.UserTypeId;
-    this.vtIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
+    // this.vtIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
 
     this.issueReportingService.createOrUpdateVTIssueReporting(this.vtIssueReportingModel)
       .subscribe((vtIssueReportingResp: any) => {
@@ -380,20 +382,20 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
   createVTIssueReportingForm(): FormGroup {
     return this.formBuilder.group({
       VTIssueReportingId: new FormControl(this.vtIssueReportingModel.VTIssueReportingId),
-      VCId: new FormControl(this.vtIssueReportingModel.VTId),
+      VTId: new FormControl(this.vtIssueReportingModel.VTId),
 
       SchoolId: new FormControl({ value: this.vtIssueReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
       SectorId: new FormControl({ value: this.vtIssueReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.vtIssueReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
 
       AcademicYearId: new FormControl({ value: this.vtIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
-      ClassId: new FormControl({ value: this.vtIssueReportingModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      StudentClass: new FormControl({ value: this.vtIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
 
 
       IssueReportDate: new FormControl({ value: new Date(this.vtIssueReportingModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
       MainIssue: new FormControl({ value: this.vtIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SubIssue: new FormControl({ value: this.vtIssueReportingModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      StudentClass: new FormControl({ value: this.vtIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      // StudentClass: new FormControl({ value: this.vtIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Month: new FormControl({ value: this.vtIssueReportingModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.required),
       StudentType: new FormControl({ value: this.vtIssueReportingModel.StudentType, disabled: this.PageRights.IsReadOnly }),
       NoOfStudents: new FormControl({ value: this.vtIssueReportingModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern("^[0-9]*$")]),

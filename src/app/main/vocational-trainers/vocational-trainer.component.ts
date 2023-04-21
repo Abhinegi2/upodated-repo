@@ -164,6 +164,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         // 'NatureOfAppointment',
         // 'IsResigned',
         'Actions'];
+        if(this.UserModel.RoleCode=='HM'){
+          this.displayedColumns ['7'] = 'SectorName';
+          this.displayedColumns ['8'] = 'JobRoleName';
+        }
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

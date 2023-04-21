@@ -285,11 +285,29 @@
                     </ng-container>
 
                       <!-- WhatappNo Column -->
+                      <ng-container matColumnDef="Mobile">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.Mobile}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                      <!-- WhatappNo Column -->
                       <ng-container matColumnDef="WhatappNo">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>What'sAppNo
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass">
                             <p class="text-truncate">{{studentClass.WhatappNo}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                      <!-- WhatappNo Column -->
+                      <ng-container matColumnDef="SecondMobileNo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SecondMobileNo
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass">
+                            <p class="text-truncate">{{studentClass.SecondMobileNo}}</p>
                         </mat-cell>
                     </ng-container>
 
@@ -318,6 +336,33 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                             <p class="text-truncate">{{studentClass.JobRoleName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                       <!-- AssessmentToBeConducted Column -->
+                       <ng-container matColumnDef="FatherName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Father Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.FatherName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                       <!-- AssessmentToBeConducted Column -->
+                       <ng-container matColumnDef="MotherName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mother Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.MotherName}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                       <!-- AssessmentToBeConducted Column -->
+                       <ng-container matColumnDef="GuardianName">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guardian Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{studentClass.GuardianName}}</p>
                         </mat-cell>
                     </ng-container>
 
