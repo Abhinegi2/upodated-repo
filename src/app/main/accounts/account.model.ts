@@ -7,6 +7,7 @@ export class AccountModel {
     UserId: string;
     UserName: string;
     FirstName: string;
+    MiddleName:string;
     LastName: string;
     RoleId: string;
     Designation: string;
@@ -36,6 +37,7 @@ export class AccountModel {
         this.UserId = accountItem.UserId || "";
         this.UserName = accountItem.UserName || "";
         this.FirstName = accountItem.FirstName || "";
+        this.MiddleName = accountItem.MiddleName || "";
         this.LastName = accountItem.LastName || "";
         this.RoleId = accountItem.RoleId || "";
         this.Designation = accountItem.Designation || "";
