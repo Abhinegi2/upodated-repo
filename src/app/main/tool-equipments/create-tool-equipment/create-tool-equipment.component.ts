@@ -80,25 +80,6 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
   ngOnInit(): void {
 
     this.toolEquipmentService.initToolsAndEquipmentsData(this.UserModel).subscribe(results => {
-      //   if (results[0].Success) {
-      //     this.vtpFilterList = results[0].Results;
-      //     this.vtpList = this.vtpFilterList.slice();
-      //   }
-      //   if (results[1].Success) {
-      //     this.academicYearAllList = results[1].Results;
-      //   }
-
-      //   let currentYearItem = this.academicYearAllList.find(ay => ay.IsSelected == true)
-      //   if (currentYearItem != null) {
-      //     this.AcademicYearId = currentYearItem.Id;
-      //   }
-
-      if (results[0].Success) {
-        this.schoolList = results[0].Results;
-        this.filteredSchoolItems = this.schoolList.slice();
-        this.loadFormInputs(this.schoolList, 'SchoolId');
-      }
-
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -107,33 +88,15 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.toolEquipmentModel = new ToolEquipmentModel();
 
+            if (results[0].Success) {
+              this.schoolList = results[0].Results;
+              this.filteredSchoolItems = this.schoolList.slice();
+              this.loadFormInputs(this.schoolList, 'SchoolId');
+            }
+
             this.CanUserChangeInput = true;
 
-            // if (this.UserModel.RoleCode == 'VC') {
-            //   this.toolEquipmentModel.VTId = this.UserModel.UserTypeId;
-
-            //   this.commonService.getVTPByVC(this.UserModel).then(resp => {
-            //     this.toolEquipmentModel.VTPId = resp[0].Id;
-            //     this.toolEquipmentModel.VCId = resp[0].Name;
-
-            //     this.toolEquipmentForm.get('VTPId').setValue(this.toolEquipmentModel.VTPId);
-            //     this.toolEquipmentForm.controls['VTPId'].disable();
-
-            //     this.onChangeVTP(this.toolEquipmentModel.VTPId).then(vtpResp => {
-            //       this.toolEquipmentForm.get('VCId').setValue(this.toolEquipmentModel.VCId);
-            //       this.toolEquipmentForm.controls['VCId'].disable();
-
-            //       this.onChangeVC(this.toolEquipmentModel.VCId);
-            //     });
-            //   });
-            // }
-            // else if (this.UserModel.RoleCode == 'VT') {
-            //   this.onChangeVT(this.UserModel.UserTypeId).then(vtpResp => {
-            //     this.toolEquipmentForm = this.createToolEquipmentForm();
-            //   });
-            // }
-          }
-          else {
+          } else {
             var toolEquipmentId: string = params.get('toolEquipmentId')
 
             this.toolEquipmentService.getToolEquipmentById(toolEquipmentId)
@@ -142,77 +105,47 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
                   this.toolEquipmentModel.RequestType = this.Constants.PageType.Edit;
-
-                  // if (this.UserModel.RoleCode == "HM") {
-
-                  //   this.toolEquipmentForm.get('VTPId').setValue(this.toolEquipmentModel.VTPId);
-                  //   this.toolEquipmentForm.controls['VTPId'].disable();
-
-                  //   this.onChangeVTP(this.toolEquipmentModel.VTPId).then(vtpResp => {
-                  //     this.toolEquipmentForm.get('VCId').setValue(this.toolEquipmentModel.VCId);
-                  //     this.toolEquipmentForm.controls['VCId'].disable();
-                  //     this.toolEquipmentForm.get('SchoolId').setValue(this.toolEquipmentModel.SchoolId);
-                  //     this.toolEquipmentForm.controls['SchoolId'].disable();
-
-                  //     this.onChangeVC(this.toolEquipmentModel.VCId).then(vcResp => {
-                  //       this.onChangeSchool(this.toolEquipmentModel.SchoolId).then(schoolResp => {
-                  //         this.onChangeVT(this.toolEquipmentModel.VTId).then(vtResp => {
-
-                  //         });
-                  //       });
-                  //     });
-                  //   });
-                  //   this.onChangeSector(this.toolEquipmentModel.SectorId);
-                  // }
                 }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.toolEquipmentModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
 
-                // if (this.UserModel.RoleCode == 'VT') {
-                //   this.onChangeVT(this.UserModel.UserTypeId).then(vtpResp => {
-                //     this.toolEquipmentForm = this.createToolEquipmentForm();
-                //   });
-                // }
-                else {
-                  // this.onChangeVTP(this.toolEquipmentModel.VTPId).then(vtpResp => {
-                  //   this.onChangeVC(this.toolEquipmentModel.VCId).then(vcResp => {
-                  //     this.onChangeSchool(this.toolEquipmentModel.SchoolId).then(schoolResp => {
-                  //       this.onChangeVT(this.toolEquipmentModel.VTId).then(vtResp => {
-                  //         this.toolEquipmentForm = this.createToolEquipmentForm();
-                  //       });
-                  //     });
-                  //   });
-                  // });
-                  // this.onChangeSector(this.toolEquipmentModel.SectorId);
+                this.schoolsectorjobService.getSchoolSectorJobById(this.toolEquipmentModel.SSJId)
+                  .subscribe((response: any) => {
+                    var schoolsectorjobModel = response.Result;
 
-                  this.schoolsectorjobService.getSchoolSectorJobById(this.toolEquipmentModel.SSJId)
-                    .subscribe((response: any) => {
-                      var schoolsectorjobModel = response.Result;
+                    this.toolEquipmentModel.SchoolId = schoolsectorjobModel.SchoolId;
+                    this.toolEquipmentModel.SectorId = schoolsectorjobModel.SectorId;
+                    this.toolEquipmentModel.JobRoleId = schoolsectorjobModel.JobRoleId;
 
-                      this.toolEquipmentModel.SchoolId = schoolsectorjobModel.SchoolId;
-                      this.toolEquipmentModel.SectorId = schoolsectorjobModel.SectorId;
-                      this.toolEquipmentModel.JobRoleId = schoolsectorjobModel.JobRoleId;
+                    // this.onChangeSchool(this.toolEquipmentModel.SchoolId).then(sResp => {
+                    //   this.onChangeSector(this.toolEquipmentModel.SectorId).then(vvResp => {
+                    //     this.onChangeJobRole(this.toolEquipmentModel.JobRoleId).then(vvResp => {
+                    //       // this.onChangeAcademicYear(this.toolEquipmentModel.AcademicYearId).then(vResp => {
+                    //       this.toolEquipmentForm = this.createToolEquipmentForm();
+                    //       // });
+                    //     });
+                    //   });
+                    // });
 
-                      this.onChangeSchool(this.toolEquipmentModel.SchoolId).then(sResp => {
-                        this.onChangeSector(this.toolEquipmentModel.SectorId).then(vvResp => {
-                          this.onChangeJobRole(this.toolEquipmentModel.JobRoleId).then(vvResp => {
-                            // this.onChangeAcademicYear(this.toolEquipmentModel.AcademicYearId).then(vResp => {
+                    this.setInputs(this.toolEquipmentModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                      this.setInputs(this.toolEquipmentModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                        this.setInputs(this.toolEquipmentModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                          this.setInputs(this.toolEquipmentModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
                             this.toolEquipmentForm = this.createToolEquipmentForm();
-                            // });
                           });
                         });
                       });
                     });
-                }
+                  });
+                // }
               });
           }
         }
       });
     });
   }
-
 
   onChangeSchool(schoolId): Promise<any> {
     this.resetInputsAfter('School');
@@ -259,7 +192,6 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
     });
   }
 
-
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
@@ -272,6 +204,8 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
         if (response.Success) {
           this.academicYearList = response.Results;
 
+          console.log(response.Results);
+
           if (response.Results.length == 1) {
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
             this.toolEquipmentForm.controls['JobRoleId'].setValue(null);
@@ -281,38 +215,16 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
         }
         resolve(true);
       });
+      this.setUserAction();
     });
+
   }
-
-
-  // onChangeAcademicYear(academicYearId): Promise<any> {
-  //   this.resetInputsAfter('AcademicYear');
-  //   this.setFormInputs();
-
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.commonService.GetMasterDataByType({
-  //       DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes'
-  //     }).subscribe((response) => {
-
-  //       if (response.Success) {
-  //         this.classList = response.Results;
-  //         this.loadFormInputs(response.Results, 'ClassId');
-  //       }
-  //       resolve(true);
-  //     });
-  //   });
-
-  //   this.setUserAction();
-
-  //   return promise;
-  // }
 
   setFormInputs() {
     this.SchoolInputId = this.CanUserChangeInput == true ? this.toolEquipmentForm.get('SchoolId').value : this.toolEquipmentModel.SchoolId;
     this.SectorInputId = this.CanUserChangeInput == true ? this.toolEquipmentForm.get('SectorId').value : this.toolEquipmentModel.SectorId;
     this.JobRoleInputId = this.CanUserChangeInput == true ? this.toolEquipmentForm.get('JobRoleId').value : this.toolEquipmentModel.JobRoleId;
     this.AcademicYearInputId = this.CanUserChangeInput == true ? this.toolEquipmentForm.get('AcademicYearId').value : this.toolEquipmentModel.AcademicYearId;
-    // this.ClassInputId = this.CanUserChangeInput == true ? this.toolEquipmentForm.get('ClassId').value : this.toolEquipmentModel.ClassId;
   }
 
   loadFormInputs(response, InputName) {
@@ -321,20 +233,22 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
       this.toolEquipmentForm.controls[InputName].enable();
     }
 
+    console.log(response);
+    console.log('innside load');
+
     if (response.length == 2) {
       var inputId = response[1].Id;
       this.toolEquipmentForm.controls[InputName].setValue(inputId);
       this.toolEquipmentForm.controls[InputName].disable();
+
       if (InputName == 'SchoolId') {
+        console.log('inside scg');
         this.onChangeSchool(inputId);
       } else if (InputName == 'SectorId') {
         this.onChangeSector(inputId);
       } else if (InputName == 'JobRoleId') {
         this.onChangeJobRole(inputId);
       }
-      // else if (InputName == 'AcademicYearId') {
-      //   this.onChangeAcademicYear(inputId);
-      // }
     }
   }
 
@@ -344,27 +258,50 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
       this.toolEquipmentForm.controls['SectorId'].setValue(null);
       this.toolEquipmentForm.controls['JobRoleId'].setValue(null);
       this.toolEquipmentForm.controls['AcademicYearId'].setValue(null);
-      this.toolEquipmentForm.controls['ClassId'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.toolEquipmentForm.controls['JobRoleId'].setValue(null);
       this.toolEquipmentForm.controls['AcademicYearId'].setValue(null);
-      this.toolEquipmentForm.controls['ClassId'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.toolEquipmentForm.controls['AcademicYearId'].setValue(null);
-      this.toolEquipmentForm.controls['ClassId'].setValue(null);
-    }
-
-    if (input == 'AcademicYear') {
-      this.toolEquipmentForm.controls['ClassId'].setValue(null);
     }
   }
 
   setUserAction() {
     this.CanUserChangeInput = true;
+  }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.toolEquipmentForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.toolEquipmentForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.toolEquipmentForm.controls[InputId].disable();
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+            this.toolEquipmentForm.controls[InputId].disable();
+          }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
   }
 
   // onChangeVTP(vtpId): Promise<any> {

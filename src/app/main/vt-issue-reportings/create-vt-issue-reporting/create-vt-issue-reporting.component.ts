@@ -71,11 +71,11 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
   ngOnInit(): void {
     this.issueReportingService.getDropdownforVTIssueReporting(this.UserModel).subscribe((results) => {
 
-      if (results[0].Success) {
-        this.schoolList = results[0].Results;
-        this.filteredSchoolItems = this.schoolList.slice();
-        this.loadFormInputs(this.schoolList, 'SchoolId');
-      }
+      // if (results[0].Success) {
+      //   this.schoolList = results[0].Results;
+      //   this.filteredSchoolItems = this.schoolList.slice();
+      //   this.loadFormInputs(this.schoolList, 'SchoolId');
+      // }
 
       if (results[1].Success) {
         this.monthList = results[1].Results;
@@ -100,6 +100,12 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.vtIssueReportingModel = new VTIssueReportingModel();
 
+            if (results[0].Success) {
+              this.schoolList = results[0].Results;
+              this.filteredSchoolItems = this.schoolList.slice();
+              this.loadFormInputs(this.schoolList, 'SchoolId');
+            }
+
             this.CanUserChangeInput = true;
 
           } else {
@@ -108,6 +114,7 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
             this.issueReportingService.getVTIssueReportingById(vtIssueReportingId)
               .subscribe((response: any) => {
                 this.vtIssueReportingModel = response.Result;
+
                 this.vtIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
                 this.vtIssueReportingModel.Month = response.Result.Month.split(',');
 
@@ -118,9 +125,6 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
                   this.PageRights.IsReadOnly = true;
                 }
 
-
-                // this.vtIssueReportingForm = this.createVTIssueReportingForm();
-
                 this.schoolsectorjobService.getSchoolSectorJobById(this.vtIssueReportingModel.SSJId)
                   .subscribe((response: any) => {
                     var schoolsectorjobModel = response.Result;
@@ -129,10 +133,11 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
                     this.vtIssueReportingModel.SectorId = schoolsectorjobModel.SectorId;
                     this.vtIssueReportingModel.JobRoleId = schoolsectorjobModel.JobRoleId;
 
-                    this.onChangeSchool(this.vtIssueReportingModel.SchoolId).then(sResp => {
-                      this.onChangeSector(this.vtIssueReportingModel.SectorId).then(vvResp => {
-                        this.onChangeJobRole(this.vtIssueReportingModel.JobRoleId).then(vvResp => {
-                          this.onChangeAcademicYear(this.vtIssueReportingModel.AcademicYearId).then(vResp => {
+                    this.setInputs(this.vtIssueReportingModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                      this.setInputs(this.vtIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                        this.setInputs(this.vtIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                          this.setInputs(this.vtIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                            this.onChangeAcademicYear(this.vtIssueReportingModel.AcademicYearId);
                             this.onChangeMainIssue(this.vtIssueReportingModel.MainIssue);
                             this.vtIssueReportingForm = this.createVTIssueReportingForm();
                           });
@@ -147,6 +152,7 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     });
     this.vtIssueReportingForm = this.createVTIssueReportingForm();
   }
+
 
   onChangeSchool(schoolId): Promise<any> {
     this.resetInputsAfter('School');
@@ -193,7 +199,6 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     });
   }
 
-
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
@@ -215,7 +220,9 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
         }
         resolve(true);
       });
+      this.setUserAction();
     });
+
   }
 
   onChangeAcademicYear(academicYearId): Promise<any> {
@@ -229,7 +236,6 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
 
         if (response.Success) {
           this.classList = response.Results;
-          // this.classList = response.Results.split(',');
 
           // this.loadFormInputs(response.Results, 'StudentClass');
         }
@@ -257,9 +263,11 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     }
 
     if (response.length == 2) {
+
       var inputId = response[1].Id;
       this.vtIssueReportingForm.controls[InputName].setValue(inputId);
       this.vtIssueReportingForm.controls[InputName].disable();
+
       if (InputName == 'SchoolId') {
         this.onChangeSchool(inputId);
       } else if (InputName == 'SectorId') {
@@ -278,28 +286,206 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
       this.vtIssueReportingForm.controls['SectorId'].setValue(null);
       this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
-    }
-
-    if (input == 'AcademicYear') {
-      this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
     }
   }
 
   setUserAction() {
     this.CanUserChangeInput = true;
   }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+            this.vtIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.vtIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.vtIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+            this.vtIssueReportingForm.controls[InputId].disable();
+          }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
+  }
+
+
+  // onChangeSchool(schoolId): Promise<any> {
+  //   this.resetInputsAfter('School');
+  //   this.setFormInputs();
+
+  //   this.IsLoading = true;
+  //   let promise = new Promise((resolve, reject) => {
+  //     this.commonService.GetMasterDataByType({
+  //       DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
+  //     }).subscribe((response) => {
+  //       if (response.Success) {
+  //         this.sectorList = response.Results;
+
+  //         if (response.Results.length == 1) {
+  //           this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
+  //           this.vtIssueReportingForm.controls['SchoolId'].setValue(null);
+  //         }
+
+  //         this.loadFormInputs(response.Results, 'SectorId');
+  //       }
+  //       resolve(true);
+  //     });
+
+  //   });
+  //   return promise;
+  // }
+
+  // onChangeSector(sectorId): Promise<any> {
+  //   this.resetInputsAfter('Sector');
+  //   this.setFormInputs();
+
+  //   return new Promise((resolve, reject) => {
+  //     this.commonService.GetMasterDataByType({
+  //       DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
+  //     }).subscribe((response) => {
+
+  //       if (response.Success) {
+  //         this.jobRoleList = response.Results;
+  //         this.loadFormInputs(response.Results, 'JobRoleId');
+  //       }
+
+  //       resolve(true);
+  //     });
+  //   });
+  // }
+
+
+  // onChangeJobRole(jobRoleId): Promise<any> {
+  //   this.resetInputsAfter('JobRole');
+  //   this.setFormInputs();
+
+  //   return new Promise((resolve, reject) => {
+  //     this.commonService.GetMasterDataByType({
+  //       DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
+  //     }).subscribe((response) => {
+
+  //       if (response.Success) {
+  //         this.academicYearList = response.Results;
+
+  //         if (response.Results.length == 1) {
+  //           this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
+  //           this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
+  //         }
+
+  //         this.loadFormInputs(response.Results, 'AcademicYearId');
+  //       }
+  //       resolve(true);
+  //     });
+  //   });
+  // }
+
+  // onChangeAcademicYear(academicYearId): Promise<any> {
+  //   this.resetInputsAfter('AcademicYear');
+  //   this.setFormInputs();
+
+  //   let promise = new Promise((resolve, reject) => {
+  //     this.commonService.GetMasterDataByType({
+  //       DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes'
+  //     }, false).subscribe((response) => {
+
+  //       if (response.Success) {
+  //         this.classList = response.Results;
+  //         // this.classList = response.Results.split(',');
+
+  //         // this.loadFormInputs(response.Results, 'StudentClass');
+  //       }
+  //       resolve(true);
+  //     });
+  //   });
+
+  //   this.setUserAction();
+
+  //   return promise;
+  // }
+
+  // setFormInputs() {
+  //   this.SchoolInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('SchoolId').value : this.vtIssueReportingModel.SchoolId;
+  //   this.SectorInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('SectorId').value : this.vtIssueReportingModel.SectorId;
+  //   this.JobRoleInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('JobRoleId').value : this.vtIssueReportingModel.JobRoleId;
+  //   this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('AcademicYearId').value : this.vtIssueReportingModel.AcademicYearId;
+  //   this.ClassInputId = this.CanUserChangeInput == true ? this.vtIssueReportingForm.get('StudentClass').value : this.vtIssueReportingModel.StudentClass;
+  // }
+
+  // loadFormInputs(response, InputName) {
+
+  //   if (!this.PageRights.IsReadOnly) {
+  //     this.vtIssueReportingForm.controls[InputName].enable();
+  //   }
+
+  //   if (response.length == 2) {
+  //     var inputId = response[1].Id;
+  //     this.vtIssueReportingForm.controls[InputName].setValue(inputId);
+  //     this.vtIssueReportingForm.controls[InputName].disable();
+  //     if (InputName == 'SchoolId') {
+  //       this.onChangeSchool(inputId);
+  //     } else if (InputName == 'SectorId') {
+  //       this.onChangeSector(inputId);
+  //     } else if (InputName == 'JobRoleId') {
+  //       this.onChangeJobRole(inputId);
+  //     } else if (InputName == 'AcademicYearId') {
+  //       this.onChangeAcademicYear(inputId);
+  //     }
+  //   }
+  // }
+
+  // resetInputsAfter(input) {
+
+  //   if (input == 'School') {
+  //     this.vtIssueReportingForm.controls['SectorId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
+  //   }
+
+  //   if (input == 'Sector') {
+  //     this.vtIssueReportingForm.controls['JobRoleId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
+  //   }
+
+  //   if (input == 'JobRole') {
+  //     this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
+  //     this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
+  //   }
+
+  //   if (input == 'AcademicYear') {
+  //     this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
+  //   }
+  // }
+
+  // setUserAction() {
+  //   this.CanUserChangeInput = true;
+  // }
 
   onStudentClassChange(selectedSectionIds) {
     if (selectedSectionIds.length == 0) {

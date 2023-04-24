@@ -118,8 +118,9 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         var errorMessages = this.getHtmlMessage(["The selected VT details are not present in <b>Vocational Trainner</b>.<br><br> Please visit the <a href='/vocational-trainers'><b>Vocational Trainer</b></a> page and provide required details for the selected VT."]);
         this.dialogService.openShowDialog(errorMessages);
         this.vtacademicclasssectionForm.controls['VTId'].setValue(null);
+      } else {
+        this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
-      this.selectedVTId = accountId;
     });
   }
 

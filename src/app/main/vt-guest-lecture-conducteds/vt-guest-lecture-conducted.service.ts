@@ -111,9 +111,10 @@ export class VTGuestLectureConductedService {
         let glTypeRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'GLType', SelectTitle: 'Guest Lecture Type' });
         let classRequest = this.http.GetClassesByVTId({ DataId: currentUser.LoginId, DataId1: currentUser.UserTypeId, SelectTitle: 'Class' });
         let moduleRequest = this.http.GetMasterDataByType({ DataType: 'CourseModules', SelectTitle: 'Modules Taught' });
+        let SchoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: currentUser.UserTypeId, roleId: currentUser.RoleCode, SelectTitle: 'School' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([glMethodlogyRequest, glConductedByRequest, glWorkStatusRequest, glTypeRequest, classRequest, moduleRequest]);
+        return forkJoin([glMethodlogyRequest, glConductedByRequest, glWorkStatusRequest, glTypeRequest, classRequest, moduleRequest, SchoolRequest]);
     }
 
     getGuestLectureModelFromFormGroup(formGroup: FormGroup): VTGuestLectureConductedModel {

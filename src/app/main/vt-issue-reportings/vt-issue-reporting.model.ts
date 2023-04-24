@@ -2,19 +2,20 @@ import { FuseUtils } from '@fuse/utils';
 
 export class VTIssueReportingModel {
     VTIssueReportingId: string;
-    AcademicYearId: string;
+
     VTId: string;
 
     SchoolId: string;
     SectorId: string;
     JobRoleId: string;
-    // ClassId: string;
     SSJId: string;
+    AcademicYearId: string;
+    StudentClass: string;
 
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
-    StudentClass: string;
+
     Month: string;
     StudentType: string;
     NoOfStudents: any;

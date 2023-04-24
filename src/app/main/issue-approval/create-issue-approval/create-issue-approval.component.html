@@ -56,8 +56,109 @@
 
                         <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" required
+                                appearance="outline" matTooltip="Select School" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                >
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+                            
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                 [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.SectorId.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" >
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" appearance="outline" required
+                                 [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Classes</mat-label>
+
+                            <mat-select formControlName="ClassId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.ClassId.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Classes Affected</mat-label>
+                            <mat-select name="studentClass" formControlName="StudentClass" appearance="outline" multiple
+                                
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <!-- <mat-option [value]="213" (click)="selectAll(ev)" #ev>All Classes</mat-option> -->
+                                <mat-option [value]="studentClassItem.Name" [disabled]="studentClassItem.IsDisabled"
+                                    *ngFor="let studentClassItem of classList">
+                                    {{ studentClassItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="issueApprovalForm.controls.StudentClass.invalid">
+                                {{getErrorMessage(issueApprovalForm, 'StudentClass')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
                             <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                <mat-label>Reporting Date</mat-label>
+                                <mat-label>Reporting Date2</mat-label>
                                 <input matInput [matDatepicker]="issueReportDate" name="issueReportDate" [max]="CurrentDate" 
                                 formControlName="IssueReportDate" [disabled]="PageRights.IsReadOnly">
                                 <mat-datepicker-toggle matSuffix [for]="issueReportDate"></mat-datepicker-toggle>
@@ -94,7 +195,7 @@
 
                         <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                            <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <!-- <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                 <mat-label>Classes Affected</mat-label>
                                 <mat-select name="studentClass" formControlName="StudentClass" multiple appearance="outline" [disabled]="PageRights.IsReadOnly" required>
                                     <mat-option [value]="studentClassItem.Id"
@@ -104,7 +205,7 @@
                                 </mat-select>
                                 <mat-error *ngIf="issueApprovalForm.controls.StudentClass.invalid">{{getErrorMessage(issueApprovalForm, 'StudentClass')}}
                                 </mat-error>
-                            </mat-form-field>
+                            </mat-form-field> -->
 
                             <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                 <mat-label>Months Affected</mat-label>

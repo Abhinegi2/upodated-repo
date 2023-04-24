@@ -233,13 +233,13 @@
                             skipLocationChange="true" replaceUrl="false" >
                             <mat-icon color="primary">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsView && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
+                        <button *ngIf="PageRights.IsEdit && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
                         mat-icon-button
                             [routerLink]="['/course-materials', 'edit', courseMaterial.CourseMaterialId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">edit</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsView && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
+                        <button *ngIf="PageRights.IsDelete && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
                         mat-icon-button 
                         color="warn" (click)="onDeleteCourseMaterial(courseMaterial.CourseMaterialId)">
                             <mat-icon>delete_outline</mat-icon>

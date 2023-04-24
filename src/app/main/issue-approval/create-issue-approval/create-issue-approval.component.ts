@@ -16,6 +16,7 @@ import { IssueApprovalService } from '../issue-approval.service';
 import { DropdownModel } from 'app/models/dropdown.model';
 // import { Observable } from 'rxjs';
 // import { UrlService } from 'app/common/shared/url.service';
+import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
 
 @Component({
   selector: 'hm-issue-reporting',
@@ -42,6 +43,19 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   backToApprovalPage: string;
   approvalParams: any;
 
+  schoolList: DropdownModel[];
+  filteredSchoolItems: any;
+  sectorList: DropdownModel[];
+  jobRoleList: DropdownModel[];
+  academicYearList: [DropdownModel];
+  classList: [DropdownModel];
+
+  SchoolInputId: string;
+  SectorInputId: string;
+  JobRoleInputId: string;
+  AcademicYearInputId: string;
+  ClassInputId: string;
+
   constructor(public commonService: CommonService,
     public router: Router,
     // private urlService: UrlService,
@@ -53,6 +67,7 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
     private hmIssueReportingService: HMIssueReportingService,
     private vtIssueReportingService: VTIssueReportingService,
     private vcIssueReportingService: VCIssueReportingService,
+    private schoolsectorjobService: SchoolSectorJobService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -125,9 +140,35 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
                 this.PageRights.IsReadOnly = true;
               }
 
-              this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
-              this.issueApprovalForm.get('Remarks').setValue(this.issueApprovalModel.Remarks);
-              this.issueApprovalForm = this.createIssueApprovalForm();
+              this.schoolsectorjobService.getSchoolSectorJobById(this.issueApprovalModel.SSJId)
+                .subscribe((response: any) => {
+                  var schoolsectorjobModel = response.Result;
+
+                  this.issueApprovalModel.SchoolId = schoolsectorjobModel.SchoolId;
+                  this.issueApprovalModel.SectorId = schoolsectorjobModel.SectorId;
+                  this.issueApprovalModel.JobRoleId = schoolsectorjobModel.JobRoleId;
+
+                  this.setInputs(this.issueApprovalModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                    this.setInputs(this.issueApprovalModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                      this.setInputs(this.issueApprovalModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                        this.setInputs(this.issueApprovalModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                          this.onChangeAcademicYear(this.issueApprovalModel.AcademicYearId);
+                          this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
+                          // this.hmIssueReportingForm = this.createHMIssueReportingForm();
+
+                          this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
+                          this.issueApprovalForm.get('Remarks').setValue(this.issueApprovalModel.Remarks);
+                          this.issueApprovalForm = this.createIssueApprovalForm();
+
+                        });
+                      });
+                    });
+                  });
+                });
+
+              // this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
+              // this.issueApprovalForm.get('Remarks').setValue(this.issueApprovalModel.Remarks);
+              // this.issueApprovalForm = this.createIssueApprovalForm();
             });
           }
         }
@@ -135,6 +176,59 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
     });
 
     this.issueApprovalForm = this.createIssueApprovalForm();
+  }
+
+  onChangeAcademicYear(academicYearId): Promise<any> {
+    // this.resetInputsAfter('AcademicYear');
+    // this.setFormInputs();
+
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'ClassesByACS', DataTypeID1: this.issueApprovalModel.SchoolId, DataTypeID2: this.issueApprovalModel.SectorId, DataTypeID3: this.issueApprovalModel.JobRoleId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes'
+      }, false).subscribe((response) => {
+
+        if (response.Success) {
+          this.classList = response.Results;
+
+          // this.loadFormInputs(response.Results, 'StudentClass');
+        }
+        resolve(true);
+      });
+    });
+
+    // this.setUserAction();
+
+    return promise;
+  }
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+            this.issueApprovalForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.issueApprovalForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.issueApprovalForm.controls[InputId].disable();
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+            this.issueApprovalForm.controls[InputId].disable();
+          }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
   }
 
   onChangeMainIssue(mainIssueId: string) {
@@ -225,9 +319,19 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   createIssueApprovalForm(): FormGroup {
     return this.formBuilder.group({
       IssueReportDate: new FormControl({ value: new Date(this.issueApprovalModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+      SchoolId: new FormControl({ value: this.issueApprovalModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
+      SectorId: new FormControl({ value: this.issueApprovalModel.SectorId, disabled: this.PageRights.IsReadOnly }),
+      JobRoleId: new FormControl({ value: this.issueApprovalModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
+
+      AcademicYearId: new FormControl({ value: this.issueApprovalModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
+      StudentClass: new FormControl({ value: this.issueApprovalModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+
+
       MainIssue: new FormControl({ value: this.issueApprovalModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       SubIssue: new FormControl({ value: this.issueApprovalModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
-      StudentClass: new FormControl({ value: this.issueApprovalModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
+      // StudentClass: new FormControl({ value: this.issueApprovalModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       Month: new FormControl({ value: this.issueApprovalModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       StudentType: new FormControl({ value: this.issueApprovalModel.StudentType, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       NoOfStudents: new FormControl({ value: this.issueApprovalModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
