@@ -120,6 +120,11 @@ export class VTGuestLectureConductedService {
     getGuestLectureModelFromFormGroup(formGroup: FormGroup): VTGuestLectureConductedModel {
         let guestLectureModel = new VTGuestLectureConductedModel();
 
+        guestLectureModel.SchoolId = formGroup.get('SchoolId').value;
+        guestLectureModel.SectorId = formGroup.get('SectorId').value;
+        guestLectureModel.JobRoleId = formGroup.get('JobRoleId').value;
+        guestLectureModel.AcademicYearId = formGroup.get('AcademicYearId').value;
+
         guestLectureModel.ClassTaughtId = formGroup.get("ClassTaughtId").value;
         guestLectureModel.SectionIds = formGroup.get("SectionIds").value;
         guestLectureModel.ReportingDate = this.http.getDateTimeFromControl(formGroup.get("ReportingDate").value);
