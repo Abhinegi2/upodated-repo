@@ -390,7 +390,7 @@
                     fxFlex.lt-sm="100">
                     <mat-label>Social Category</mat-label>
                     <mat-select name="socialCategory" formControlName="SocialCategory" required
-                        appearance="outline" [disabled]="PageRights.IsReadOnly">
+                        appearance="outline" [disabled]="PageRights.IsReadOnly" (selectionChange)="createStudentID()">
                         <mat-option [value]="socialCategoryItem.Id"
                             *ngFor="let socialCategoryItem of  socialCategoryList">
                             {{ socialCategoryItem.Name }}

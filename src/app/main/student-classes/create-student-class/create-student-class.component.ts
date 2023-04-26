@@ -121,19 +121,70 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     });
   }
 
-  // createStudentID() {
-  //   let org_id = 1;
-  //   let vocational_id = 1;
-  //   let doe = this.studentClassForm.controls['DateOfEnrollment'].value;
-  //   let selectedClass = this.classList.find((classItem) => classItem.Id === this.studentClassForm.controls['ClassId'].value);
-  //   let selectedGender = this.genderList.find((genderItem) => genderItem.Id === this.studentClassForm.controls['GenderId'].value);
-  //   let state_code = '01';
-  //   let app_no = 1;
-  //   let random = this.getRandomNumber(7);
+  createStudentID() {
+    let orgCode = '1';
+    let programCode = '1';
+    let selectedAcademicYr = this.academicYearList.find((aYItem) => aYItem.Id === this.studentClassForm.controls['AcademicYearId'].value);
+    let selectedClass = this.classList.find((classItem) => classItem.Id === this.studentClassForm.controls['ClassId'].value);
+    let selectedGender = this.genderList.find((genderItem) => genderItem.Id === this.studentClassForm.controls['Gender'].value);
+    let stateCode = '01';
+    let applicationCode = '01';
+    let randomCode = this.generateRandomNumber();
+
+    let genderCode = (selectedGender.Name == 'Boy') ? '02' : '01';
+
+    const classValue = selectedClass.Name;
+    let classCode = "";
+
+    switch (classValue) {
+      case 'Class 9':
+        classCode = '09';
+        break;
+      case 'Class 10':
+        classCode = '10';
+        break;
+      case 'Class 11':
+        classCode = '11';
+        break;
+      case 'Class 12':
+        classCode = '12';
+        break;
+      default:
+        classCode = "00"; // default code if no match found
+    }
+
+    const inputString = selectedAcademicYr.Name;
+    const yearArray = inputString.split("-"); // split the string into an array of years
+    let enrollmentCode = "";
+    for (let i = 0; i < yearArray.length; i++) {
+      const lastTwoDigits = yearArray[i].slice(2); // get the last two digits of the year
+      enrollmentCode += lastTwoDigits; // append the last two digits to the code
+    }
+
+    console.log('orgCode', orgCode);
+    console.log('programCode', programCode);
+    console.log('selectedAcademicYr', selectedAcademicYr);
+    console.log('selectedClass', selectedClass);
+    console.log('selectedGender', selectedGender);
+    console.log('stateCode', stateCode);
+    console.log('applicationCode', applicationCode);
+    console.log('randomCode', randomCode);
+    console.log('genderCode', genderCode);
+    console.log('classCode', classCode);
+    console.log('enrollmentCode', enrollmentCode);
+
+    var studentId = orgCode.concat(programCode, enrollmentCode, classCode, stateCode, applicationCode, genderCode, randomCode);
+
+    console.log(studentId);
+
+  }
+
+  // getRandomNumber(digit) {
+  //   return Math.random().toFixed(digit).split('.')[1];
   // }
 
-  getRandomNumber(digit) {
-    return Math.random().toFixed(digit).split('.')[1];
+  generateRandomNumber() {
+    return Math.floor(Math.random() * 9000000) + 1000000;
   }
 
   setEditInputValidation() {
@@ -446,16 +497,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         console.log('StudentClass deletion errors =>', error);
       });
   }
-
-  // generateStudentUniqueId(){
-
-  //   var Org_Identfier = 1;
-  //   var vocational = 1;
-  //   var Enrolment_Year = 2323;
-  //   var Class_Idenfier = 09;
-  //   var 
-
-  // }
 
   setDropoutReasonValidators() {
     const dropoutReasonControl = this.studentClassForm.get('DropoutReason');
