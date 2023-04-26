@@ -80,53 +80,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         this.socialCategoryList = results[5].Results;
       }
 
-      // if (results[8].Success) {
-      //   this.assessmentToBeConductedList = results[8].Results;
-      // }
-
-      // if (results[6].Success) {
-      //   this.CSWNStatus = results[6].Results;
-      // }
-
-      // if (results[7].Success) {
-      //   this.Stream = results[7].Results;
-      // }
-
-      // if (this.UserModel.RoleCode == 'VT') {
-      //   if (results[4].Success) {
-      //     this.classList = results[4].Results;
-      //   }
-      // } else {
-      //   if (results[4].Success) {
-      //     this.classList = results[4].Results;
-      //   }
-      // }
-
-      // if (this.UserModel.RoleCode == 'VT') {
-      //   if (results[2].Success) {
-      //     this.academicYearList = results[2].Results;
-      //   }
-      // } else {
-      //   if (results[3].Success) {
-      //     this.academicYearList = results[3].Results;
-      //   }
-      // }
-
-
-
-      // if (results[4].Success) {
-      //   this.vtpList = results[4].Results;
-      // }
-
-      // if (results[5].Success) {
-      //   this.academicYearAllList = results[5].Results;
-      // }
-
-      // let currentYearItem = this.academicYearAllList.find(ay => ay.IsSelected == true)
-      // if (currentYearItem != null) {
-      //   this.currentAcademicYearId = currentYearItem.Id;
-      // }
-
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -441,7 +394,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   }
 
   onChangeStudentVE9And10() {
-    console.log('here12');
     let classId = this.studentClassForm.controls['ClassId'].value;
     const selectedClass = this.classList.find((classItem) => classItem.Id === classId);
     let isStudentVE9And10 = this.studentClassForm.controls['IsStudentVE9And10'].value;
