@@ -29,7 +29,7 @@ export class VTGuestLectureConductedComponent extends BaseListComponent<VTGuestL
 
   ngOnInit(): void {
     this.vtGuestLectureConductedService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['ClassName', 'ReportingDate', 'GLType', 'GLTopic', 'GLName', 'ApprovalStatus', 'Actions'];
+      this.displayedColumns = ['ClassName', 'ReportingDate', 'GLType', 'GLTopic', 'GLName', 'ApprovalStatus','CreatedBy', 'UpdatedBy', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

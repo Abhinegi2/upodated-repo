@@ -221,8 +221,13 @@
                     </mat-cell>
                 </ng-container>
 
-
-                
+                   <!-- UpdatedBy Column -->
+                   <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
 
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
@@ -231,13 +236,13 @@
                         mat-icon-button
                             [routerLink]="['/course-materials', 'view', courseMaterial.CourseMaterialId]"
                             skipLocationChange="true" replaceUrl="false" >
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
                         mat-icon-button
                             [routerLink]="['/course-materials', 'edit', courseMaterial.CourseMaterialId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsDelete && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
                         mat-icon-button 

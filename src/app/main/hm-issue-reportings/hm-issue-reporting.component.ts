@@ -29,7 +29,8 @@ export class HMIssueReportingComponent extends BaseListComponent<HMIssueReportin
 
   ngOnInit(): void {
     this.hmIssueReportingService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['IssueReportDate', 'MainIssue', 'SubIssue', 'StudentType', 'NoOfStudents', 'ApprovalStatus', 'Actions'];
+      console.log(response);
+      this.displayedColumns = ['IssueReportDate', 'MainIssue', 'SubIssue', 'StudentType', 'NoOfStudents', 'ApprovalStatus', 'CreatedBy', 'UpdatedBy', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

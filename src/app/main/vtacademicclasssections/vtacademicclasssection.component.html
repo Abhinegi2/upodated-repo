@@ -38,7 +38,7 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
-                <button mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
                     class="add-vtacademicclasssection-button fuse-white mt-24 mt-md-0">
                     <span>ADD</span>
                 </button>

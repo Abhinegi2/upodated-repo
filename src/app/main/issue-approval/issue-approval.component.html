@@ -99,10 +99,28 @@
 
                 <!-- ApprovedDate Column -->
                 <ng-container matColumnDef="ApprovedDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Approved Date
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Action Taken Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{issueReporting.ApprovedDate | date: Constants.ShortDateFormat }}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CreatedBy Column -->
+                <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                   <!-- UpdatedBy Column -->
+                   <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let issueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{issueReporting.UpdatedBy}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -112,19 +130,19 @@
                         <button *ngIf="PageRights.IsView && issueType == 'VC'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility </mat-icon>
+                            <mat-icon class="data-view s-20">visibility </mat-icon>
                         </button>
 
                         <button *ngIf="PageRights.IsView && issueType == 'VT'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
 
                         <button *ngIf="PageRights.IsView && issueType == 'HM'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility </mat-icon>
+                            <mat-icon class="data-view s-20">visibility </mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
