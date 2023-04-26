@@ -285,6 +285,7 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
         if (response.Success) {
           if (InputId == 'SchoolId') {
             this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
             this.toolEquipmentForm.controls[InputId].disable();
           } else if (InputId == 'SectorId') {
             this.sectorList = response.Results;

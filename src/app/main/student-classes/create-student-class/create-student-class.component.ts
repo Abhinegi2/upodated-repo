@@ -25,7 +25,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   studentClassForm: FormGroup;
   studentClassModel: StudentClassModel;
   currentAcademicYearId: string;
-
   academicYearList: [DropdownModel];
 
   classList: [DropdownModel];
@@ -33,27 +32,14 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   genderList: [DropdownModel];
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
-
   socialCategoryList: [DropdownModel];
-  // assessmentToBeConductedList: [DropdownModel];
-  // CSWNStatus: [DropdownModel];
-  // Stream: [DropdownModel];
-  // vtpList: DropdownModel[];
-  // vtpId: string;
-  // getGVTId: string;
-
-  // vcList: DropdownModel[];
-  // vcId: string;
-  // vtList: DropdownModel[];
-
   vtId: any;
 
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
   schoolId: string;
 
-
-  noSectionId = "40b2d9eb-0dbf-11eb-ba32-0a761174c048";
+  selectedClass: string;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -180,6 +166,21 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         }
       });
     });
+  }
+
+  // createStudentID() {
+  //   let org_id = 1;
+  //   let vocational_id = 1;
+  //   let doe = this.studentClassForm.controls['DateOfEnrollment'].value;
+  //   let selectedClass = this.classList.find((classItem) => classItem.Id === this.studentClassForm.controls['ClassId'].value);
+  //   let selectedGender = this.genderList.find((genderItem) => genderItem.Id === this.studentClassForm.controls['GenderId'].value);
+  //   let state_code = '01';
+  //   let app_no = 1;
+  //   let random = this.getRandomNumber(7);
+  // }
+
+  getRandomNumber(digit) {
+    return Math.random().toFixed(digit).split('.')[1];
   }
 
   setEditInputValidation() {
@@ -352,8 +353,9 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     return promise;
   }
 
-
   onChangeClass(classId): Promise<any> {
+
+    this.classCheckForStream(classId);
 
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
 
@@ -397,6 +399,65 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   }
 
+  classCheckForStream(classId) {
+
+    //Reset input 
+    this.studentClassForm.controls["Stream"].reset();
+    this.studentClassForm.controls["IsStudentVE9And10"].reset();
+    this.studentClassForm.controls['IsSameStudentTrade'].reset();
+
+    //Disable Input
+    this.studentClassForm.controls['IsSameStudentTrade'].disable();
+
+    const selectedClass = this.classList.find((classItem) => classItem.Id === classId);
+    this.selectedClass = selectedClass.Name;
+    if ((selectedClass.Name === "Class 11") || (selectedClass.Name === "Class 12")) {
+      //Enable Input
+      this.studentClassForm.controls['Stream'].enable();
+      this.studentClassForm.controls['IsStudentVE9And10'].enable();
+
+      //Add validation
+      this.studentClassForm.controls["Stream"].setValidators([Validators.required]);
+      this.studentClassForm.controls["IsStudentVE9And10"].setValidators([Validators.required]);
+
+      //Show validation message
+      this.studentClassForm.controls['Stream'].markAsTouched();
+      this.studentClassForm.controls['IsStudentVE9And10'].markAsTouched();
+    }
+    else {
+      //Validation remove
+      this.studentClassForm.controls["Stream"].clearValidators();
+      this.studentClassForm.controls["IsStudentVE9And10"].clearValidators();
+      this.studentClassForm.controls["IsSameStudentTrade"].clearValidators();
+
+      //Disable input 
+      this.studentClassForm.controls['Stream'].disable();
+      this.studentClassForm.controls["IsStudentVE9And10"].disable();
+      this.studentClassForm.controls["IsSameStudentTrade"].disable();
+    }
+
+    this.onChangeStudentVE9And10();
+
+  }
+
+  onChangeStudentVE9And10() {
+    console.log('here12');
+    let classId = this.studentClassForm.controls['ClassId'].value;
+    const selectedClass = this.classList.find((classItem) => classItem.Id === classId);
+    let isStudentVE9And10 = this.studentClassForm.controls['IsStudentVE9And10'].value;
+
+    if (isStudentVE9And10 == 'Yes' && (selectedClass.Name == "Class 11" || selectedClass.Name == "Class 12")) {
+      //Add validation
+      this.studentClassForm.controls["IsSameStudentTrade"].setValidators([Validators.required]);
+      this.studentClassForm.controls['IsSameStudentTrade'].enable();
+    } else {
+      //Remove validation/Disable/Reset input
+      this.studentClassForm.controls["IsSameStudentTrade"].clearValidators();
+      this.studentClassForm.controls['IsSameStudentTrade'].reset();
+      this.studentClassForm.controls["IsSameStudentTrade"].disable();
+    }
+  }
+
   saveOrUpdateStudentClassDetails() {
     if (!this.studentClassForm.valid) {
       this.validateAllFormFields(this.studentClassForm);
@@ -411,8 +472,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.studentClassModel.DateOfDropout = null;
       this.studentClassModel.DropoutReason = null;
     }
-
-    // this.studentClassModel.GVTId = "d9cd0875-9b16-4197-aab7-6d429b989351";
 
     this.studentClassService.createOrUpdateStudentClass(this.studentClassModel)
       .subscribe((studentClassResp: any) => {
@@ -508,9 +567,9 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
 
-      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100)]),
 
-      // SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
+      // IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
 
       CSWNStatus: new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
 
@@ -529,8 +588,8 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
       VTId: new FormControl({ value: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentClassModel.VTId), disabled: this.PageRights.IsReadOnly }),
 
-      HaveVE: new FormControl({ value: this.studentClassModel.HaveVE, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
-      SameTrade: new FormControl({ value: this.studentClassModel.SameTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+      IsStudentVE9And10: new FormControl({ value: this.studentClassModel.IsStudentVE9And10, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
+      IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
 
     });
   }

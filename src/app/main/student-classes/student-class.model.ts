@@ -17,18 +17,18 @@ export class StudentClassModel {
     LastName: string;
     FullName: string;
     Gender: string;
-    FatherName:string
-    MotherName:string
-    GuardianName:string;
+    FatherName: string
+    MotherName: string
+    GuardianName: string;
     Mobile: string;
     SecondMobileNo: string;
     AssessmentToBeConducted: string;
     DateOfBirth: Date;
     Stream: string;
     CSWNStatus: string;
-    HaveVE: string;
-    SameTrade: string;
-    StudentUniqueId:string;
+    IsStudentVE9And10: string;
+    IsSameStudentTrade: string;
+    StudentUniqueId: string;
     SocialCategory: string;
     WhatappNo: string;
     DateOfEnrollment: Date;
@@ -64,9 +64,9 @@ export class StudentClassModel {
         this.MotherName = studentClassItem.MotherName || '';
         this.GuardianName = studentClassItem.GuardianName || '';
         this.Mobile = studentClassItem.Mobile || '';
-        this.SameTrade = studentClassItem.SameTrade || '';
+        this.IsSameStudentTrade = studentClassItem.IsSameStudentTrade || '';
         this.StudentUniqueId = studentClassItem.StudentUniqueId || '';
-        this.HaveVE = studentClassItem.HaveVE || '';
+        this.IsStudentVE9And10 = studentClassItem.IsStudentVE9And10 || '';
         this.AssessmentToBeConducted = studentClassItem.AssessmentToBeConducted || '';
         this.DateOfBirth = studentClassItem.DateOfBirth || '';
         this.Stream = studentClassItem.Stream || '';

@@ -283,7 +283,7 @@
 
                     <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                         <mat-label>Guardian Name</mat-label>
-                        <input matInput name="guardianName" formControlName="GuardianName" required placeholder="Nayak"
+                        <input matInput name="guardianName" formControlName="GuardianName" placeholder="Nayak"
                             matTooltip="First letter should be capital." matTooltipPosition="above">
                         <mat-error *ngIf="studentClassForm.controls.GuardianName.invalid">
                             {{getErrorMessage(studentClassForm, 'GuardianName')}}
@@ -313,7 +313,7 @@
                                 <mat-option value="Science PCB">Science PCB</mat-option>
                                 <mat-option value="Science PCM">Science PCM</mat-option>
                                 <mat-option value="Science PCMB">Science PCMB</mat-option>
-                                <mat-option value="Arts & Humanities">Arts Humanities</mat-option>
+                                <mat-option value="Arts & Humanities">Arts & Humanities</mat-option>
                                 <mat-option value="Commarce">Commarce</mat-option>
                                 <mat-option value="Others">Others</mat-option>
                             </mat-select>
@@ -449,43 +449,40 @@
                         </mat-form-field>
                     </div>
 
-
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
-                        <mat-label>Did students have a VE in 9th & 10th?</mat-label>
-                        <mat-radio-group aria-labelledby="HaveVE" name="HaveVE"
-                            formControlName="HaveVE" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
-                            fxFlex.lt-sm="100" fxLayoutGap="30px" class="HaveVE-space"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-label fxLayoutGap="20px">Did students have a VE in 9th & 10th?</mat-label>
+                        <mat-radio-group fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+                            formControlName="IsStudentVE9And10" (change)="onChangeStudentVE9And10()"
+                            [required]="selectedClass == 'Class 11'|| selectedClass == 'Class 12'"
                             [disabled]="PageRights.IsReadOnly">
                             <mat-radio-button value="Yes">Yes</mat-radio-button>
                             <mat-radio-button value="No">No</mat-radio-button>
-                        </mat-radio-group>
-                        <mat-error *ngIf="studentClassForm.controls.HaveVE.invalid">
-                            {{getErrorMessage(studentClassForm, 'HaveVE')}}
-                        </mat-error>
 
-                        
-                </div>
-                
-                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                fxLayoutGap.lt-md="0px">
-                <mat-label>Is the student continuing the same trade?</mat-label>
-                <mat-radio-group aria-labelledby="SameTrade" name="SameTrade"
-                    formControlName="SameTrade" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
-                    fxFlex.lt-sm="100" fxLayoutGap="30px" class="SameTrade-space"
-                    [disabled]="PageRights.IsReadOnly">
-                    <mat-radio-button value="Yes">Yes</mat-radio-button>
-                    <mat-radio-button value="No">No</mat-radio-button>
-                </mat-radio-group>
-                <mat-error *ngIf="studentClassForm.controls.SameTrade.invalid">
-                    {{getErrorMessage(studentClassForm, 'SameTrade')}}
-                </mat-error>
-                </div>
+                            <mat-error *ngIf="studentClassForm.controls.IsStudentVE9And10.invalid">
+                                {{getErrorMessage(studentClassForm, 'IsStudentVE9And10')}}
+                            </mat-error>
+                        </mat-radio-group>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-label>Is the student continuing the same trade?</mat-label>
+                        <mat-radio-group fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
+                            formControlName="IsSameStudentTrade"
+                            [required]="studentClassForm.controls.IsStudentVE9And10.value == 'Yes'"
+                            [disabled]="PageRights.IsReadOnly || studentClassForm.controls.IsStudentVE9And10.value == 'No'">
+                            <mat-radio-button value="Yes">Yes</mat-radio-button>
+                            <mat-radio-button value="No">No</mat-radio-button>
+
+                            <mat-error *ngIf="studentClassForm.controls.IsSameStudentTrade.invalid">
+                                {{getErrorMessage(studentClassForm, 'IsSameStudentTrade')}}
+                            </mat-error>
+                        </mat-radio-group>
+                    </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">    
-
-
                         <span class="checkbox-space">Is Active?</span>
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
                         </mat-checkbox>
