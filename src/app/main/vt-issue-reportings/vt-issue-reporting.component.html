@@ -104,23 +104,41 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- CreatedBy Column -->
+                  <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- UpdatedBy Column -->
+                 <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtIssueReporting" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtIssueReporting.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let vtIssueReporting">
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vt-issue-reporting', 'view', vtIssueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                             [routerLink]="['/vt-issue-reporting', 'edit', vtIssueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn"
                             (click)="onDeleteVTIssueReporting(vtIssueReporting.IssueReportingId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-20">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

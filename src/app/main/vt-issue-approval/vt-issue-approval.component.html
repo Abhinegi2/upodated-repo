@@ -17,7 +17,7 @@
                     shopping_basket
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    VT ISSUE APPROVAL
+                    VT ISSUE
                     <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
                         <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                     </a>
@@ -121,17 +121,17 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vt-issue-reporting', 'view', vtIssueReporting.VTIssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon >visibility</mat-icon>
                         </button>
                         
                         <button *ngIf="vtIssueReporting.ApprovalStatus == null" mat-icon-button                         
                         (click)="saveOrUpdateVTIssueApprovalDetails('Approved', vtIssueReporting.VTIssueReportingId)">
-                            <mat-icon color="primary">check</mat-icon>
+                            <mat-icon class="data-active s-20">check</mat-icon>
                         </button>
 
                         <button *ngIf="vtIssueReporting.ApprovalStatus == null" mat-icon-button                        
                         (click)="saveOrUpdateVTIssueApprovalDetails('Rejected', vtIssueReporting.VTIssueReportingId)">
-                            <mat-icon color="primary">close</mat-icon>
+                            <mat-icon class="data-inactive s-20">close</mat-icon>
                         </button>  
                     </mat-cell>
                 </ng-container>

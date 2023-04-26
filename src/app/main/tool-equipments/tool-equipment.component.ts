@@ -147,7 +147,7 @@ export class ToolEquipmentComponent extends BaseListComponent<ToolEquipmentModel
     this.SearchBy.RoleId = this.UserModel.RoleCode;
 
     this.toolEquipmentService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['AcademicYear', 'VCName', 'VTName', 'SchoolName', 'SectorName', 'JobRoleName', 'ReceiptDate', 'TEStatus', 'Actions'];
+      this.displayedColumns = ['AcademicYear', 'VCName', 'VTName', 'SchoolName', 'SectorName', 'JobRoleName', 'ReceiptDate', 'TEStatus', 'CreatedBy', 'UpdatedBy', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;

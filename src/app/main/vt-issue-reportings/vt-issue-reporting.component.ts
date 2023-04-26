@@ -29,7 +29,7 @@ export class VTIssueReportingComponent extends BaseListComponent<VTIssueReportin
 
   ngOnInit(): void {
     this.vtIssueReportingService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['IssueReportDate', 'MainIssue', 'SubIssue', 'StudentType', 'NoOfStudents', 'ApprovalStatus', 'Actions'];
+      this.displayedColumns = ['IssueReportDate', 'MainIssue', 'SubIssue', 'StudentType', 'NoOfStudents', 'ApprovalStatus', 'CreatedBy', 'UpdatedBy', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
