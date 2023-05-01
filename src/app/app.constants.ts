@@ -71,7 +71,47 @@ export class AppConstants {
     public BlockResoursePerson: string = "f1fe3a0f-4ee8-4f1d-ab3b-6d9d224c4396";
     public DefaultImageUrl: string = "/src/assets/images/no-image.png";
     public DefaultImageState: any = JSON.parse('{"detail":{"checked":false,"value":"false"}}');
-    
+
+
+    /*Generate StudentUniqueID*/
+
+    //Organisation Code
+    public OrganisationCode = {
+        GovtOrg: '1',
+        PrivateOrg: '2',
+    }
+    //Program Code
+    public ProgramCode = {
+        Vocational: '1',
+        NonVocational: '0',
+    }
+    //State Code
+    public StateCode = {
+        Delhi: '07', //Example
+        Maharastra: '06', //Example
+        Oddisa: '05', //Example
+    }
+    //Application Code
+    public ApplicationCode = {
+        BasicPathways: '01',
+        LHDelhi: '02',
+        MHDelhi: '03',
+        GJDelhi: '04',
+    }
+    //Gender Code
+    public GenderCode = {
+        Girl: '1',
+        Boy: '2'
+    };
+
+    //Class Code
+    public ClassCode = {
+        'Class 9': '09',
+        'Class 10': '10',
+        'Class 11': '11',
+        'Class 12': '12',
+    };
+
     public Actions = {
         Add: "add",
         New: "new",
@@ -92,6 +132,6 @@ export class AppConstants {
         BulkUploadData: 'BulkUpload',
         VCSchoolVisit: "VCSchoolVisits",
         ComplaintScreenshot: "ComplaintScreenshots",
-        ExitSurveyStudentsData:"ExitSurvey"
+        ExitSurveyStudentsData: "ExitSurvey"
     };
 }

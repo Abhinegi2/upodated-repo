@@ -470,8 +470,8 @@
                         <mat-label>Is the student continuing the same trade?</mat-label>
                         <mat-radio-group fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px"
                             formControlName="IsSameStudentTrade"
-                            [required]="studentClassForm.controls.IsStudentVE9And10.value == 'Yes'"
-                            [disabled]="PageRights.IsReadOnly || studentClassForm.controls.IsStudentVE9And10.value == 'No'">
+                            [required]="studentClassForm.controls.IsStudentVE9And10.value === 'Yes' && (selectedClass === 'Class 11' || selectedClass === 'Class 12')"
+                            [disabled]="PageRights.IsReadOnly || (studentClassForm.controls.IsStudentVE9And10.value === 'No' && selectedClass !== 'Class 11' && selectedClass !== 'Class 12')">
                             <mat-radio-button value="Yes">Yes</mat-radio-button>
                             <mat-radio-button value="No">No</mat-radio-button>
 

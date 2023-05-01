@@ -122,36 +122,19 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   }
 
   createStudentID() {
-    let orgCode = '1';
-    let programCode = '1';
     let selectedAcademicYr = this.academicYearList.find((aYItem) => aYItem.Id === this.studentClassForm.controls['AcademicYearId'].value);
     let selectedClass = this.classList.find((classItem) => classItem.Id === this.studentClassForm.controls['ClassId'].value);
     let selectedGender = this.genderList.find((genderItem) => genderItem.Id === this.studentClassForm.controls['Gender'].value);
-    let stateCode = '01';
-    let applicationCode = '01';
     let randomCode = this.generateRandomNumber();
+    let selectedGenderName = selectedGender.Name;
+    let selectedClassName = selectedClass.Name;
 
-    let genderCode = (selectedGender.Name == 'Boy') ? '02' : '01';
-
-    const classValue = selectedClass.Name;
-    let classCode = "";
-
-    switch (classValue) {
-      case 'Class 9':
-        classCode = '09';
-        break;
-      case 'Class 10':
-        classCode = '10';
-        break;
-      case 'Class 11':
-        classCode = '11';
-        break;
-      case 'Class 12':
-        classCode = '12';
-        break;
-      default:
-        classCode = "00"; // default code if no match found
-    }
+    let orgCode = this.Constants.OrganisationCode.GovtOrg;
+    let programCode = this.Constants.ProgramCode.Vocational;
+    let stateCode = this.Constants.StateCode.Delhi;
+    let applicationCode = this.Constants.ApplicationCode.LHDelhi;
+    let genderCode = this.Constants.GenderCode[selectedGenderName]
+    let classCode = this.Constants.ClassCode[selectedClassName];
 
     const inputString = selectedAcademicYr.Name;
     const yearArray = inputString.split("-"); // split the string into an array of years
@@ -160,6 +143,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       const lastTwoDigits = yearArray[i].slice(2); // get the last two digits of the year
       enrollmentCode += lastTwoDigits; // append the last two digits to the code
     }
+
 
     console.log('orgCode', orgCode);
     console.log('programCode', programCode);
@@ -173,7 +157,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     console.log('classCode', classCode);
     console.log('enrollmentCode', enrollmentCode);
 
-    var studentId = orgCode.concat(programCode, enrollmentCode, classCode, stateCode, applicationCode, genderCode, randomCode);
+    var studentId = orgCode.concat(programCode, enrollmentCode, classCode, stateCode, applicationCode, genderCode);
 
     console.log(studentId);
 

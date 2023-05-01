@@ -39,7 +39,7 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
   holidayTypeList: any;
   observationDayList: any;
   leaveTypeList: any;
-  leaveModeList:any;
+  leaveModeList: any;
   minReportingDate: Date;
 
   constructor(public commonService: CommonService,
@@ -55,21 +55,20 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
 
     // Set the default vcDailyReporting Model
     this.vcDailyReportingModel = new VCDailyReportingModel();
-    
+
     let dateOfAllocation = new Date(this.UserModel.DateOfAllocation);
     let maxDate = new Date(Date.now());
-    
-      let Time = maxDate.getTime() - dateOfAllocation.getTime(); 
-      let Days = Math.floor(Time / (1000 * 3600 * 24)); 
-      if (Days < this.Constants.BackDatedReportingDays)
-      {
-        this.minReportingDate = new Date(this.UserModel.DateOfAllocation);
-      }
-      else{
-        let past7days = maxDate;
-        past7days.setDate(past7days.getDate() - this.Constants.BackDatedReportingDays)
-        this.minReportingDate = past7days;
-      }
+
+    let Time = maxDate.getTime() - dateOfAllocation.getTime();
+    let Days = Math.floor(Time / (1000 * 3600 * 24));
+    if (Days < this.Constants.BackDatedReportingDays) {
+      this.minReportingDate = new Date(this.UserModel.DateOfAllocation);
+    }
+    else {
+      let past7days = maxDate;
+      past7days.setDate(past7days.getDate() - this.Constants.BackDatedReportingDays)
+      this.minReportingDate = past7days;
+    }
   }
 
   ngOnInit(): void {
@@ -77,7 +76,7 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
     this.vcDailyReportingService.getDropdownForVCDailyReporting().subscribe(results => {
       if (results[0].Success) {
         this.reportTypeList = results[0].Results;
-        
+
         this.route.paramMap.subscribe(params => {
           if (params.keys.length > 0) {
             this.PageRights.ActionType = params.get('actionType');
@@ -116,12 +115,12 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
     this.vcDailyReportingForm = this.createVCDailyReportingForm();
   }
 
-  onChangeReportingDate(): boolean{
+  onChangeReportingDate(): boolean {
     let reportingDate = this.vcDailyReportingForm.get('ReportDate').value;
 
-    if(reportingDate != null && new Date(reportingDate).getDay() == 0){
-        this.dialogService.openShowDialog("User cannot submit the VC Daily Reporting on Sunday");
-        return false
+    if (reportingDate != null && new Date(reportingDate).getDay() == 0) {
+      this.dialogService.openShowDialog("User cannot submit the VC Daily Reporting on Sunday");
+      return false
     }
 
     return true
@@ -229,7 +228,8 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
       else if (workTypeId == "153") {
         this.isAllowSchool = true;
 
-        this.commonService.GetSchoolsByVCId({ DataId: this.UserModel.LoginId, DataId1: this.UserModel.UserTypeId, SelectTitle: 'School' }).subscribe((response) => {
+        this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'School' }).subscribe((response) => {
+          // this.commonService.GetSchoolsByVCId({ DataId: this.UserModel.LoginId, DataId1: this.UserModel.UserTypeId, SelectTitle: 'School' }).subscribe((response) => {
           if (response.Success) {
             this.schoolList = response.Results;
           }
@@ -284,11 +284,11 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
 
   saveOrUpdateVCDailyReportingDetails() {
     if (!this.vcDailyReportingForm.valid) {
-      this.validateAllFormFields(this.vcDailyReportingForm);  
+      this.validateAllFormFields(this.vcDailyReportingForm);
       return;
     }
 
-    if(!this.onChangeReportingDate()){
+    if (!this.onChangeReportingDate()) {
       return;
     }
 
