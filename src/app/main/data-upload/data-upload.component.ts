@@ -50,7 +50,7 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'VocationalTrainers', Name: 'Vocational Trainers', Template: 'VocationalTrainers_Template.xlsx' },
       { Id: 'SchoolSectorJobRole', Name: 'School Sector JobRole', Template: 'SchoolsSectorJobRole_Template.xlsx' },
       { Id: 'SectorJobRoles', Name: 'Sector Job Roles',class:"data-active", Template: 'SectorJobRoles_Template.xlsx' },
-      { Id: 'GenericVTMapping', Name: 'Generic VT Mapping', Template: 'GenericVTMapping_Template.xlsx' },
+      { Id: 'VC_Mapping_(GVT)', Name: 'VC Mapping (GVT)', Template: 'VC_Mapping_GVT.xlsx' },
       { Id: 'VTAcademicClassSection', Name: 'VT Academic Class Section', Template: 'VTAcademicClassSection_Template.xlsx' },
       { Id: 'Students', Name: 'Students', Template: 'Students_Template.xlsx' },
       { Id: 'Employer', Name: 'Employer', Template: 'Employers_Template.xlsx'  },
