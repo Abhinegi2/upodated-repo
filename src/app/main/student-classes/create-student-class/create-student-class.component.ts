@@ -120,57 +120,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       });
     });
   }
-
-  createStudentID() {
-    let selectedAcademicYr = this.academicYearList.find((aYItem) => aYItem.Id === this.studentClassForm.controls['AcademicYearId'].value);
-    let selectedClass = this.classList.find((classItem) => classItem.Id === this.studentClassForm.controls['ClassId'].value);
-    let selectedGender = this.genderList.find((genderItem) => genderItem.Id === this.studentClassForm.controls['Gender'].value);
-    let randomCode = this.generateRandomNumber();
-    let selectedGenderName = selectedGender.Name;
-    let selectedClassName = selectedClass.Name;
-
-    let orgCode = this.Constants.OrganisationCode.GovtOrg;
-    let programCode = this.Constants.ProgramCode.Vocational;
-    let stateCode = this.Constants.StateCode.Delhi;
-    let applicationCode = this.Constants.ApplicationCode.LHDelhi;
-    let genderCode = this.Constants.GenderCode[selectedGenderName]
-    let classCode = this.Constants.ClassCode[selectedClassName];
-
-    const inputString = selectedAcademicYr.Name;
-    const yearArray = inputString.split("-"); // split the string into an array of years
-    let enrollmentCode = "";
-    for (let i = 0; i < yearArray.length; i++) {
-      const lastTwoDigits = yearArray[i].slice(2); // get the last two digits of the year
-      enrollmentCode += lastTwoDigits; // append the last two digits to the code
-    }
-
-
-    console.log('orgCode', orgCode);
-    console.log('programCode', programCode);
-    console.log('selectedAcademicYr', selectedAcademicYr);
-    console.log('selectedClass', selectedClass);
-    console.log('selectedGender', selectedGender);
-    console.log('stateCode', stateCode);
-    console.log('applicationCode', applicationCode);
-    console.log('randomCode', randomCode);
-    console.log('genderCode', genderCode);
-    console.log('classCode', classCode);
-    console.log('enrollmentCode', enrollmentCode);
-
-    var studentId = orgCode.concat(programCode, enrollmentCode, classCode, stateCode, applicationCode, genderCode);
-
-    console.log(studentId);
-
-  }
-
-  // getRandomNumber(digit) {
-  //   return Math.random().toFixed(digit).split('.')[1];
-  // }
-
-  generateRandomNumber() {
-    return Math.floor(Math.random() * 9000000) + 1000000;
-  }
-
   setEditInputValidation() {
     this.studentClassForm.controls['SchoolId'].disable();
     this.studentClassForm.controls['SectorId'].disable();
@@ -521,7 +470,10 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
       StudentId: new FormControl(this.studentClassModel.StudentId),
       //for PMU(GTVID)
+
       SchoolId: new FormControl({ value: this.studentClassModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
+
+      StudentUniqueNumber: new FormControl({ value: this.studentClassModel.StudentUniqueNumber, disabled: true }),
       SectorId: new FormControl({ value: this.studentClassModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.studentClassModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
 
@@ -544,7 +496,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
 
-      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100)]),
+      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }),
 
       // IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
 

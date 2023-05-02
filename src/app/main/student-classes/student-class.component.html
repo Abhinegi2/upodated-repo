@@ -195,6 +195,16 @@
             <mat-table class="student-class-table responsive-table" #table [dataSource]="tableDataSource" matSort
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
+
+                 <!-- StudentUniqueNumber Column -->
+                 <ng-container matColumnDef="StudentUniqueNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Student Unique Number
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.StudentUniqueNumber}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
