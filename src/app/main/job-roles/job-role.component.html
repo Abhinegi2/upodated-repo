@@ -90,8 +90,8 @@
                 <ng-container matColumnDef="IsActive">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is Active?</mat-header-cell>
                     <mat-cell *matCellDef="let jobRole" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="jobRole.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!jobRole.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <mat-icon *ngIf="jobRole.IsActive" class="data-active s-22">check</mat-icon>
+                        <mat-icon *ngIf="!jobRole.IsActive" class="data-inactive s-22">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
@@ -100,15 +100,15 @@
                     <mat-cell *matCellDef="let jobRole" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/job-roles', 'view', jobRole.JobRoleId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                         [routerLink]="['/job-roles', 'edit', jobRole.JobRoleId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-22">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteJobRole(jobRole.JobRoleId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
