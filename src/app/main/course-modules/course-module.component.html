@@ -110,8 +110,8 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active
                     </mat-header-cell>
                     <mat-cell *matCellDef="let courseModule" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="courseModule.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!courseModule.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <mat-icon *ngIf="courseModule.IsActive" class="data-active">check</mat-icon>
+                        <mat-icon *ngIf="!courseModule.IsActive" class="data-inactive">close</mat-icon>
                     </mat-cell>
                 </ng-container>
 
@@ -121,16 +121,16 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/course-modules', 'view', courseModule.CourseModuleId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                             [routerLink]="['/course-modules', 'edit', courseModule.CourseModuleId]" skipLocationChange="true"
                             replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-22">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteCourseModule(courseModule.CourseModuleId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
