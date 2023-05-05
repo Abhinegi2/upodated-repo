@@ -97,6 +97,7 @@ export class CreateSchoolClassComponent extends BaseComponent<SchoolClassModel> 
     return this.formBuilder.group({
       ClassId: new FormControl(this.schoolClassModel.ClassId),
       Name: new FormControl({ value: this.schoolClassModel.Name, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      ClassCode: new FormControl({ value: this.schoolClassModel.ClassCode, disabled: this.PageRights.IsReadOnly , }, [Validators.maxLength(2), Validators.minLength(2), Validators.required, Validators.pattern(this.Constants.Regex.Number),]),
       Description: new FormControl({ value: this.schoolClassModel.Description, disabled: this.PageRights.IsReadOnly }),
       Remarks: new FormControl({ value: this.schoolClassModel.Remarks, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.schoolClassModel.IsActive, disabled: this.PageRights.IsReadOnly }),

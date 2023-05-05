@@ -103,6 +103,7 @@ export class CreateAcademicYearComponent extends BaseComponent<AcademicYearModel
       AcademicYearId: new FormControl(this.academicYearModel.AcademicYearId),
       PhaseId: new FormControl({ value: this.academicYearModel.PhaseId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       YearName: new FormControl({ value: this.academicYearModel.YearName, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      AcademicYearCode: new FormControl({ value: this.academicYearModel.AcademicYearCode, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(4), Validators.minLength(4), Validators.required,]),
       Description: new FormControl({ value: this.academicYearModel.Description, disabled: this.PageRights.IsReadOnly }),
       IsCurrentAcademicYear: new FormControl({ value: this.academicYearModel.IsCurrentAcademicYear, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.academicYearModel.IsActive, disabled: this.PageRights.IsReadOnly }),
