@@ -3,6 +3,7 @@ import { FuseUtils } from '@fuse/utils';
 export class SchoolClassModel {
     ClassId: string;
     Name: string;
+    ClassCode: string;
     Description: string;
     Remarks: string;
     IsActive: boolean;
@@ -13,6 +14,7 @@ export class SchoolClassModel {
 
         this.ClassId = schoolClassItem.ClassId || FuseUtils.NewGuid();
         this.Name = schoolClassItem.Name || '';
+        this.ClassCode = schoolClassItem.ClassCode || '';
         this.Description = schoolClassItem.Description || '';
         this.Remarks = schoolClassItem.Remarks || '';
         this.IsActive = schoolClassItem.IsActive || true;
