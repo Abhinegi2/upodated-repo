@@ -34,7 +34,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   gvtList: [DropdownModel];
   filteredGVTItems: any;
-  selectedVTId: any = null;
+  selectedVTId: any;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -118,8 +118,9 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         var errorMessages = this.getHtmlMessage(["The selected VT details are not present in <b>Vocational Trainner</b>.<br><br> Please visit the <a href='/vocational-trainers'><b>Vocational Trainer</b></a> page and provide required details for the selected VT."]);
         this.dialogService.openShowDialog(errorMessages);
         this.vtacademicclasssectionForm.controls['VTId'].setValue(null);
+      } else {
+        this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
-      this.selectedVTId = accountId;
     });
   }
 
@@ -162,7 +163,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.vtacademicclasssectionModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: this.vtacademicclasssectionModel.DateOfAllocation, disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });

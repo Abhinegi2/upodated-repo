@@ -13,6 +13,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 import { ModuleUnitSessionModel } from 'app/models/module-unit-session-model';
 import { StudentAttendanceModel } from 'app/models/student.attendance.model';
 import { FileUploadModel } from 'app/models/file.upload.model';
+import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
 
 @Component({
   selector: 'vt-guest-lecture-conducted',
@@ -46,6 +47,22 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
   minReportingDate: Date;
   otherMethodlogyId = "173"
 
+
+  schoolList: DropdownModel[];
+  filteredSchoolItems: any;
+  sectorList: DropdownModel[];
+  jobRoleList: DropdownModel[];
+  academicYearList: [DropdownModel];
+  // classList: [DropdownModel];
+
+  SchoolInputId: string;
+  SectorInputId: string;
+  JobRoleInputId: string;
+  AcademicYearInputId: string;
+  ClassInputId: string;
+  SectionInputId: string;
+  CanUserChangeInput: boolean;
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -53,6 +70,7 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     private zone: NgZone,
     private route: ActivatedRoute,
     private vtGuestLectureConductedService: VTGuestLectureConductedService,
+    private schoolsectorjobService: SchoolSectorJobService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -92,12 +110,21 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
         this.moduleTaughtList = results[5].Results;
       }
 
+
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.vtGuestLectureConductedModel = new VTGuestLectureConductedModel();
+
+            if (results[6].Success) {
+              this.schoolList = results[6].Results;
+              this.filteredSchoolItems = this.schoolList.slice();
+              this.loadFormInputs(this.schoolList, 'SchoolId');
+            }
+
+            this.CanUserChangeInput = true;
 
           } else {
             var vtGuestLectureId: string = params.get('vtGuestLectureId')
@@ -115,13 +142,36 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
 
                 this.unitSessionsModels = this.vtGuestLectureConductedModel.UnitSessionsModels;
 
-                this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: this.vtGuestLectureConductedModel.ClassTaughtId }).subscribe(response => {
-                  if (response.Success) {
-                    this.sectionList = response.Results;
+                // this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: this.vtGuestLectureConductedModel.ClassTaughtId }).subscribe(response => {
+                //   if (response.Success) {
+                //     this.sectionList = response.Results;
 
-                    this.vtGuestLectureConductedForm = this.createVTGuestLectureConductedForm();
-                  }
-                });
+                //     this.vtGuestLectureConductedForm = this.createVTGuestLectureConductedForm();
+                //   }
+                //   });
+
+                this.schoolsectorjobService.getSchoolSectorJobById(this.vtGuestLectureConductedModel.SSJId)
+                  .subscribe((response: any) => {
+                    var schoolsectorjobModel = response.Result;
+
+                    this.vtGuestLectureConductedModel.SchoolId = schoolsectorjobModel.SchoolId;
+                    this.vtGuestLectureConductedModel.SectorId = schoolsectorjobModel.SectorId;
+                    this.vtGuestLectureConductedModel.JobRoleId = schoolsectorjobModel.JobRoleId;
+
+                    this.setInputs(this.vtGuestLectureConductedModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                      this.setInputs(this.vtGuestLectureConductedModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                        this.setInputs(this.vtGuestLectureConductedModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                          this.setInputs(this.vtGuestLectureConductedModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                            this.setInputs(this.vtGuestLectureConductedModel.ClassTaughtId, 'ClassTaughtId', 'ClassById').then(vResp => {
+                              this.setInputs(this.vtGuestLectureConductedModel.SectionIds, 'SectionIds', 'SectionById').then(vResp => {
+                                this.vtGuestLectureConductedForm = this.createVTGuestLectureConductedForm();
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
               });
           }
         }
@@ -133,62 +183,318 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     this.onChangeGLWorkStatus();
   }
 
-  onChangeClassForTaught(classId): void {
-    if (classId != null) {
-      this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId }).subscribe(response => {
+
+  onChangeSchool(schoolId): Promise<any> {
+    this.resetInputsAfter('School');
+    this.setFormInputs();
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
+      }).subscribe((response) => {
         if (response.Success) {
-          this.sectionList = response.Results;
+          this.sectorList = response.Results;
+
+          if (response.Results.length == 1) {
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
+            this.vtGuestLectureConductedForm.controls['SchoolId'].setValue(null);
+          }
+
+          this.loadFormInputs(response.Results, 'SectorId');
         }
+        resolve(true);
       });
 
-      let moduleItem = this.vtGuestLectureConductedForm.get('ModuleId').value;
-      if (moduleItem != null && moduleItem.Id != null) {
-        this.onChangeCourseModule(moduleItem);
-      }
-    }
-
-    this.sectionList = <DropdownModel[]>[];
-    this.unitList = <DropdownModel[]>[];
-    this.sessionList = <DropdownModel[]>[];
-    this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
-
-    this.vtGuestLectureConductedForm.get("SectionIds").setValue(null);
-
-    let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
-    studentAttendancesControls.clear();
+    });
+    return promise;
   }
 
+  onChangeSector(sectorId): Promise<any> {
+    this.resetInputsAfter('Sector');
+    this.setFormInputs();
+
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
+      }).subscribe((response) => {
+
+        if (response.Success) {
+          this.jobRoleList = response.Results;
+          this.loadFormInputs(response.Results, 'JobRoleId');
+        }
+
+        resolve(true);
+      });
+    });
+  }
+
+  onChangeJobRole(jobRoleId): Promise<any> {
+    this.resetInputsAfter('JobRole');
+    this.setFormInputs();
+
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
+      }).subscribe((response) => {
+
+        if (response.Success) {
+          this.academicYearList = response.Results;
+          if (response.Results.length == 1) {
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
+            this.vtGuestLectureConductedForm.controls['JobRoleId'].setValue(null);
+          }
+
+          this.loadFormInputs(response.Results, 'AcademicYearId');
+        }
+        resolve(true);
+      });
+    });
+
+  }
+
+  onChangeAcademicYear(academicYearId): Promise<any> {
+    this.resetInputsAfter('AcademicYear');
+    this.setFormInputs();
+
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+        if (response.Success) {
+          this.classList = response.Results;
+          this.loadFormInputs(response.Results, 'ClassTaughtId');
+        }
+
+        resolve(true);
+      });
+    });
+    return promise;
+  }
+
+
+  onChangeClassForTaught(classId): Promise<any> {
+    this.resetInputsAfter('Class');
+    this.setFormInputs();
+
+    console.log(this.SchoolInputId, this.SectorInputId, this.JobRoleInputId, this.AcademicYearInputId, classId);
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+
+      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
+        if (response.Success) {
+          this.sectionList = response.Results;
+          // this.loadFormInputs(response.Results, 'SectionIds');
+        }
+        resolve(true);
+      });
+    });
+
+    // let moduleItem = this.vtGuestLectureConductedForm.get('ModuleId').value;
+    // if (moduleItem != null && moduleItem.Id != null) {
+    //   this.onChangeCourseModule(moduleItem);
+    // }
+
+    // this.sectionList = <DropdownModel[]>[];
+    // this.unitList = <DropdownModel[]>[];
+    // this.sessionList = <DropdownModel[]>[];
+    // this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
+
+    // this.vtGuestLectureConductedForm.get("SectionIds").setValue(null);
+
+    // let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
+    // studentAttendancesControls.clear();
+
+    return promise;
+  }
+
+  setFormInputs() {
+    this.SchoolInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('SchoolId').value : this.vtGuestLectureConductedModel.SchoolId;
+    this.SectorInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('SectorId').value : this.vtGuestLectureConductedModel.SectorId;
+    this.JobRoleInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('JobRoleId').value : this.vtGuestLectureConductedModel.JobRoleId;
+    this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('AcademicYearId').value : this.vtGuestLectureConductedModel.AcademicYearId;
+    this.ClassInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('ClassTaughtId').value : this.vtGuestLectureConductedModel.ClassTaughtId;
+    this.SectionInputId = this.CanUserChangeInput == true ? this.vtGuestLectureConductedForm.get('SectionIds').value : this.vtGuestLectureConductedModel.SectionIds;
+  }
+
+  loadFormInputs(response, InputName) {
+
+    if (!this.PageRights.IsReadOnly) {
+      this.vtGuestLectureConductedForm.controls[InputName].enable();
+    }
+
+    if (response.length == 2) {
+      var inputId = response[1].Id;
+      this.vtGuestLectureConductedForm.controls[InputName].setValue(inputId);
+      this.vtGuestLectureConductedForm.controls[InputName].disable();
+
+      if (InputName == 'SchoolId') {
+        this.onChangeSchool(inputId);
+      } else if (InputName == 'SectorId') {
+        this.onChangeSector(inputId);
+      } else if (InputName == 'JobRoleId') {
+        this.onChangeJobRole(inputId);
+      } else if (InputName == 'AcademicYearId') {
+        this.onChangeAcademicYear(inputId);
+      } else if (InputName == 'ClassTaughtId') {
+        this.onChangeClassForTaught(inputId);
+      }
+
+    }
+  }
+
+  resetInputsAfter(input) {
+
+    if (input == 'School') {
+      this.vtGuestLectureConductedForm.controls['SectorId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['JobRoleId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['AcademicYearId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['ClassTaughtId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'Sector') {
+      this.vtGuestLectureConductedForm.controls['JobRoleId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['AcademicYearId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['ClassTaughtId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'JobRole') {
+      this.vtGuestLectureConductedForm.controls['AcademicYearId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['ClassTaughtId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'AcademicYear') {
+      this.vtGuestLectureConductedForm.controls['ClassTaughtId'].setValue(null);
+      this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'Class') {
+      this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    }
+  }
+
+  setUserAction() {
+    this.CanUserChangeInput = true;
+  }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          } else if (InputId == 'ClassTaughtId') {
+            this.classList = response.Results;
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          } else if (InputId == 'SectionIds') {
+            this.sectionList = response.Results;
+            this.vtGuestLectureConductedForm.controls[InputId].disable();
+          }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
+  }
+
+
+
+  // onChangeClassForTaught(classId): void {
+  //   if (classId != null) {
+  //     this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId }).subscribe(response => {
+  //       if (response.Success) {
+  //         this.sectionList = response.Results;
+  //       }
+  //     });
+
+  //     let moduleItem = this.vtGuestLectureConductedForm.get('ModuleId').value;
+  //     if (moduleItem != null && moduleItem.Id != null) {
+  //       this.onChangeCourseModule(moduleItem);
+  //     }
+  //   }
+
+  //   this.sectionList = <DropdownModel[]>[];
+  //   this.unitList = <DropdownModel[]>[];
+  //   this.sessionList = <DropdownModel[]>[];
+  //   this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
+
+  //   this.vtGuestLectureConductedForm.get("SectionIds").setValue(null);
+
+  //   let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
+  //   studentAttendancesControls.clear();
+  // }
+
   onChangeSectionForTaught(sectionId) {
+    this.setFormInputs();
     if (sectionId != null) {
       let classId = this.vtGuestLectureConductedForm.get("ClassTaughtId").value;
 
-      this.commonService.getStudentsByClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId, DataId2: sectionId }).subscribe(response => {
+      this.commonService.GetMasterDataByType({ DataType: 'GetSchoolSectorJobId', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'SSJ' }).subscribe((response) => {
         if (response.Success) {
-          let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
-          studentAttendancesControls.clear();
+          let SSJID = response.Results[1].Id;
 
-          response.Results.forEach(studentItem => {
-            studentAttendancesControls.push(this.formBuilder.group(studentItem));
+          this.commonService.getStudentsByClassId({
+            DataId: SSJID,
+            DataId1: classId,
+            DataId2: sectionId
+          }).subscribe(response => {
+            if (response.Success) {
+              let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
+              studentAttendancesControls.clear();
+
+              response.Results.forEach(studentItem => {
+                studentAttendancesControls.push(this.formBuilder.group(studentItem));
+              });
+
+              // let initialFormValues = this.vtGuestLectureConductedForm.value;
+              // this.vtGuestLectureConductedForm.reset(initialFormValues);
+            }
           });
-
-          let initialFormValues = this.vtGuestLectureConductedForm.value;
-          this.vtGuestLectureConductedForm.reset(initialFormValues);
         }
+
       });
     }
     else {
       let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
       studentAttendancesControls.clear();
     }
+    // this.setUserAction();
   }
 
   onChangeCourseModule(moduleItem): void {
+    this.setFormInputs();
     let classId = this.vtGuestLectureConductedForm.get('ClassTaughtId').value;
 
     if (classId != '' && moduleItem.Id != null) {
-      this.commonService.GetUnitsByClassAndModuleId({ DataId: classId, DataId1: moduleItem.Id, DataId2: this.UserModel.UserTypeId, SelectTitle: 'Unit Taught' }).subscribe((response: any) => {
+
+      this.commonService.GetMasterDataByType({ DataType: 'GetSchoolSectorJobId', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'SSJ' }).subscribe((response) => {
         if (response.Success) {
-          this.unitList = response.Results;
+          let SSJID = response.Results[1].Id;
+
+          this.commonService.GetUnitsByClassAndModuleId({ DataId: classId, DataId1: moduleItem.Id, DataId2: SSJID, SelectTitle: 'Unit Taught' }).subscribe((response: any) => {
+            if (response.Success) {
+              this.unitList = response.Results;
+            }
+          });
         }
       });
     }
@@ -199,6 +505,7 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
   }
 
   onChangeUnitsTaught(unitItem): void {
+    this.setFormInputs();
     let classId = this.vtGuestLectureConductedForm.get('ClassTaughtId').value;
 
     if (classId != '' && unitItem.Id != null) {
@@ -214,6 +521,7 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
   }
 
   addUnitSession() {
+    this.setFormInputs();
     let moduleCtrl = this.vtGuestLectureConductedForm.get('ModuleId');
     let unitCtrl = this.vtGuestLectureConductedForm.get('UnitId');
     let sessionIdsCtrl = this.vtGuestLectureConductedForm.get('SessionIds');
@@ -300,6 +608,7 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
   }
 
   saveOrUpdateVTGuestLectureConductedDetails() {
+    this.setFormInputs();
     if (!this.vtGuestLectureConductedForm.valid) {
       this.validateAllFormFields(this.vtGuestLectureConductedForm);
       return;
@@ -343,8 +652,15 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     return this.formBuilder.group({
       VTGuestLectureId: new FormControl(this.vtGuestLectureConductedModel.VTGuestLectureId),
       ReportingDate: new FormControl({ value: new Date(this.vtGuestLectureConductedModel.ReportingDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
+
+      SchoolId: new FormControl({ value: this.vtGuestLectureConductedModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
+      SectorId: new FormControl({ value: this.vtGuestLectureConductedModel.SectorId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      JobRoleId: new FormControl({ value: this.vtGuestLectureConductedModel.JobRoleId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      AcademicYearId: new FormControl({ value: this.vtGuestLectureConductedModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+
       ClassTaughtId: new FormControl({ value: this.vtGuestLectureConductedModel.ClassTaughtId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionIds: new FormControl({ value: this.vtGuestLectureConductedModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
+
       GLType: new FormControl({ value: this.vtGuestLectureConductedModel.GLType, disabled: this.PageRights.IsReadOnly }, [Validators.required]),
       GLTopic: new FormControl({ value: this.vtGuestLectureConductedModel.GLTopic, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       ModuleId: new FormControl({ value: this.vtGuestLectureConductedModel.ModuleId, disabled: this.PageRights.IsReadOnly }),
@@ -372,6 +688,8 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     });
 
   }
+
+
 
   private onChangeGuestLectureType() {
     this.vtGuestLectureConductedForm.get("GLType").valueChanges

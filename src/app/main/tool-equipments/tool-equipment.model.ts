@@ -4,11 +4,12 @@ export class ToolEquipmentModel {
     ToolEquipmentId: string;
     VTPId: string;
     VCId: string;
-    SchoolId: string; 
+    SchoolId: string;
     VTId: string;
     AcademicYearId: string;
     SectorId: string;
     JobRoleId: string;
+    SSJId: string;
     ReceiptDate: Date;
     TEReceiveStatus: string;
     TEStatus: string;
@@ -23,6 +24,7 @@ export class ToolEquipmentModel {
 
         this.ToolEquipmentId = toolEquipmentItem.ToolEquipmentId || FuseUtils.NewGuid();
         this.VTId = toolEquipmentItem.VTId || FuseUtils.NewGuid();
+        this.SSJId = toolEquipmentItem.SSJId || '';
         this.AcademicYearId = toolEquipmentItem.AcademicYearId || '';
         this.SectorId = toolEquipmentItem.SectorId || '';
         this.JobRoleId = toolEquipmentItem.JobRoleId || '';

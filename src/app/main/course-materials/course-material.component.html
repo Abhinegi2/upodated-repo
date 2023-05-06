@@ -157,10 +157,18 @@
                 </ng-container>
 
                 <!-- VTName Column -->
-                <ng-container matColumnDef="VTName">
+                <!-- <ng-container matColumnDef="VTName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>VT Name</mat-header-cell>
                     <mat-cell *matCellDef="let courseMaterial">
                         <p class="text-truncate">{{courseMaterial.VTName}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>VTP Name</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial">
+                        <p class="text-truncate">{{courseMaterial.VTPName}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -205,22 +213,40 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- CreatedBy Column -->
+                <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                   <!-- UpdatedBy Column -->
+                   <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy</mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{courseMaterial.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
-                    <mat-cell *matCellDef="let courseMaterial" fxShow.gt-xs>
-                        <button *ngIf="PageRights.IsView" mat-icon-button
+                    <mat-cell  *matCellDef="let courseMaterial" fxShow.gt-xs >
+                        <button *ngIf="PageRights.IsView && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
+                        mat-icon-button
                             [routerLink]="['/course-materials', 'view', courseMaterial.CourseMaterialId]"
-                            skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            skipLocationChange="true" replaceUrl="false" >
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit" mat-icon-button
+                        <button *ngIf="PageRights.IsEdit && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
+                        mat-icon-button
                             [routerLink]="['/course-materials', 'edit', courseMaterial.CourseMaterialId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
-                        <button mat-icon-button color="warn"
-                            (click)="onDeleteCourseMaterial(courseMaterial.CourseMaterialId)"
-                            *ngIf="PageRights.IsDelete">
+                        <button *ngIf="PageRights.IsDelete && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
+                        mat-icon-button 
+                        color="warn" (click)="onDeleteCourseMaterial(courseMaterial.CourseMaterialId)">
                             <mat-icon>delete_outline</mat-icon>
                         </button>
                     </mat-cell>

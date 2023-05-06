@@ -110,15 +110,15 @@
                     <mat-cell *matCellDef="let vtFieldIndustryVisitConducted">
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/vt-field-industry-visit-conducted', 'view', vtFieldIndustryVisitConducted.VTFieldIndustryVisitConductedId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                         [routerLink]="['/vt-field-industry-visit-conducted', 'edit', vtFieldIndustryVisitConducted.VTFieldIndustryVisitConductedId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteVTFieldIndustryVisitConducted(vtFieldIndustryVisitConducted.VTFieldIndustryVisitConductedId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-20">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

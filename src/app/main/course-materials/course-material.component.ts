@@ -22,6 +22,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 export class CourseMaterialComponent extends BaseListComponent<CourseMaterialModel> implements OnInit {
   courseMaterialSearchForm: FormGroup;
   courseMaterialFilterForm: FormGroup;
+  currentUser: string;
 
   academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
@@ -55,10 +56,12 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
         this.academicYearList = results[0].Results;
       }
 
-      if (results[1].Success) {
-        this.vtpList = results[1].Results;
-        this.filteredVtpSectorItems = this.vtpList.slice();
-      }
+      this.currentUser = this.UserModel.UserId;
+
+      // if (results[1].Success) {
+      //   this.vtpList = results[1].Results;
+      //   this.filteredVtpSectorItems = this.vtpList.slice();
+      // }
 
       let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
       if (currentYearItem != null) {
@@ -128,15 +131,21 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
 
   onLoadCourseMaterialsByCriteria(): any {
     this.IsLoading = true;
-    this.SearchBy.AcademicYearId = this.courseMaterialFilterForm.controls['AcademicYearId'].value;
-    this.SearchBy.VTPId = this.courseMaterialFilterForm.controls['VTPId'].value;
-    this.SearchBy.VCId = this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['VCId'].value;
-    this.SearchBy.VTId = this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['VTId'].value;
-    this.SearchBy.HMId = this.UserModel.RoleCode == 'HM' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['HMId'].value;
-    this.SearchBy.SchoolId = this.courseMaterialFilterForm.controls['SchoolId'].value;
+    // this.SearchBy.AcademicYearId = this.courseMaterialFilterForm.controls['AcademicYearId'].value;
+    // this.SearchBy.VTPId = this.courseMaterialFilterForm.controls['VTPId'].value;
+    // this.SearchBy.VCId = this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['VCId'].value;
+    // this.SearchBy.VTId = this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['VTId'].value;
+    // this.SearchBy.HMId = this.UserModel.RoleCode == 'HM' ? this.UserModel.UserTypeId : this.courseMaterialFilterForm.controls['HMId'].value;
+    // this.SearchBy.SchoolId = this.courseMaterialFilterForm.controls['SchoolId'].value;
+
+    this.SearchBy.UserTypeId = this.UserModel.UserTypeId;
+    this.SearchBy.RoleId = this.UserModel.RoleCode;
 
     this.courseMaterialService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['AcademicYear', 'VCName', 'VTName', 'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'Actions'];
+      this.displayedColumns = ['AcademicYear', 'VCName',
+        // 'VTName', 
+        'VTPName',
+        'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'CreatedBy', 'UpdatedBy', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
@@ -167,22 +176,22 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
 
   resetFilters(): void {
     this.courseMaterialFilterForm.reset();
-    this.courseMaterialFilterForm.get('AcademicYearId').setValue(this.currentAcademicYearId);
+    // this.courseMaterialFilterForm.get('AcademicYearId').setValue(this.currentAcademicYearId);
 
-    if (this.UserModel.RoleCode == 'VC') {
-      this.courseMaterialFilterForm.get('VTPId').setValue(this.vtpId);
-      this.courseMaterialFilterForm.get('VCId').setValue(this.UserModel.UserTypeId);
-      this.courseMaterialFilterForm.controls['VTPId'].disable();
-      this.courseMaterialFilterForm.controls['VCId'].disable();
-    };
-    if (this.UserModel.RoleCode == 'HM') {
-      this.courseMaterialFilterForm.get('VTPId').setValue(this.vtpId);
-      this.courseMaterialFilterForm.get('VCId').setValue(this.vcId);
-      this.courseMaterialFilterForm.get('SchoolId').setValue(this.schoolId);
-      this.courseMaterialFilterForm.controls['VTPId'].disable();
-      this.courseMaterialFilterForm.controls['VCId'].disable();
-      this.courseMaterialFilterForm.controls['SchoolId'].disable();
-    };
+    // if (this.UserModel.RoleCode == 'VC') {
+    //   this.courseMaterialFilterForm.get('VTPId').setValue(this.vtpId);
+    //   this.courseMaterialFilterForm.get('VCId').setValue(this.UserModel.UserTypeId);
+    //   this.courseMaterialFilterForm.controls['VTPId'].disable();
+    //   this.courseMaterialFilterForm.controls['VCId'].disable();
+    // };
+    // if (this.UserModel.RoleCode == 'HM') {
+    //   this.courseMaterialFilterForm.get('VTPId').setValue(this.vtpId);
+    //   this.courseMaterialFilterForm.get('VCId').setValue(this.vcId);
+    //   this.courseMaterialFilterForm.get('SchoolId').setValue(this.schoolId);
+    //   this.courseMaterialFilterForm.controls['VTPId'].disable();
+    //   this.courseMaterialFilterForm.controls['VCId'].disable();
+    //   this.courseMaterialFilterForm.controls['SchoolId'].disable();
+    // };
 
     this.onLoadCourseMaterialsByCriteria();
   }
@@ -221,7 +230,7 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
       this.IsLoading = true;
       let schoolRequest = null;
       if (this.UserModel.RoleCode == 'HM') {
-        schoolRequest = this.commonService.GetSchoolByHMId(this.currentAcademicYearId, this.UserModel.UserTypeId, vcId);
+        // schoolRequest = this.commonService.GetSchoolByHMId(this.currentAcademicYearId, this.UserModel.UserTypeId, vcId);
       }
       else {
         schoolRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVC', ParentId: vcId, SelectTitle: 'School' });

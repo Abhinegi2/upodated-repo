@@ -10,6 +10,7 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { VCIssueReportingService } from '../vc-issue-reporting.service';
 import { VCIssueReportingModel } from '../vc-issue-reporting.model';
 import { DropdownModel } from 'app/models/dropdown.model';
+import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
 
 @Component({
   selector: 'vc-issue-reporting',
@@ -30,6 +31,21 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
   notApplicableId = "218";
   allClassesId = "213";
 
+  schoolList: DropdownModel[];
+  filteredSchoolItems: any;
+  sectorList: DropdownModel[];
+  jobRoleList: DropdownModel[];
+  academicYearList: [DropdownModel];
+  classList: [DropdownModel];
+
+  SchoolInputId: string;
+  SectorInputId: string;
+  JobRoleInputId: string;
+  AcademicYearInputId: string;
+  ClassInputId: string;
+
+  CanUserChangeInput: boolean;
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -37,6 +53,7 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     private zone: NgZone,
     private route: ActivatedRoute,
     private issueReportingService: VCIssueReportingService,
+    private schoolsectorjobService: SchoolSectorJobService,
     private dialogService: DialogService,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
@@ -49,20 +66,20 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
   ngOnInit(): void {
 
     this.issueReportingService.getDropdownforVCIssueReporting(this.UserModel).subscribe((results) => {
-      if (results[0].Success) {
-        this.monthList = results[0].Results;
-      }
-
       if (results[1].Success) {
-        this.studentClassList = results[1].Results;
+        this.monthList = results[1].Results;
       }
 
       if (results[2].Success) {
-        this.studentTypeList = results[2].Results;
+        this.studentClassList = results[2].Results;
       }
 
       if (results[3].Success) {
-        this.mainIssueList = results[3].Results;
+        this.studentTypeList = results[3].Results;
+      }
+
+      if (results[4].Success) {
+        this.mainIssueList = results[4].Results;
       }
 
       this.route.paramMap.subscribe(params => {
@@ -71,6 +88,13 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.vcIssueReportingModel = new VCIssueReportingModel();
+
+            if (results[0].Success) {
+              this.schoolList = results[0].Results;
+              this.filteredSchoolItems = this.schoolList.slice();
+              this.loadFormInputs(this.schoolList, 'SchoolId');
+            }
+            this.CanUserChangeInput = true;
 
           } else {
             var vcIssueReportingId: string = params.get('vcIssueReportingId')
@@ -88,8 +112,26 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
                   this.PageRights.IsReadOnly = true;
                 }
 
-                this.onChangeMainIssue(this.vcIssueReportingModel.MainIssue);
-                this.vcIssueReportingForm = this.createVCIssueReportingForm();
+                this.schoolsectorjobService.getSchoolSectorJobById(this.vcIssueReportingModel.SSJId)
+                  .subscribe((response: any) => {
+                    var schoolsectorjobModel = response.Result;
+
+                    this.vcIssueReportingModel.SchoolId = schoolsectorjobModel.SchoolId;
+                    this.vcIssueReportingModel.SectorId = schoolsectorjobModel.SectorId;
+                    this.vcIssueReportingModel.JobRoleId = schoolsectorjobModel.JobRoleId;
+
+                    this.setInputs(this.vcIssueReportingModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                      this.setInputs(this.vcIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                        this.setInputs(this.vcIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                          this.setInputs(this.vcIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                            this.onChangeAcademicYear(this.vcIssueReportingModel.AcademicYearId);
+                            this.onChangeMainIssue(this.vcIssueReportingModel.MainIssue);
+                            this.vcIssueReportingForm = this.createVCIssueReportingForm();
+                          });
+                        });
+                      });
+                    });
+                  });
               });
           }
         }
@@ -97,6 +139,185 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     });
 
     this.vcIssueReportingForm = this.createVCIssueReportingForm();
+  }
+  onChangeSchool(schoolId): Promise<any> {
+    this.resetInputsAfter('School');
+    this.setFormInputs();
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
+      }).subscribe((response) => {
+        if (response.Success) {
+          this.sectorList = response.Results;
+
+          if (response.Results.length == 1) {
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
+            this.vcIssueReportingForm.controls['SchoolId'].setValue(null);
+          }
+
+          this.loadFormInputs(response.Results, 'SectorId');
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
+  }
+
+  onChangeSector(sectorId): Promise<any> {
+    this.resetInputsAfter('Sector');
+    this.setFormInputs();
+
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
+      }).subscribe((response) => {
+
+        if (response.Success) {
+          this.jobRoleList = response.Results;
+          this.loadFormInputs(response.Results, 'JobRoleId');
+        }
+
+        resolve(true);
+      });
+    });
+  }
+
+  onChangeJobRole(jobRoleId): Promise<any> {
+    this.resetInputsAfter('JobRole');
+    this.setFormInputs();
+
+    return new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
+      }).subscribe((response) => {
+
+        if (response.Success) {
+          this.academicYearList = response.Results;
+
+          if (response.Results.length == 1) {
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
+            this.vcIssueReportingForm.controls['JobRoleId'].setValue(null);
+          }
+
+          this.loadFormInputs(response.Results, 'AcademicYearId');
+        }
+        resolve(true);
+      });
+      this.setUserAction();
+    });
+
+  }
+
+  onChangeAcademicYear(academicYearId): Promise<any> {
+    this.resetInputsAfter('AcademicYear');
+    this.setFormInputs();
+
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes'
+      }, false).subscribe((response) => {
+
+        if (response.Success) {
+          this.classList = response.Results;
+
+          // this.loadFormInputs(response.Results, 'StudentClass');
+        }
+        resolve(true);
+      });
+    });
+
+    this.setUserAction();
+
+    return promise;
+  }
+
+  setFormInputs() {
+    this.SchoolInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('SchoolId').value : this.vcIssueReportingModel.SchoolId;
+    this.SectorInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('SectorId').value : this.vcIssueReportingModel.SectorId;
+    this.JobRoleInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('JobRoleId').value : this.vcIssueReportingModel.JobRoleId;
+    this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('AcademicYearId').value : this.vcIssueReportingModel.AcademicYearId;
+    this.ClassInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('StudentClass').value : this.vcIssueReportingModel.StudentClass;
+  }
+
+  loadFormInputs(response, InputName) {
+
+    if (!this.PageRights.IsReadOnly) {
+      this.vcIssueReportingForm.controls[InputName].enable();
+    }
+
+    if (response.length == 2) {
+
+      var inputId = response[1].Id;
+      this.vcIssueReportingForm.controls[InputName].setValue(inputId);
+      this.vcIssueReportingForm.controls[InputName].disable();
+
+      if (InputName == 'SchoolId') {
+        this.onChangeSchool(inputId);
+      } else if (InputName == 'SectorId') {
+        this.onChangeSector(inputId);
+      } else if (InputName == 'JobRoleId') {
+        this.onChangeJobRole(inputId);
+      } else if (InputName == 'AcademicYearId') {
+        this.onChangeAcademicYear(inputId);
+      }
+    }
+  }
+
+  resetInputsAfter(input) {
+
+    if (input == 'School') {
+      this.vcIssueReportingForm.controls['SectorId'].setValue(null);
+      this.vcIssueReportingForm.controls['JobRoleId'].setValue(null);
+      this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+    }
+
+    if (input == 'Sector') {
+      this.vcIssueReportingForm.controls['JobRoleId'].setValue(null);
+      this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+    }
+
+    if (input == 'JobRole') {
+      this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+    }
+  }
+
+  setUserAction() {
+    this.CanUserChangeInput = true;
+  }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+            console.log(this.schoolList, 'this');
+            this.vcIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.vcIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.vcIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+            this.vcIssueReportingForm.controls[InputId].disable();
+          }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
   }
 
   onStudentClassChange(selectedSectionIds) {
@@ -144,7 +365,7 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     this.vcIssueReportingModel.StudentClass = studentClass.join(',');
     this.vcIssueReportingModel.Month = month.join(',');
     this.vcIssueReportingModel.VCId = this.UserModel.UserTypeId;
-    this.vcIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
+    // this.vcIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
 
     this.issueReportingService.createOrUpdateVCIssueReporting(this.vcIssueReportingModel)
       .subscribe((vcIssueReportingResp: any) => {
@@ -181,10 +402,18 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     return this.formBuilder.group({
       VCIssueReportingId: new FormControl(this.vcIssueReportingModel.VCIssueReportingId),
       VCId: new FormControl(this.vcIssueReportingModel.VCId),
+
+      SchoolId: new FormControl({ value: this.vcIssueReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
+      SectorId: new FormControl({ value: this.vcIssueReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }),
+      JobRoleId: new FormControl({ value: this.vcIssueReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
+
+      AcademicYearId: new FormControl({ value: this.vcIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
+      StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+
       IssueReportDate: new FormControl({ value: new Date(this.vcIssueReportingModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
       MainIssue: new FormControl({ value: this.vcIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SubIssue: new FormControl({ value: this.vcIssueReportingModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      // StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Month: new FormControl({ value: this.vcIssueReportingModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.required),
       StudentType: new FormControl({ value: this.vcIssueReportingModel.StudentType, disabled: this.PageRights.IsReadOnly }, Validators.required),
       NoOfStudents: new FormControl({ value: this.vcIssueReportingModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),

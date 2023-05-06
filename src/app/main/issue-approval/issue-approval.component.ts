@@ -64,7 +64,7 @@ export class IssueApprovalComponent extends BaseListComponent<IssueApprovalModel
     };
 
     this.issueApprovalService.GetAllByCriteria(criteria).subscribe(response => {
-      this.displayedColumns = ['IssueReportDate', 'ReportedBy', 'IssueCategory', 'MainIssue', 'SubIssue', 'ApprovalStatus', 'ApprovedDate', 'Actions'];
+      this.displayedColumns = ['IssueReportDate', 'ReportedBy', 'IssueCategory', 'MainIssue', 'SubIssue', 'ApprovalStatus', 'ApprovedDate', 'CreatedBy', 'UpdatedBy', 'Actions'];
 
       this.tableDataSource.data = response.Results;
 

@@ -100,20 +100,27 @@ export class ToolEquipmentService {
     }
 
     initToolsAndEquipmentsData(userModel: UserModel): Observable<any[]> {
+        let SchoolRequest = this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'School' });
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', UserId: userModel.UserTypeId, SelectTitle: 'Academic Year' }, false);
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         let vtRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainersByVC', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Vocational Trainer' }, false);
         let vcRequest = this.http.GetMasterDataByType({ DataType: 'VocationalCoordinators', SelectTitle: 'Vocational Coordinator' }, false);
 
-        let vtpRequest = null;
-        if (userModel.RoleCode == 'HM') {
-            vtpRequest = this.commonService.GetVTPByHMId(userModel.AcademicYearId, userModel.UserTypeId);
-        }
-        else {
-            vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }, false);
-        }
+        // let vtpRequest = null;
+        // if (userModel.RoleCode == 'HM') {
+        //     // vtpRequest = this.commonService.GetVTPByHMId(userModel.AcademicYearId, userModel.UserTypeId);
+        // }
+        // else {
+        //     vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }, false);
+        // }
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([academicYearRequest, vtpRequest, sectorRequest, vtRequest, vcRequest]);
+        return forkJoin([
+            SchoolRequest,
+            academicYearRequest,
+            // vtpRequest, 
+            sectorRequest,
+            vtRequest,
+            vcRequest]);
     }
 }

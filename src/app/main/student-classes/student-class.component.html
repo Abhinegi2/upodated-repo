@@ -195,6 +195,16 @@
             <mat-table class="student-class-table responsive-table" #table [dataSource]="tableDataSource" matSort
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
+
+                 <!-- StudentUniqueNumber Column -->
+                 <ng-container matColumnDef="StudentUniqueNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Student Unique Number
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.StudentUniqueNumber}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
@@ -311,12 +321,12 @@
                         </mat-cell>
                     </ng-container>
 
-                      <!-- HaveVE Column -->
-                <ng-container matColumnDef="HaveVE">
+                      <!-- IsStudentVE9And10 Column -->
+                <ng-container matColumnDef="IsStudentVE9And10">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Did students have a VE in 9th & 10th?
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{studentClass.HaveVE}}</p>
+                        <p class="text-truncate">{{studentClass.IsStudentVE9And10}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -384,12 +394,12 @@
                         </mat-cell>
                     </ng-container>
 
-                   <!-- SameTrade Column -->
-                   <ng-container matColumnDef="SameTrade">
+                   <!-- IsSameStudentTrade Column -->
+                   <ng-container matColumnDef="IsSameStudentTrade">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is the student continuing the same trade?
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{studentClass.SameTrade}}</p>
+                        <p class="text-truncate">{{studentClass.IsSameStudentTrade}}</p>
                     </mat-cell>
                 </ng-container>
 

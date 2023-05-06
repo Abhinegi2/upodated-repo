@@ -4,6 +4,7 @@ export class AcademicYearModel {
     AcademicYearId: string;
     PhaseId: string;
     YearName: string;
+    AcademicYearCode: string;
     Description: string;
     IsCurrentAcademicYear: boolean;
     IsActive: boolean;
@@ -15,6 +16,7 @@ export class AcademicYearModel {
         this.AcademicYearId = academicYearItem.AcademicYearId || FuseUtils.NewGuid();
         this.PhaseId = academicYearItem.PhaseId || '';
         this.YearName = academicYearItem.YearName || '';
+        this.AcademicYearCode = academicYearItem.AcademicYearCode || '';
         this.Description = academicYearItem.Description || '';
         this.IsCurrentAcademicYear = academicYearItem.IsCurrentAcademicYear || false;
         this.IsActive = academicYearItem.IsActive || true;

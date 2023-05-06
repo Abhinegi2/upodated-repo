@@ -2,12 +2,20 @@ import { FuseUtils } from '@fuse/utils';
 
 export class VTIssueReportingModel {
     VTIssueReportingId: string;
-    AcademicYearId: string;
+
     VTId: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
+    AcademicYearId: string;
+    StudentClass: string;
+
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
-    StudentClass: string;
+
     Month: string;
     StudentType: string;
     NoOfStudents: any;
@@ -26,6 +34,7 @@ export class VTIssueReportingModel {
         this.VTIssueReportingId = vtIssueReportingItem.VTIssueReportingId || FuseUtils.NewGuid();
         this.AcademicYearId = vtIssueReportingItem.AcademicYearId || '';
         this.VTId = vtIssueReportingItem.VTId || '';
+        this.SSJId = vtIssueReportingItem.SSJId || '';
         this.IssueReportDate = vtIssueReportingItem.IssueReportDate || '';
         this.MainIssue = vtIssueReportingItem.MainIssue || '';
         this.SubIssue = vtIssueReportingItem.SubIssue || '';

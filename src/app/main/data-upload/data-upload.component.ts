@@ -50,10 +50,11 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'VocationalTrainers', Name: 'Vocational Trainers', Template: 'VocationalTrainers_Template.xlsx' },
       { Id: 'SchoolSectorJobRole', Name: 'School Sector JobRole', Template: 'SchoolsSectorJobRole_Template.xlsx' },
       { Id: 'SectorJobRoles', Name: 'Sector Job Roles',class:"data-active", Template: 'SectorJobRoles_Template.xlsx' },
-      { Id: 'GenericVTMapping', Name: 'Generic VT Mapping', Template: 'GenericVTMapping_Template.xlsx' },
+      { Id: 'VTP Mapping (GVT)', Name: 'VTP Mapping (GVT)', Template: 'VTP_Mapping_GVT.xlsx' },
+      { Id: 'VC_Mapping_(GVT)', Name: 'VC Mapping (GVT)', Template: 'VC_Mapping_GVT.xlsx' },
       { Id: 'VTAcademicClassSection', Name: 'VT Academic Class Section', Template: 'VTAcademicClassSection_Template.xlsx' },
       { Id: 'Students', Name: 'Students', Template: 'Students_Template.xlsx' },
-      { Id: 'Employer', Name: 'Employer', Template: 'Employers_Template.xlsx'  },
+     // { Id: 'Employer', Name: 'Employer', Template: 'Employers_Template.xlsx'  },
       { Id: 'CourseModules', Name: 'Course Modules', Template: 'CourseModules_Template.xlsx' }
       /* { Id: 'VCSchoolSectors', Name: 'VC School Sectors Obsolete', Template: 'VCSchoolSectors_Template_Obsolete.xlsx'},
       { Id: 'VTSchoolSectors', Name: 'VT School Sectors Obsolete', Template: 'VTSchoolSectors_Template_Obsolete.xlsx' },

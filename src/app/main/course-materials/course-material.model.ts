@@ -1,13 +1,18 @@
 import { FuseUtils } from '@fuse/utils';
 
 export class CourseMaterialModel {
-    VTPId: string;
-    VCId: string;
-    SchoolId: string;    
+    // VTPId: string;
+    // VCId: string;
     CourseMaterialId: string;
-    VTId: string;
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
+    // VTId: string;
     AcademicYearId: string;
     ClassId: string;
+    SectionId: string;
+
     ReceiptDate: Date;
     Details: string;
     CMStatus: string;
@@ -18,7 +23,8 @@ export class CourseMaterialModel {
         courseMaterialItem = courseMaterialItem || {};
 
         this.CourseMaterialId = courseMaterialItem.CourseMaterialId || FuseUtils.NewGuid();
-        this.VTId = courseMaterialItem.VTId || FuseUtils.NewGuid();
+        // this.VTId = courseMaterialItem.VTId || FuseUtils.NewGuid();
+        this.SSJId = courseMaterialItem.SSJId || '';
         this.AcademicYearId = courseMaterialItem.AcademicYearId || '';
         this.ClassId = courseMaterialItem.ClassId || '';
         this.ReceiptDate = courseMaterialItem.ReceiptDate || '';

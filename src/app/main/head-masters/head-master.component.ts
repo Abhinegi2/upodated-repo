@@ -40,6 +40,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
   socialCategoryList: DropdownModel[];
   vtpId: string;
   vcId: string;
+  currentUser: string;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -61,6 +62,8 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
   ngOnInit(): void {
     this.SearchBy.PageIndex = 0; // delete after script changed
     this.SearchBy.PageSize = 10; // delete after script changed
+
+    this.currentUser = this.UserModel.UserId;
 
     this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results) => {
       if (results[0].Success) {
@@ -156,6 +159,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         'UpdatedBy',
         'DateOfResignationFromSchool',
         'IsActive',
+        'CreatedByUserId',
         // 'IsResigned',
         'Actions'];
 

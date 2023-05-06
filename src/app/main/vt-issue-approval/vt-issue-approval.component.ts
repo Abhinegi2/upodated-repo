@@ -31,6 +31,7 @@ export class VTIssueApprovalComponent extends BaseListComponent<VTIssueReporting
   }
 
   ngOnInit(): void {
+    this.SearchBy.RoleId = this.UserModel.RoleCode;
     this.vtIssueReportingService.GetAllByCriteria(this.SearchBy).subscribe(response => {
       this.displayedColumns = ['IssueReportDate', 'MainIssue', 'StudentClass', 'StudentType', 'NoOfStudents', 'IssueDetails', 'ApprovalStatus', 'ApprovedDate', 'IsActive', 'Actions'];
 
@@ -51,12 +52,12 @@ export class VTIssueApprovalComponent extends BaseListComponent<VTIssueReporting
   }
 
   saveOrUpdateVTIssueApprovalDetails(actionType: string, vtIssueReportingId: string) {
-    
+
     let approvalParams = {
       VTIssueReportingId: vtIssueReportingId,
       ApprovalStatus: actionType
     };
-      
+
     this.vtIssueApprovalService.approvedVTIssueReporting(approvalParams)
       .subscribe((vtIssueReportingResp: any) => {
 

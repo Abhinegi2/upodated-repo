@@ -7,10 +7,19 @@ export class IssueApprovalModel {
     HMId: string;
     VCId: string;
     VTId: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
+    AcademicYearId: string;
+    StudentClass: string;
+
+
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
-    StudentClass: string;
+    // StudentClass: string;
     Month: string;
     StudentType: string;
     NoOfStudents: any;
@@ -31,6 +40,7 @@ export class IssueApprovalModel {
         this.VCId = issueApprovalItem.VCId || '';
         this.HMId = issueApprovalItem.HMId || '';
         this.VTId = issueApprovalItem.VTId || '';
+        this.SSJId = issueApprovalItem.SSJId || '';
         this.IssueReportDate = issueApprovalItem.IssueReportDate || '';
         this.MainIssue = issueApprovalItem.MainIssue || '';
         this.SubIssue = issueApprovalItem.SubIssue || '';

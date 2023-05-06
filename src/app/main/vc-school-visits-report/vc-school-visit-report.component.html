@@ -93,7 +93,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Visit Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vcSchoolVisitReporting" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vcSchoolVisitReporting.VisitDate}}</p>
+                        <p class="text-truncate">{{vcSchoolVisitReporting.VisitDate | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
 
