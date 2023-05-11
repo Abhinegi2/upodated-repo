@@ -14,6 +14,7 @@ export class IssueApprovalModel {
     SSJId: string;
     AcademicYearId: string;
     StudentClass: string;
+    SectionIds: string;
 
 
     IssueReportDate: any;
@@ -45,6 +46,7 @@ export class IssueApprovalModel {
         this.MainIssue = issueApprovalItem.MainIssue || '';
         this.SubIssue = issueApprovalItem.SubIssue || '';
         this.StudentClass = issueApprovalItem.StudentClass || '';
+        this.SectionIds = issueApprovalItem.SectionIds || '';
         this.Month = issueApprovalItem.Month || '';
         this.StudentType = issueApprovalItem.StudentType || '';
         this.NoOfStudents = issueApprovalItem.NoOfStudents || '';

@@ -13,6 +13,7 @@ export class VCIssueReportingModel {
     JobRoleId: string;
     SSJId: string;
     StudentClass: string;
+    SectionIds: string;
 
     Month: string;
     StudentType: string;
@@ -36,6 +37,7 @@ export class VCIssueReportingModel {
         this.MainIssue = vcIssueReportingItem.MainIssue || '';
         this.SubIssue = vcIssueReportingItem.SubIssue || '';
         this.StudentClass = vcIssueReportingItem.StudentClass || '';
+        this.SectionIds = vcIssueReportingItem.SectionIds || '';
         this.Month = vcIssueReportingItem.Month || '';
         this.StudentType = vcIssueReportingItem.StudentType || '';
         this.NoOfStudents = vcIssueReportingItem.NoOfStudents || '';

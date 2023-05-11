@@ -44,6 +44,9 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
   AcademicYearInputId: string;
   ClassInputId: string;
 
+  SectionInputId: string;
+  sectionList: DropdownModel[];
+
   CanUserChangeInput: boolean;
 
   constructor(public commonService: CommonService,
@@ -102,7 +105,8 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
             this.issueReportingService.getVCIssueReportingById(vcIssueReportingId)
               .subscribe((response: any) => {
                 this.vcIssueReportingModel = response.Result;
-                this.vcIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
+                // this.vcIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
+                this.vcIssueReportingModel.SectionIds = response.Result.SectionIds.split(',');
                 this.vcIssueReportingModel.Month = response.Result.Month.split(',');
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
@@ -124,9 +128,12 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
                       this.setInputs(this.vcIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                         this.setInputs(this.vcIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
                           this.setInputs(this.vcIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
-                            this.onChangeAcademicYear(this.vcIssueReportingModel.AcademicYearId);
-                            this.onChangeMainIssue(this.vcIssueReportingModel.MainIssue);
-                            this.vcIssueReportingForm = this.createVCIssueReportingForm();
+                            this.setInputs(this.vcIssueReportingModel.StudentClass, 'StudentClass', 'ClassById').then(vResp => {
+                              this.onChangeClasses(this.vcIssueReportingModel.StudentClass).then(vResp => {
+                                this.onChangeMainIssue(this.vcIssueReportingModel.MainIssue);
+                                this.vcIssueReportingForm = this.createVCIssueReportingForm();
+                              });
+                            });
                           });
                         });
                       });
@@ -223,7 +230,7 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
         if (response.Success) {
           this.classList = response.Results;
 
-          // this.loadFormInputs(response.Results, 'StudentClass');
+          this.loadFormInputs(response.Results, 'StudentClass');
         }
         resolve(true);
       });
@@ -234,12 +241,41 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     return promise;
   }
 
+  onChangeClasses(classId): Promise<any> {
+    this.resetInputsAfter('Class');
+    this.setFormInputs();
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId,
+        DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId,
+        DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId,
+        UserId: this.UserModel.UserTypeId, roleId:
+          this.UserModel.RoleCode, SelectTitle: 'Sections'
+      }, false).subscribe((response) => {
+        if (response.Success) {
+          this.sectionList = response.Results;
+
+          if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
+            this.vcIssueReportingForm.controls['SectionIds'].disable();
+          }
+        }
+        resolve(true);
+      });
+    });
+
+    return promise;
+  }
+
   setFormInputs() {
     this.SchoolInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('SchoolId').value : this.vcIssueReportingModel.SchoolId;
     this.SectorInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('SectorId').value : this.vcIssueReportingModel.SectorId;
     this.JobRoleInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('JobRoleId').value : this.vcIssueReportingModel.JobRoleId;
     this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('AcademicYearId').value : this.vcIssueReportingModel.AcademicYearId;
     this.ClassInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('StudentClass').value : this.vcIssueReportingModel.StudentClass;
+    this.SectionInputId = this.CanUserChangeInput == true ? this.vcIssueReportingForm.get('SectionIds').value : this.vcIssueReportingModel.SectionIds;
   }
 
   loadFormInputs(response, InputName) {
@@ -262,6 +298,8 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
         this.onChangeJobRole(inputId);
       } else if (InputName == 'AcademicYearId') {
         this.onChangeAcademicYear(inputId);
+      } else if (InputName == 'StudentClass') {
+        this.onChangeClasses(inputId);
       }
     }
   }
@@ -272,15 +310,30 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
       this.vcIssueReportingForm.controls['SectorId'].setValue(null);
       this.vcIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.vcIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.vcIssueReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.vcIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.vcIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.vcIssueReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.vcIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.vcIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.vcIssueReportingForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'AcademicYear') {
+      this.vcIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.vcIssueReportingForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'Class') {
+      this.vcIssueReportingForm.controls['SectionIds'].setValue(null);
     }
   }
 
@@ -310,6 +363,9 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
             this.vcIssueReportingForm.controls[InputId].disable();
           } else if (InputId == 'AcademicYearId') {
             this.academicYearList = response.Results;
+            this.vcIssueReportingForm.controls[InputId].disable();
+          } else if (InputId == 'StudentClass') {
+            this.classList = response.Results;
             this.vcIssueReportingForm.controls[InputId].disable();
           }
         }
@@ -359,10 +415,12 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
       this.validateAllFormFields(this.vcIssueReportingForm);
       return;
     }
-    var studentClass = this.vcIssueReportingForm.get('StudentClass').value;
+    // var studentClass = this.vcIssueReportingForm.get('StudentClass').value;
+    var SectionIds = this.vcIssueReportingForm.get('SectionIds').value;
     var month = this.vcIssueReportingForm.get('Month').value;
     this.setValueFromFormGroup(this.vcIssueReportingForm, this.vcIssueReportingModel);
-    this.vcIssueReportingModel.StudentClass = studentClass.join(',');
+    // this.vcIssueReportingModel.StudentClass = studentClass.join(',');
+    this.vcIssueReportingModel.SectionIds = SectionIds.join(',');
     this.vcIssueReportingModel.Month = month.join(',');
     this.vcIssueReportingModel.VCId = this.UserModel.UserTypeId;
     // this.vcIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
@@ -409,6 +467,7 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
 
       AcademicYearId: new FormControl({ value: this.vcIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SectionIds: new FormControl({ value: this.vcIssueReportingModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
 
       IssueReportDate: new FormControl({ value: new Date(this.vcIssueReportingModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
       MainIssue: new FormControl({ value: this.vcIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
