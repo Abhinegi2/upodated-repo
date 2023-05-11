@@ -11,6 +11,7 @@ export class VTIssueReportingModel {
     SSJId: string;
     AcademicYearId: string;
     StudentClass: string;
+    SectionIds: string;
 
     IssueReportDate: any;
     MainIssue: string;
@@ -39,6 +40,7 @@ export class VTIssueReportingModel {
         this.MainIssue = vtIssueReportingItem.MainIssue || '';
         this.SubIssue = vtIssueReportingItem.SubIssue || '';
         this.StudentClass = vtIssueReportingItem.StudentClass || '';
+        this.SectionIds = vtIssueReportingItem.SectionIds || '';
         this.Month = vtIssueReportingItem.Month || '';
         this.StudentType = vtIssueReportingItem.StudentType || '';
         this.NoOfStudents = vtIssueReportingItem.NoOfStudents || '';

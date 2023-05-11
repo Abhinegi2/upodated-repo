@@ -13,6 +13,7 @@ export class HMIssueReportingModel {
     JobRoleId: string;
     SSJId: string;
     StudentClass: string;
+    SectionIds: string;
 
     Month: string;
     StudentType: any;
@@ -36,6 +37,7 @@ export class HMIssueReportingModel {
         this.MainIssue = hmIssueReportingItem.MainIssue || '';
         this.SubIssue = hmIssueReportingItem.SubIssue || '';
         this.StudentClass = hmIssueReportingItem.StudentClass || '';
+        this.SectionIds = hmIssueReportingItem.SectionIds || '';
         this.Month = hmIssueReportingItem.Month || '';
         this.StudentType = hmIssueReportingItem.StudentType || '';
         this.NoOfStudents = hmIssueReportingItem.NoOfStudents || '';

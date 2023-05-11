@@ -208,9 +208,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
                             this.setInputs(this.vtDailyReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
                               this.setInputs(this.vtDailyReportingModel.ClassId, 'ClassId', 'ClassById').then(vResp => {
                                 this.onChangeClasses(this.vtDailyReportingModel.ClassId).then(vResp => {
-                                  // this.vtGuestLectureConductedForm = this.createVTGuestLectureConductedForm();
                                   this.vtDailyReportingForm = this.createVTDailyReportingForm();
-
                                   this.onChangeReportType(this.vtDailyReportingModel.ReportType).then(response => {
                                     if (this.vtDailyReportingModel.WorkingDayTypeIds.length > 0) {
                                       this.onChangeWorkingType(this.vtDailyReportingModel.WorkingDayTypeIds);
@@ -240,11 +238,11 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
-      }).subscribe((response) => {
+      }, false).subscribe((response) => {
         if (response.Success) {
           this.sectorList = response.Results;
 
-          if (response.Results.length == 1) {
+          if (response.Results.length == 0) {
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
             this.vtDailyReportingForm.controls['SchoolId'].setValue(null);
           }
@@ -265,7 +263,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
-      }).subscribe((response) => {
+      }, false).subscribe((response) => {
 
         if (response.Success) {
           this.jobRoleList = response.Results;
@@ -284,11 +282,11 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
-      }).subscribe((response) => {
+      }, false).subscribe((response) => {
 
         if (response.Success) {
           this.academicYearList = response.Results;
-          if (response.Results.length == 1) {
+          if (response.Results.length == 0) {
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
             this.vtDailyReportingForm.controls['JobRoleId'].setValue(null);
           }
@@ -306,7 +304,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     this.setFormInputs();
 
     let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }, false).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
           this.loadFormInputs(response.Results, 'ClassId');
@@ -326,10 +324,15 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
 
-      this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId,
+        DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId,
+        DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId,
+        UserId: this.UserModel.UserTypeId, roleId:
+          this.UserModel.RoleCode, SelectTitle: 'Sections'
+      }, false).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-          // this.sectionList = response.Results;
         }
         resolve(true);
       });
@@ -353,10 +356,9 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       this.vtDailyReportingForm.controls[InputName].enable();
     }
 
-    if (response.length == 2) {
-      var inputId = response[1].Id;
+    if (response.length == 1) {
+      var inputId = response[0].Id;
       this.vtDailyReportingForm.controls[InputName].setValue(inputId);
-      // this.vtDailyReportingForm.controls[InputName].disable();
 
       if (InputName == 'SchoolId') {
         this.onChangeSchool(inputId);
@@ -414,36 +416,27 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
   setInputs(parentId, InputId, dataType): Promise<any> {
 
     this.IsLoading = true;
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise((resolve) => {
       this.commonService.GetMasterDataByType({
         DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
-      }).subscribe((response) => {
+      }, false).subscribe((response) => {
         if (response.Success) {
           if (InputId == 'SchoolId') {
             this.schoolList = response.Results;
             this.filteredSchoolItems = this.schoolList.slice();
-            this.vtDailyReportingForm.controls[InputId].disable();
           } else if (InputId == 'SectorId') {
             this.sectorList = response.Results;
-            this.vtDailyReportingForm.controls[InputId].disable();
           } else if (InputId == 'JobRoleId') {
             this.jobRoleList = response.Results;
-            this.vtDailyReportingForm.controls[InputId].disable();
           } else if (InputId == 'AcademicYearId') {
             this.academicYearList = response.Results;
-            this.vtDailyReportingForm.controls[InputId].disable();
           } else if (InputId == 'ClassId') {
             this.classList = response.Results;
-            this.vtDailyReportingForm.controls[InputId].disable();
           }
-          // else if (InputId == 'SectionIds') {
-          //   this.sectionList = response.Results;
-          //   this.vtDailyReportingForm.controls[InputId].disable();
-          // }
+          this.vtDailyReportingForm.controls[InputId].disable();
         }
         resolve(true);
       });
-
     });
     return promise;
   }

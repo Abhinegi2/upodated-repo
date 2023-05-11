@@ -46,6 +46,9 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
   AcademicYearInputId: string;
   ClassInputId: string;
 
+  SectionInputId: string;
+  sectionList: DropdownModel[];
+
   CanUserChangeInput: boolean;
 
   constructor(public commonService: CommonService,
@@ -103,7 +106,8 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
               .subscribe((response: any) => {
                 this.hmIssueReportingModel = response.Result;
 
-                this.hmIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
+                // this.hmIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
+                this.hmIssueReportingModel.SectionIds = response.Result.SectionIds.split(',');
                 this.hmIssueReportingModel.Month = response.Result.Month.split(',');
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
@@ -125,13 +129,28 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
                       this.setInputs(this.hmIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                         this.setInputs(this.hmIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
                           this.setInputs(this.hmIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
-                            this.onChangeAcademicYear(this.hmIssueReportingModel.AcademicYearId);
-                            this.onChangeMainIssue(this.hmIssueReportingModel.MainIssue);
-                            this.hmIssueReportingForm = this.createHMIssueReportingForm();
+                            this.setInputs(this.hmIssueReportingModel.StudentClass, 'StudentClass', 'ClassById').then(vResp => {
+                              this.onChangeClasses(this.hmIssueReportingModel.StudentClass).then(vResp => {
+                                this.onChangeMainIssue(this.hmIssueReportingModel.MainIssue);
+                                this.hmIssueReportingForm = this.createHMIssueReportingForm();
+                              });
+                            });
                           });
                         });
                       });
                     });
+
+                    // this.setInputs(this.hmIssueReportingModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
+                    //   this.setInputs(this.hmIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
+                    //     this.setInputs(this.hmIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
+                    //       this.setInputs(this.hmIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                    //         this.onChangeAcademicYear(this.hmIssueReportingModel.AcademicYearId);
+                    //         this.onChangeMainIssue(this.hmIssueReportingModel.MainIssue);
+                    //         this.hmIssueReportingForm = this.createHMIssueReportingForm();
+                    //       });
+                    //     });
+                    //   });
+                    // });
                   });
               });
           }
@@ -141,6 +160,36 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
 
     this.hmIssueReportingForm = this.createHMIssueReportingForm();
   }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }, false).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+          } else if (InputId == 'AcademicYearId') {
+            this.academicYearList = response.Results;
+          } else if (InputId == 'StudentClass') {
+            this.classList = response.Results;
+          }
+          this.hmIssueReportingForm.controls[InputId].disable();
+        }
+        resolve(true);
+      });
+    });
+    return promise;
+  }
+
   onChangeSchool(schoolId): Promise<any> {
     this.resetInputsAfter('School');
     this.setFormInputs();
@@ -224,7 +273,7 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
         if (response.Success) {
           this.classList = response.Results;
 
-          // this.loadFormInputs(response.Results, 'StudentClass');
+          this.loadFormInputs(response.Results, 'StudentClass');
         }
         resolve(true);
       });
@@ -235,12 +284,41 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
     return promise;
   }
 
+  onChangeClasses(classId): Promise<any> {
+    this.resetInputsAfter('Class');
+    this.setFormInputs();
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId,
+        DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId,
+        DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId,
+        UserId: this.UserModel.UserTypeId, roleId:
+          this.UserModel.RoleCode, SelectTitle: 'Sections'
+      }, false).subscribe((response) => {
+        if (response.Success) {
+          this.sectionList = response.Results;
+
+          if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
+            this.hmIssueReportingForm.controls['SectionIds'].disable();
+          }
+        }
+        resolve(true);
+      });
+    });
+
+    return promise;
+  }
+
   setFormInputs() {
     this.SchoolInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('SchoolId').value : this.hmIssueReportingModel.SchoolId;
     this.SectorInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('SectorId').value : this.hmIssueReportingModel.SectorId;
     this.JobRoleInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('JobRoleId').value : this.hmIssueReportingModel.JobRoleId;
     this.AcademicYearInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('AcademicYearId').value : this.hmIssueReportingModel.AcademicYearId;
     this.ClassInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('StudentClass').value : this.hmIssueReportingModel.StudentClass;
+    this.SectionInputId = this.CanUserChangeInput == true ? this.hmIssueReportingForm.get('SectionIds').value : this.hmIssueReportingModel.SectionIds;
   }
 
   loadFormInputs(response, InputName) {
@@ -263,6 +341,8 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
         this.onChangeJobRole(inputId);
       } else if (InputName == 'AcademicYearId') {
         this.onChangeAcademicYear(inputId);
+      } else if (InputName == 'StudentClass') {
+        this.onChangeClasses(inputId);
       }
     }
   }
@@ -273,52 +353,35 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
       this.hmIssueReportingForm.controls['SectorId'].setValue(null);
       this.hmIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.hmIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.hmIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.hmIssueReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.hmIssueReportingForm.controls['JobRoleId'].setValue(null);
       this.hmIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.hmIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.hmIssueReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.hmIssueReportingForm.controls['AcademicYearId'].setValue(null);
+      this.hmIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.hmIssueReportingForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'AcademicYear') {
+      this.hmIssueReportingForm.controls['StudentClass'].setValue(null);
+      this.hmIssueReportingForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'Class') {
+      this.hmIssueReportingForm.controls['SectionIds'].setValue(null);
     }
   }
 
   setUserAction() {
     this.CanUserChangeInput = true;
-  }
-
-
-  setInputs(parentId, InputId, dataType): Promise<any> {
-
-    this.IsLoading = true;
-    let promise = new Promise((resolve, reject) => {
-      this.commonService.GetMasterDataByType({
-        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
-      }).subscribe((response) => {
-        if (response.Success) {
-          if (InputId == 'SchoolId') {
-            this.schoolList = response.Results;
-            this.filteredSchoolItems = this.schoolList.slice();
-            console.log(this.schoolList, 'this');
-            this.hmIssueReportingForm.controls[InputId].disable();
-          } else if (InputId == 'SectorId') {
-            this.sectorList = response.Results;
-            this.hmIssueReportingForm.controls[InputId].disable();
-          } else if (InputId == 'JobRoleId') {
-            this.jobRoleList = response.Results;
-            this.hmIssueReportingForm.controls[InputId].disable();
-          } else if (InputId == 'AcademicYearId') {
-            this.academicYearList = response.Results;
-            this.hmIssueReportingForm.controls[InputId].disable();
-          }
-        }
-        resolve(true);
-      });
-
-    });
-    return promise;
   }
 
   onChangeMainIssue(mainIssueId: string) {
@@ -329,49 +392,50 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
     });
   }
 
-  onStudentClassChange(selectedSectionIds) {
-    if (selectedSectionIds.length == 0) {
-      this.studentClassList.forEach(studentClassItem => {
-        studentClassItem.IsDisabled = false;
-      });
-    }
-    else {
-      if (selectedSectionIds[0] == this.notApplicableId) {
-        this.studentClassList.forEach(studentClassItem => {
-          if (studentClassItem.Id != selectedSectionIds[0]) {
-            studentClassItem.IsDisabled = true;
-          }
-        });
-      }
-      else {
-        let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
-        studentClassItem.IsDisabled = true;
-      }
-    }
-  }
+  // onStudentClassChange(selectedSectionIds) {
+  //   if (selectedSectionIds.length == 0) {
+  //     this.studentClassList.forEach(studentClassItem => {
+  //       studentClassItem.IsDisabled = false;
+  //     });
+  //   }
+  //   else {
+  //     if (selectedSectionIds[0] == this.notApplicableId) {
+  //       this.studentClassList.forEach(studentClassItem => {
+  //         if (studentClassItem.Id != selectedSectionIds[0]) {
+  //           studentClassItem.IsDisabled = true;
+  //         }
+  //       });
+  //     }
+  //     else {
+  //       let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
+  //       studentClassItem.IsDisabled = true;
+  //     }
+  //   }
+  // }
 
-  selectAll(ev) {
-    if (ev._selected) {
-      this.hmIssueReportingForm.get('StudentClass').setValue(['214', '215', '216', '217']);
-      ev._selected = true;
-    }
+  // selectAll(ev) {
+  //   if (ev._selected) {
+  //     this.hmIssueReportingForm.get('StudentClass').setValue(['214', '215', '216', '217']);
+  //     ev._selected = true;
+  //   }
 
-    if (ev._selected == false) {
-      this.hmIssueReportingForm.get('StudentClass').setValue(null);
-      let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
-      studentClassItem.IsDisabled = false;
-    }
-  }
+  //   if (ev._selected == false) {
+  //     this.hmIssueReportingForm.get('StudentClass').setValue(null);
+  //     let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
+  //     studentClassItem.IsDisabled = false;
+  //   }
+  // }
 
   saveOrUpdateHMIssueReportingDetails() {
     if (!this.hmIssueReportingForm.valid) {
       this.validateAllFormFields(this.hmIssueReportingForm);
       return;
     }
-    var studentClass = this.hmIssueReportingForm.get('StudentClass').value;
+    // var studentClass = this.hmIssueReportingForm.get('StudentClass').value;
+    var SectionIds = this.hmIssueReportingForm.get('SectionIds').value;
     var month = this.hmIssueReportingForm.get('Month').value;
     this.setValueFromFormGroup(this.hmIssueReportingForm, this.hmIssueReportingModel);
-    this.hmIssueReportingModel.StudentClass = studentClass.join(',');
+    this.hmIssueReportingModel.SectionIds = SectionIds.join(',');
     this.hmIssueReportingModel.Month = month.join(',');
     this.hmIssueReportingModel.HMId = this.UserModel.UserTypeId;
     // this.hmIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
@@ -410,6 +474,7 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
 
       AcademicYearId: new FormControl({ value: this.hmIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       StudentClass: new FormControl({ value: this.hmIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SectionIds: new FormControl({ value: this.hmIssueReportingModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
 
       MainIssue: new FormControl({ value: this.hmIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SubIssue: new FormControl({ value: this.hmIssueReportingModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),

@@ -11,7 +11,7 @@ export class CourseMaterialModel {
     // VTId: string;
     AcademicYearId: string;
     ClassId: string;
-    SectionId: string;
+    SectionIds: string;
 
     ReceiptDate: Date;
     Details: string;
@@ -27,6 +27,7 @@ export class CourseMaterialModel {
         this.SSJId = courseMaterialItem.SSJId || '';
         this.AcademicYearId = courseMaterialItem.AcademicYearId || '';
         this.ClassId = courseMaterialItem.ClassId || '';
+        this.SectionIds = courseMaterialItem.SectionIds || '';
         this.ReceiptDate = courseMaterialItem.ReceiptDate || '';
         this.Details = courseMaterialItem.Details || '';
         this.CMStatus = courseMaterialItem.CMStatus || '';

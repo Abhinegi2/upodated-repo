@@ -92,7 +92,7 @@ export class VTDailyReportingService {
 
     getDropdownForVTDailyReporting(currentUser: UserModel): Observable<any[]> {
         let reportTypeRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'VTReportType', SelectTitle: 'Report Type' });
-        let SchoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: currentUser.UserTypeId, roleId: currentUser.RoleCode, SelectTitle: 'School' });
+        let SchoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: currentUser.UserTypeId, roleId: currentUser.RoleCode, SelectTitle: 'School' }, false);
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([reportTypeRequest, SchoolRequest]);
