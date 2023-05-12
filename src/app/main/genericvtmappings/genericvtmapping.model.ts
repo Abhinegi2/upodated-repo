@@ -9,6 +9,9 @@ export class GenericVTMappingModel {
     DateOfRemoval?: Date;
     IsActive: boolean;
     RequestType: any;
+    VTPId: string;
+    VCId: string;
+    VTId: string;
 
     constructor(genericvtmappingItem?: any) {
         genericvtmappingItem = genericvtmappingItem || {};
@@ -16,6 +19,9 @@ export class GenericVTMappingModel {
         this.GenericVTMappingId = genericvtmappingItem.GenericVTMappingId || FuseUtils.NewGuid();
         this.UserType = genericvtmappingItem.UserType || '';
         this.UserId = genericvtmappingItem.UserId || '';
+        this.VTPId = genericvtmappingItem.VTPId || '';
+        this.VCId = genericvtmappingItem.VCId || '';
+        this.VTId = genericvtmappingItem.VTId || '';
         this.GVTId = genericvtmappingItem.GVTId || '';
         this.DateOfAllocation = genericvtmappingItem.DateOfAllocation || '';
         this.DateOfRemoval = genericvtmappingItem.DateOfRemoval || '';
