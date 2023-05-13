@@ -68,8 +68,8 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.vcList = results[2].Results;
       }
 
-      if (results[2].Success) {
-        this.vtList = results[2].Results;
+      if (results[3].Success) {
+        this.vtList = results[3].Results;
       }
       console.log(this.vtList);
       this.route.paramMap.subscribe(params => {
@@ -143,28 +143,6 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
 
     }
   }
-
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }, false)
-  //       .subscribe((response: any) => {
-  //         if (response.Success) {
-  //           this.vcList = response.Results;
-  //           console.log(this.vcList);
-  //           this.filteredVcItems = this.vcList.slice();
-  //           console.log(this.filteredVcItems);
-  //         }
-
-  //         this.IsLoading = false;
-  //         resolve(true);
-  //       }, error => {
-  //         console.log(error);
-  //         resolve(false);
-  //       });
-  //   });
-  //   return promise;
-  // }
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
