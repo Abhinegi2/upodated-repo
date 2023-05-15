@@ -59,19 +59,40 @@
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- UserType Column -->
-                <ng-container matColumnDef="UserType">
+                <!-- <ng-container matColumnDef="UserType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserType</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
                         <p class="text-truncate">{{genericvtmapping.UserType}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
 
                 <!-- UserName Column -->
-                <ng-container matColumnDef="UserName">
+                <!-- <ng-container matColumnDef="UserName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserName</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
                         <p class="text-truncate">{{genericvtmapping.UserName}}</p>
+                    </mat-cell>
+                </ng-container> -->
+
+                <ng-container matColumnDef="VTPShortName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTPShortName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.VTPShortName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="VCFullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VCFullName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.VCFullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="VTFullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTFullName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.VTFullName}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -84,12 +105,12 @@
                 </ng-container>
                 
                 <!-- EmailId Column -->
-                <ng-container matColumnDef="EmailId">
+                <!-- <ng-container matColumnDef="EmailId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EmailId</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
                         <p class="text-truncate">{{genericvtmapping.EmailId}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- DateOfAllocation Column -->
                 <ng-container matColumnDef="DateOfAllocation">

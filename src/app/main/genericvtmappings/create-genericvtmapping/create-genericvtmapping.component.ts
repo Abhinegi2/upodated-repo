@@ -26,6 +26,10 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   userList: DropdownModel[];
   userFilterList: any;
   gvtList: [DropdownModel];
+  vtpList: [DropdownModel];
+  vcList: [DropdownModel];
+  vtList: [DropdownModel];
+  filteredVcItems: any;
   filteredGVTItems: any;
 
 
@@ -56,6 +60,18 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.filteredGVTItems = this.gvtList.slice();
       }
 
+      if (results[1].Success) {
+        this.vtpList = results[1].Results;
+      }
+
+      if (results[2].Success) {
+        this.vcList = results[2].Results;
+      }
+
+      if (results[3].Success) {
+        this.vtList = results[3].Results;
+      }
+      console.log(this.vtList);
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -162,9 +178,12 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   createGenericVTMappingForm(): FormGroup {
     return this.formBuilder.group({
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
-      UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
-      UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
+      // UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
+      // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
