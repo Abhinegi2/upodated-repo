@@ -63,9 +63,9 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         this.classList = results[1].Results;
       }
 
-      if (results[2].Success) {
-        this.sectionList = results[2].Results;
-      }
+      // if (results[2].Success) {
+      //   this.sectionList = results[2].Results;
+      // }
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
@@ -99,6 +99,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                 }
 
                 this.onChangeVT(this.vtacademicclasssectionModel.VTId);
+                this.onChangeClass(this.vtacademicclasssectionModel.ClassId);
 
                 this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
               });
@@ -122,6 +123,23 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
     });
+  }
+
+  onChangeClass(classId) {
+
+    console.log(classId);
+
+    let promise = new Promise((resolve) => {
+      this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
+        if (response.Success) {
+          this.sectionList = response.Results;
+
+        }
+        resolve(true);
+      });
+
+    });
+
   }
 
   saveOrUpdateVTAcademicClassSectionDetails() {
