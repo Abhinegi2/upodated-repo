@@ -137,7 +137,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="Actions" stickyEnd>
-                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/genericvtmappings', 'view', genericvtmapping.GenericVTMappingId]" skipLocationChange="true"
