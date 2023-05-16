@@ -247,7 +247,7 @@
                         <button *ngIf="PageRights.IsDelete && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && courseMaterial.CreatedBy === currentUser))"
                         mat-icon-button 
                         color="warn" (click)="onDeleteCourseMaterial(courseMaterial.CourseMaterialId)">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

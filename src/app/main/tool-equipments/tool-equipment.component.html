@@ -249,16 +249,16 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/tool-equipments', 'view', toolEquipment.ToolEquipmentId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                             [routerLink]="['/tool-equipments', 'edit', toolEquipment.ToolEquipmentId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class="data-edit s-22">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn"
                             (click)="onDeleteToolEquipment(toolEquipment.ToolEquipmentId)" *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

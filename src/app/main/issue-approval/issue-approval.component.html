@@ -130,19 +130,19 @@
                         <button *ngIf="PageRights.IsView && issueType == 'VC'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon class="data-view s-20">visibility </mat-icon>
+                            <mat-icon class="data-edit s-20">edit </mat-icon>
                         </button>
 
                         <button *ngIf="PageRights.IsView && issueType == 'VT'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon class="data-view s-20">visibility</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
 
                         <button *ngIf="PageRights.IsView && issueType == 'HM'" mat-icon-button
                             [routerLink]="['/issue-approval', 'edit', issueReporting.ReportedType, issueReporting.IssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon class="data-view s-20">visibility </mat-icon>
+                            <mat-icon class="data-edit s-20">edit </mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
