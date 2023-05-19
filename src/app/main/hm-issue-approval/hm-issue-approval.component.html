@@ -134,7 +134,7 @@
                     <mat-cell *matCellDef="let hmIssueReporting" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/hm-issue-reporting', 'view', hmIssueReporting.HMIssueReportingId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class = "data-edit s-22">edit</mat-icon>
                         </button>
 
                         <button *ngIf="hmIssueReporting.ApprovalStatus == null" mat-icon-button                         

@@ -119,9 +119,9 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let vtIssueReporting" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
-                            [routerLink]="['/vt-issue-reporting', 'view', vtIssueReporting.VTIssueReportingId]"
+                            [routerLink]="['/vt-issue-reporting', 'edit', vtIssueReporting.VTIssueReportingId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon >visibility</mat-icon>
+                            <mat-icon class="data-edit">edit</mat-icon>
                         </button>
                         
                         <button *ngIf="vtIssueReporting.ApprovalStatus == null" mat-icon-button                         
