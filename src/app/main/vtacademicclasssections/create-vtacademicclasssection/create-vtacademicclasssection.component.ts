@@ -127,8 +127,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   onChangeClass(classId) {
 
-    console.log(classId);
-
     let promise = new Promise((resolve) => {
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
         if (response.Success) {
