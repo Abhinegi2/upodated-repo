@@ -76,8 +76,8 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
         this.genderList = results[1].Results;
       }
 
-      if (results[5].Success) {
-        this.socialCategoryList = results[5].Results;
+      if (results[10].Success) {
+        this.socialCategoryList = results[10].Results;
       }
 
       this.route.paramMap.subscribe(params => {
