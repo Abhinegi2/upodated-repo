@@ -16,14 +16,14 @@
                 <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
                     shopping_basket
                 </mat-icon>
-                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                <span class="logo-text h2" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     {{'VC.VC' | translate }}
                 </span>
             </div>
             <!-- / APP TITLE -->
 
             <!-- SEARCH -->
-            <div class="search-wrapper mx-32 mx-md-0">
+            <div class="search-wrapper mx-20 mx-md-0">
                 <form name="vcSearchForm" [formGroup]="vcSearchForm">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
@@ -38,13 +38,13 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
-                <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                <a [routerLink]="['./']" class="refresh-data mt-20 mt-md-0">
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                 </a>
 
-                <!-- <button mat-raised-button class="fuse-white filter-button"
+                <button mat-raised-button class="fuse-white filter-button"
                     (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
-                </button> -->
+                </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
                     replaceUrl="true" class="add-vocational-coordinator-button fuse-white mt-24 mt-md-0">
@@ -52,7 +52,7 @@
                 </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
-                    replaceUrl="false" class="fuse-white mt-24 mt-md-0">
+                    replaceUrl="false" class="fuse-white mt-20 mt-md-0">
                     <span>{{'ADD VC DETAILS'}}</span>
                 </button>
 
@@ -73,7 +73,7 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                   <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Academic Year</mat-label>
 
                             <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill">
@@ -82,9 +82,9 @@
                                     {{ academicYearIdItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Vocational Training Provider</mat-label>
                             <mat-select name="vtpId" formControlName="VTPId" appearance="fill" #SelectVTP>
                                 <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
@@ -94,9 +94,9 @@
                                     {{ vtpItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Nature Of Appointment</mat-label>
                             <mat-select name="natureOfAppointmentId" formControlName="NatureOfAppointmentId"
                                 appearance="fill" filteredVTPItems>
@@ -104,7 +104,7 @@
                                     {{ noaItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field fxFlex="10" fxFlex.lt-md="10" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>

@@ -27,7 +27,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
   vtSearchForm: FormGroup;
   vtFilterForm: FormGroup;
 
-  academicYearList: DropdownModel[];
+  // academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
   filteredVTPItems: any;
   vcList: DropdownModel[];
@@ -58,9 +58,9 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.SearchBy.PageSize = 10; // delete after script changed
 
     this.vocationalTrainerService.getInitVocationalTrainersData(this.UserModel).subscribe(results => {
-      if (results[0].Success) {
-        this.academicYearList = results[0].Results;
-      }
+      // if (results[0].Success) {
+      //   this.academicYearList = results[0].Results;
+      // }
 
       // if (results[1].Success) {
       //   this.vtpList = results[1].Results;
@@ -71,11 +71,11 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         this.socialCategoryList = results[1].Results;
       }
 
-      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      if (currentYearItem != null) {
-        this.AcademicYearId = currentYearItem.Id;
-        this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      }
+      // let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      // if (currentYearItem != null) {
+      //   this.AcademicYearId = currentYearItem.Id;
+      //   this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      // }
 
       //Load initial VocationalTrainers data
       this.onLoadVocationalTrainersByCriteria();
@@ -124,7 +124,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
     let vtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-      // AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
+      //  AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       // VTPId: this.vtFilterForm.controls["VTPId"].value,
       // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
