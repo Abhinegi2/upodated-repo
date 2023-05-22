@@ -117,7 +117,6 @@ export class VocationalTrainingProviderComponent extends BaseListComponent<Vocat
     };
 
     this.vocationalTrainingProviderService.GetAllByCriteria(vtpParams).subscribe(response => {
-      console.log(response);
       this.displayedColumns = ['VTPShortName', 'VTPName', 'ApprovalYear', 'CertificationNo', 'CreatedBy', 'UpdatedBy','IsActive', 'Actions',];
 
       this.tableDataSource.data = response.Results;
