@@ -38,6 +38,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   sectorList: [DropdownModel];
   jobRoleList: DropdownModel[];
   classList: [DropdownModel];
+  sectionList: [DropdownModel];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -56,21 +57,33 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe(results => {
 
+      if (results[0].Success) {
+        this.schoolList = results[0].Results;
+      }
+
       if (results[2].Success) {
-        this.sectorList = results[2].Results;
+        this.academicYearList = results[2].Results;
       }
 
-      if (results[3].Success) {
-        this.academicYearList = results[3].Results;
+      if (results[9].Success) {
+        this.sectorList = results[9].Results;
       }
-
+      
       // if (results[1].Success) {
       //   this.vtpList = results[1].Results;
       //   this.filteredVTPItems = this.vtpList.slice();
       // }
 
-      if (results[4].Success) {
-        this.classList = results[4].Results;
+      if (results[11].Success) {
+        this.classList = results[11].Results;
+      }
+
+      if (results[3].Success) {
+        this.sectionList = results[3].Results;
+      }
+
+      if (results[5].Success) {
+        this.vtList = results[5].Results;
       }
 
       let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
@@ -130,11 +143,12 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       AcademicYearId: this.studentFilterForm.controls["AcademicYearId"].value,
       // VTPId: this.studentFilterForm.controls["VTPId"].value,
       // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
-      // VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
+      VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
+      SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       SectorId: this.studentFilterForm.controls["SectorId"].value,
       JobRoleId: this.studentFilterForm.controls['JobRoleId'].value,
-      SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       ClassId: this.studentFilterForm.controls['ClassId'].value,
+      SectionId: this.studentFilterForm.controls['SectionId'].value,
       UserRole: this.UserModel.RoleCode,
       UserId: this.UserModel.UserTypeId,
       // HMId: null,
@@ -151,8 +165,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     }
 
     this.studentClassService.GetAllByCriteria(studentParams).subscribe(response => {
-      console.log(response);
-      this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'JobRoleName', 'SectorName', 'VTName', 'VTEmailId', 'Gender', 'AssessmentToBeConducted', 'CSWNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
+      this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'SectorName', 'JobRoleName', 'VTName', 'VTEmailId', 'Gender', 'AssessmentToBeConducted', 'CSWNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -189,7 +202,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     // this.vcList = [];
     // this.filteredVCItems = [];
-    // this.vtList = [];
+    this.vtList = [];
     // this.filteredVTItems = [];
     this.schoolList = [];
     this.filteredSchoolItems = [];
@@ -384,11 +397,12 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       AcademicYearId: new FormControl(),
       // VTPId: new FormControl(),
       // VCId: new FormControl(),
-      // VTId: new FormControl(),
+      VTId: new FormControl(),
       SectorId: new FormControl(),
       JobRoleId: new FormControl(),
       SchoolId: new FormControl(),
       ClassId: new FormControl(),
+      SectionId: new FormControl(),
       Status: new FormControl()
     });
   }
