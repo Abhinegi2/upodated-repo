@@ -91,15 +91,22 @@ export class VTFieldIndustryVisitConductedService {
     }
 
     getDropdownForVTFieldIndustry(currentUser: UserModel): Observable<any[]> {
+        let SchoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: currentUser.UserTypeId, roleId: currentUser.RoleCode, SelectTitle: 'School' });
         let classRequest = this.http.GetClassesByVTId({ DataId: currentUser.LoginId, DataId1: currentUser.UserTypeId, SelectTitle: 'Class' });
         let moduleRequest = this.http.GetMasterDataByType({ DataType: 'CourseModules', SelectTitle: 'Modules Taught' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6        
-        return forkJoin([classRequest, moduleRequest]);
+        return forkJoin([SchoolRequest, classRequest, moduleRequest]);
     }
 
     getFieldIndustryVisitModelFromFormGroup(formGroup: FormGroup): VTFieldIndustryVisitConductedModel {
         let fieldIndustryVisitModel = new VTFieldIndustryVisitConductedModel();
+
+
+        fieldIndustryVisitModel.SchoolId = formGroup.get('SchoolId').value;
+        fieldIndustryVisitModel.SectorId = formGroup.get('SectorId').value;
+        fieldIndustryVisitModel.JobRoleId = formGroup.get('JobRoleId').value;
+        fieldIndustryVisitModel.AcademicYearId = formGroup.get('AcademicYearId').value;
 
         fieldIndustryVisitModel.ClassTaughtId = formGroup.get("ClassTaughtId").value;
         fieldIndustryVisitModel.ReportingDate = this.http.getDateTimeFromControl(formGroup.get("ReportingDate").value);

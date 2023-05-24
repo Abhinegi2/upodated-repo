@@ -183,6 +183,46 @@ export class ServiceConstants {
         Delete: "Employer/DeleteEmployerById"
     };
 
+    public Vocationalcoordinatordetail = {
+        GetAll: "Vocationalcoordinatordetail/GetVocationalcoordinatordetails",
+        GetAllByCriteria: "Vocationalcoordinatordetail/GetVocationalcoordinatordetailsByCriteria",
+        GetById: "Vocationalcoordinatordetail/GetVocationalcoordinatordetailById",
+        CreateOrUpdate: "Vocationalcoordinatordetail/CreateOrUpdateVocationalcoordinatordetailDetails",
+        Delete: "Vocationalcoordinatordetail/DeleteVocationalcoordinatordetailById"
+    };
+    
+    public Vocationaltrainerdetail = {
+        GetAll: "Vocationaltrainerdetail/GetVocationaltrainerdetails",
+        GetAllByCriteria: "Vocationaltrainerdetail/GetVocationaltrainerdetailsByCriteria",
+        GetById: "Vocationaltrainerdetail/GetVocationaltrainerdetailById",
+        CreateOrUpdate: "Vocationaltrainerdetail/CreateOrUpdateVocationaltrainerdetailDetails",
+        Delete: "Vocationaltrainerdetail/DeleteVocationaltrainerdetailById"
+    };
+
+    public SchoolSectorJob = {
+        GetAll: "SchoolSectorJob/GetSchoolSectorJobs",
+        GetAllByCriteria: "SchoolSectorJob/GetSchoolSectorJobsByCriteria",
+        GetById: "SchoolSectorJob/GetSchoolSectorJobById",
+        CreateOrUpdate: "SchoolSectorJob/CreateOrUpdateSchoolSectorJobDetails",
+        Delete: "SchoolSectorJob/DeleteSchoolSectorJobById"
+    };
+
+    public GenericVTMapping = {
+        GetAll: "GenericVTMapping/GetGenericVTMappings",
+        GetAllByCriteria: "GenericVTMapping/GetGenericVTMappingsByCriteria",
+        GetById: "GenericVTMapping/GetGenericVTMappingById",
+        CreateOrUpdate: "GenericVTMapping/CreateOrUpdateGenericVTMappingDetails",
+        Delete: "GenericVTMapping/DeleteGenericVTMappingById"
+    };
+
+    public VTAcademicClassSection = {
+        GetAll: "VTAcademicClassSection/GetVTAcademicClassSections",
+        GetAllByCriteria: "VTAcademicClassSection/GetVTAcademicClassSectionsByCriteria",
+        GetById: "VTAcademicClassSection/GetVTAcademicClassSectionById",
+        CreateOrUpdate: "VTAcademicClassSection/CreateOrUpdateVTAcademicClassSectionDetails",
+        Delete: "VTAcademicClassSection/DeleteVTAcademicClassSectionById"
+    };
+
     public ForgotPasswordHistory = {
         GetAll: "ForgotPasswordHistory/GetForgotPasswordHistories",
         GetAllByCriteria: "ForgotPasswordHistory/GetForgotPasswordHistoriesByCriteria",

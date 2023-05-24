@@ -9,4 +9,13 @@ fuse-navigation {
         padding: 0;
         width: 100%;
     }
+
+    
+    .children{
+        .nav-item{
+            .red-text{
+                color: red!important;
+            }
+        }    
+    }
 }

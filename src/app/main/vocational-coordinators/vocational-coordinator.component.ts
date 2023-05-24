@@ -130,7 +130,23 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
     };
 
     this.vocationalCoordinatorService.GetAllByCriteria(vcParams).subscribe(response => {
-      this.displayedColumns = ['NatureOfAppointment', 'VTPName', 'FullName', 'Mobile', 'EmailId', 'Gender', 'DateOfJoining', 'IsResigned', 'IsActive', 'Actions'];
+      this.displayedColumns = [
+        // 'NatureOfAppointment', 
+        // 'VTPName',
+        'FullName',
+        'Mobile',
+        'EmailId',
+        'Gender',
+        'StateName',
+        'DivisionName',
+        'DistrictName',
+        'DateOfJoining',
+        'CreatedBy',
+        'UpdatedBy',
+        'DateOfResignation',
+        'IsActive',
+       // 'IsResigned',
+        'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -213,7 +229,7 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
       response.Results.forEach(
         function (obj) {
           if (obj.hasOwnProperty('IsResigned')) {
-            obj.IsResigned = obj.IsResigned ? 'Yes' : 'No';            
+            obj.IsResigned = obj.IsResigned ? 'Yes' : 'No';
           }
           if (obj.hasOwnProperty('IsActive')) {
             obj.IsActive = obj.IsActive ? 'Yes' : 'No';

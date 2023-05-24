@@ -27,7 +27,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
   vtSearchForm: FormGroup;
   vtFilterForm: FormGroup;
 
-  academicYearList: DropdownModel[];
+  // academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
   filteredVTPItems: any;
   vcList: DropdownModel[];
@@ -58,24 +58,24 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.SearchBy.PageSize = 10; // delete after script changed
 
     this.vocationalTrainerService.getInitVocationalTrainersData(this.UserModel).subscribe(results => {
-      if (results[0].Success) {
-        this.academicYearList = results[0].Results;
-      }
+      // if (results[0].Success) {
+      //   this.academicYearList = results[0].Results;
+      // }
+
+      // if (results[1].Success) {
+      //   this.vtpList = results[1].Results;
+      //   this.filteredVTPItems = this.vtpList.slice();
+      // }
 
       if (results[1].Success) {
-        this.vtpList = results[1].Results;
-        this.filteredVTPItems = this.vtpList.slice();
+        this.socialCategoryList = results[1].Results;
       }
 
-      if (results[2].Success) {
-        this.socialCategoryList = results[2].Results;
-      }
-
-      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      if (currentYearItem != null) {
-        this.AcademicYearId = currentYearItem.Id;
-        this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      }
+      // let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      // if (currentYearItem != null) {
+      //   this.AcademicYearId = currentYearItem.Id;
+      //   this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      // }
 
       //Load initial VocationalTrainers data
       this.onLoadVocationalTrainersByCriteria();
@@ -123,9 +123,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.IsLoading = true;
 
     let vtParams: any = {
-      AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
-      VTPId: this.vtFilterForm.controls["VTPId"].value,
-      VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
+      UserTypeId: this.UserModel.UserTypeId,
+      //  AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
+      // VTPId: this.vtFilterForm.controls["VTPId"].value,
+      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
       Status: this.vtFilterForm.controls["Status"].value,
       Name: this.vtSearchForm.controls["SearchText"].value,
@@ -134,12 +135,39 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
       PageSize: this.SearchBy.PageSize
     };
 
-    if (this.UserModel.RoleCode == "HM") {
-      vtParams.HMId = this.UserModel.UserTypeId;
-    }
+    // if (this.UserModel.RoleCode == "HM") {
+    //   vtParams.HMId = this.UserModel.UserTypeId;
+    // }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
-      this.displayedColumns = ['VTPName', 'VCName', 'VTName', 'Mobile', 'Email', 'Gender', 'SocialCategory', 'NatureOfAppointment', 'IsResigned', 'IsActive', 'Actions'];
+      this.displayedColumns = [
+        // 'VTPName',
+        // 'VCName',
+        'VTName',
+        'Mobile',
+        'Email',
+        'Gender',
+        'DateOfBirth',
+        'SocialCategory',
+        'AcademicQualification',
+        'ProfessionalQualification',
+        'ProfessionalQualificationDetails',
+        'IndustryExperienceMonths',
+        'StateName',
+        'DivisionName',
+        'DistrictName',
+        'DateOfJoining',
+        'DateOfResignation',
+        'CreatedBy',
+        'UpdatedBy',
+        'IsActive',
+        // 'NatureOfAppointment',
+        // 'IsResigned',
+        'Actions'];
+        if(this.UserModel.RoleCode=='HM'){
+          this.displayedColumns ['7'] = 'SectorName';
+          this.displayedColumns ['8'] = 'JobRoleName';
+        }
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

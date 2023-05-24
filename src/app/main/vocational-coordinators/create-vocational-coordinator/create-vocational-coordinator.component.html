@@ -57,7 +57,55 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50"
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+                            <mat-select formControlName="VCId" appearance="fill" #SelectVC appearance="outline" (selectionChange)="onChangeVC($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVcItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Vocational Coordinator</mat-label>
+  
+                              <mat-select formControlName="VCId" required appearance="outline" matTooltip="Select Vocational Coordinator" matTooltipPosition='above'
+                                  matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVC (selectionChange)="onChangeVC($event.value)">
+                                  <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList" 
+                                    (filteredReturn)="this.filteredVcItems = $event" [displayMember]="'Name'">
+                                  </mat-select-filter>
+                                  <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVcItems">
+                                      {{ vcItem.Name }}
+                                  </mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="vocationalCoordinatorForm.controls.VCId.invalid">
+                                  {{getErrorMessage(vocationalCoordinatorForm, 'VCId')}}
+                              </mat-error>
+                          </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                        fxFlex.lt-sm="100">
+                        <mat-label>Email</mat-label>
+                        <input matInput name="emailId" formControlName="EmailId" required>
+                        <mat-error *ngIf="vocationalCoordinatorForm.controls.EmailId.invalid">
+                            {{getErrorMessage(vocationalCoordinatorForm, 'EmailId')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                    fxFlex.lt-sm="100">
+                    <mat-label>First Mobile Number</mat-label>
+                    <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
+                        maxlength="10">
+                    <mat-error *ngIf="vocationalCoordinatorForm.controls.Mobile.invalid">
+                        {{getErrorMessage(vocationalCoordinatorForm, 'Mobile')}}
+                    </mat-error>
+                </mat-form-field>
+                        <!-- <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>First Name</mat-label>
                             <input matInput name="firstName" formControlName="FirstName" placeholder="Ex. Rakesh"
@@ -66,9 +114,9 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.FirstName.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'FirstName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Middle Name</mat-label>
                             <input matInput name="middleName" formControlName="MiddleName" placeholder="Ex. Kumar"
@@ -88,11 +136,22 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.LastName.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'LastName')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Second Mobile Number</mat-label>
+                            <input matInput name="mobile1" formControlName="Mobile1" digitOnly minlength="10"
+                                maxlength="10">
+                            <mat-error *ngIf="vocationalCoordinatorForm.controls.Mobile1.invalid">
+                                {{getErrorMessage(vocationalCoordinatorForm, 'Mobile1')}}
+                            </mat-error>
+                        </mat-form-field>
+
                         <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Gender</mat-label>
@@ -107,42 +166,29 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
-                            fxFlex.lt-sm="100">
-                            <mat-label>Email</mat-label>
-                            <input matInput name="emailId" formControlName="EmailId" required>
-                            <mat-error *ngIf="vocationalCoordinatorForm.controls.EmailId.invalid">
-                                {{getErrorMessage(vocationalCoordinatorForm, 'EmailId')}}
+                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
+                        fxFlex.lt-sm="100">
+                            <mat-label>Date Of Joining</mat-label>
+                            <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
+                                [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfJoining></mat-datepicker>
+
+                            <mat-error *ngIf="vocationalCoordinatorForm.controls.DateOfJoining.invalid">
+                                {{getErrorMessage(vocationalCoordinatorForm, 'DateOfJoining')}}
                             </mat-error>
                         </mat-form-field>
+
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
-                            fxFlex.lt-sm="100">
-                            <mat-label>First Mobile Number</mat-label>
-                            <input matInput name="mobile" formControlName="Mobile" required digitOnly minlength="10"
-                                maxlength="10">
-                            <mat-error *ngIf="vocationalCoordinatorForm.controls.Mobile.invalid">
-                                {{getErrorMessage(vocationalCoordinatorForm, 'Mobile')}}
-                            </mat-error>
-                        </mat-form-field>
 
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
-                            fxFlex.lt-sm="100">
-                            <mat-label>Second Mobile Number</mat-label>
-                            <input matInput name="mobile1" formControlName="Mobile1" digitOnly minlength="10"
-                                maxlength="10">
-                            <mat-error *ngIf="vocationalCoordinatorForm.controls.Mobile1.invalid">
-                                {{getErrorMessage(vocationalCoordinatorForm, 'Mobile1')}}
-                            </mat-error>
-                        </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Nature Of Appointment</mat-label>
                             <mat-select name="natureOfAppointment" formControlName="NatureOfAppointment" required
@@ -154,9 +200,9 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.NatureOfAppointment.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'NatureOfAppointment')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100"
                             *ngIf="vocationalCoordinatorForm.controls.NatureOfAppointment.value == 58">
                             <mat-label>Select VTP</mat-label>
@@ -170,24 +216,11 @@
                             <mat-error *ngIf="vocationalCoordinatorForm.controls.VTPId.invalid">
                                 {{getErrorMessage(vocationalCoordinatorForm, 'VTPId')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
-                            fxFlex.lt-sm="100">
-                            <mat-label>Date Of Joining</mat-label>
-                            <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
-                                [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
-                            <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
-                            <mat-datepicker #dateOfJoining></mat-datepicker>
-
-                            <mat-error *ngIf="vocationalCoordinatorForm.controls.DateOfJoining.invalid">
-                                {{getErrorMessage(vocationalCoordinatorForm, 'DateOfJoining')}}
-                            </mat-error>
-                        </mat-form-field>
-
 
                         <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100"

@@ -74,6 +74,9 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        // MatInputModule,
+        MatFormFieldModule,
+        // MatTableExporterModule,
         RouterModule.forRoot(appRoutes),
 
         TranslateModule.forRoot(),

@@ -75,8 +75,8 @@ export class AccountService {
             );
     }
 
-    getUserDropdowns(): Observable<any[]> {
-        let roleRequest = this.http.GetMasterDataByType({ DataType: 'Roles', SelectTitle: 'Role' });
+    getUserDropdowns(userModel): Observable<any[]> {
+        let roleRequest = this.http.GetMasterDataByType({ DataType: 'Roles', UserId: userModel.UserTypeId, RoleId: userModel.RoleCode, SelectTitle: 'Role' });
         let stateRequest = this.http.GetMasterDataByType({ DataType: 'States', SelectTitle: 'State' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6

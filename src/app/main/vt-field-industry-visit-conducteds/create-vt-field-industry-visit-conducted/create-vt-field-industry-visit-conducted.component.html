@@ -55,6 +55,138 @@
                     class="vt-field-industry-visit-conducted w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
 
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+                            <mat-select formControlName="SchoolId" required
+                                appearance="outline" matTooltip="Select School" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+                            
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SectorId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeAcademicYear($event.value)">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Class Taught</mat-label>
+
+                            <mat-select formControlName="classTaughtId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClass($event.value)">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.classTaughtId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'classTaughtId')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Section Taugh</mat-label>
+
+                            <mat-select formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SectionIds')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Class Taught</mat-label>
+                            <mat-select name="classTaughtId" formControlName="ClassTaughtId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClassForTaught($event.value)"
+                                matTooltip="Select the Class for which Guest Lecture Conducted."
+                                matTooltipPosition="above">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.ClassTaughtId.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'ClassTaughtId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Section Taught</mat-label>
+                            <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeSectionForTaught($event.value)">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SectionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
@@ -71,7 +203,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                        <!-- <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Class Taught</mat-label>
 
@@ -100,7 +232,7 @@
                             <mat-error *ngIf="vtFieldIndustryVisitConductedForm.controls.SectionIds.invalid">
                                 {{getErrorMessage(vtFieldIndustryVisitConductedForm, 'SectionIds')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

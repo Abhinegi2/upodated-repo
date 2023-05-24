@@ -7,7 +7,14 @@ export class HMIssueReportingModel {
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
     StudentClass: string;
+    SectionIds: string;
+
     Month: string;
     StudentType: any;
     NoOfStudents: string;
@@ -25,10 +32,12 @@ export class HMIssueReportingModel {
         this.HMIssueReportingId = hmIssueReportingItem.HMIssueReportingId || FuseUtils.NewGuid();
         this.HMId = hmIssueReportingItem.HMId || FuseUtils.NewGuid();
         this.AcademicYearId = hmIssueReportingItem.AcademicYearId || '';
+        this.SSJId = hmIssueReportingItem.SSJId || '';
         this.IssueReportDate = hmIssueReportingItem.IssueReportDate || '';
         this.MainIssue = hmIssueReportingItem.MainIssue || '';
         this.SubIssue = hmIssueReportingItem.SubIssue || '';
         this.StudentClass = hmIssueReportingItem.StudentClass || '';
+        this.SectionIds = hmIssueReportingItem.SectionIds || '';
         this.Month = hmIssueReportingItem.Month || '';
         this.StudentType = hmIssueReportingItem.StudentType || '';
         this.NoOfStudents = hmIssueReportingItem.NoOfStudents || '';

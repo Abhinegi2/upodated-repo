@@ -67,7 +67,7 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <mat-form-field fxFlex="15" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="15" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Academic Year</mat-label>
 
                             <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill"
@@ -77,9 +77,9 @@
                                     {{ academicYearIdItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>Vocational Training Provider</mat-label>
 
                             <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
@@ -91,8 +91,8 @@
                                     {{ vtpItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
-
+                        </mat-form-field> -->
+                        <!-- 
                         <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>Vocational Coordinator</mat-label>
 
@@ -105,15 +105,15 @@
                                     {{ vcItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="35" fxFlex.lt-md="15" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="35" fxFlex.lt-md="15" fxFlex.lt-sm="100">
                             <mat-label>School</mat-label>
 
                             <mat-select formControlName="SchoolId" appearance="fill" matTooltip="Select School"
                                 matTooltipPosition='above' matTooltipClass="allow-cr" #SelectSchool>
                                 <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
-                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [array]="schoolList"
                                     [displayMember]="'Name'"></mat-select-filter>
                                 <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
                                     {{ schoolItem.Name }}
@@ -143,7 +143,7 @@
                                     {{ jobRoleItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field fxFlex="15" fxFlex.lt-md="10" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>
@@ -225,12 +225,41 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- IsResigned Column -->
-                <ng-container matColumnDef="IsResigned">
-                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
+                    <!-- DateOfJoining Column -->
+                    <ng-container matColumnDef="DateOfJoining">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfJoining
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let headMaster" fxHide fxShow.gt-xs>
+                            <p class="text-truncate">{{headMaster.DateOfJoining  | date: Constants.ShortDateFormat}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                     <!-- CreatedBy Column -->
+                     <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let headMaster">
+                            <p class="text-truncate">{{headMaster.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- UpdatedBy Column -->
+                    <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster">
+                        <p class="text-truncate">{{headMaster.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+                    
+
+
+                <!-- DateOfResignationFromSchool Column -->
+                <ng-container matColumnDef="DateOfResignationFromSchool">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">DateOfResignation
                     </mat-header-cell>
                     <mat-cell *matCellDef="let headMaster" class="text-center">
-                        <span>{{ (headMaster.IsResigned ? 'Yes' : 'No') }}</span>
+                        <span>{{ (headMaster.DateOfResignationFromSchool) }}</span>
                     </mat-cell>
                 </ng-container>
 
@@ -244,6 +273,15 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- CreatedBy Column -->
+                <ng-container matColumnDef="CreatedByUserId" style="display: none;">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide>CreatedByUserId
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let headMaster" fxHide>
+                        <p class="text-truncate">{{headMaster.CreatedByUserId}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
 
@@ -254,13 +292,13 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && headMaster.CreatedByUserId === currentUser)) && headMaster.IsActive"
                             mat-icon-button [routerLink]="['/head-masters', 'edit', headMaster.HMId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsDelete && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsDelete && headMaster.IsActive && (headMaster.IsResigned == false || UserModel.RoleCode == 'SUR' || UserModel.RoleCode == 'AMD')"
                             mat-icon-button color="warn" (click)="onDeleteHeadMaster(headMaster.HMId)">
                             <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>

@@ -90,11 +90,12 @@ export class VTDailyReportingService {
             );
     }
 
-    getDropdownForVTDailyReporting(): Observable<any[]> {
+    getDropdownForVTDailyReporting(currentUser: UserModel): Observable<any[]> {
         let reportTypeRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'VTReportType', SelectTitle: 'Report Type' });
+        let SchoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: currentUser.UserTypeId, roleId: currentUser.RoleCode, SelectTitle: 'School' }, false);
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([reportTypeRequest]);
+        return forkJoin([reportTypeRequest, SchoolRequest]);
     }
 
     getDropdownForTeachingVocationalEducation(currentUser: UserModel): Observable<any[]> {
@@ -117,6 +118,14 @@ export class VTDailyReportingService {
         dailyReportingModel.ReportType = formGroup.get("ReportType").value;
         dailyReportingModel.ReportingDate = this.http.getDateTimeFromControl(formGroup.get("ReportingDate").value);
         dailyReportingModel.WorkingDayTypeIds = (dailyReportingModel.ReportType == '37') ? formGroup.get("WorkingDayTypeIds").value : [];
+
+        dailyReportingModel.SchoolId = formGroup.get('SchoolId').value;
+        dailyReportingModel.SectorId = formGroup.get('SectorId').value;
+        dailyReportingModel.JobRoleId = formGroup.get('JobRoleId').value;
+        dailyReportingModel.AcademicYearId = formGroup.get('AcademicYearId').value;
+
+        dailyReportingModel.ClassId = formGroup.get("ClassId").value;
+        dailyReportingModel.SectionIds = formGroup.get("SectionIds").value;
 
         // Teaching Vocational Education
         if (formGroup.controls.teachingVocationalEducationGroup != null) {

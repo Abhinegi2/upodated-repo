@@ -60,6 +60,31 @@ export const RouteConstants = {
         New: 'employers/:actionType',
         Edit: 'employers/:actionType/:employerId'
     },
+    Vocationalcoordinatordetail: {
+        List: 'vocationalcoordinatordetails',
+        New: 'vocationalcoordinatordetails/:actionType',
+        Edit: 'vocationalcoordinatordetails/:actionType/:vocationalcoordinatordetailId'
+    },
+    Vocationaltrainerdetail: {
+    List: 'vocationaltrainerdetails',
+    New: 'vocationaltrainerdetails/:actionType',
+    Edit: 'vocationaltrainerdetails/:actionType/:vocationaltrainerdetailId'
+},
+    SchoolSectorJob: {
+        List: 'schoolsectorjobs',
+        New: 'schoolsectorjobs/:actionType',
+        Edit: 'schoolsectorjobs/:actionType/:schoolsectorjobId'
+    },
+    GenericVTMapping: {
+        List: 'genericvtmappings',
+        New: 'genericvtmappings/:actionType',
+        Edit: 'genericvtmappings/:actionType/:genericvtmappingId'
+    },
+    VTAcademicClassSection: {
+        List: 'vtacademicclasssections',
+        New: 'vtacademicclasssections/:actionType',
+        Edit: 'vtacademicclasssections/:actionType/:vtacademicclasssectionId'
+    },
     ForgotPasswordHistory: {
         List: 'forgot-password-histories',
         New: 'forgot-password-histories/:actionType',

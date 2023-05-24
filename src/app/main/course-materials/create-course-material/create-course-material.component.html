@@ -54,54 +54,15 @@
                 <form name="courseMaterialForm" [formGroup]="courseMaterialForm"
                     class="course-material w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
                     fxFlex fusePerfectScrollbar>
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'"
-                                appearance="outline" (selectionChange)="onChangeVTP($event.value)"
-                                [disabled]="PageRights.IsReadOnly" #SelectVTP>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused"
-                                    [array]="vtpFilterList" (filteredReturn)="vtpList = $event"
-                                    [displayMember]="'Name'"></mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="courseMaterialForm.controls.VTPId.invalid">
-                                {{getErrorMessage(courseMaterialForm, 'VTPId')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'"
-                                appearance="outline" (selectionChange)="onChangeVC($event.value)"
-                                [disabled]="PageRights.IsReadOnly" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="VCList"
-                                    (filteredReturn)="vcList = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="courseMaterialForm.controls.VCId.invalid">
-                                {{getErrorMessage(courseMaterialForm, 'VCId')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>School</mat-label>
 
-                            <mat-select formControlName="SchoolId" [required]="UserModel.RoleCode != 'VT'"
-                                appearance="outline" matTooltip="School" matTooltipPosition='above'
+                            <mat-select formControlName="SchoolId" required
+                                appearance="outline" matTooltip="Select School" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
                                 (selectionChange)="onChangeSchool($event.value)">
                                 <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
@@ -117,22 +78,33 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Trainer</mat-label>
-
-                            <mat-select formControlName="VTId" [required]="UserModel.RoleCode != 'VT'"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeAcademicYear()" #SelectVT>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVT.focused" [array]="VTList"
-                                    (filteredReturn)="vtList = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
-                                    {{ vtItem.Name }}
+                            <mat-label>Select Sector</mat-label>
+                            
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="courseMaterialForm.controls.VTId.invalid">
-                                {{getErrorMessage(courseMaterialForm, 'VTId')}}
+                            <mat-error *ngIf="courseMaterialForm.controls.SectorId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'SectorId')}}
                             </mat-error>
                         </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -141,7 +113,7 @@
                             <mat-label>Academic Year</mat-label>
 
                             <mat-select formControlName="AcademicYearId" appearance="outline" required
-                                (selectionChange)="onChangeAcademicYear()" [disabled]="PageRights.IsReadOnly">
+                                (selectionChange)="onChangeAcademicYear($event.value)" [disabled]="PageRights.IsReadOnly">
                                 <mat-option [value]="academicYearItem.Id"
                                     *ngFor="let academicYearItem of academicYearList">
                                     {{ academicYearItem.Name }}
@@ -152,7 +124,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Class</mat-label>
 
                             <mat-select formControlName="ClassId" appearance="outline" required
@@ -163,6 +135,39 @@
                             </mat-select>
                             <mat-error *ngIf="courseMaterialForm.controls.ClassId.invalid">
                                 {{getErrorMessage(courseMaterialForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                        fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+                            <mat-select name="ClassId" formControlName="ClassId" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClasses($event.value)"
+                                matTooltip="Select the Class"
+                                matTooltipPosition="above">
+                                <mat-option disabled="" [value]="">Select Class</mat-option>
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.ClassId.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Sections</mat-label>
+                            <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" multiple>
+                                <mat-option disabled="" [value]="">Select Sections</mat-option>
+                                <mat-option [value]="sectionItem.Name" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="courseMaterialForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'SectionIds')}}
                             </mat-error>
                         </mat-form-field>
                     </div>

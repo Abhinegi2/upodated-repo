@@ -4,16 +4,17 @@ export const environment = {
     demo: false,
     lahi: false,
     gj: false,
-    mh: true,
+    mh: false,
+    dl: true,
     jh: false,
     od: false,
     production: false,
-    target: "mh",
-    email: "support.mh.lighthouse@lend-a-hand-India.org",
-    version: "2.21.2.07",
+    target: "dl",
+    email: "support.dl.lighthouse@lend-a-hand-India.org",
+    version: "3.0",
     ApiBaseUrl: "http://localhost:5013/LighthouseServices/"
-    //ApiBaseUrl: "https://maharashtra.lighthouse.net.in/LighthouseServices/"
-    //ApiBaseUrl: "https://stg-mh.lighthouse.net.in/LighthouseServices/"
+    // ApiBaseUrl: "https://stg-dl.lighthouse.net.in/LighthouseServices/"
+    //ApiBaseUrl: "https://delhi.lighthouse.net.in/LighthouseServices/"
 };
 
 /* Build Project => ng build --prod --c/configuration=lahi  lahi | uat | gujarat | mh
@@ -21,6 +22,8 @@ export const environment = {
  * ng serve --c/configuration=lahi
  * node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve --open --c=mh
  * node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng build --prod --c=mh --outputHashing=all
+ *
+ * export NODE_OPTIONS="--max-old-space-size=8192"
 
  * ADM: rakesh.gtmcs@gmail.com      VC: amit.patil@icagroup.in/amarmondhe.lnet@gmail.com       VT: ashukarane264@gmail.com
  */

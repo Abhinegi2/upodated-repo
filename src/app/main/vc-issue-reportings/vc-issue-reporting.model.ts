@@ -7,15 +7,22 @@ export class VCIssueReportingModel {
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
     StudentClass: string;
+    SectionIds: string;
+
     Month: string;
     StudentType: string;
     NoOfStudents: any;
     IssueDetails: string;
 
-    GeoLocation:string;
-    Latitude:string;
-    Longitude:string;
+    GeoLocation: string;
+    Latitude: string;
+    Longitude: string;
     IsActive: boolean;
     RequestType: any;
 
@@ -25,10 +32,12 @@ export class VCIssueReportingModel {
         this.VCIssueReportingId = vcIssueReportingItem.VCIssueReportingId || FuseUtils.NewGuid();
         this.AcademicYearId = vcIssueReportingItem.AcademicYearId || '';
         this.VCId = vcIssueReportingItem.VCId || '';
+        this.SSJId = vcIssueReportingItem.SSJId || '';
         this.IssueReportDate = vcIssueReportingItem.IssueReportDate || '';
         this.MainIssue = vcIssueReportingItem.MainIssue || '';
         this.SubIssue = vcIssueReportingItem.SubIssue || '';
         this.StudentClass = vcIssueReportingItem.StudentClass || '';
+        this.SectionIds = vcIssueReportingItem.SectionIds || '';
         this.Month = vcIssueReportingItem.Month || '';
         this.StudentType = vcIssueReportingItem.StudentType || '';
         this.NoOfStudents = vcIssueReportingItem.NoOfStudents || '';

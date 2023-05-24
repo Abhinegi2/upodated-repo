@@ -38,9 +38,16 @@
 
     <ng-template #itemContent>
         <mat-icon class="nav-link-icon" *ngIf="item.icon">{{item.icon}}</mat-icon>
-        <span class="nav-link-title" [translate]="item.translate">{{(item.translate | translate) || item.title}}</span>
-        <span class="nav-link-badge" *ngIf="item.badge" [translate]="item.badge.translate"
-              [ngStyle]="{'background-color': item.badge.bg,'color': item.badge.fg}">
+        <span [ngClass]="item.title === 'VTP Sectors (Obsolete)' 
+        || item.title === 'VT School Sectors (Obsolete)'
+        || item.title === 'VT Classes (Obsolete)'
+        || item.title === 'VC School Sectors (Obsolete)'
+        || item.title === 'School VTP Sectors (Obsolete)'
+        || item.title === 'Student Class Details'
+         ? 'red-text' : ''" class="nav-link-title" [translate]="item.translate">{{(item.translate | translate) || item.title}}</span>
+
+        <span class="nav-link-badge"  *ngIf="item.badge" [translate]="item.badge.translate"
+              [ngStyle]="{'background-color': item.badge.bg}">
             {{(item.badge.translate | translate) || item.badge.title}}
         </span>
     </ng-template>

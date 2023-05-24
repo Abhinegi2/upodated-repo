@@ -25,7 +25,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
   accountModel: AccountModel;
   roleList: DropdownModel[];
 
-  roleNotAdmin = ['980200d7-de58-4140-ab62-845e5eec08d1', '259b3087-4e2a-435a-accc-cf8980ffbcca', 'cd6b4973-f87f-4887-bff2-6146447d11df'];
+  roleNotAdmin = ['980200d7-de58-4140-ab62-845e5eec08d1', 'cd6b4973-f87f-4887-bff2-6146447d11df'];
   stateList: [DropdownModel];
   divisionList: DropdownModel[];
   districtList: DropdownModel[];
@@ -59,7 +59,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
   }
 
   ngOnInit(): void {
-    this.accountService.getUserDropdowns().subscribe((results) => {
+    this.accountService.getUserDropdowns(this.UserModel).subscribe((results) => {
       if (results[0].Success) {
         //  980200d7-de58-4140-ab62-845e5eec08d1	VC	Vocational Coordinator
         //  259b3087-4e2a-435a-accc-cf8980ffbcca	VT	Vocational Trainer
@@ -259,6 +259,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
       UserId: new FormControl({ value: this.accountModel.UserId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(40)]),
       UserName: new FormControl({ value: this.accountModel.UserName, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       FirstName: new FormControl({ value: this.accountModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
+      MiddleName: new FormControl({ value: this.accountModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
       LastName: new FormControl({ value: this.accountModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
       RoleId: new FormControl({ value: this.accountModel.RoleId, disabled: this.PageRights.IsReadOnly }),
       Designation: new FormControl({ value: this.accountModel.Designation, disabled: this.PageRights.IsReadOnly }),
@@ -269,7 +270,7 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
 
       workLocationForm: this.formBuilder.group({
         AccountId: new FormControl(this.accountModel.AccountId),
-        StateCode: new FormControl({ value: this.UserModel.DefaultStateId, disabled: (this.UserModel.DefaultStateId != '') }),
+        StateCode: new FormControl({ value: this.UserModel.DefaultStateId = this.Constants.DefaultStateId, disabled: (this.UserModel.DefaultStateId = this.Constants.DefaultStateId) }),
         DivisionId: new FormControl({ value: this.workLocationModel.DivisionId, disabled: this.PageRights.IsReadOnly }),
         DistrictId: new FormControl({ value: this.workLocationModel.DistrictId, disabled: this.PageRights.IsReadOnly }),
         BlockId: new FormControl({ value: this.workLocationModel.BlockId, disabled: this.PageRights.IsReadOnly }),

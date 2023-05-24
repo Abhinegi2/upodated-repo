@@ -133,17 +133,17 @@
                     <mat-cell *matCellDef="let vcIssueReporting" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/vc-issue-reporting', 'view', vcIssueReporting.VCIssueReportingId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-edit">edit</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/vc-issue-reporting', 'approved', vcIssueReporting.VCIssueReportingId]" skipLocationChange="true" replaceUrl="false"
                         (click)="saveOrUpdateVCIssueApprovalDetails( 'approved' , vcIssueReporting.VCIssueReportingId)">
-                            <mat-icon color="primary">check</mat-icon>
+                            <mat-icon class="data-active s-20">check</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                         [routerLink]="['/vc-issue-reporting', 'rejected', vcIssueReporting.VCIssueReportingId]" skipLocationChange="true" replaceUrl="false"
                         (click)="saveOrUpdateVCIssueApprovalDetails( 'rejected' , vcIssueReporting.VCIssueReportingId)">
-                            <mat-icon color="primary">close</mat-icon>
+                            <mat-icon class="data-inactive s-20">close</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

@@ -40,21 +40,30 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
     this.fileUploadModel = new FileUploadModel();
     this.dataTypetList = <DropdownModel[]>[
       { Id: '', Name: 'Select Excel Template' },
-      { Id: 'Schools', Name: '01-Schools', Template: '01_Schools_Template.xlsx' },
-      { Id: 'SectorJobRoles', Name: '02-Sector Job Roles', Template: '02_SectorJobRoles_Template.xlsx' },
-      { Id: 'VocationalTrainingProviders', Name: '03-Vocational Training Providers', Template: '03_VocationalTrainingProviders_Template.xlsx' },
-      { Id: 'VTPSectors', Name: '04-VTP Sectors', Template: '04_VTPSectors_Template.xlsx' },
-      { Id: 'SchoolVTPSectors', Name: '05-School VTP Sectors', Template: '05_SchoolVTPSectors_Template.xlsx' },
-      { Id: 'VocationalCoordinators', Name: '06-Vocational Coordinators', Template: '06_VocationalCoordinators_Template.xlsx' },
-      { Id: 'VCSchoolSectors', Name: '07-VC School Sectors', Template: '07_VCSchoolSectors_Template.xlsx' },
-      { Id: 'VocationalTrainers', Name: '08-Vocational Trainers', Template: '08_VocationalTrainers_Template.xlsx' },
-      { Id: 'VTSchoolSectors', Name: '09-VT School Sectors', Template: '09_VTSchoolSectors_Template.xlsx' },
-      { Id: 'HeadMasters', Name: '10-Head Masters', Template: '10_HeadMasters_Template.xlsx' },
-      { Id: 'SchoolVEIncharges', Name: '11-School VE Incharges', Template: '11_SchoolVEIncharges_Template.xlsx' },
-      { Id: 'VTClasses', Name: '12-VT Classes', Template: '12_VTClasses_Template.xlsx' },
-      { Id: 'Students', Name: '13-Students', Template: '13_Students_Template.xlsx' },
-      { Id: 'Employer', Name: '14-Employer', Template: '14_Employers_Template.xlsx' },
-      { Id: 'CourseModules', Name: '15-Course Modules', Template: '15_CourseModules_Template.xlsx' }
+      { Id: 'Division', Name: 'Division', Template: 'Divisions_Template.xlsx' },
+      { Id: 'District', Name: 'District', Template: 'Districts_Template.xlsx' },
+      { Id: 'Block', Name: 'Block', Template: 'Blocks_Template.xlsx' },
+      { Id: 'Schools', Name: 'Schools', Template: 'Schools_Template.xlsx' },
+      { Id: 'HeadMasters', Name: 'Head Masters', Template: 'HeadMasters_Template.xlsx' },
+      { Id: 'VocationalTrainingProviders', Name: 'Vocational Training Providers', Template: 'VocationalTrainingProviders_Template.xlsx' },
+      { Id: 'VocationalCoordinators', Name: 'Vocational Coordinators', Template: 'VocationalCoordinators_Template.xlsx' },
+      { Id: 'VocationalTrainers', Name: 'Vocational Trainers', Template: 'VocationalTrainers_Template.xlsx' },
+      { Id: 'SchoolSectorJobRole', Name: 'School Sector JobRole', Template: 'SchoolsSectorJobRole_Template.xlsx' },
+      { Id: 'SectorJobRoles', Name: 'Sector Job Roles',class:"data-active", Template: 'SectorJobRoles_Template.xlsx' },
+      // { Id: 'VTP Mapping (GVT)', Name: 'VTP Mapping (GVT)', Template: 'VTP_Mapping_GVT.xlsx' },
+      // { Id: 'VC_Mapping_(GVT)', Name: 'VC Mapping (GVT)', Template: 'VC_Mapping_GVT.xlsx' },
+      { Id: 'VTP/VC/VTGenericMapping', Name: 'VTP/VC/VT Generic Mapping', Template: 'VTP/VC/VT_Generic_Mapping.xlsx' },
+      { Id: 'VTAcademicClassSection', Name: 'VT Academic Class Section', Template: 'VTAcademicClassSection_Template.xlsx' },
+      { Id: 'Students', Name: 'Students', Template: 'Students_Template.xlsx' },
+     // { Id: 'Employer', Name: 'Employer', Template: 'Employers_Template.xlsx'  },
+      { Id: 'CourseModules', Name: 'Course Modules', Template: 'CourseModules_Template.xlsx' }
+      /* { Id: 'VCSchoolSectors', Name: 'VC School Sectors Obsolete', Template: 'VCSchoolSectors_Template_Obsolete.xlsx'},
+      { Id: 'VTSchoolSectors', Name: 'VT School Sectors Obsolete', Template: 'VTSchoolSectors_Template_Obsolete.xlsx' },
+      { Id: 'VTPSectors', Name: 'VTP Sectors Obsolete', Template: 'VTPSectors_Template_Obsolete.xlsx' },
+      { Id: 'VTClasses', Name: 'VT Classes Obsolete', Template: 'VTClasses_Template_Obsolete.xlsx' },
+      { Id: 'SchoolVTPSectors', Name: 'School VTP Sectors Obsolete', Template: 'SchoolVTPSectors_Template_Obsolete.xlsx' },
+      
+      { Id: 'SchoolVEIncharges', Name: 'School VE Incharges(Not available)', Template: 'SchoolVEIncharges_Template.xlsx' },*/
     ]
   }
 

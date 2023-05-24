@@ -38,6 +38,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   sectorList: [DropdownModel];
   jobRoleList: DropdownModel[];
   classList: [DropdownModel];
+  sectionList: [DropdownModel];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -55,21 +56,34 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe(results => {
-      if (results[4].Success) {
-        this.academicYearList = results[4].Results;
-      }
 
-      if (results[1].Success) {
-        this.vtpList = results[1].Results;
-        this.filteredVTPItems = this.vtpList.slice();
+      if (results[0].Success) {
+        this.schoolList = results[0].Results;
       }
 
       if (results[2].Success) {
-        this.sectorList = results[2].Results;
+        this.academicYearList = results[2].Results;
+      }
+
+      if (results[9].Success) {
+        this.sectorList = results[9].Results;
+      }
+      
+      // if (results[1].Success) {
+      //   this.vtpList = results[1].Results;
+      //   this.filteredVTPItems = this.vtpList.slice();
+      // }
+
+      if (results[11].Success) {
+        this.classList = results[11].Results;
+      }
+
+      if (results[3].Success) {
+        this.sectionList = results[3].Results;
       }
 
       if (results[5].Success) {
-        this.classList = results[5].Results;
+        this.vtList = results[5].Results;
       }
 
       let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
@@ -127,16 +141,19 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     let studentParams: any = {
       AcademicYearId: this.studentFilterForm.controls["AcademicYearId"].value,
-      VTPId: this.studentFilterForm.controls["VTPId"].value,
-      VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
+      // VTPId: this.studentFilterForm.controls["VTPId"].value,
+      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
       VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
+      SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       SectorId: this.studentFilterForm.controls["SectorId"].value,
       JobRoleId: this.studentFilterForm.controls['JobRoleId'].value,
-      SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       ClassId: this.studentFilterForm.controls['ClassId'].value,
-      HMId: null,
+      SectionId: this.studentFilterForm.controls['SectionId'].value,
+      UserRole: this.UserModel.RoleCode,
+      UserId: this.UserModel.UserTypeId,
+      // HMId: null,
       Status: this.studentFilterForm.controls["Status"].value,
-      IsRollover: 0,
+      // IsRollover: 0,
       Name: this.studentSearchForm.controls["SearchText"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
@@ -148,7 +165,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     }
 
     this.studentClassService.GetAllByCriteria(studentParams).subscribe(response => {
-      this.displayedColumns = ['AcademicYear', 'SchoolName', 'ClassName', 'SectionName', 'VTName', 'StudentName', 'Gender', 'DateOfEnrollment', 'IsActive', 'Actions'];
+      this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'SectorName', 'JobRoleName', 'VTName', 'VTEmailId', 'Gender', 'AssessmentToBeConducted', 'CSWNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -183,10 +200,10 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     this.studentFilterForm.reset();
     this.studentFilterForm.get('AcademicYearId').setValue(this.currentAcademicYearId);
 
-    this.vcList = [];
-    this.filteredVCItems = [];
+    // this.vcList = [];
+    // this.filteredVCItems = [];
     this.vtList = [];
-    this.filteredVTItems = [];
+    // this.filteredVTItems = [];
     this.schoolList = [];
     this.filteredSchoolItems = [];
     this.jobRoleList = [];
@@ -194,79 +211,79 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     this.onLoadStudentsByCriteria();
   }
 
-  onChangeAY(AYId): Promise<any> {
-    let promise = new Promise((resolve, reject) => {
-      this.vtpList = [];
-      this.filteredVTPItems = [];
-      let vtpRequest = this.commonService.GetVTPByAYId(this.UserModel.RoleCode, this.UserModel.UserTypeId, AYId)
+  // onChangeAY(AYId): Promise<any> {
+  //   let promise = new Promise((resolve, reject) => {
+  //     this.vtpList = [];
+  //     this.filteredVTPItems = [];
+  //     let vtpRequest = this.commonService.GetVTPByAYId(this.UserModel.RoleCode, this.UserModel.UserTypeId, AYId)
 
-      vtpRequest.subscribe((response: any) => {
-        if (response.Success) {
-          this.vtpList = response.Results;
-          this.filteredVTPItems = this.vtpList.slice();
-        }
+  //     vtpRequest.subscribe((response: any) => {
+  //       if (response.Success) {
+  //         this.vtpList = response.Results;
+  //         this.filteredVTPItems = this.vtpList.slice();
+  //       }
 
-        resolve(true);
-      }, error => {
-        console.log(error);
-        resolve(false);
-      });
-    });
-    return promise;
-  }
+  //       resolve(true);
+  //     }, error => {
+  //       console.log(error);
+  //       resolve(false);
+  //     });
+  //   });
+  //   return promise;
+  // }
 
-  onChangeVTP(vtpId): Promise<any> {
-    let promise = new Promise((resolve, reject) => {
-      let vcRequest = this.commonService.GetVCByAYAndVTPId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vtpId);
+  // onChangeVTP(vtpId): Promise<any> {
+  //   let promise = new Promise((resolve, reject) => {
+  //     let vcRequest = this.commonService.GetVCByAYAndVTPId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vtpId);
 
-      vcRequest.subscribe((response: any) => {
-        if (response.Success) {
-          if (this.UserModel.RoleCode == 'VC') {
-            this.studentFilterForm.get('VCId').setValue(response.Results[0].Id);
-            this.studentFilterForm.controls['VCId'].disable();
-            this.onChangeVC(this.vcId)
-          }
-          this.vcList = response.Results;
-          this.filteredVCItems = this.vcList.slice();
-        }
+  //     vcRequest.subscribe((response: any) => {
+  //       if (response.Success) {
+  //         if (this.UserModel.RoleCode == 'VC') {
+  //           this.studentFilterForm.get('VCId').setValue(response.Results[0].Id);
+  //           this.studentFilterForm.controls['VCId'].disable();
+  //           this.onChangeVC(this.vcId)
+  //         }
+  //         this.vcList = response.Results;
+  //         this.filteredVCItems = this.vcList.slice();
+  //       }
 
-        this.IsLoading = false;
-        resolve(true);
-      }, error => {
-        console.log(error);
-        resolve(false);
-      });
-    });
-    return promise;
-  }
+  //       this.IsLoading = false;
+  //       resolve(true);
+  //     }, error => {
+  //       console.log(error);
+  //       resolve(false);
+  //     });
+  //   });
+  //   return promise;
+  // }
 
-  onChangeVC(vcId): Promise<any> {
-    let promise = new Promise((resolve, reject) => {
-      this.IsLoading = true;
-      this.vtList = [];
-      this.filteredVTItems = [];
-      let vtRequest = this.commonService.GetVTByAYAndVCId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vcId);
+  // onChangeVC(vcId): Promise<any> {
+  //   let promise = new Promise((resolve, reject) => {
+  //     this.IsLoading = true;
+  //     this.vtList = [];
+  //     this.filteredVTItems = [];
+  //     let vtRequest = this.commonService.GetVTByAYAndVCId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vcId);
 
-      vtRequest.subscribe((response: any) => {
-        if (response.Success) {
-          if (this.UserModel.RoleCode == 'VT') {
-            this.studentFilterForm.get('VTId').setValue(response.Results[0].Id);
-            this.studentFilterForm.controls['VTId'].disable();
-            this.onChangeVT(response.Results[0].Id)
-          }
-          this.vtList = response.Results;
-          this.filteredVTItems = this.vtList.slice();
-        }
+  //     vtRequest.subscribe((response: any) => {
+  //       if (response.Success) {
+  //         if (this.UserModel.RoleCode == 'VT') {
+  //           this.studentFilterForm.get('VTId').setValue(response.Results[0].Id);
+  //           this.studentFilterForm.controls['VTId'].disable();
+  //           this.onChangeVT(response.Results[0].Id)
+  //         }
+  //         this.vtList = response.Results;
+  //         this.filteredVTItems = this.vtList.slice();
+  //       }
 
-        this.IsLoading = false;
-        resolve(true);
-      }, error => {
-        console.log(error);
-        resolve(false);
-      });
-    });
-    return promise;
-  }
+  //       this.IsLoading = false;
+  //       resolve(true);
+  //     }, error => {
+  //       console.log(error);
+  //       resolve(false);
+  //     });
+  //   });
+  //   return promise;
+  // }
 
   onChangeSector(sectorId: string): void {
     this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: 'Job Role' }).subscribe((response: any) => {
@@ -274,25 +291,25 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     });
   }
 
-  onChangeVT(vtId) {
-    let promise = new Promise((resolve, reject) => {
-      this.IsLoading = true;
-      this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVT', userId: this.UserModel.LoginId, ParentId: vtId, SelectTitle: 'School' }, false).subscribe((response: any) => {
-        if (response.Success) {
+  // onChangeVT(vtId) {
+  //   let promise = new Promise((resolve, reject) => {
+  //     this.IsLoading = true;
+  //     this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVT', userId: this.UserModel.LoginId, ParentId: vtId, SelectTitle: 'School' }, false).subscribe((response: any) => {
+  //       if (response.Success) {
 
-          this.schoolList = response.Results;
-          this.filteredSchoolItems = this.schoolList.slice();
-        }
+  //         this.schoolList = response.Results;
+  //         this.filteredSchoolItems = this.schoolList.slice();
+  //       }
 
-        this.IsLoading = false;
-        resolve(true);
-      }, error => {
-        console.log(error);
-        resolve(false);
-      });
-    });
-    return promise;
-  }
+  //       this.IsLoading = false;
+  //       resolve(true);
+  //     }, error => {
+  //       console.log(error);
+  //       resolve(false);
+  //     });
+  //   });
+  //   return promise;
+  // }
 
   onDeleteStudentClass(studentId: string) {
     this.dialogService
@@ -328,16 +345,18 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     let studentParams: any = {
       AcademicYearId: this.studentFilterForm.controls["AcademicYearId"].value,
-      VTPId: this.studentFilterForm.controls["VTPId"].value,
-      VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
-      VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
+      // VTPId: this.studentFilterForm.controls["VTPId"].value,
+      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
+      // VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
       SectorId: this.studentFilterForm.controls["SectorId"].value,
       JobRoleId: this.studentFilterForm.controls['JobRoleId'].value,
       SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       ClassId: this.studentFilterForm.controls['ClassId'].value,
-      HMId: null,
+      UserRole: this.UserModel.RoleCode,
+      UserId: this.UserModel.UserTypeId,
+      // HMId: null,
       Status: this.studentFilterForm.controls["Status"].value,
-      IsRollover: 0,
+      // IsRollover: 0,
       Name: this.studentSearchForm.controls["SearchText"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
@@ -376,13 +395,14 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   createStudentFilterForm(): FormGroup {
     return this.formBuilder.group({
       AcademicYearId: new FormControl(),
-      VTPId: new FormControl(),
-      VCId: new FormControl(),
+      // VTPId: new FormControl(),
+      // VCId: new FormControl(),
       VTId: new FormControl(),
       SectorId: new FormControl(),
       JobRoleId: new FormControl(),
       SchoolId: new FormControl(),
       ClassId: new FormControl(),
+      SectionId: new FormControl(),
       Status: new FormControl()
     });
   }

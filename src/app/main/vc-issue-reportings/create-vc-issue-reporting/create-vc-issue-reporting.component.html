@@ -53,6 +53,141 @@
                 <form name="vcIssueReportingForm" [formGroup]="vcIssueReportingForm"
                     class="vc-issue-reporting w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" required
+                                appearance="outline" matTooltip="Select School" matTooltipPosition='above'
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
+                                (selectionChange)="onChangeSchool($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter>
+                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
+                                    {{ schoolItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.SchoolId.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'SchoolId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Sector</mat-label>
+                            
+                            <mat-select formControlName="SectorId" required appearance="outline"
+                                (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.SectorId.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'SectorId')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Select Job Role</mat-label>
+
+                            <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.JobRoleId.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'JobRoleId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" appearance="outline" required
+                                (selectionChange)="onChangeAcademicYear($event.value)" [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.AcademicYearId.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'AcademicYearId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Classes</mat-label>
+
+                            <mat-select formControlName="ClassId" appearance="outline" required
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.ClassId.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'ClassId')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Classes Affected</mat-label>
+                            <mat-select name="studentClass" formControlName="StudentClass" appearance="outline" multiple
+                                (selectionChange)="onStudentClassChange($event.value)"
+                                [disabled]="PageRights.IsReadOnly" required>
+                                <mat-option [value]="213" (click)="selectAll(ev)" #ev>All Classes</mat-option>
+                                <mat-option [value]="studentClassItem.Name" [disabled]="studentClassItem.IsDisabled"
+                                    *ngFor="let studentClassItem of classList">
+                                    {{ studentClassItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+                        <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
+                        fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+                            <mat-select name="StudentClass" formControlName="StudentClass" required
+                                appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                (selectionChange)="onChangeClasses($event.value)"
+                                matTooltip="Select the Class"
+                                matTooltipPosition="above">
+                                <mat-option disabled="" [value]="">Select Class</mat-option>
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
+                            fxFlex.lt-sm="100">
+                            <mat-label>Sections</mat-label>
+                            <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly" multiple>
+                                <mat-option disabled="" [value]="">Select Sections</mat-option>
+                                <mat-option [value]="sectionItem.Name" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="vcIssueReportingForm.controls.SectionIds.invalid">
+                                {{getErrorMessage(vcIssueReportingForm, 'SectionIds')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
                     
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
@@ -100,7 +235,7 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Classes Affected</mat-label>
                             <mat-select name="studentClass" formControlName="StudentClass" multiple appearance="outline"
                                 (selectionChange)="onStudentClassChange($event.value)"
@@ -114,7 +249,7 @@
                             <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
                                 {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Months Affected</mat-label>

@@ -80,7 +80,7 @@ export class VCSchoolVisitReportService {
 
         let monthRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Months', SelectTitle: 'Month' });
         let vtByVCRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainersByVC', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Vocational Trainer' });
-        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'SchoolsByUserId', RoleId: userModel.RoleCode, UserId: userModel.UserTypeId }, false);
+        let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'School' }, false);
         let districtRequest = this.http.GetMasterDataByType({ DataType: 'DistrictForBlock', UserId: userModel.DefaultStateId, SelectTitle: 'District' }, false);
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6

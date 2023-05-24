@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { forkJoin, Observable } from "rxjs";
 import { retry, catchError, tap } from "rxjs/operators";
+import { UserModel } from "app/models/user.model";
 import { BaseService } from 'app/services/base.service';
 
 @Injectable()
@@ -75,13 +76,15 @@ export class VocationalCoordinatorService {
             );
     }
 
-    getDropdownforVocationalCoordinators(): Observable<any[]> {
-        let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'Vocational Training Provider' });
-        let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
+    getDropdownforVocationalCoordinators(userModel: UserModel): Observable<any[]> {
+        // let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'Vocational Training Provider' });
+        // let natureOfAppointmentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfAppointment', SelectTitle: 'Nature Of Appointment' });
         let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' });
-
+        // let vcRequest = this.http.GetMasterDataByType({ DataType: ' VocationalCoordinatorDetails', SelectTitle: 'Vocational Coordinator Name' }, false);
+        let vcRequest = this.http.GetMasterDataByType({ DataType: 'AllNewVC', RoleId: userModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }, false);
+        let vcEditRequest = this.http.GetMasterDataByType({ DataType: 'AllEditVC', RoleId: userModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }, false);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([vtpRequest, natureOfAppointmentRequest, genderRequest]);
+        return forkJoin([genderRequest, vcRequest, vcEditRequest]);
     }
 
     getInitVocationalCoordinatorsData(): Observable<any[]> {

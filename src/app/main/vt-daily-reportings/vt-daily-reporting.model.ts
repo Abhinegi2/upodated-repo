@@ -18,6 +18,17 @@ import { ModuleUnitSessionModel } from 'app/models/module-unit-session-model';
 export class VTDailyReportingModel {
     VTId: string;
     VTDailyReportingId: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    SSJId: string;
+    AcademicYearId: string;
+    ClassTaughtId: string;
+    ClassId: string;
+    SectionIds: string;
+
+
     ReportingDate: any;
     ReportType: string;
     WorkingDayTypeIds: string;
@@ -67,6 +78,15 @@ export class VTDailyReportingModel {
         this.VTId = vtDailyReportingItem.VTId || FuseUtils.NewGuid();
         this.VTDailyReportingId = vtDailyReportingItem.VTDailyReportingId || FuseUtils.NewGuid();
         this.ReportingDate = vtDailyReportingItem.ReportingDate || '';
+
+
+        this.SectorId = vtDailyReportingItem.SectorId || '';
+        this.JobRoleId = vtDailyReportingItem.JobRoleId || '';
+        this.SSJId = vtDailyReportingItem.SSJId || '';
+        this.AcademicYearId = vtDailyReportingItem.AcademicYearId || '';
+        this.ClassId = vtDailyReportingItem.ClassId || '';
+        this.SectionIds = vtDailyReportingItem.SectionIds || '';
+
         this.ReportType = vtDailyReportingItem.ReportType || '';
         this.WorkingDayTypeIds = vtDailyReportingItem.WorkingDayTypeIds || '';
 

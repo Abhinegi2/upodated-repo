@@ -35,6 +35,14 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
   vtList: any;
   displayedColumns: ['']
 
+  SchoolInputId: string;
+  SectorInputId: string;
+  JobRoleInputId: string;
+  AcademicYearInputId: string;
+  ClassInputId: string;
+  SectionInputId: string;
+  CanUserChangeInput: boolean;
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -50,21 +58,20 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
     this.vcSchoolVisitReportModel = new VCSchoolVisitReportModel();
     this.SVPhotoWithPrincipalPhotoFile = new FileUploadModel();
     this.SVPhotoWithStudentsPhotoFile = new FileUploadModel();
-    
+
     let dateOfAllocation = new Date(this.UserModel.DateOfAllocation);
     let maxDate = new Date(Date.now());
-    
-      let Time = maxDate.getTime() - dateOfAllocation.getTime(); 
-      let Days = Math.floor(Time / (1000 * 3600 * 24)); 
-      if (Days < this.Constants.BackDatedReportingDays)
-      {
-        this.minReportingDate = new Date(this.UserModel.DateOfAllocation);
-      }
-      else{
-        let past7days = maxDate;
-        past7days.setDate(past7days.getDate() - this.Constants.BackDatedReportingDays)
-        this.minReportingDate = past7days;
-      }
+
+    let Time = maxDate.getTime() - dateOfAllocation.getTime();
+    let Days = Math.floor(Time / (1000 * 3600 * 24));
+    if (Days < this.Constants.BackDatedReportingDays) {
+      this.minReportingDate = new Date(this.UserModel.DateOfAllocation);
+    }
+    else {
+      let past7days = maxDate;
+      past7days.setDate(past7days.getDate() - this.Constants.BackDatedReportingDays)
+      this.minReportingDate = past7days;
+    }
   }
 
   ngOnInit(): void {
@@ -94,6 +101,8 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.vcSchoolVisitReportModel = new VCSchoolVisitReportModel();
 
+            this.CanUserChangeInput = true;
+
           } else {
             var vcSchoolVisitReportingId: string = params.get('vcSchoolVisitReportingId')
 
@@ -120,21 +129,217 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
     this.vcSchoolVisitReportForm = this.createVCSchoolVisitForm();
   }
 
-  onChangeSchool(schoolId) {
-    this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
+  onChangeSchool(schoolId): Promise<any> {
+    this.resetInputsAfter('School');
+    this.setFormInputs();
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors'
+      }).subscribe((response) => {
+        if (response.Success) {
+          this.sectorList = response.Results;
+
+          if (response.Results.length == 1) {
+            this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
+            this.vcSchoolVisitReportForm.controls['SchoolId'].setValue(null);
+          }
+
+          this.loadFormInputs(response.Results, 'SectorId');
+        }
+        resolve(true);
+      });
+
+    });
+
+    this.commonService.GetMasterDataByType({ DataType: 'DistrictForSchool', ParentId: schoolId, SelectTitle: "District" }).subscribe((response) => {
       if (response.Success) {
-        this.sectorList = response.Results;
+        this.districtList = response.Results;
+        this.filteredDistrictItems = this.districtList.slice();
       }
     });
+
+    return promise;
   }
 
-  onChangeSector(sectorId): void {
-    this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: "Job Role" }).subscribe((response) => {
+  onChangeSector(sectorId): Promise<any> {
+    this.resetInputsAfter('Sector');
+    this.setFormInputs();
+
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
+      }).subscribe((response) => {
+
+        if (response.Success) {
+          this.jobRoleList = response.Results;
+          this.loadFormInputs(response.Results, 'JobRoleId');
+        }
+
+        resolve(true);
+      });
+    });
+
+    return promise;
+  }
+
+  onChangeJobRole(jobRoleId): void {
+    this.resetInputsAfter('JobRole');
+    this.setFormInputs();
+
+    this.commonService.GetMasterDataByType({ DataType: 'VTForSSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, SelectTitle: "Vocational Trainer" }).subscribe((response) => {
       if (response.Success) {
-        this.jobRoleList = response.Results;
+        this.vtList = response.Results;
       }
     });
+
+    // return new Promise((resolve, reject) => {
+    //   this.commonService.GetMasterDataByType({
+    //     DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
+    //   }).subscribe((response) => {
+
+    //     if (response.Success) {
+    //       this.academicYearList = response.Results;
+    //       if (response.Results.length == 1) {
+    //         this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
+    //         this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
+    //       }
+
+    //       this.loadFormInputs(response.Results, 'AcademicYearId');
+    //     }
+    //     resolve(true);
+    //   });
+    // });
+
   }
+
+  setFormInputs() {
+    this.SchoolInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SchoolId').value : this.vcSchoolVisitReportModel.SchoolId;
+    this.SectorInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SectorId').value : this.vcSchoolVisitReportModel.SectorId;
+    // this.JobRoleInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('JobRoleId').value : this.vcSchoolVisitReportModel.JobRoleId;
+    // this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('AcademicYearId').value : this.vcSchoolVisitReportModel.AcademicYearId;
+    // this.ClassInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('ClassTaughtId').value : this.vcSchoolVisitReportModel.ClassTaughtId;
+    // this.SectionInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SectionIds').value : this.vcSchoolVisitReportModel.SectionIds;
+  }
+
+  loadFormInputs(response, InputName) {
+
+    if (!this.PageRights.IsReadOnly) {
+      this.vcSchoolVisitReportForm.controls[InputName].enable();
+    }
+
+    if (response.length == 2) {
+      var inputId = response[1].Id;
+      this.vcSchoolVisitReportForm.controls[InputName].setValue(inputId);
+      this.vcSchoolVisitReportForm.controls[InputName].disable();
+
+      if (InputName == 'SchoolId') {
+        this.onChangeSchool(inputId);
+      } else if (InputName == 'SectorId') {
+        this.onChangeSector(inputId);
+      } else if (InputName == 'JobRoleId') {
+        // this.onChangeJobRole(inputId);
+      } else if (InputName == 'AcademicYearId') {
+        // this.onChangeAcademicYear(inputId);
+      } else if (InputName == 'ClassTaughtId') {
+        // this.onChangeClassForTaught(inputId);
+      }
+
+    }
+  }
+
+  resetInputsAfter(input) {
+
+    if (input == 'School') {
+      this.vcSchoolVisitReportForm.controls['SectorId'].setValue(null);
+      this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
+    }
+
+    if (input == 'Sector') {
+      this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
+      // this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
+    }
+
+    // if (input == 'JobRole') {
+    //   this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
+    //   this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
+    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
+    // }
+
+    // if (input == 'AcademicYear') {
+    //   this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
+    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
+    // }
+
+    // if (input == 'Class') {
+    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
+    // }
+  }
+
+  setUserAction() {
+    this.CanUserChangeInput = true;
+  }
+
+
+  setInputs(parentId, InputId, dataType): Promise<any> {
+
+    this.IsLoading = true;
+    let promise = new Promise((resolve, reject) => {
+      this.commonService.GetMasterDataByType({
+        DataType: dataType, ParentId: parentId, SelectTitle: 'Select'
+      }).subscribe((response) => {
+        if (response.Success) {
+          if (InputId == 'SchoolId') {
+            this.schoolList = response.Results;
+            this.filteredSchoolItems = this.schoolList.slice();
+            this.vcSchoolVisitReportForm.controls[InputId].disable();
+          } else if (InputId == 'SectorId') {
+            this.sectorList = response.Results;
+            this.vcSchoolVisitReportForm.controls[InputId].disable();
+          } else if (InputId == 'JobRoleId') {
+            this.jobRoleList = response.Results;
+            this.vcSchoolVisitReportForm.controls[InputId].disable();
+          }
+
+          // else if (InputId == 'AcademicYearId') {
+          //   this.academicYearList = response.Results;
+          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
+          // } else if (InputId == 'ClassTaughtId') {
+          //   this.classList = response.Results;
+          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
+          // } else if (InputId == 'SectionIds') {
+          //   this.sectionList = response.Results;
+          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
+          // }
+        }
+        resolve(true);
+      });
+
+    });
+    return promise;
+  }
+
+  // onChangeSchool(schoolId) {
+  //   this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
+  //     if (response.Success) {
+  //       this.sectorList = response.Results;
+  //     }
+  //   });
+  // }
+
+  // onChangeSector(sectorId): void {
+  //   this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: "Job Role" }).subscribe((response) => {
+  //     if (response.Success) {
+  //       this.jobRoleList = response.Results;
+  //     }
+  //   });
+  // }
 
   uploadedSVPhotoWithPrincipalPhotoFile(event) {
     if (event.target.files.length > 0) {

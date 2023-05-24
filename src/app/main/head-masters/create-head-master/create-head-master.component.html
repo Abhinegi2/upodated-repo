@@ -55,13 +55,13 @@
                     <!-- <mat-tab label="Basic Info"> -->
                     <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'">
+                    <!-- <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" *ngIf="UserModel.RoleCode != 'VT'"> -->
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Vocational Training Provider</mat-label>
 
-                            <mat-select formControlName="VTPId" [required]="UserModel.RoleCode != 'VT'"
+                            <mat-select formControlName="VTPId"
                                 appearance="outline" (selectionChange)="onChangeVTP($event.value)"
                                 [disabled]="PageRights.IsReadOnly || UserModel.RoleCode == 'VC'">
                                 <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
@@ -71,12 +71,12 @@
                             <mat-error *ngIf="headMasterForm.controls.VTPId.invalid">
                                 {{getErrorMessage(headMasterForm, 'VTPId')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Vocational Coordinator</mat-label>
 
-                            <mat-select formControlName="VCId" [required]="UserModel.RoleCode != 'VT'"
+                            <mat-select formControlName="VCId"
                                 appearance="outline" (selectionChange)="onChangeVC($event.value)"
                                 [disabled]="PageRights.IsReadOnly || UserModel.RoleCode == 'VC'">
                                 <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
@@ -86,8 +86,8 @@
                             <mat-error *ngIf="headMasterForm.controls.VCId.invalid">
                                 {{getErrorMessage(headMasterForm, 'VCId')}}
                             </mat-error>
-                        </mat-form-field>
-                    </div>
+                        </mat-form-field> -->
+                    <!-- </div> -->
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
@@ -98,7 +98,7 @@
                             <mat-select formControlName="SchoolId" required appearance="outline"
                                 matTooltip="Select School" matTooltipPosition='above' matTooltipClass="allow-cr"
                                 [disabled]="PageRights.IsReadOnly" #SelectSchool
-                                (selectionChange)="onChangeSchool($event.value)">
+                                >
                                 <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
                                     [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
                                     [displayMember]="'Name'"></mat-select-filter>
@@ -111,7 +111,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
                             *ngIf="UserModel.RoleCode != 'VT'">
                             <mat-label>Vocational Trainer</mat-label>
 
@@ -120,7 +120,7 @@
                                     {{ vtItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

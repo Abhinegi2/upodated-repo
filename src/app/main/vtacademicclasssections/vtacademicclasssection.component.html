@@ -1,0 +1,214 @@
+<div id="vtacademicclasssection" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0" fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    VT ACADEMIC CLASS SECTIONS
+                    <a [routerLink]="['./']" skipLocationChange="true" replaceUrl="false"
+                        class="refresh-data mt-24 mt-md-0">
+                        <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
+                    </a>
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter (keyup)="applySearchFilter($event.target.value)"
+                        placeholder="Search for a vtacademicclasssections">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
+                    class="add-vtacademicclasssection-button fuse-white mt-24 mt-md-0">
+                    <span>ADD</span>
+                </button>
+
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exporter.exportTable('xlsx', {fileName:'VTAcademicClassSections', sheet: 'VTAcademicClassSections', Props: {Author: 'Lighthouse'}})">
+                    <mat-icon> cloud_download</mat-icon>
+                </a>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[9]"
+            matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                 <!-- SchoolName Column -->
+                 <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> School
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.SchoolName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- SectorName Column -->
+                 <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- JobRoleName Column -->
+                 <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> JobRole
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTEmailId Column -->
+                <ng-container matColumnDef="VTEmailId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Email ID
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection">
+                        <p class="text-truncate">{{vtacademicclasssection.VTEmailId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Academic Year
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.AcademicYear}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ClassName Column -->
+                <ng-container matColumnDef="ClassName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Class
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.ClassName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectionName Column -->
+                <ng-container matColumnDef="SectionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.SectionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfAllocation Column -->
+                <ng-container matColumnDef="DateOfAllocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfAllocation
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.DateOfAllocation | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- CreatedBy Column -->
+                  <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- UpdatedBy Column -->
+                  <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DateOfRemoval Column -->
+                <ng-container matColumnDef="DateOfRemoval">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfRemoval
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vtacademicclasssection.DateOfRemoval | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsActive Column -->
+                <ng-container matColumnDef="IsActive">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Is Active?</mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
+                        <mat-icon *ngIf="vtacademicclasssection.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="data-inactive s-20">close</mat-icon>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions" stickyEnd>
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let vtacademicclasssection" fxShow.gt-xs>
+                        <!-- <mat-icon *ngIf="vtacademicclasssection.IsActive" class="data-active s-20">check</mat-icon>
+                        <mat-icon *ngIf="!vtacademicclasssection.IsActive" class="data-inactive s-20">close</mat-icon> -->
+                        <button *ngIf="PageRights.IsView" mat-icon-button
+                            [routerLink]="['/vtacademicclasssections', 'view', vtacademicclasssection.VTAcademicClassSectionId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
+                        </button>
+                        <button *ngIf="PageRights.IsEdit && vtacademicclasssection.IsActive" mat-icon-button
+                            [routerLink]="['/vtacademicclasssections', 'edit', vtacademicclasssection.VTAcademicClassSectionId]" skipLocationChange="true"
+                            replaceUrl="false">
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDeleteVTAcademicClassSection(vtacademicclasssection.VTAcademicClassSectionId)"
+                            *ngIf="PageRights.IsDelete && vtacademicclasssection.IsActive">
+                            <mat-icon class="data-delete s-20">delete_outline</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let vtacademicclasssection; columns: displayedColumns;" class="vtacademicclasssection" matRipple>
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>

@@ -43,12 +43,17 @@
                 </a>
 
                 <button mat-raised-button class="fuse-white filter-button"
-                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                    (click)="IsShowFilter=!IsShowFilter"><span>Filters</span>
+                </button>
+
+                <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
+                    replaceUrl="true" class="use-white mt-24 mt-md-0">
+                    <span>{{'CREATE NEW VT'}}</span>
                 </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true"
                     replaceUrl="false" class="add-vocational-trainer-button fuse-white mt-24 mt-md-0">
-                    <span>{{'VT.ADD_NEW_VT' | translate}}</span>
+                    <span>{{'ADD VT DETAILS'}}</span>
                 </button>
 
                 <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
@@ -68,7 +73,7 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Academic Year</mat-label>
 
                             <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill"
@@ -78,38 +83,8 @@
                                     {{ academicYearIdItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="50" fxFlex.lt-md="30" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVTP
-                                (selectionChange)="onChangeVTP($event.value)">
-                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="35" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
                         <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Social Category</mat-label>
 
@@ -131,6 +106,37 @@
                             </mat-select>
                         </mat-form-field>
 
+                        <!-- <mat-form-field fxFlex="50" fxFlex.lt-md="30" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVTP
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="35" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
                         <div class="clear-filter" fxFlex="60" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="onLoadVocationalTrainersByFilters()"><span>SEARCH</span></button>
@@ -151,22 +157,22 @@
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- VTPName Column -->
-                <ng-container matColumnDef="VTPName">
+                <!-- <ng-container matColumnDef="VTPName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer">
                         <p class="text-truncate">{{vocationalTrainer.VTPName}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VCName Column -->
-                <ng-container matColumnDef="VCName">
+                <!-- <ng-container matColumnDef="VCName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer">
                         <p class="text-truncate">{{vocationalTrainer.VCName}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTName Column -->
                 <ng-container matColumnDef="VTName">
@@ -202,6 +208,97 @@
                         <p class="text-truncate">{{vocationalTrainer.Gender}}</p>
                     </mat-cell>
                 </ng-container>
+   
+                
+                  <!-- SectorName Column -->
+                  <ng-container matColumnDef="SectorName" *ngIf="UserModel.RoleCode == 'HM'">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SectorName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- JobeRoleName Column -->
+                  <ng-container matColumnDef="JobRoleName" *ngIf="UserModel.RoleCode == 'HM'">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRoleName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- DateOfBirth Column -->
+                 <ng-container matColumnDef="DateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfBirth  | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- AcademicQualification Column -->
+                 <ng-container matColumnDef="AcademicQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>AcademicQualification
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.AcademicQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                   <!-- ProfessionalQualification Column -->
+                   <ng-container matColumnDef="ProfessionalQualification">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>ProfessionalQualification
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.ProfessionalQualification}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IndustryExperienceMonths Column -->
+                <ng-container matColumnDef="IndustryExperienceMonths">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>IndustryExperienceMonths
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.IndustryExperienceMonths}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- ProfessionalQualificationDetails Column -->
+                 <ng-container matColumnDef="ProfessionalQualificationDetails">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>ProfessionalQualificationDetails
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.ProfessionalQualificationDetails}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- StateName Column -->
+                  <ng-container matColumnDef="StateName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>State
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.StateName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Division Column -->
+                  <ng-container matColumnDef="DivisionName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DivisionName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- Districts Column -->
+                  <ng-container matColumnDef="DistrictName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DistrictName}}</p>
+                    </mat-cell>
+                </ng-container>
 
                 <!-- SocialCategory Column -->
                 <ng-container matColumnDef="SocialCategory">
@@ -212,23 +309,58 @@
                     </mat-cell>
                 </ng-container>
 
+                  <!-- DateOfJoining Column -->
+                  <ng-container matColumnDef="DateOfJoining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfJoining
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{vocationalTrainer.DateOfJoining  | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- CreatedBy Column -->
+                    <ng-container matColumnDef="CreatedBy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let vocationalTrainer">
+                            <p class="text-truncate">{{vocationalTrainer.CreatedBy}}</p>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- UpdatedBy Column -->
+                <ng-container matColumnDef="UpdatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.UpdatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                  <!-- DateOfResignation Column -->
+                  <ng-container matColumnDef="DateOfResignation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DateOfResignation</mat-header-cell>
+                    <mat-cell *matCellDef="let vocationalTrainer">
+                        <p class="text-truncate">{{vocationalTrainer.DateOfResignation | date: Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- NatureOfAppointment Column -->
-                <ng-container matColumnDef="NatureOfAppointment">
+                <!-- <ng-container matColumnDef="NatureOfAppointment">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Nature Of Appointment
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer">
                         <p class="text-truncate">{{vocationalTrainer.NatureOfAppointment}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- IsResigned Column -->
-                <ng-container matColumnDef="IsResigned">
+                <!-- <ng-container matColumnDef="IsResigned">
                     <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vocationalTrainer" class="text-center">
                         <span>{{ (vocationalTrainer.IsResigned ? 'Yes' : 'No') }}</span>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">
@@ -252,13 +384,13 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit && vocationalTrainer.IsActive"
                             mat-icon-button [routerLink]="['/vocational-trainers', 'edit', vocationalTrainer.VTId]"
-                            skipLocationChange="true" replaceUrl="false">
+                            skipLocationChange="true" replaceUrl="false">   
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsDelete && (vocationalTrainer.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsDelete && vocationalTrainer.IsActive "
                             mat-icon-button color="warn" (click)="onDeleteVocationalTrainer(vocationalTrainer.VTId)">
                             <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>

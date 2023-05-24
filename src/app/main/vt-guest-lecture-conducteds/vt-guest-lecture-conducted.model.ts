@@ -5,6 +5,13 @@ import { StudentAttendanceModel } from 'app/models/student.attendance.model';
 export class VTGuestLectureConductedModel {
     VTGuestLectureId: string;
     VTId: string;
+
+    SchoolId: string;
+    SectorId: string;
+    JobRoleId: string;
+    AcademicYearId: string;
+    SSJId: string;
+
     ClassTaughtId: string;
     SectionIds: string;
     ReportingDate: any;
@@ -43,6 +50,13 @@ export class VTGuestLectureConductedModel {
 
         this.VTGuestLectureId = vtGuestLectureConductedItem.VTGuestLectureId || FuseUtils.NewGuid();
         this.VTId = vtGuestLectureConductedItem.VTId || FuseUtils.NewGuid();
+
+        this.SSJId = vtGuestLectureConductedItem.SSJId || '';
+        this.AcademicYearId = vtGuestLectureConductedItem.AcademicYearId || '';
+        this.SectorId = vtGuestLectureConductedItem.SectorId || '';
+        this.JobRoleId = vtGuestLectureConductedItem.JobRoleId || '';
+
+
         this.ClassTaughtId = vtGuestLectureConductedItem.ClassTaughtId || '';
         this.SectionIds = vtGuestLectureConductedItem.SectionIds || '';
         this.ReportingDate = vtGuestLectureConductedItem.ReportingDate || '';

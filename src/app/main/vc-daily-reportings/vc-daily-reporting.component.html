@@ -92,15 +92,15 @@
                     <mat-cell *matCellDef="let vcDailyReporting" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                         [routerLink]="['/vc-daily-reporting', 'view', vcDailyReporting.VCDailyReportingId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button *ngIf="PageRights.IsEdit" mat-icon-button
                         [routerLink]="['/vc-daily-reporting', 'edit', vcDailyReporting.VCDailyReportingId]" skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
+                            <mat-icon class ="data-edit s-20">edit</mat-icon>
                         </button>
                         <button mat-icon-button color="warn" (click)="onDeleteVCDailyReporting(vcDailyReporting.VCDailyReportingId)"
                             *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

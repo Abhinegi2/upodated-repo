@@ -76,6 +76,7 @@ export class CreateSchoolComponent extends BaseComponent<SchoolModel> implements
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.schoolModel = new SchoolModel();
+            this.onChangeState(this.schoolModel.StateName);
 
           } else {
             var schoolId: string = params.get('schoolId');
@@ -172,14 +173,16 @@ export class CreateSchoolComponent extends BaseComponent<SchoolModel> implements
   createSchoolForm(): FormGroup {
     return this.formBuilder.group({
       SchoolId: new FormControl(this.schoolModel.SchoolId),
-      SchoolName: new FormControl({ value: this.schoolModel.SchoolName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.CharsWithTitleCase), Validators.maxLength(150)]),
+      SchoolName: new FormControl({ value: this.schoolModel.SchoolName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(150)]),
       SchoolCategoryId: new FormControl({ value: this.schoolModel.SchoolCategoryId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SchoolTypeId: new FormControl({ value: this.schoolModel.SchoolTypeId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SchoolManagementId: new FormControl({ value: this.schoolModel.SchoolManagementId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Udise: new FormControl({ value: this.schoolModel.Udise, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       AcademicYearId: new FormControl({ value: this.schoolModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       PhaseId: new FormControl({ value: this.schoolModel.PhaseId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      StateName: new FormControl({ value: this.schoolModel.StateName, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SchoolUniqueId: new FormControl({ value: this.schoolModel.Udise, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
+      // new FormControl({ value: this.schoolModel.StateName, disabled: this.PageRights.IsReadOnly }, Validators.required)
+      StateName: new FormControl({ value: this.UserModel.DefaultStateId=this.Constants.DefaultStateId, disabled: (this.UserModel.DefaultStateId = this.Constants.DefaultStateId) }),
       DivisionId: new FormControl({ value: this.schoolModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DistrictCode: new FormControl({ value: this.schoolModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),      
       BlockId: new FormControl({ value: this.schoolModel.BlockId, disabled: this.PageRights.IsReadOnly }),

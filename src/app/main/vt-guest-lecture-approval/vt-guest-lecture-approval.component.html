@@ -114,15 +114,15 @@
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vt-guest-lecture-conducted', 'view', vtGuestLectureConducted.VTGuestLectureId]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-20">visibility</mat-icon>
                         </button>
                         <button *ngIf="vtGuestLectureConducted.ApprovalStatus == null" mat-icon-button
                             (click)="saveOrUpdateVTGuestLectureApprovalDetails('Approved', vtGuestLectureConducted.VTGuestLectureId)">
-                            <mat-icon color="primary">check</mat-icon>
+                            <mat-icon class="data-active">check</mat-icon>
                         </button>
                         <button *ngIf="vtGuestLectureConducted.ApprovalStatus == null" mat-icon-button
                             (click)="saveOrUpdateVTGuestLectureApprovalDetails('Rejected', vtGuestLectureConducted.VTGuestLectureId)">
-                            <mat-icon color="primary">close</mat-icon>
+                            <mat-icon class="data-inactive">close</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>
