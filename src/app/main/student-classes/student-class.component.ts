@@ -202,12 +202,11 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     // this.vcList = [];
     // this.filteredVCItems = [];
-    this.vtList = [];
+    // this.vtList = [];
     // this.filteredVTItems = [];
-    this.schoolList = [];
-    this.filteredSchoolItems = [];
-    this.jobRoleList = [];
-
+    // this.schoolList = [];
+    // this.filteredSchoolItems = [];
+    // this.jobRoleList = [];
     this.onLoadStudentsByCriteria();
   }
 
