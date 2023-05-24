@@ -106,9 +106,26 @@
                             </mat-select>
                         </mat-form-field> -->
 
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill"
+                                [disabled]="PageRights.IsReadOnly" #SelectSchool>  
+                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of schoolList">
+                                    {{ schoolsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
                         <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>School</mat-label>
 
+                            <!-- <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill"> -->
+
+                            <!-- #SelectSchool (selectionChange)="onChangeSchool($event.value)"> -->
+                                <!-- <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
+                                    [array]="schoolList" (filteredReturn)="this.filteredSchoolItems = $event"
+                                    [displayMember]="'Name'"></mat-select-filter> -->
                             <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill"
                                 [disabled]="PageRights.IsReadOnly" #SelectSchool>  
                                 <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of schoolList">
