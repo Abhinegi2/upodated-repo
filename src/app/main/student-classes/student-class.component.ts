@@ -199,15 +199,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     this.studentSearchForm.reset();
     this.studentFilterForm.reset();
     this.studentFilterForm.get('AcademicYearId').setValue(this.currentAcademicYearId);
-
-    // this.vcList = [];
-    // this.filteredVCItems = [];
-    this.vtList = [];
-    // this.filteredVTItems = [];
-    this.schoolList = [];
-    this.filteredSchoolItems = [];
-    this.jobRoleList = [];
-
     this.onLoadStudentsByCriteria();
   }
 
