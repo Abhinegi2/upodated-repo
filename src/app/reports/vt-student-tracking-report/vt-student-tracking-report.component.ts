@@ -59,21 +59,21 @@ export class VTStudentTrackingReportComponent extends BaseListComponent<VTStuden
       if (results[2].Success) {
         this.sectorList = results[2].Results;
       }
-      // this.vtpList = null;
-      // if (results[3].Success) {
-      //   this.vtpList = results[3].Results;
-      // }
 
       if (results[3].Success) {
-        this.classList = results[3].Results;
+        this.vtpList = results[3].Results;
       }
 
       if (results[4].Success) {
-        this.monthList = results[4].Results;
+        this.classList = results[4].Results;
       }
 
       if (results[5].Success) {
-        this.schoolManagementList = results[5].Results;
+        this.monthList = results[5].Results;
+      }
+
+      if (results[6].Success) {
+        this.schoolManagementList = results[6].Results;
       }
 
       let currentYearItem = this.academicyearList.find(ay => ay.IsSelected == true)
