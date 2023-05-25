@@ -131,7 +131,8 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
             this.service.subscribe((response: any) => {
               this.issueApprovalModel = response.Result;
-              this.issueApprovalModel.StudentClass = response.Result.StudentClass.split(',');
+              // this.issueApprovalModel.StudentClass = response.Result.StudentClass.split(',');
+              this.issueApprovalModel.SectionIds = response.Result.SectionIds.split(',');
               this.issueApprovalModel.Month = response.Result.Month.split(',');
 
               if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
@@ -256,6 +257,9 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
             this.issueApprovalForm.controls[InputId].disable();
           } else if (InputId == 'AcademicYearId') {
             this.academicYearList = response.Results;
+            this.issueApprovalForm.controls[InputId].disable();
+          } else if (InputId == 'StudentClass') {
+            this.classList = response.Results;
             this.issueApprovalForm.controls[InputId].disable();
           }
         }
