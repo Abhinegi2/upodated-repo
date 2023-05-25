@@ -135,7 +135,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
             this.service.subscribe((response: any) => {
               this.issueApprovalModel = response.Result;
-              // this.issueApprovalModel.StudentClass = response.Result.StudentClass.split(',');
               if (response.Result.SectionIds) {
                 this.issueApprovalModel.SectionIds = response.Result.SectionIds.split(',');
               }
@@ -193,7 +192,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
 
   onChangeClasses(classId): Promise<any> {
-    // this.resetInputsAfter('Class');
     this.setFormInputs();
 
     this.IsLoading = true;
@@ -228,8 +226,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   }
 
   onChangeAcademicYear(academicYearId): Promise<any> {
-    // this.resetInputsAfter('AcademicYear');
-    // this.setFormInputs();
 
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -238,14 +234,10 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
         if (response.Success) {
           this.classList = response.Results;
-
-          // this.loadFormInputs(response.Results, 'StudentClass');
         }
         resolve(true);
       });
     });
-
-    // this.setUserAction();
 
     return promise;
   }
