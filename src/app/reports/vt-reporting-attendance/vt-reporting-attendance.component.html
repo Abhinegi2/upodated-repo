@@ -45,10 +45,10 @@
             <!-- / ADD BUTTON -->
         </div>
         <!-- / HEADER -->
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
                 (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div>
+        </div> -->
 
         <!-- Filter Section -->
         <div class="filter-content-card" *ngIf="isShowFilterContainer">
@@ -379,122 +379,122 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- MonthYear Column -->
-                <ng-container matColumnDef="MonthYear">
+               <!-- MonthYear Column -->
+                <!-- <ng-container matColumnDef="MonthYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month Year
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.MonthYear}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- TotalDays Column -->
-                <ng-container matColumnDef="TotalDays">
+                <!-- <ng-container matColumnDef="TotalDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Total Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.TotalDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- WorkingDays Column -->
-                <ng-container matColumnDef="WorkingDays">
+                <!-- <ng-container matColumnDef="WorkingDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Working Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.WorkingDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- NoOfSundays Column -->
-                <ng-container matColumnDef="NoOfSundays">
+                <!-- <ng-container matColumnDef="NoOfSundays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>No Of Sundays
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.NoOfSundays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- GovtHolidays Column -->
-                <ng-container matColumnDef="GovtHolidays">
+                <!-- <ng-container matColumnDef="GovtHolidays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Govt Holidays
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.GovtHolidays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- ObservationDays Column -->
-                <ng-container matColumnDef="ObservationDays">
+                <!-- <ng-container matColumnDef="ObservationDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Observation Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.ObservationDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTWorkingDays Column -->
-                <ng-container matColumnDef="VTWorkingDays">
+                <!-- <ng-container matColumnDef="VTWorkingDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Working Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.VTWorkingDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTHolidays Column -->
-                <ng-container matColumnDef="VTHolidays">
+                <!-- <ng-container matColumnDef="VTHolidays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Holidays
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.VTHolidays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTObservationDays Column -->
-                <ng-container matColumnDef="VTObservationDays">
+                <!-- <ng-container matColumnDef="VTObservationDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Observation Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.VTObservationDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTLeaveDays Column -->
-                <ng-container matColumnDef="VTLeaveDays">
+                <!-- <ng-container matColumnDef="VTLeaveDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Leave Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.VTLeaveDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- TeachingDays Column -->
-                <ng-container matColumnDef="TeachingDays">
+                <!-- <ng-container matColumnDef="TeachingDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Teaching Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.TeachingDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- NonTeachingDays Column -->
-                <ng-container matColumnDef="NonTeachingDays">
+                <!-- <ng-container matColumnDef="NonTeachingDays">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Non Teaching Days
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.NonTeachingDays}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <!-- VTReportSubmitted Column -->
-                <ng-container matColumnDef="VTReportSubmitted">
+                <!-- <ng-container matColumnDef="VTReportSubmitted">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Report Submitted
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtReportingAttendance">
                         <p class="text-truncate">{{vtReportingAttendance.VTReportSubmitted}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 
