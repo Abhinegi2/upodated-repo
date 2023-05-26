@@ -84,10 +84,10 @@
                     </div>
                     
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
+                    fxLayoutGap.lt-md="0px" *ngIf="vtDailyReportingForm.controls.ReportType.value == '37'">
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>School</mat-label>
-                        <mat-select formControlName="SchoolId" required
+                        <mat-select formControlName="SchoolId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
                             appearance="outline" matTooltip="Select School" matTooltipPosition='above'
                             matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
                             (selectionChange)="onChangeSchool($event.value)">
@@ -107,8 +107,8 @@
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Sector</mat-label>
                         
-                        <mat-select formControlName="SectorId" required appearance="outline"
-                            (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
+                        <mat-select formControlName="SectorId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'"  
+                        appearance="outline" (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
                             <mat-option disabled="" [value]="">Select Sector</mat-option>
                             <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
                                 {{ sectorItem.Name }}
@@ -121,8 +121,8 @@
                     
                     <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Job Role</mat-label>
-                        <mat-select name="jobRoleId" formControlName="JobRoleId" required appearance="outline"
-                            [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
+                        <mat-select name="jobRoleId" formControlName="JobRoleId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'"  
+                        appearance="outline" [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeJobRole($event.value)">
                             <mat-option disabled="" [value]="">Select Job Role</mat-option>
                             <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
                                 {{ jobRoleItem.Name }}
@@ -136,10 +136,10 @@
                 </div>
 
                 <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
+                    fxLayoutGap.lt-md="0px" *ngIf="vtDailyReportingForm.controls.ReportType.value==37">
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Academic Year</mat-label>
-                        <mat-select formControlName="AcademicYearId" appearance="outline" required
+                        <mat-select formControlName="AcademicYearId" appearance="outline" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
                             [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeAcademicYear($event.value)">
                             <mat-option disabled="" [value]="">Select AcademicYear</mat-option>
                             <mat-option [value]="academicYearItem.Id" *ngFor="let academicYearItem of academicYearList">
@@ -154,7 +154,7 @@
                     <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
                         fxFlex.lt-sm="100">
                         <mat-label>Class</mat-label>
-                        <mat-select name="classId" formControlName="ClassId" required
+                        <mat-select name="classId" formControlName="ClassId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
                             appearance="outline" [disabled]="PageRights.IsReadOnly"
                             (selectionChange)="onChangeClasses($event.value)"
                             matTooltip="Select the Class"
@@ -169,11 +169,10 @@
                         </mat-error>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
-                        fxFlex.lt-sm="100">
+                    <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100" style="display: row;">
                         <mat-label>Sections</mat-label>
-                        <mat-select name="sectionIds" formControlName="SectionIds" required appearance="outline"
-                            [disabled]="PageRights.IsReadOnly" multiple>
+                        <mat-select name="sectionIds" formControlName="SectionIds" [required]="vtDailyReportingForm.controls.ReportType.value == '37'"  
+                        appearance="outline" [disabled]="PageRights.IsReadOnly" multiple>
                             <mat-option disabled="" [value]="">Select Sections</mat-option>
                             <mat-option [value]="sectionItem.Name" *ngFor="let sectionItem of sectionList">
                                 {{ sectionItem.Name }}
@@ -183,14 +182,14 @@
                             {{getErrorMessage(vtDailyReportingForm, 'SectionIds')}}
                         </mat-error>
                     </mat-form-field>
-
                 </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px" *ngIf="vtDailyReportingForm.controls.ReportType.value == 37">
                         <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Working Day Type</mat-label>
-                            <mat-select name="workingDayTypeIds" formControlName="WorkingDayTypeIds" multiple required
+                            <mat-select name="workingDayTypeIds" formControlName="WorkingDayTypeIds" multiple 
+                            [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
                                 appearance="outline" [disabled]="PageRights.IsReadOnly"
                                 (selectionChange)="onChangeWorkingType($event.value)">
                                 <mat-option [value]="workingDayTypeIdsItem.Id"

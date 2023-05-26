@@ -256,7 +256,6 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
         }
         resolve(true);
       });
-      this.setUserAction();
     });
 
   }
@@ -278,8 +277,6 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
         resolve(true);
       });
     });
-
-    this.setUserAction();
 
     return promise;
   }
@@ -308,6 +305,8 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
         resolve(true);
       });
     });
+
+    this.setUserAction();
 
     return promise;
   }
