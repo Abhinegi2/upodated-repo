@@ -207,7 +207,7 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
     reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
 
     this.reportService.GetVTReportingAttendanceReportsByCriteria(reportParams).subscribe(response => {
-      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VCName','VTPName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'MonthYear', 'TotalDays', 'WorkingDays', 'NoOfSundays', 'GovtHolidays', 'ObservationDays', 'VTReportSubmitted', 'VTWorkingDays', 'VTHolidays', 'VTObservationDays', 'VTLeaveDays', 'TeachingDays', 'NonTeachingDays'];
+      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VTPName', 'VCName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'MonthYear', 'TotalDays', 'WorkingDays', 'NoOfSundays', 'GovtHolidays', 'ObservationDays', 'VTReportSubmitted', 'VTWorkingDays', 'VTHolidays', 'VTObservationDays', 'VTLeaveDays', 'TeachingDays', 'NonTeachingDays'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
