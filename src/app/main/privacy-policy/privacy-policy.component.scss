@@ -1,0 +1,22 @@
+@import "src/@fuse/scss/fuse";
+
+privacy-policy {
+  #privacy-policy {
+    width: 100%;
+    background-size: cover;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 16px;
+    border: 1px solid #eee;
+    display: flex;
+    background-color: #fff;
+    margin: 10px;
+    .policies {
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .heading {
+      color: #00f;
+    }
+  }
+}
