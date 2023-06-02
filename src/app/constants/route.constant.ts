@@ -446,7 +446,6 @@ export const RouteConstants = {
     },
     PrivacyPolicy:{
         List: 'privacy-policy',
-        // New: 'privacy-policy',
     },
     //Academic Rollover
     VTPSectorForAcademicYear: {
