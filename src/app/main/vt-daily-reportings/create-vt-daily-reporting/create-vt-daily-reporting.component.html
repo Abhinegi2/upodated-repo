@@ -150,38 +150,6 @@
                             {{getErrorMessage(vtDailyReportingForm, 'AcademicYearId')}}
                         </mat-error>
                     </mat-form-field>
-
-                    <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
-                        fxFlex.lt-sm="100">
-                        <mat-label>Class</mat-label>
-                        <mat-select name="classId" formControlName="ClassId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
-                            appearance="outline" [disabled]="PageRights.IsReadOnly"
-                            (selectionChange)="onChangeClasses($event.value)"
-                            matTooltip="Select the Class"
-                            matTooltipPosition="above">
-                            <mat-option disabled="" [value]="">Select Class</mat-option>
-                            <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
-                                {{ classItem.Name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="vtDailyReportingForm.controls.ClassId.invalid">
-                            {{getErrorMessage(vtDailyReportingForm, 'ClassId')}}
-                        </mat-error>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100" style="display: row;">
-                        <mat-label>Sections</mat-label>
-                        <mat-select name="sectionIds" formControlName="SectionIds" [required]="vtDailyReportingForm.controls.ReportType.value == '37'"  
-                        appearance="outline" [disabled]="PageRights.IsReadOnly" multiple>
-                            <mat-option disabled="" [value]="">Select Sections</mat-option>
-                            <mat-option [value]="sectionItem.Name" *ngFor="let sectionItem of sectionList">
-                                {{ sectionItem.Name }}
-                            </mat-option>
-                        </mat-select>
-                        <mat-error *ngIf="vtDailyReportingForm.controls.SectionIds.invalid">
-                            {{getErrorMessage(vtDailyReportingForm, 'SectionIds')}}
-                        </mat-error>
-                    </mat-form-field>
                 </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

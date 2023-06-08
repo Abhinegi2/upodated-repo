@@ -124,8 +124,8 @@ export class VTDailyReportingService {
         dailyReportingModel.JobRoleId = formGroup.get('JobRoleId').value;
         dailyReportingModel.AcademicYearId = formGroup.get('AcademicYearId').value;
 
-        dailyReportingModel.ClassId = formGroup.get("ClassId").value;
-        dailyReportingModel.SectionIds = formGroup.get("SectionIds").value;
+        // dailyReportingModel.ClassId = formGroup.get("ClassId").value;
+        // dailyReportingModel.SectionIds = formGroup.get("SectionIds").value;
 
         // Teaching Vocational Education
         if (formGroup.controls.teachingVocationalEducationGroup != null) {
