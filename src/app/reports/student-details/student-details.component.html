@@ -46,13 +46,13 @@
         </div>
         <!-- / HEADER -->
 
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
                 (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div>
+        </div> -->
 
         <!-- Filter Section -->
-        <div class="filter-content-card" *ngIf="isShowFilterContainer">
+        <!-- <div class="filter-content-card" *ngIf="isShowFilterContainer">
             <div class="filter-content">
                 <form name="studentDetailForm" [formGroup]="studentDetailForm" class="student-detail-report"
                     fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
@@ -173,7 +173,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
@@ -487,14 +487,14 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Religion Column -->
+                <!-- Religion Column
                 <ng-container matColumnDef="Religion">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Religion
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentDetail">
                         <p class="text-truncate">{{studentDetail.Religion}}</p>
                     </mat-cell>
-                </ng-container>
+                </ng-container> -->
 
                 <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
 

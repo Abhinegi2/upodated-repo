@@ -45,10 +45,10 @@
             <!-- / ADD BUTTON -->
         </div>
         <!-- / HEADER -->
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
                 (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div>
+        </div> -->
 
         <!-- Filter Section -->
         <div class="filter-content-card" *ngIf="isShowFilterContainer">
@@ -379,7 +379,7 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- MonthYear Column -->
+               <!-- MonthYear Column -->
                 <ng-container matColumnDef="MonthYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month Year
                     </mat-header-cell>
