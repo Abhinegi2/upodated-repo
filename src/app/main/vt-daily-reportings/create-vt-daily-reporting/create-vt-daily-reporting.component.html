@@ -140,7 +140,7 @@
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Academic Year</mat-label>
                         <mat-select formControlName="AcademicYearId" appearance="outline" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
-                            [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeAcademicYear($event.value)">
+                            [disabled]="PageRights.IsReadOnly || vtDailyReportingForm.controls.AcademicYearId.value" (selectionChange)="onChangeAcademicYear($event.value)">
                             <mat-option disabled="" [value]="">Select AcademicYear</mat-option>
                             <mat-option [value]="academicYearItem.Id" *ngFor="let academicYearItem of academicYearList">
                                 {{ academicYearItem.Name }}
