@@ -84,8 +84,8 @@ export class VTDailyReportingModel {
         this.JobRoleId = vtDailyReportingItem.JobRoleId || '';
         this.SSJId = vtDailyReportingItem.SSJId || '';
         this.AcademicYearId = vtDailyReportingItem.AcademicYearId || '';
-        this.ClassId = vtDailyReportingItem.ClassId || '';
-        this.SectionIds = vtDailyReportingItem.SectionIds || '';
+        // this.ClassId = vtDailyReportingItem.ClassId || '';
+        // this.SectionIds = vtDailyReportingItem.SectionIds || '';
 
         this.ReportType = vtDailyReportingItem.ReportType || '';
         this.WorkingDayTypeIds = vtDailyReportingItem.WorkingDayTypeIds || '';

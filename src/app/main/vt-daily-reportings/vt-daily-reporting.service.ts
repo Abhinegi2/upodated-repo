@@ -107,9 +107,10 @@ export class VTDailyReportingService {
         let classSectionRequest = this.http.GetClassSectionsByVTId({ DataId: currentUser.UserId, DataId1: currentUser.UserTypeId });
         let classStudentRequest = this.http.GetStudentsByVTId({ DataId1: currentUser.UserTypeId });
         let unitSessionRequest = this.http.GetCourseModuleUnitSessions({ DataId: currentUser.UserId, DataId1: currentUser.UserTypeId });
+        let allSectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', SelectTitle: 'Section' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6        
-        return forkJoin([classRequest, moduleRequest, otherWorkTypeRequest, classTypeRequest, activityTypeRequest, classSectionRequest, classStudentRequest, unitSessionRequest]);
+        return forkJoin([classRequest, moduleRequest, otherWorkTypeRequest, classTypeRequest, activityTypeRequest, classSectionRequest, classStudentRequest, unitSessionRequest, allSectionRequest]);
     }
 
     getVTDailyReportingModelFromFormGroup(formGroup: FormGroup): VTDailyReportingModel {

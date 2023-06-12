@@ -208,16 +208,15 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
                         this.setInputs(this.vtDailyReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                           this.setInputs(this.vtDailyReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
                             this.setInputs(this.vtDailyReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
-                              this.setInputs(this.vtDailyReportingModel.ClassId, 'ClassId', 'ClassById').then(vResp => {
-                                this.onChangeClasses(this.vtDailyReportingModel.ClassId).then(vResp => {
-                                  this.vtDailyReportingForm = this.createVTDailyReportingForm();
-                                  this.onChangeReportType(this.vtDailyReportingModel.ReportType).then(response => {
-                                    if (this.vtDailyReportingModel.WorkingDayTypeIds.length > 0) {
-                                      this.onChangeWorkingType(this.vtDailyReportingModel.WorkingDayTypeIds);
-                                    }
-                                  });
+                              this.onChangeReportType(this.vtDailyReportingModel.ReportType).then(response => {
+                                this.vtDailyReportingForm = this.createVTDailyReportingForm();
+                                this.onChangeAcademicYear(this.vtDailyReportingModel.AcademicYearId).then(response => {
+                                  if (this.vtDailyReportingModel.WorkingDayTypeIds.length > 0) {
+                                    this.onChangeWorkingType(this.vtDailyReportingModel.WorkingDayTypeIds);
+                                  }
                                 });
-                              });
+                              });                     
+                    
                             });
                           });
                         });
@@ -318,31 +317,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     return promise;
   }
 
-
-  onChangeClasses(classId): Promise<any> {
-    this.resetInputsAfter('Class');
-    this.setFormInputs();
-
-    this.IsLoading = true;
-    let promise = new Promise((resolve, reject) => {
-
-      this.commonService.GetMasterDataByType({
-        DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId,
-        DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId,
-        DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId,
-        UserId: this.UserModel.UserTypeId, roleId:
-          this.UserModel.RoleCode, SelectTitle: 'Sections'
-      }, false).subscribe((response) => {
-        if (response.Success) {
-          this.sectionList = response.Results;
-        }
-        resolve(true);
-      });
-    });
-
-    return promise;
-  }
-
   setFormInputs() {
     this.SchoolInputId = this.CanUserChangeInput == true ? this.vtDailyReportingForm.get('SchoolId').value : this.vtDailyReportingModel.SchoolId;
     this.SectorInputId = this.CanUserChangeInput == true ? this.vtDailyReportingForm.get('SectorId').value : this.vtDailyReportingModel.SectorId;
@@ -370,10 +344,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
         this.onChangeJobRole(inputId);
       } else if (InputName == 'AcademicYearId') {
         this.onChangeAcademicYear(inputId);
-      } else if (InputName == 'ClassId') {
-        this.onChangeClasses(inputId);
       }
-
     }
   }
 
@@ -383,30 +354,15 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       this.vtDailyReportingForm.controls['SectorId'].setValue(null);
       this.vtDailyReportingForm.controls['JobRoleId'].setValue(null);
       this.vtDailyReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtDailyReportingForm.controls['ClassId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.vtDailyReportingForm.controls['JobRoleId'].setValue(null);
       this.vtDailyReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtDailyReportingForm.controls['ClassId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'JobRole') {
       this.vtDailyReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtDailyReportingForm.controls['ClassId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
-    }
-
-    if (input == 'AcademicYear') {
-      this.vtDailyReportingForm.controls['ClassId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
-    }
-
-    if (input == 'Class') {
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
     }
   }
 
@@ -432,8 +388,8 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
             this.jobRoleList = response.Results;
           } else if (InputId == 'AcademicYearId') {
             this.academicYearList = response.Results;
-          } else if (InputId == 'ClassId') {
-            this.classList = response.Results;
+          } else if (InputId == 'ClassTaughtId') {
+            this.classTaughtList = response.Results;
           }
           this.vtDailyReportingForm.controls[InputId].disable();
         }
@@ -542,22 +498,16 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       this.vtDailyReportingForm.controls['SectorId'].setValidators([Validators.required]);;
       this.vtDailyReportingForm.controls['JobRoleId'].setValidators([Validators.required]);;
       this.vtDailyReportingForm.controls['AcademicYearId'].setValidators([Validators.required]);;
-      this.vtDailyReportingForm.controls['ClassId'].setValidators([Validators.required]);;
-      this.vtDailyReportingForm.controls['SectionIds'].setValidators([Validators.required]);;
     } else {
       this.vtDailyReportingForm.controls['SchoolId'].setValue(null);
       this.vtDailyReportingForm.controls['SectorId'].setValue(null);
       this.vtDailyReportingForm.controls['JobRoleId'].setValue(null);
       this.vtDailyReportingForm.controls['AcademicYearId'].setValue(null);
-      this.vtDailyReportingForm.controls['ClassId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectionIds'].setValue(null);
 
       this.vtDailyReportingForm.controls['SchoolId'].clearValidators();
       this.vtDailyReportingForm.controls['SectorId'].clearValidators();
       this.vtDailyReportingForm.controls['JobRoleId'].clearValidators();
       this.vtDailyReportingForm.controls['AcademicYearId'].clearValidators();
-      this.vtDailyReportingForm.controls['ClassId'].clearValidators();
-      this.vtDailyReportingForm.controls['SectionIds'].clearValidators();
     }
   }
 
@@ -630,6 +580,10 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
             this.unitSessionList = response[7].Results;
           }
 
+          if (response[8].Success) {
+            this.sectionTaughtList = response[8].Results;
+          }
+
 
           // if (this.classTaughtList.length > 1) {
           //   let teachingVocationalEducationControls = <FormArray>this.vtDailyReportingForm.controls.teachingVocationalEducationGroup.get('teachingVocationalEducations');
@@ -678,7 +632,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
             teachingVocationalEducationControls.clear();
             this.unitSessionsModels = [];
 
-            this.sectionTaughtList = this.sectionList;
+            // this.sectionTaughtList = this.sectionList;
 
             // this.sectionTaughtList = <DropdownModel[]>[];
             // this.sectionTaughtList.forEach(sectionItem => {
@@ -1042,11 +996,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     if (classId != null) {
       formGroup.get('DidYouTeachToday').setValue(true);
 
-      // this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId }).subscribe(response => {
-      //   if (response.Success) {
-      //     this.sectionList = response.Results;
-      //   }
-      // });
 
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
