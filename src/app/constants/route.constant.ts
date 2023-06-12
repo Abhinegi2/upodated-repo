@@ -444,7 +444,9 @@ export const RouteConstants = {
         New: 'complaint-registration',
         Edit: 'complaint-registration/:actionType/:complaintRegistrationId'
     },
-
+    PrivacyPolicy:{
+        List: 'privacy-policy',
+    },
     //Academic Rollover
     VTPSectorForAcademicYear: {
         List: 'vtp-sectors-for-academic-rollover',

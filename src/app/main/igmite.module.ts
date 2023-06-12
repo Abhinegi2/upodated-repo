@@ -426,6 +426,7 @@ import { VTSchoolSectorsForAcademicRolloverService } from './vtschool-sectors-fo
 import { MessageTemplateComponent } from './message-templates/message-template.component';
 import { CreateMessageTemplateComponent } from './message-templates/create-message-template/create-message-template.component';
 import { MessageTemplateService } from './message-templates/message-template.service';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
     { path: RouteConstants.Login, component: LoginComponent },
@@ -774,6 +775,8 @@ const routes: Routes = [
     { path: RouteConstants.ComplaintRegistration.New, component: CreateComplaintRegistrationComponent },
     { path: RouteConstants.ComplaintRegistration.Edit, component: CreateComplaintRegistrationComponent },
 
+    { path: RouteConstants.PrivacyPolicy.List, component: PrivacyPolicyComponent },
+
     //Academic Rollover
     { path: RouteConstants.VocationalTrainer.VTTransfer, component: VTTransferComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.SchoolVTPSectorsForAcademicRollover.List, component: SchoolVTPSectorsForAcadmicRolloverComponent, canActivate: [AuthGuardService] },
@@ -1001,7 +1004,8 @@ const routes: Routes = [
         StudentsAcademicRolloverComponent,
 
         MessageTemplateComponent,
-        CreateMessageTemplateComponent
+        CreateMessageTemplateComponent,
+        PrivacyPolicyComponent
     ],
     imports: [
         RouterModule.forChild(routes),
