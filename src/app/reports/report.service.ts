@@ -433,7 +433,7 @@ export class ReportService {
         let schoolManagementRequest = this.http.GetMasterDataByType({ DataType: 'BasicList', ParentId: 'SchoolManagement', SelectTitle: 'School Management' });
         let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' });
 
-        // let vtpRequest = null;
+        let vtpRequest = null;
         // if (userModel.RoleCode == 'VC') {
         //     vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId);
         // }
@@ -441,11 +441,11 @@ export class ReportService {
         //     vtpRequest = this.commonService.GetVTPByHMId(userModel.AcademicYearId, userModel.UserTypeId);
         // }
         // else {
-        //     vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', UserId: userModel.LoginId, SelectTitle: 'Vocational Training Provider' });
+            vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', UserId: userModel.LoginId, SelectTitle: 'Vocational Training Provider' });
         // }
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([academicYearRequest, divisionRequest, sectorRequest, /*vtpRequest,*/ classRequest, monthRequest, schoolManagementRequest, schoolRequest]);
+        return forkJoin([academicYearRequest, divisionRequest, sectorRequest, vtpRequest, classRequest, monthRequest, schoolManagementRequest, schoolRequest]);
     }
 
     getDropdownforVocationalTrainer(userModel: any): Observable<any[]> {
