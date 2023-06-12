@@ -34,8 +34,8 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
-                <!-- <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
-                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span></button> -->
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span></button>
 
                 <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
@@ -49,7 +49,7 @@
         </div>
         <!-- / HEADER -->
 
-        <!-- Filter Section
+        <!-- Filter Section -->
         <div class="filter-content-card" *ngIf="IsShowFilter">
             <div class="filter-content">
                 <form name="dailyAttendanceTrackingForm" [formGroup]="dailyAttendanceTrackingForm"
@@ -203,7 +203,7 @@
 
                 </form>
             </div>
-        </div> -->
+        </div> 
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
