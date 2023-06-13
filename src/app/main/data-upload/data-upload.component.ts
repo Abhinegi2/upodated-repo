@@ -128,15 +128,12 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
   }
 
   downloadUploadedExcelResults() {
-    console.log("hellodownloaduploadfile");
     let pdfReportUrl = this.Constants.Services.BaseUrl + 'Lighthouse/DownloadFile?fileUrl=' + this.uploadedFileUrl;
     window.open(pdfReportUrl, '_blank', '');
   }
 
   downloadTemplateExcel() {
-    console.log("indownloadtemplate");
     let dataTypeCtrl = this.dataUploadForm.get('ContentType').value;
-    console.log(dataTypeCtrl);
 
     if (dataTypeCtrl.Template === undefined) {
       this.dialogService.openShowDialog("Please select data type first for downloading templates !!!");
