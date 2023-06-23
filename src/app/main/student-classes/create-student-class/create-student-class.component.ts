@@ -34,6 +34,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   jobRoleList: DropdownModel[];
   socialCategoryList: [DropdownModel];
   vtId: any;
+  classSectionList: [DropdownModel];
 
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
@@ -70,6 +71,10 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
           this.studentClassForm.controls['SchoolId'].disable();
           this.onChangeSchool(this.schoolList[0].Id);
         }
+      }
+
+      if (results[12].Success) {
+        this.classSectionList = results[12].Results;
       }
 
       if (results[1].Success) {
@@ -127,6 +132,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['AcademicYearId'].disable();
     this.studentClassForm.controls['ClassId'].disable();
     this.studentClassForm.controls['SectionId'].disable();
+    this.studentClassForm.controls['ClassSection'].disable();
   }
 
   setSectorJobRole(schoolsectorjobId) {
@@ -147,6 +153,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['AcademicYearId'].setValue(null);
     this.studentClassForm.controls['ClassId'].setValue(null);
     this.studentClassForm.controls['SectionId'].setValue(null);
+    this.studentClassForm.controls['ClassSection'].setValue(null);
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
@@ -181,7 +188,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.studentClassForm.controls['AcademicYearId'].setValue(null);
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
-
+      this.studentClassForm.controls['ClassSection'].setValue(null);    
       schoolId = this.studentClassForm.get('SchoolId').value;
     }
 
@@ -217,6 +224,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.studentClassForm.controls['AcademicYearId'].setValue(null);
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -258,6 +266,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -297,6 +306,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
 
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -480,6 +490,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       AcademicYearId: new FormControl({ value: this.studentClassModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       ClassId: new FormControl({ value: this.studentClassModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionId: new FormControl({ value: this.studentClassModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      ClassSection: new FormControl({ value: this.studentClassModel.ClassSection, disabled: this.PageRights.IsReadOnly }, Validators.required),
 
       FirstName: new FormControl({ value: this.studentClassModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       MiddleName: new FormControl({ value: this.studentClassModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),

@@ -12,6 +12,7 @@ export class StudentClassModel {
     GVTId: string;
     AcademicYearId: string;
     ClassId: string;
+    ClassSection: string;
     SectionId: string;
     FirstName: string;
     MiddleName: string;
@@ -56,6 +57,7 @@ export class StudentClassModel {
         this.AcademicYearId = studentClassItem.AcademicYearId || '';
         this.ClassId = studentClassItem.ClassId || '';
         this.SectionId = studentClassItem.SectionId || '';
+        this.ClassSection = studentClassItem.ClassSection || '';
         this.DateOfEnrollment = studentClassItem.DateOfEnrollment || '';
         this.FirstName = studentClassItem.FirstName || '';
         this.MiddleName = studentClassItem.MiddleName || '';
