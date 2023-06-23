@@ -91,8 +91,20 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
               .subscribe((response: any) => {
                 this.vtacademicclasssectionModel = response.Result;
 
-                if (this.PageRights.ActionType == this.Constants.Actions.Edit)
+                if (this.PageRights.ActionType == this.Constants.Actions.Edit){
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.Edit;
+                  this.vtacademicclasssectionForm.controls['AcademicYearId'].disable();
+                  this.vtacademicclasssectionForm.controls['ClassId'].disable();
+                  this.vtacademicclasssectionForm.controls['SectionId'].disable();
+                  this.vtacademicclasssectionForm.controls['GVTId'].disable();
+                  this.vtacademicclasssectionForm.controls['DateOfAllocation'].disable();
+                  if(this.vtacademicclasssectionModel.VTId != null){
+                  this.vtacademicclasssectionForm.controls['VTId'].disable();
+                     
+                  }
+
+
+                }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
@@ -102,6 +114,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                 this.onChangeClass(this.vtacademicclasssectionModel.ClassId);
 
                 this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
+                console.log(this.vtacademicclasssectionModel.DateOfAllocation);
               });
           }
         }
@@ -112,7 +125,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   }
 
   onChangeVT(accountId) {
-    console.log(accountId);
+    if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
       if (VtModel == null) {
@@ -122,7 +135,10 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       } else {
         this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
-    });
+     });
+   }else{
+    return null;
+   }
   }
 
   onChangeClass(classId) {
@@ -172,6 +188,8 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
   //Create vtacademicclasssection form and returns {FormGroup}
   createVTAcademicClassSectionForm(): FormGroup {
+    console.log(this.vtacademicclasssectionModel.SectionId,"classid");
+    console.log(this.vtacademicclasssectionModel.ClassId,"sectionid")
     return this.formBuilder.group({
       VTAcademicClassSectionId: new FormControl(this.vtacademicclasssectionModel.VTAcademicClassSectionId),
       AcademicYearId: new FormControl({ value: this.vtacademicclasssectionModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
@@ -179,7 +197,8 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.vtacademicclasssectionModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: this.vtacademicclasssectionModel.DateOfAllocation, disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      // DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
