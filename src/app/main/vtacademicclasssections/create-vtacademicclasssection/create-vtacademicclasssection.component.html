@@ -58,10 +58,10 @@
                         fxLayoutGap.lt-md="0px">
 
                         <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="67" fxFlex.lt-sm="100">
-                            <mat-label>Select SchoolSectorJobRole</mat-label>
+                            <mat-label>Select SchoolSectorJobROLE</mat-label>
 
                             <mat-select formControlName="GVTId" required appearance="outline"
-                                matTooltip="Select Genric Vocational Trainer" matTooltipPosition='above'
+                                matTooltip="Select SchoolSectorJobROLE" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
 
                                 <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
