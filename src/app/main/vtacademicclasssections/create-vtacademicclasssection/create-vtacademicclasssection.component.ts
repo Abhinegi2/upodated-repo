@@ -31,7 +31,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   sectionList: [DropdownModel];
   vtList: [DropdownModel];
   filteredVTItems: any;
-
+  filteredClassItem:any;
   gvtList: [DropdownModel];
   filteredGVTItems: any;
   selectedVTId: any;
@@ -91,8 +91,17 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
               .subscribe((response: any) => {
                 this.vtacademicclasssectionModel = response.Result;
 
-                if (this.PageRights.ActionType == this.Constants.Actions.Edit)
+                if (this.PageRights.ActionType == this.Constants.Actions.Edit){
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.Edit;
+                  this.vtacademicclasssectionForm.controls['AcademicYearId'].disable();
+                  this.vtacademicclasssectionForm.controls['ClassId'].disable();
+                  // this.vtacademicclasssectionForm.controls['SectionId'].disable();
+                  this.vtacademicclasssectionForm.controls['GVTId'].disable();
+                  this.vtacademicclasssectionForm.controls['DateOfAllocation'].disable();
+                  if(this.vtacademicclasssectionModel.VTId != null){
+                  this.vtacademicclasssectionForm.controls['VTId'].disable();            
+                  }
+                }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
@@ -111,8 +120,27 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  onChangeVT(accountId) {
-    console.log(accountId);
+  onChangeGvt(GVTId) {
+  let promise = new Promise((resolve, reject) => {
+    this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID5: GVTId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      if (response.Success) {
+        if (response.Results.length == 2) {
+          this.vtacademicclasssectionForm.controls['ClassId'].setValue(response.Results[1].Id);
+          this.vtacademicclasssectionForm.controls['ClassId'].disable();
+          this.onChangeClass(response.Results[1].Id);
+        }else{
+          this.vtacademicclasssectionForm.controls['ClassId'].setValue(null);
+          this.vtacademicclasssectionForm.controls['ClassId'].enable();
+        }
+      }
+      resolve(true);
+    });
+  });
+  return promise;
+}
+
+  onChangeVT(accountId) {  
+    if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
       if (VtModel == null) {
@@ -122,7 +150,10 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       } else {
         this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
-    });
+     });
+   }else{
+    return null;
+   }
   }
 
   onChangeClass(classId) {
@@ -131,7 +162,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-
         }
         resolve(true);
       });
@@ -157,7 +187,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
               this.Constants.Messages.RecordSavedMessage,
               this.Constants.Html.SuccessSnackbar
             );
-
             this.router.navigate([RouteConstants.VTAcademicClassSection.List]);
           });
         }
@@ -179,7 +208,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.vtacademicclasssectionModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: this.vtacademicclasssectionModel.DateOfAllocation, disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
