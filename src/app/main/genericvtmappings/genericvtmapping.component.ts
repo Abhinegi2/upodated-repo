@@ -39,12 +39,14 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
     private genericvtmappingService: GenericVTMappingService) {
     super(commonService, router, routeParams, snackBar, zone);
 
-    this.genericvtmappingFilterForm = this.creategenericvtmappingFilterForm();  
+    this.genericvtmappingFilterForm = this.creategenericvtmappingFilterForm();
   }
 
   ngOnInit(): void {
     this.genericvtmappingService.getGenericVTMapping(this.UserModel).subscribe(results => {
-console.log(results);
+      if (results[0].Success) {
+        this.gvtList = results[0].Results;
+      }
       if (results[1].Success) {
         this.vtpList = results[1].Results;
       }
@@ -55,43 +57,40 @@ console.log(results);
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
+
       }
       this.onLoadGenericVTMappingByCriteria();
-      
+
     });
   }
 
   onLoadGenericVTMappingByCriteria(): void {
     this.IsLoading = true;
-console.log(this.genericvtmappingFilterForm.controls["VTPId"].value)
-console.log(this.genericvtmappingFilterForm.controls["VTId"].value)
-console.log(this.genericvtmappingFilterForm.controls["VCId"].value)
-console.log(this.UserModel.UserTypeId)
+
     let genericvtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
+      GVTId: this.genericvtmappingFilterForm.controls["GVTId"].value,
       VTPId: this.genericvtmappingFilterForm.controls["VTPId"].value,
       VCId: this.genericvtmappingFilterForm.controls["VCId"].value,
       VTId: this.genericvtmappingFilterForm.controls["VTId"].value,
-     Status: this.genericvtmappingFilterForm.controls["Status"].value,
-     CharBy: null,
-     PageIndex: this.SearchBy.PageIndex,
-     PageSize: this.SearchBy.PageSize
+      Status: this.genericvtmappingFilterForm.controls["Status"].value,
+      CharBy: null,
+      PageIndex: this.SearchBy.PageIndex,
+      PageSize: this.SearchBy.PageSize
     };
 
     this.genericvtmappingService.GetAllByCriteria(genericvtParams).subscribe(response => {
       console.log(response);
       this.displayedColumns = [
-        // 'UserType', 'UserName',
         'VTPShortName',
         'VCFullName',
         'VTFullName',
         'GenericVTName',
-        // 'EmailId', 
-        'DateOfAllocation',  
-        'CreatedBy', 
-        'UpdatedBy', 
+        'DateOfAllocation',
+        'CreatedBy',
+        'UpdatedBy',
         'DateOfRemoval',
-        'IsActive', 
+        'IsActive',
         'Actions'
       ];
 
@@ -154,13 +153,13 @@ console.log(this.UserModel.UserTypeId)
       });
   }
 
-    //Create VocationalTrainingProviderProvider form and returns {FormGroup}
-    creategenericvtmappingFilterForm(): FormGroup {
-      return this.formBuilder.group({
-        VTPId: new FormControl(),
-        VCId: new FormControl(),
-        VTId: new FormControl(),
-        Status: new FormControl()
-      });
-    }
+  creategenericvtmappingFilterForm(): FormGroup {
+    return this.formBuilder.group({
+      GVTId: new FormControl(),
+      VTPId: new FormControl(),
+      VCId: new FormControl(),
+      VTId: new FormControl(),
+      Status: new FormControl()
+    });
+  }
 }
