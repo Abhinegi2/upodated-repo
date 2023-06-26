@@ -11,6 +11,8 @@ import { VTAcademicClassSectionService } from '../vtacademicclasssection.service
 import { VTAcademicClassSectionModel } from '../vtacademicclasssection.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { VocationalTrainerService } from 'app/main/vocational-trainers/vocational-trainer.service';
+import { AcademicYearComponent } from 'app/main/academic-years/academic-year.component';
+import { isEmpty, result } from 'lodash';
 
 
 
@@ -31,7 +33,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   sectionList: [DropdownModel];
   vtList: [DropdownModel];
   filteredVTItems: any;
-
+  filteredClassItem:any;
   gvtList: [DropdownModel];
   filteredGVTItems: any;
   selectedVTId: any;
@@ -95,7 +97,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.Edit;
                   this.vtacademicclasssectionForm.controls['AcademicYearId'].disable();
                   this.vtacademicclasssectionForm.controls['ClassId'].disable();
-                  this.vtacademicclasssectionForm.controls['SectionId'].disable();
+                  // this.vtacademicclasssectionForm.controls['SectionId'].disable();
                   this.vtacademicclasssectionForm.controls['GVTId'].disable();
                   this.vtacademicclasssectionForm.controls['DateOfAllocation'].disable();
                   if(this.vtacademicclasssectionModel.VTId != null){
@@ -120,7 +122,26 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  onChangeVT(accountId) {
+  onChangeGvt(GVTId) {
+  let promise = new Promise((resolve, reject) => {
+    this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID5: GVTId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
+      if (response.Success) {
+        if (response.Results.length == 2) {
+          this.vtacademicclasssectionForm.controls['ClassId'].setValue(response.Results[1].Id);
+          this.vtacademicclasssectionForm.controls['ClassId'].disable();
+          this.onChangeClass(response.Results[1].Id);
+        }else{
+          this.vtacademicclasssectionForm.controls['ClassId'].setValue(null);
+          this.vtacademicclasssectionForm.controls['ClassId'].enable();
+        }
+      }
+      resolve(true);
+    });
+  });
+  return promise;
+}
+
+  onChangeVT(accountId) {  
     if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
