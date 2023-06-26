@@ -11,8 +11,6 @@ import { VTAcademicClassSectionService } from '../vtacademicclasssection.service
 import { VTAcademicClassSectionModel } from '../vtacademicclasssection.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { VocationalTrainerService } from 'app/main/vocational-trainers/vocational-trainer.service';
-import { AcademicYearComponent } from 'app/main/academic-years/academic-year.component';
-import { isEmpty, result } from 'lodash';
 
 
 
