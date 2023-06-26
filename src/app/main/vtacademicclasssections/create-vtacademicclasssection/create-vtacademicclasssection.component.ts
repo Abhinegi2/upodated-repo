@@ -60,7 +60,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       }
 
       if (results[1].Success) {
-        this.classList = results[1].Results;
+          this.classList = results[1].Results;
       }
 
       // if (results[2].Success) {
@@ -95,7 +95,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
                   this.vtacademicclasssectionModel.RequestType = this.Constants.PageType.Edit;
                   this.vtacademicclasssectionForm.controls['AcademicYearId'].disable();
                   this.vtacademicclasssectionForm.controls['ClassId'].disable();
-                  // this.vtacademicclasssectionForm.controls['SectionId'].disable();
+                  this.vtacademicclasssectionForm.controls['SectionId'].disable();
                   this.vtacademicclasssectionForm.controls['GVTId'].disable();
                   this.vtacademicclasssectionForm.controls['DateOfAllocation'].disable();
                   if(this.vtacademicclasssectionModel.VTId != null){
@@ -157,15 +157,14 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   }
 
   onChangeClass(classId) {
-
+    var GVTId = this.vtacademicclasssectionForm.get('GVTId').value;
     let promise = new Promise((resolve) => {
-      this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
+      this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', DataTypeID1:GVTId, ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
         }
         resolve(true);
       });
-
     });
 
   }
