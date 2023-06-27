@@ -86,6 +86,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
       if (results[5].Success) {
         this.genderList = results[5].Results;
       }
+      console.log("Hello Vocational Trainer");
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -101,16 +102,18 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
               .subscribe((response: any) => {
                 this.vocationalTrainerModel = response.Result;
 
+                if (results[7].Success) {
+                  this.vtList = results[7].Results;
+                  this.filteredVTItems = this.vtList.slice();
+                }
+
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
-                  if (results[7].Success) {
-                    this.vtList = results[7].Results;
-                    this.filteredVTItems = this.vtList.slice();
-                  }
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.Edit;
                 }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
+                  console.log("inside view");
                 }
 
                 if (this.vocationalTrainerModel.DateOfResignation != null) {
@@ -142,6 +145,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     this.accountService.getAccountById(accountId).subscribe((response: any) => {
       var accountModel = response.Result;
       this.vocationalTrainerForm.controls['Email'].setValue(accountModel.EmailId);
+      this.vocationalTrainerForm.controls['Name'].disable();
       this.vocationalTrainerForm.controls['Email'].disable();
       this.vocationalTrainerForm.controls['Mobile'].setValue(accountModel.Mobile);
       this.vocationalTrainerForm.controls['Mobile'].disable();

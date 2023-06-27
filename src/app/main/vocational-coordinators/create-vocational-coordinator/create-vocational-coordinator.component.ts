@@ -88,17 +88,19 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
               .subscribe((response: any) => {
                 this.vocationalCoordinatorModel = response.Result;
 
-                if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
-                  if (results[2].Success) {
-                    this.vcList = results[2].Results;
-                    this.filteredVcItems = this.vcList.slice();
-                  }
-                  this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.Edit;
+                if (results[2].Success) {
+                  this.vcList = results[2].Results;
+                  this.filteredVcItems = this.vcList.slice();
                 }
-                else if (this.PageRights.ActionType == this.Constants.Actions.View) {
+
+                if (this.PageRights.ActionType === this.Constants.Actions.Edit) {
+                  this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.Edit;
+
+                } else if (this.PageRights.ActionType === this.Constants.Actions.View) {
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
+                
                 this.onChangeVC(this.vocationalCoordinatorModel.VCId);
 
                 // this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
