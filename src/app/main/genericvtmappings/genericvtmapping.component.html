@@ -68,10 +68,6 @@
                             <mat-label>Vocational Training Provider</mat-label>
 
                             <mat-select formControlName="VTPId" name="vtpId" appearance="fill" >
-                                <!-- (selectionChange)="onChangeVTP($event.value)"
-                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter> -->
                                 <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
                                     {{ vtpItem.Name }}
                                 </mat-option>
@@ -82,10 +78,6 @@
                             <mat-label>Vocational Coordinator</mat-label>
 
                             <mat-select formControlName="VCId" name="vcId" appearance="fill">
-                                <!-- (selectionChange)="onChangeVC($event.value)" #SelectVC -->
-                                <!-- <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter> -->
                                 <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
                                     {{ vcItem.Name }}
                                 </mat-option>
@@ -96,10 +88,6 @@
                             <mat-label>Vocational Trainer </mat-label>
 
                             <mat-select formControlName="VTId" name="vtId" appearance="fill">
-                                    <!-- (selectionChange)="onChangeVT($event.value)" #SelectVT> -->
-                                <!-- <mat-select-filter class="select-filter" *ngIf="SelectVT.focused" [array]="vtList"
-                                    (filteredReturn)="filteredVTItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter> -->
                                 <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
                                     {{ vtItem.Name }}
                                 </mat-option>
@@ -110,10 +98,6 @@
                             <mat-label>Generic VT Name </mat-label>
 
                             <mat-select formControlName="GVTId" name="GVTId" appearance="fill">
-                                    <!-- (selectionChange)="onChangeVT($event.value)" #SelectVT> -->
-                                <!-- <mat-select-filter class="select-filter" *ngIf="SelectVT.focused" [array]="vtList"
-                                    (filteredReturn)="filteredVTItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter> -->
                                 <mat-option [value]="genericVtItem.Id" *ngFor="let genericVtItem of GVTItems">
                                     {{ vtItem.Name }}
                                 </mat-option>

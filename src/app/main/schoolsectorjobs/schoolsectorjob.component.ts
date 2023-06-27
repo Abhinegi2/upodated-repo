@@ -39,12 +39,10 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
   ngOnInit(): void {
     this.schoolsectorjobService.GetAllByCriteria(this.SearchBy).subscribe(response => {
       this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName', 'DateOfAllocation', 'CreatedBy', 'UpdatedBy', 'DateOfRemoval', 'Actions'];
-
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
       this.tableDataSource.filteredData = this.tableDataSource.data;
-
       this.zone.run(() => {
         if (this.tableDataSource.data.length == 0) {
           this.showNoDataFoundSnackBar();
@@ -67,7 +65,6 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
   }
   onLoadSchoolSectorJobByCriteria(): any {
     this.IsLoading = true;
-
     let schoolSectorJobParams: any = {
       userTypeId: this.UserModel.UserTypeId,
       schoolId: this.schoolSectorJobRoleFilterForm.controls["SchoolId"].value,
@@ -78,21 +75,17 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
       pageIndex: this.SearchBy.PageIndex,
       pageSize: this.SearchBy.PageSize
     };
-
     this.schoolsectorjobService.GetAllByCriteria(schoolSectorJobParams).subscribe(response => {
       this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName', 'DateOfAllocation', 'DateOfRemoval', 'CreatedBy', 'UpdatedBy'];
-
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
       this.tableDataSource.filteredData = this.tableDataSource.data;
       this.SearchBy.TotalResults = response.TotalResults;
-
       setTimeout(() => {
         this.ListPaginator.pageIndex = this.SearchBy.PageIndex;
         this.ListPaginator.length = this.SearchBy.TotalResults;
       });
-
       this.zone.run(() => {
         if (this.tableDataSource.data.length == 0) {
           this.showNoDataFoundSnackBar();
