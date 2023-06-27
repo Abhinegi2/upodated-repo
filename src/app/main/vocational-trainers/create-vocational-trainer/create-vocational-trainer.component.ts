@@ -86,7 +86,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
       if (results[5].Success) {
         this.genderList = results[5].Results;
       }
-      console.log("Hello Vocational Trainer");
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -113,7 +112,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
-                  console.log("inside view");
                 }
 
                 if (this.vocationalTrainerModel.DateOfResignation != null) {
