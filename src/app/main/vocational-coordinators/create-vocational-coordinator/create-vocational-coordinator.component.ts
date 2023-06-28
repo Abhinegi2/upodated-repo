@@ -95,12 +95,11 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
                 if (this.PageRights.ActionType === this.Constants.Actions.Edit) {
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.Edit;
-
+                  this.vocationalCoordinatorForm.controls['VCId'].disable();
                 } else if (this.PageRights.ActionType === this.Constants.Actions.View) {
                   this.vocationalCoordinatorModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-                
                 this.onChangeVC(this.vocationalCoordinatorModel.VCId);
 
                 // this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();

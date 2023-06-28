@@ -108,6 +108,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
 
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.Edit;
+                  this.vocationalTrainerForm.controls['VTId'].disable();
                 }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.View;
@@ -143,7 +144,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     this.accountService.getAccountById(accountId).subscribe((response: any) => {
       var accountModel = response.Result;
       this.vocationalTrainerForm.controls['Email'].setValue(accountModel.EmailId);
-      this.vocationalTrainerForm.controls['Name'].disable();
       this.vocationalTrainerForm.controls['Email'].disable();
       this.vocationalTrainerForm.controls['Mobile'].setValue(accountModel.Mobile);
       this.vocationalTrainerForm.controls['Mobile'].disable();
