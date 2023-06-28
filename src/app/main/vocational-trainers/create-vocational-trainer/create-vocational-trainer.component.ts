@@ -101,12 +101,14 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
               .subscribe((response: any) => {
                 this.vocationalTrainerModel = response.Result;
 
+                if (results[7].Success) {
+                  this.vtList = results[7].Results;
+                  this.filteredVTItems = this.vtList.slice();
+                }
+
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
-                  if (results[7].Success) {
-                    this.vtList = results[7].Results;
-                    this.filteredVTItems = this.vtList.slice();
-                  }
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.Edit;
+                  this.vocationalTrainerForm.controls['VTId'].disable();
                 }
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.vocationalTrainerModel.RequestType = this.Constants.PageType.View;
