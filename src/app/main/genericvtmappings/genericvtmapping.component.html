@@ -96,14 +96,29 @@
                     </mat-cell>
                 </ng-container>
 
-                 <!-- GenericVTName Column -->
-                 <ng-container matColumnDef="GenericVTName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>GenericVTName</mat-header-cell>
+                 <!-- SchoolName Column -->
+                 <ng-container matColumnDef="SchoolName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SchoolName</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.GenericVTName}}</p>
+                        <p class="text-truncate">{{genericvtmapping.SchoolName}}</p>
                     </mat-cell>
                 </ng-container>
-                
+
+                 <!-- SectorName Column -->
+                <ng-container matColumnDef="SectorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SectorName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.SectorName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                 <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>JobRoleName</mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping">
+                        <p class="text-truncate">{{genericvtmapping.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>               
                 <!-- EmailId Column -->
                 <!-- <ng-container matColumnDef="EmailId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EmailId</mat-header-cell>
@@ -114,10 +129,21 @@
 
                 <!-- DateOfAllocation Column -->
                 <ng-container matColumnDef="DateOfAllocation">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation VTP
                     </mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{genericvtmapping.DateOfAllocation | date: Constants.ShortDateFormat}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
+
+                <!-- DateOfAllocationVC Column -->
+                <ng-container matColumnDef="DateOfAllocationVC">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Allocation VC
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let genericvtmapping" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{genericvtmapping.DateOfAllocationVC | date: Constants.ShortDateFormat}}
                         </p>
                     </mat-cell>
                 </ng-container>

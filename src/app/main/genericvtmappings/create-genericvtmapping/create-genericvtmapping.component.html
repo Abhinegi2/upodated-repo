@@ -96,7 +96,7 @@
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>Vocational Coordinator</mat-label>
 
-                            <mat-select formControlName="VCId" required appearance="outline"
+                            <mat-select formControlName="VCId" (selectionChange)="onVCIdChange()"  appearance="outline"
                                 matTooltip="Select Vocational Coordinator" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVc>
                             
@@ -125,7 +125,7 @@
 
                             <mat-select formControlName="GVTId" required appearance="outline"
                                 matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt (selectionChange)="onChangeSSJ($event.value)">
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
                             
                                 <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
                                     (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
@@ -143,7 +143,7 @@
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>Vocational Trainer</mat-label>
 
-                            <mat-select formControlName="VTId" required appearance="outline"
+                            <mat-select formControlName="VTId"  appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
                             
@@ -167,7 +167,7 @@
                         fxLayoutGap.lt-md="0px"> 
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
-                            <mat-label>Date Of Allocation</mat-label>
+                            <mat-label>Date Of School VTP Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                             [disabled]="PageRights.IsReadOnly">
@@ -175,6 +175,18 @@
                             <mat-datepicker #dateOfAllocation></mat-datepicker>
                             <mat-error *ngIf="genericvtmappingForm.controls.DateOfAllocation.invalid">
                               {{getErrorMessage(genericvtmappingForm, 'DateOfAllocation')}}
+                             </mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
+                            <mat-label>Date Of School VC Allocation</mat-label>
+                            <input matInput [matDatepicker]="dateOfAllocationVC" name="dateOfAllocationVC" 
+                            [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocationVC"
+                            [disabled]="PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="dateOfAllocationVC"></mat-datepicker-toggle>
+                            <mat-datepicker #dateOfAllocationVC></mat-datepicker>
+                            <mat-error *ngIf="genericvtmappingForm.controls.DateOfAllocationVC.invalid">
+                              {{getErrorMessage(genericvtmappingForm, 'DateOfAllocationVC')}}
                              </mat-error>
                         </mat-form-field>
 
@@ -192,6 +204,16 @@
                         </mat-error>
                      </mat-form-field>
                     </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                        <div class="note">
+                          <u>Note</u>
+                          <ol>
+                            <li>If any VT is not showing in the VT dropdown, so we need to fill in all the details of that VT in the Vocational Trainer Page.</li>
+                            <li>If any VC is not showing in the VC dropdown, so we need to fill in all the details of that VC in the Vocational Coordinator Page.</li>
+                          </ol>
+                        </div>
+                    </div>                      
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                      fxLayoutGap.lt-md="0px">

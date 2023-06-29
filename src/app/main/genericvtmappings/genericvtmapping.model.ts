@@ -6,6 +6,7 @@ export class GenericVTMappingModel {
     UserId: string;
     GVTId: string;
     DateOfAllocation: Date;
+    DateOfAllocationVC: Date;
     DateOfRemoval?: Date;
     IsActive: boolean;
     RequestType: any;
@@ -25,6 +26,7 @@ export class GenericVTMappingModel {
         this.GVTId = genericvtmappingItem.GVTId || '';
         this.DateOfAllocation = genericvtmappingItem.DateOfAllocation || '';
         this.DateOfRemoval = genericvtmappingItem.DateOfRemoval || '';
+        this.DateOfAllocationVC = genericvtmappingItem.DateOfAllocationVC || '';
         this.IsActive = genericvtmappingItem.IsActive || true;
         this.RequestType = 0; // New
     }
