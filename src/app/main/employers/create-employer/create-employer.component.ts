@@ -134,7 +134,7 @@ export class CreateEmployerComponent extends BaseComponent<EmployerModel> implem
   createEmployerForm(): FormGroup {
     return this.formBuilder.group({
       EmployerId: new FormControl(this.employerModel.EmployerId),
-      StateCode: new FormControl({ value: this.employerModel.StateCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      StateCode: new FormControl({ value: this.UserModel.DefaultStateId=this.Constants.DefaultStateId, disabled: (this.UserModel.DefaultStateId = this.Constants.DefaultStateId) }),
       DivisionId: new FormControl({ value: this.employerModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DistrictCode: new FormControl({ value: this.employerModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),
       BlockName: new FormControl({ value: this.employerModel.BlockName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.AlphaNumericWithTitleCaseSpaceAndSpecialChars)]),
