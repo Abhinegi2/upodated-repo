@@ -11,6 +11,7 @@ import { VTAcademicClassSectionService } from '../vtacademicclasssection.service
 import { VTAcademicClassSectionModel } from '../vtacademicclasssection.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { VocationalTrainerService } from 'app/main/vocational-trainers/vocational-trainer.service';
+import { isEmpty } from 'lodash';
 
 
 
@@ -56,7 +57,9 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
 
     this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
       if (results[0].Success) {
+
         this.academicYearList = results[0].Results;
+        this.vtacademicclasssectionForm.controls['AcademicYearId'].setValue(this.academicYearList[0].Id);
       }
 
       if (results[1].Success) {
@@ -120,25 +123,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  onChangeGvt(GVTId) {
-  let promise = new Promise((resolve, reject) => {
-    this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID5: GVTId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
-      if (response.Success) {
-        if (response.Results.length == 2) {
-          this.vtacademicclasssectionForm.controls['ClassId'].setValue(response.Results[1].Id);
-          this.vtacademicclasssectionForm.controls['ClassId'].disable();
-          this.onChangeClass(response.Results[1].Id);
-        }else{
-          this.vtacademicclasssectionForm.controls['ClassId'].setValue(null);
-          this.vtacademicclasssectionForm.controls['ClassId'].enable();
-        }
-      }
-      resolve(true);
-    });
-  });
-  return promise;
-}
-
   onChangeVT(accountId) {  
     if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
@@ -162,6 +146,10 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByVTACS', DataTypeID1:GVTId, ParentId: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }, false).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
+          if(isEmpty(this.sectionList)){
+            var errorMessages = this.getHtmlMessage(["The selected class sections already mapped  <b>Sections</b>.<br><br>"]);
+            this.dialogService.openShowDialog(errorMessages);
+          }
         }
         resolve(true);
       });

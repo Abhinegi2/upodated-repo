@@ -62,7 +62,7 @@
 
                             <mat-select formControlName="GVTId" required appearance="outline"
                                 matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt (selectionChange)="onChangeGvt($event.value)">
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
 
                                 <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
                                     (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
@@ -150,7 +150,7 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
-                            <mat-label>Date Of Allocation</mat-label>
+                            <mat-label>School VT Allocation Date</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
                                 [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                                 [disabled]="PageRights.IsReadOnly">
