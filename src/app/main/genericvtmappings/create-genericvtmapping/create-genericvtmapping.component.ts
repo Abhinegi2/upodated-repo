@@ -72,9 +72,10 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.filteredVcItems = this.vcList.slice();
       }
 
-      // if (results[3].Success) {
-      //   this.vtList = results[3].Results;
-      // }
+      if (results[3].Success) {
+        this.vtList = results[3].Results;
+        this.filteredVtItems = this.vtList.slice();
+      }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -98,7 +99,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                 }
 
                 // this.onChangeUserType(this.genericvtmappingModel.UserType);
-                this.onChangeSSJ(this.genericvtmappingModel.GVTId);
+                // this.onChangeSSJ(this.genericvtmappingModel.GVTId);
 
                 this.genericvtmappingForm = this.createGenericVTMappingForm();
 
@@ -128,20 +129,34 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   //   }
   // }
 
-  onChangeSSJ(GVTId) {
+  // onChangeSSJ(GVTId) {
 
-    this.commonService.GetMasterDataByType({
-      DataType: 'VTForSSJId',
-      RoleId: this.UserModel.RoleCode,
-      ParentId: GVTId,
-      SelectTitle: 'Vocational Trainers'
-    }, false).subscribe((response: any) => {
-      this.vtList = response.Results;
-      this.filteredVtItems = this.vtList.slice();
+  //   this.commonService.GetMasterDataByType({
+  //     DataType: 'VTForSSJId',
+  //     RoleId: this.UserModel.RoleCode,
+  //     ParentId: GVTId,
+  //     SelectTitle: 'Vocational Trainers'
+  //   }, false).subscribe((response: any) => {
+  //     this.vtList = response.Results;
+  //     this.filteredVtItems = this.vtList.slice();
 
-      // this.userList = this.userFilterList.slice();
-    });
+  //     // this.userList = this.userFilterList.slice();
+  //   });
+  // }
+// Inside your component class
+onVCIdChange(): void {
+
+  const vcId = this.genericvtmappingForm.get('VCId').value;
+
+  const dateOfAllocationVCControl = this.genericvtmappingForm.get('DateOfAllocationVC'); 
+
+
+  if (vcId) {
+    dateOfAllocationVCControl.setValidators([Validators.required]);
+  } else {
+    dateOfAllocationVCControl.clearValidators();
   }
+}
 
 
   // onChangeUser(accountId) {
@@ -198,11 +213,12 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
       // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
+      VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }),
       DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocationVC: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfAllocationVC), disabled: this.PageRights.IsReadOnly }),
     });
   }
 }
