@@ -258,7 +258,6 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
   exportExcel(): void {
     this.IsLoading = true;
-    
     let vtParams = {
       UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
@@ -287,6 +286,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         });
 
       this.exportExcelFromTable(response.Results, "VocationalTrainers");
+
       this.IsLoading = false;
     }, error => {
       console.log(error);
