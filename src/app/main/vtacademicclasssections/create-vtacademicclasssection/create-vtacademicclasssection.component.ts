@@ -123,7 +123,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
-  onChangeVT(accountId) {  
+  onChangeVT(accountId) { 
     if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
       var VtModel = response.Result;
@@ -138,6 +138,15 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
    }else{
     return null;
    }
+    this.commonService.GetMasterDataByType({
+      DataType: 'DateOfAllocationVT', ParentId: accountId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Date of Allocation VT"
+    }, false).subscribe((response) => {
+      if (response.Success) {
+        this.minAllocationDate = new Date( response.Results[0].Description);
+        if (response.Results.length == 0) {
+        }
+      }
+  });
   }
 
   onChangeClass(classId) {
@@ -154,7 +163,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         resolve(true);
       });
     });
-
   }
 
   saveOrUpdateVTAcademicClassSectionDetails() {
