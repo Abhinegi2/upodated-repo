@@ -407,6 +407,10 @@
                 [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
                 [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
             </mat-paginator>
+
+            <!-- <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
+                [pageSizeOptions]="[1, 5, 10, 25, 100]">
+            </mat-paginator> -->
         </div>
         <!-- / CONTENT CARD -->
     </div>

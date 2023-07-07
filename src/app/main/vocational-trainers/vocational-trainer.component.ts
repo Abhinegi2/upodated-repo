@@ -27,7 +27,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
   vtSearchForm: FormGroup;
   vtFilterForm: FormGroup;
 
-  // academicYearList: DropdownModel[];
+  academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
   filteredVTPItems: any;
   vcList: DropdownModel[];
@@ -49,7 +49,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     super(commonService, router, routeParams, snackBar, zone);
     this.vtSearchForm = this.formBuilder.group({ SearchText: new FormControl() });
     this.vtFilterForm = this.createVocationalTrainerFilterForm();
-
+    
     this.translationLoaderService.loadTranslations(english, guarati);
   }
 
@@ -58,9 +58,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.SearchBy.PageSize = 10; // delete after script changed
 
     this.vocationalTrainerService.getInitVocationalTrainersData(this.UserModel).subscribe(results => {
-      // if (results[0].Success) {
-      //   this.academicYearList = results[0].Results;
-      // }
+      if (results[0].Success) {
+        this.academicYearList = results[0].Results;
+      }
+      
 
       // if (results[1].Success) {
       //   this.vtpList = results[1].Results;
@@ -71,11 +72,11 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         this.socialCategoryList = results[1].Results;
       }
 
-      // let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      // if (currentYearItem != null) {
-      //   this.AcademicYearId = currentYearItem.Id;
-      //   this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      // }
+      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      if (currentYearItem != null) {
+        this.AcademicYearId = currentYearItem.Id;
+        this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      }
 
       //Load initial VocationalTrainers data
       this.onLoadVocationalTrainersByCriteria();
@@ -124,7 +125,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
     let vtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-      //  AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
+       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       // VTPId: this.vtFilterForm.controls["VTPId"].value,
       // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
@@ -258,8 +259,11 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
   exportExcel(): void {
     this.IsLoading = true;
+    console.log("Inside export fuction");
+    console.log(this.vtFilterForm);
 
     let vtParams = {
+      UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       VTPId: this.vtFilterForm.controls["VTPId"].value,
       VCId: this.vtFilterForm.controls["VCId"].value,
@@ -270,10 +274,13 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
       pageIndex: 0,
       pageSize: 100000
     };
+    console.log(vtParams);
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
       response.Results.forEach(
         function (obj) {
+          console.log("Inside response");
+          console.log(response);
           if (obj.hasOwnProperty('IsActive')) {
             obj.IsActive = obj.IsActive ? 'Yes' : 'No';
           }
@@ -286,7 +293,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         });
 
       this.exportExcelFromTable(response.Results, "VocationalTrainers");
-
+      console.log(response.Results);
       this.IsLoading = false;
     }, error => {
       console.log(error);

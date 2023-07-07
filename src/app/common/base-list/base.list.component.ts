@@ -79,6 +79,7 @@ export class BaseListComponent<T> extends BaseComponent<T> implements OnInit {
 
     exportExcelFromTable(dataSource: any, dataType: string): Promise<any> {
         let promise = new Promise((resolve, reject) => {
+            console.log("Inside exportExcel function");
             let currentDateTime = this.DateFormatPipe.transform(Date.now(), 'yyyyMMdd-HHmmss');
 
             //converts a DOM TABLE element to a worksheet
@@ -87,10 +88,13 @@ export class BaseListComponent<T> extends BaseComponent<T> implements OnInit {
 
             const wb: XLSX.WorkBook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, dataType);
+            console.log("Not append data into excel");
 
             /* save to file */
             let fileName = dataType + '-' + currentDateTime + '.xlsx';
             XLSX.writeFile(wb, fileName);
+
+            console.log("Excel file saved with the name:", fileName);
 
             resolve(currentDateTime);
         });

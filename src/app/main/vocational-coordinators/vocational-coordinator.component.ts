@@ -53,6 +53,7 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
     this.vocationalCoordinatorService.getInitVocationalCoordinatorsData().subscribe(results => {
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
+        console.log(this.academicYearList);
       }
 
       if (results[1].Success) {
@@ -224,10 +225,12 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
       PageIndex: 0,
       PageSize: 100000
     };
+    console.log(vcParams);
 
     this.vocationalCoordinatorService.GetAllByCriteria(vcParams).subscribe(response => {
       response.Results.forEach(
         function (obj) {
+          console.log("Inside response");
           if (obj.hasOwnProperty('IsResigned')) {
             obj.IsResigned = obj.IsResigned ? 'Yes' : 'No';
           }
@@ -240,6 +243,8 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
         });
 
       this.exportExcelFromTable(response.Results, "VocationalCoordinator");
+      console.log("I'm here");
+      console.log(response.Results);
 
       this.IsLoading = false;
     }, error => {

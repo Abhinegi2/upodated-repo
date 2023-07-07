@@ -316,6 +316,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
       PageIndex: 0,
       PageSize: 100000
     };
+    console.log(hmParams);
 
     this.headMasterService.GetAllByCriteria(hmParams).subscribe(response => {
       response.Results.forEach(

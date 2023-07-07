@@ -16,6 +16,8 @@ export class VocationalTrainerService {
                 retry(this.http.Services.RetryServieNo),
                 catchError(this.http.HandleError),
                 tap(response => {
+                    console.log("Inside getVocationalTrainers function");
+                    console.log(response.Results);
                     return response.Results;
                 })
             );
@@ -28,10 +30,24 @@ export class VocationalTrainerService {
                 retry(this.http.Services.RetryServieNo),
                 catchError(this.http.HandleError),
                 tap(response => {
+                    console.log("Inside GetAllByCriteria fuction");
+                    console.log(response.Results);
                     return response.Results;
                 })
             );
     }
+
+    // GetAllByCriteria(filters: any): Observable<any> {
+    //     return this.http
+    //         .HttpPost(this.http.Services.VocationalCoordinator.GetAllByCriteria, filters)
+    //         .pipe(
+    //             retry(this.http.Services.RetryServieNo),
+    //             catchError(this.http.HandleError),
+    //             tap(response => {
+    //                 return response.Results;
+    //             })
+    //         );
+    // }
 
     getVocationalTrainerById(vtId: string) {
         let requestParams = {
