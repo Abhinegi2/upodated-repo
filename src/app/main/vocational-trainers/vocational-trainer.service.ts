@@ -37,18 +37,6 @@ export class VocationalTrainerService {
             );
     }
 
-    // GetAllByCriteria(filters: any): Observable<any> {
-    //     return this.http
-    //         .HttpPost(this.http.Services.VocationalCoordinator.GetAllByCriteria, filters)
-    //         .pipe(
-    //             retry(this.http.Services.RetryServieNo),
-    //             catchError(this.http.HandleError),
-    //             tap(response => {
-    //                 return response.Results;
-    //             })
-    //         );
-    // }
-
     getVocationalTrainerById(vtId: string) {
         let requestParams = {
             DataId: vtId
