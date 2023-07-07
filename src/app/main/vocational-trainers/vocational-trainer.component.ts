@@ -49,7 +49,6 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     super(commonService, router, routeParams, snackBar, zone);
     this.vtSearchForm = this.formBuilder.group({ SearchText: new FormControl() });
     this.vtFilterForm = this.createVocationalTrainerFilterForm();
-
     this.translationLoaderService.loadTranslations(english, guarati);
   }
 
@@ -61,6 +60,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
       // if (results[0].Success) {
       //   this.academicYearList = results[0].Results;
       // }
+      
 
       // if (results[1].Success) {
       //   this.vtpList = results[1].Results;
@@ -258,8 +258,8 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
   exportExcel(): void {
     this.IsLoading = true;
-
     let vtParams = {
+      UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       VTPId: this.vtFilterForm.controls["VTPId"].value,
       VCId: this.vtFilterForm.controls["VCId"].value,
