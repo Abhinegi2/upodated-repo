@@ -16,8 +16,6 @@ export class VocationalTrainerService {
                 retry(this.http.Services.RetryServieNo),
                 catchError(this.http.HandleError),
                 tap(response => {
-                    console.log("Inside getVocationalTrainers function");
-                    console.log(response.Results);
                     return response.Results;
                 })
             );
@@ -30,8 +28,6 @@ export class VocationalTrainerService {
                 retry(this.http.Services.RetryServieNo),
                 catchError(this.http.HandleError),
                 tap(response => {
-                    console.log("Inside GetAllByCriteria fuction");
-                    console.log(response.Results);
                     return response.Results;
                 })
             );
