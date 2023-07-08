@@ -170,6 +170,7 @@
                             <mat-label>Date Of School VTP Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
+                            (dateChange)="onChangeDateOfAllocation()"
                             [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocation></mat-datepicker>
