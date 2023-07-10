@@ -158,7 +158,13 @@ onVCIdChange(): void {
   }
 }
 
-
+onChangeDateOfAllocation(): void{
+  console.log("hello");
+  const dateOfAllocationVT = this.genericvtmappingForm.get('DateOfAllocation');
+  if(dateOfAllocationVT) {
+    this.genericvtmappingForm.get('DateOfAllocationVC').setValue(null);
+  }
+}
   // onChangeUser(accountId) {
   //   var usertype = this.genericvtmappingForm.get('UserType').value;
   //   console.log(usertype, accountId);

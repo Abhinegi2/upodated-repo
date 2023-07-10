@@ -170,6 +170,7 @@
                             <mat-label>Date Of School VTP Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
+                            (dateChange)="onChangeDateOfAllocation()"
                             [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocation></mat-datepicker>
@@ -181,14 +182,15 @@
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Date Of School VC Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocationVC" name="dateOfAllocationVC" 
-                            [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocationVC"
-                            [disabled]="PageRights.IsReadOnly">
+                                   [min]="genericvtmappingForm.controls.DateOfAllocation.value" [max]="CurrentDate" formControlName="DateOfAllocationVC"
+                                   [disabled]="PageRights.IsReadOnly">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocationVC"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocationVC></mat-datepicker>
                             <mat-error *ngIf="genericvtmappingForm.controls.DateOfAllocationVC.invalid">
                               {{getErrorMessage(genericvtmappingForm, 'DateOfAllocationVC')}}
-                             </mat-error>
-                        </mat-form-field>
+                            </mat-error>
+                          </mat-form-field>
+                          
 
                      <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
                         *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
