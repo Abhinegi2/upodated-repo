@@ -319,7 +319,7 @@
 
                     <!-- StudentUniqueId Column -->
                     <ng-container matColumnDef="StudentUniqueId">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>StudentUniqueId
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Unique Id
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass">
                             <p class="text-truncate">{{studentClass.StudentUniqueId}}</p>
@@ -346,7 +346,7 @@
 
                       <!-- WhatappNo Column -->
                       <ng-container matColumnDef="SecondMobileNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SecondMobileNo
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Second Mobile No
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass">
                             <p class="text-truncate">{{studentClass.SecondMobileNo}}</p>
@@ -364,24 +364,24 @@
 
                 
                       <!-- CWSNStatus Column -->
-                      <ng-container matColumnDef="CSWNStatus">
+                      <ng-container matColumnDef="CWSNStatus">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CWSNStatus
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.CSWNStatus}}</p>
+                            <p class="text-truncate">{{studentClass.CWSNStatus}}</p>
                         </mat-cell>
                     </ng-container>
 
                     <!-- JobRoleName Column -->
                     <ng-container matColumnDef="JobRoleName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRoleName
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRole Name
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                             <p class="text-truncate">{{studentClass.JobRoleName}}</p>
                         </mat-cell>
                     </ng-container>
 
-                       <!-- AssessmentToBeConducted Column -->
+                       <!-- Father Name Column -->
                        <ng-container matColumnDef="FatherName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Father Name
                         </mat-header-cell>
@@ -390,7 +390,7 @@
                         </mat-cell>
                     </ng-container>
 
-                       <!-- AssessmentToBeConducted Column -->
+                       <!-- Mother Name Column -->
                        <ng-container matColumnDef="MotherName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mother Name
                         </mat-header-cell>
@@ -399,7 +399,7 @@
                         </mat-cell>
                     </ng-container>
 
-                       <!-- AssessmentToBeConducted Column -->
+                       <!-- Guardian Name Column -->
                        <ng-container matColumnDef="GuardianName">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guardian Name
                         </mat-header-cell>
@@ -410,7 +410,7 @@
 
                     <!-- AssessmentToBeConducted Column -->
                     <ng-container matColumnDef="AssessmentToBeConducted">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>AssessmentToBeConducted
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Assessment To Be Conducted
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                             <p class="text-truncate">{{studentClass.AssessmentToBeConducted}}</p>
@@ -419,7 +419,7 @@
 
                      <!-- DateOfBirth Column -->
                      <ng-container matColumnDef="DateOfBirth">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfBirth
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Birth
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                             <p class="text-truncate">{{studentClass.DateOfBirth | date: "dd/MM/yyyy"}}</p>
