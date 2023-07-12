@@ -249,7 +249,7 @@
                     fxFlex.lt-sm="100">
                     <mat-label>Date Of Birth</mat-label>
                     <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
-                        [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                        [max]="MaxDateOfBirthStudent" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirth></mat-datepicker>
     
