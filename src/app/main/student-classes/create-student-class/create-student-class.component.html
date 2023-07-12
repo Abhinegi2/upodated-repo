@@ -56,12 +56,6 @@
                     <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px" *ngIf="PageRights.ActionType ==='edit' || PageRights.ActionType ==='view'">
-
-                    
-
-
-               
-
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Student Unique Number</mat-label>
                             <input matInput name="StudentUniqueNumber" formControlName="StudentUniqueNumber" digitOnly [disabled]>
@@ -249,7 +243,7 @@
                     fxFlex.lt-sm="100">
                     <mat-label>Date Of Birth</mat-label>
                     <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
-                        [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                        [max]="MaxDateOfBirthStudent" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirth></mat-datepicker>
     
@@ -359,7 +353,7 @@
                 fxLayoutGap.lt-md="0px">
 
                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                    <mat-label>CSWN Status</mat-label>
+                    <mat-label>CWSN Status</mat-label>
                     <mat-select name="cswnStatus" formControlName="CSWNStatus"
                         required appearance="outline" [disabled]="PageRights.IsReadOnly">
                         <mat-option value="Yes">Yes</mat-option>
