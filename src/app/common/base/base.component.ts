@@ -56,6 +56,15 @@ export class BaseComponent<T> implements OnInit {
         return maxDate;
     }
 
+    public get MaxDateOfBirthStudent(): Date {
+        let maxDate = new Date(Date.now());
+
+        maxDate.setDate(maxDate.getDate());
+        maxDate.setFullYear(maxDate.getFullYear() - 11);
+
+        return maxDate;
+    }
+
     public get MinimumAgeChildrenDate(): Date {
         let maxDate = new Date(Date.now());
 
