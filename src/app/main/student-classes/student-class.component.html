@@ -170,7 +170,7 @@
                         </mat-form-field>
 
                         <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Section</mat-label>
+                            <mat-label>Vocational Section</mat-label>
 
                             <mat-select formControlName="SectionId" name="sectionId" appearance="fill">
                                 <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
@@ -263,9 +263,18 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- SectionName Column -->
+                <!-- ClassSectionName Column -->
+                <ng-container matColumnDef="ClassSection">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Class Section
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.ClassSection}}</p>
+                    </mat-cell>
+                </ng-container>
+                
+                <!-- VocationalSectionName Column -->
                 <ng-container matColumnDef="SectionName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Section
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Vocational Section
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{studentClass.SectionName}}</p>
@@ -326,7 +335,7 @@
                         </mat-cell>
                     </ng-container>
 
-                      <!-- WhatappNo Column -->
+                      <!-- Mobile Column -->
                       <ng-container matColumnDef="Mobile">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile
                         </mat-header-cell>
@@ -337,14 +346,14 @@
 
                       <!-- WhatappNo Column -->
                       <ng-container matColumnDef="WhatappNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>What'sAppNo
+                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WhatsApp No
                         </mat-header-cell>
                         <mat-cell *matCellDef="let studentClass">
                             <p class="text-truncate">{{studentClass.WhatappNo}}</p>
                         </mat-cell>
                     </ng-container>
 
-                      <!-- WhatappNo Column -->
+                      <!-- Second Mobile No Column -->
                       <ng-container matColumnDef="SecondMobileNo">
                         <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Second Mobile No
                         </mat-header-cell>
