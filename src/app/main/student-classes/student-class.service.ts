@@ -84,7 +84,7 @@ export class StudentClassService {
         let AcademicYears = this.http.GetMasterDataByType({ DataType: 'AcademicYears', ParentId: userModel.EmailId, SelectTitle: 'Academic Years' });
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
         let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', SelectTitle: 'section' });
-        let cswnRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CSWNStatus',parentId:'CSWNStatus', SelectTitle: 'CSWNStatus' });
+        let cwsnRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CWSNStatus',parentId:'CWSNStatus', SelectTitle: 'CWSNStatus' });
         let streamRequest = this.http.GetMasterDataByType({ DataType: 'DataValues',parentId:'Stream', SelectTitle: 'Stream' });
         let assessmentToBeConductedRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AssessmentToBeConducted', SelectTitle: 'Assessment To Be Conducted' });
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
@@ -104,7 +104,7 @@ export class StudentClassService {
             sectionRequest,
             jobroleRequest,
             vtRequest,
-            cswnRequest,
+            cwsnRequest,
             streamRequest,
             assessmentToBeConductedRequest,
             sectorRequest,
