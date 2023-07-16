@@ -13,6 +13,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 import { StringNullableChain } from 'lodash';
 import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
 import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
+import { cwd } from 'process';
 
 @Component({
   selector: 'student-class',
@@ -202,7 +203,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
         if (response.Success) {
           this.jobRoleList = response.Results;
-          console.log(this.jobRoleList);
           // this.studentClassForm.controls['JobRoleId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
@@ -421,7 +421,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
     this.studentClassService.createOrUpdateStudentClass(this.studentClassModel)
       .subscribe((studentClassResp: any) => {
-
         if (studentClassResp.Success) {
           this.zone.run(() => {
             this.showActionMessage(
@@ -475,7 +474,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   //Create studentClass form and returns {FormGroup}
   createStudentClassForm(): FormGroup {
-    console.log(this.studentClassModel);
     return this.formBuilder.group({
 
       StudentId: new FormControl(this.studentClassModel.StudentId),
