@@ -58,6 +58,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
   unitSessionsModels: any;
   activityTypeList: any;
   tveClassSectionList: any;
+  GvtId: any;
 
   displayColumns: string[] = ['StudentName', 'IsPresent'];
   dataSourceAttendance: any;
@@ -1042,6 +1043,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       this.commonService.GetMasterDataByType({ DataType: 'GetSchoolSectorJobId', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'SSJ' }).subscribe((response) => {
         if (response.Success) {
           let SSJID = response.Results[1].Id;
+          this.GvtId = SSJID;
 
           this.commonService.getStudentsByClassId({
             DataId: SSJID,
@@ -1082,7 +1084,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     let classId = formGroup.get('ClassTaughtId').value;
 
     if (classId != '' && moduleItem.Id != null) {
-      this.commonService.GetUnitsByClassAndModuleId({ DataId: classId, DataId1: moduleItem.Id, DataId2: this.UserModel.UserTypeId, SelectTitle: 'Unit Taught' }).subscribe((response: any) => {
+      this.commonService.GetUnitsByClassAndModuleId({ DataId: classId, DataId1: moduleItem.Id, DataId2: this.GvtId, SelectTitle: 'Unit Taught' }).subscribe((response: any) => {
         if (response.Success) {
           this.unitList[fgIndex] = response.Results;
           this.sessionList[fgIndex] = <DropdownModel[]>[];
