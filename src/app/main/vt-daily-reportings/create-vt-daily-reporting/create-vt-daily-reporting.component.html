@@ -84,10 +84,10 @@
                     </div>
                     
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px" *ngIf="vtDailyReportingForm.controls.ReportType.value == '37'">
+                    fxLayoutGap.lt-md="0px">
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>School</mat-label>
-                        <mat-select formControlName="SchoolId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'" 
+                        <mat-select formControlName="SchoolId" required
                             appearance="outline" matTooltip="Select School" matTooltipPosition='above'
                             matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectSchool
                             (selectionChange)="onChangeSchool($event.value)">
@@ -107,7 +107,7 @@
                     <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                         <mat-label>Sector</mat-label>
                         
-                        <mat-select formControlName="SectorId" [required]="vtDailyReportingForm.controls.ReportType.value == '37'"  
+                        <mat-select formControlName="SectorId" required 
                         appearance="outline" (selectionChange)="onChangeSector($event.value)" [disabled]="PageRights.IsReadOnly">
                             <mat-option disabled="" [value]="">Select Sector</mat-option>
                             <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">

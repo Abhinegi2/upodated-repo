@@ -405,16 +405,16 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
         if (response.Success) {
           this.resetReportTypeFormGroups();
           // On Leave
-
+          
           this.setAcademicInputs(reportTypeId);
           if (reportTypeId == 38) {
-
+            
             this.isAllowLeave = true;
             this.vtDailyReportingModel.Leave = new VTRLeaveModel(this.vtDailyReportingModel.Leave);
-
+            
             this.vtDailyReportingForm = this.formBuilder.group({
               ...this.vtDailyReportingForm.controls,
-
+              
               leaveGroup: this.formBuilder.group({
                 LeaveTypeId: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveTypeId, disabled: this.PageRights.IsReadOnly }),
                 LeaveModeId: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveModeId, disabled: this.PageRights.IsReadOnly }),
@@ -423,8 +423,9 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
                 LeaveReason: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveReason, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),
               })
             });
-
+          
             this.leaveTypeList = response.Results;
+
             this.onChangeLeaveApprovalStatus();
             this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'LeaveApprover', SelectTitle: 'Leave Approver' }).subscribe((response) => {
               if (response.Success) {
@@ -493,20 +494,10 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
   setAcademicInputs(reportTypeId) {
 
     if (reportTypeId == 37) {
-
-      this.vtDailyReportingForm.controls['SchoolId'].setValidators([Validators.required]);;
-      this.vtDailyReportingForm.controls['SectorId'].setValidators([Validators.required]);;
-      this.vtDailyReportingForm.controls['JobRoleId'].setValidators([Validators.required]);;
       this.vtDailyReportingForm.controls['AcademicYearId'].setValidators([Validators.required]);;
     } else {
-      this.vtDailyReportingForm.controls['SchoolId'].setValue(null);
-      this.vtDailyReportingForm.controls['SectorId'].setValue(null);
-      this.vtDailyReportingForm.controls['JobRoleId'].setValue(null);
       this.vtDailyReportingForm.controls['AcademicYearId'].setValue(null);
 
-      this.vtDailyReportingForm.controls['SchoolId'].clearValidators();
-      this.vtDailyReportingForm.controls['SectorId'].clearValidators();
-      this.vtDailyReportingForm.controls['JobRoleId'].clearValidators();
       this.vtDailyReportingForm.controls['AcademicYearId'].clearValidators();
     }
   }
@@ -1384,9 +1375,9 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     return this.formBuilder.group({
       VTDailyReportingId: new FormControl(this.vtDailyReportingModel.VTDailyReportingId),
 
-      SchoolId: new FormControl({ value: this.vtDailyReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
-      SectorId: new FormControl({ value: this.vtDailyReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }),
-      JobRoleId: new FormControl({ value: this.vtDailyReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
+      SchoolId: new FormControl({ value: this.vtDailyReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SectorId: new FormControl({ value: this.vtDailyReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      JobRoleId: new FormControl({ value: this.vtDailyReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       AcademicYearId: new FormControl({ value: this.vtDailyReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
 
       ClassId: new FormControl({ value: this.vtDailyReportingModel.ClassId, disabled: this.PageRights.IsReadOnly }),

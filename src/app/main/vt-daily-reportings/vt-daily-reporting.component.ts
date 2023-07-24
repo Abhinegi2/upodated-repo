@@ -29,7 +29,7 @@ export class VTDailyReportingComponent extends BaseListComponent<VTDailyReportin
 
   ngOnInit(): void {
     this.vtDailyReportingService.GetAllByCriteria(this.SearchBy).subscribe(response => {
-      this.displayedColumns = ['SchoolName', 'SectorName', 'ReportingDate', 'ReportType', 'WorkTypes', 'Actions'];
+      this.displayedColumns = ['SchoolName', 'SectorName', 'JobRoleName', 'ReportingDate', 'ReportType', 'WorkTypes', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
