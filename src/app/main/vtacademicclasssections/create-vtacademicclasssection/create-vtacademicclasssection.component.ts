@@ -31,7 +31,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   classList: [DropdownModel];
   sectionList: [DropdownModel];
   vtList: [DropdownModel];
-  filteredVTItems: any;
+  // filteredVTItems:[DropdownModel];
   filteredClassItem:any;
   gvtList: [DropdownModel];
   filteredGVTItems: any;
@@ -71,12 +71,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       // }
 
       if (results[3].Success) {
-        this.vtList = results[3].Results;
-        this.filteredVTItems = this.vtList.slice();
-      }
-
-      if (results[4].Success) {
-        this.gvtList = results[4].Results;
+        this.gvtList = results[3].Results;
         this.filteredGVTItems = this.gvtList.slice();
       }
 
@@ -123,6 +118,17 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
     this.vtacademicclasssectionForm = this.createVTAcademicClassSectionForm();
   }
 
+onChangeSSJ(SSJId){
+  let promise = new Promise((resolve) => {
+    this.commonService.GetMasterDataByType({ DataType: 'UsersByRole',  UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode,ParentId: SSJId, SelectTitle: "SSJId" }, false).subscribe((response) => {
+      if (response.Success) {
+        this.vtList = response.Results;
+      }
+      resolve(true);
+    });
+  });
+}
+
   onChangeVT(accountId) { 
     if(accountId){
     this.vocationalTrainerService.getVocationalTrainerById(accountId).subscribe((response: any) => {
@@ -135,8 +141,6 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
         this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
       }
      });
-   }else{
-    return null;
    }
     this.commonService.GetMasterDataByType({
       DataType: 'DateOfAllocationVT', ParentId: accountId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Date of Allocation VT"
