@@ -208,8 +208,8 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
                         this.setInputs(this.vtDailyReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                           this.setInputs(this.vtDailyReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
                             this.setInputs(this.vtDailyReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
+                              this.vtDailyReportingForm = this.createVTDailyReportingForm();
                               this.onChangeReportType(this.vtDailyReportingModel.ReportType).then(response => {
-                                this.vtDailyReportingForm = this.createVTDailyReportingForm();
                                 this.onChangeAcademicYear(this.vtDailyReportingModel.AcademicYearId).then(response => {
                                   if (this.vtDailyReportingModel.WorkingDayTypeIds.length > 0) {
                                     this.onChangeWorkingType(this.vtDailyReportingModel.WorkingDayTypeIds);
@@ -405,16 +405,12 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
         if (response.Success) {
           this.resetReportTypeFormGroups();
           // On Leave
-          
           this.setAcademicInputs(reportTypeId);
           if (reportTypeId == 38) {
-            
             this.isAllowLeave = true;
             this.vtDailyReportingModel.Leave = new VTRLeaveModel(this.vtDailyReportingModel.Leave);
-            
             this.vtDailyReportingForm = this.formBuilder.group({
               ...this.vtDailyReportingForm.controls,
-              
               leaveGroup: this.formBuilder.group({
                 LeaveTypeId: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveTypeId, disabled: this.PageRights.IsReadOnly }),
                 LeaveModeId: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveModeId, disabled: this.PageRights.IsReadOnly }),
@@ -423,16 +419,13 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
                 LeaveReason: new FormControl({ value: this.vtDailyReportingModel.Leave.LeaveReason, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),
               })
             });
-          
             this.leaveTypeList = response.Results;
-
             this.onChangeLeaveApprovalStatus();
             this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'LeaveApprover', SelectTitle: 'Leave Approver' }).subscribe((response) => {
               if (response.Success) {
                 this.leaveApproverList = response.Results;
               }
             });
-
             this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'LeaveMode', SelectTitle: 'Leave Mode' }).subscribe((response) => {
               if (response.Success) {
                 this.leaveModeList = response.Results;
