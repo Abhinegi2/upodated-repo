@@ -62,7 +62,7 @@
 
                             <mat-select formControlName="GVTId" required appearance="outline"
                                 matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
+                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt (selectionChange)="onChangeSSJ($event.value)" >
 
                                 <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
                                     (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
@@ -140,7 +140,7 @@
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
                                 </mat-select-filter>
-                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of filteredVTItems">
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
                                     {{ vtItem.Name }}
                                 </mat-option>
                             </mat-select>
