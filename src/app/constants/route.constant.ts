@@ -382,6 +382,12 @@ export const RouteConstants = {
         Edit: 'school-vtp-sectors/:actionType/:schoolVTPSectorId',
     },
 
+    WhatsappBroadcasting: {
+        List: 'whatsapp-broadcasting',
+        New: 'whatsapp-broadcasting/:actionType',
+        Edit: 'whatsapp-broadcasting/:actionType/:schoolVTPSectorId',
+    },
+
     MatTableServer: {
         List: 'mat-table-server',
     },

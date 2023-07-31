@@ -427,6 +427,8 @@ import { MessageTemplateComponent } from './message-templates/message-template.c
 import { CreateMessageTemplateComponent } from './message-templates/create-message-template/create-message-template.component';
 import { MessageTemplateService } from './message-templates/message-template.service';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { WhatsappBroadcastingComponent } from './whatsapp-broadcasting/whatsapp-broadcasting.component';
+import { CreateWhatsappBrodcastingComponent } from './whatsapp-broadcasting/create-whatsapp-brodcasting/create-whatsapp-brodcasting.component';
 
 const routes: Routes = [
     { path: RouteConstants.Login, component: LoginComponent },
@@ -777,6 +779,10 @@ const routes: Routes = [
 
     { path: RouteConstants.PrivacyPolicy.List, component: PrivacyPolicyComponent },
 
+    { path: RouteConstants.WhatsappBroadcasting.List, component: WhatsappBroadcastingComponent },
+    { path: RouteConstants.WhatsappBroadcasting.New, component: CreateWhatsappBrodcastingComponent },
+    { path: RouteConstants.WhatsappBroadcasting.Edit, component: CreateWhatsappBrodcastingComponent },
+
     //Academic Rollover
     { path: RouteConstants.VocationalTrainer.VTTransfer, component: VTTransferComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.SchoolVTPSectorsForAcademicRollover.List, component: SchoolVTPSectorsForAcadmicRolloverComponent, canActivate: [AuthGuardService] },
@@ -1005,7 +1011,9 @@ const routes: Routes = [
 
         MessageTemplateComponent,
         CreateMessageTemplateComponent,
-        PrivacyPolicyComponent
+        PrivacyPolicyComponent,
+        WhatsappBroadcastingComponent,
+        CreateWhatsappBrodcastingComponent
     ],
     imports: [
         RouterModule.forChild(routes),
