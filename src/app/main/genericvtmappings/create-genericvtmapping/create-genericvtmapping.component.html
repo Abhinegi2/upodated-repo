@@ -76,7 +76,7 @@
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>Vocational Training Provider</mat-label>
 
-                            <mat-select formControlName="VTPId" required appearance="outline"
+                            <mat-select formControlName="VTPId" (selectionChange)="onVTPIdChange()" appearance="outline"
                                 matTooltip="Select Vocational Training Provider" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVtp>
                             
@@ -123,7 +123,7 @@
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>School/Sector/JobRole</mat-label>
 
-                            <mat-select formControlName="GVTId" required appearance="outline"
+                            <mat-select formControlName="GVTId"  required appearance="outline"
                                 matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
                             
@@ -168,7 +168,7 @@
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Date Of School VTP Allocation</mat-label>
-                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
+                            <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
                             (dateChange)="onChangeDateOfAllocation()"
                             [disabled]="PageRights.IsReadOnly">
