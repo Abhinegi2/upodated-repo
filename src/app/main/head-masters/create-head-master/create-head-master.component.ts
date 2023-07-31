@@ -23,7 +23,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   headMasterModel: HeadMasterModel;
   genderList: [DropdownModel];
   yearsInSchool: number;
-
+  academicYearList: [DropdownModel];
   // vtpList: DropdownModel[];
   // vcList: DropdownModel[];
 
@@ -62,6 +62,12 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
       // if (results[2].Success) {
       //   this.vtpList = results[2].Results;
       // }
+      this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results)=>{
+        console.log(results);
+        if(results[0].Success){
+          this.academicYearList = results[0].Results;
+        }
+      })
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -221,6 +227,7 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
       FullName: new FormControl({ value: this.headMasterModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Mobile: new FormControl({ value: this.headMasterModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.headMasterModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      AcademicYear: new FormControl({ value: this.headMasterModel.AcademicYear, disabled: this.PageRights.IsReadOnly }),
       Email: new FormControl({ value: this.headMasterModel.Email, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       Gender: new FormControl({ value: this.headMasterModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       YearsInSchool: new FormControl({ value: this.headMasterModel.YearsInSchool, disabled: true }, Validators.pattern(this.Constants.Regex.Number)),
