@@ -80,22 +80,16 @@ export class HeadMasterService {
     getDropdownforHeadMaster(userModel: UserModel): Observable<any[]> {
         let schoolRequest = this.http.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, RoleId: userModel.RoleCode, SelectTitle: 'School' }, false);
         let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' }, false);
-        let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }, false);
-        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' }, false);
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([schoolRequest, genderRequest, vtpRequest, sectorRequest]);
+        return forkJoin([schoolRequest, genderRequest]);
     }
 
     getInitHeadMastersData(userModel: UserModel): Observable<any[]> {
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' });
-        // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
-        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([
-            academicYearRequest,
-            // vtpRequest, 
-            sectorRequest]);
+            academicYearRequest]);
     }
 
 }

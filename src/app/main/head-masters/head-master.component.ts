@@ -133,21 +133,15 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     let hmParams = {
       UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
-      VTPId: this.hmFilterForm.controls["VTPId"].value,
-      VCId: this.hmFilterForm.controls["VCId"].value,
-      VTId: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : null),
-      SchoolId: this.hmFilterForm.controls["SchoolId"].value,
-      SectorId: this.hmFilterForm.controls["SectorId"].value,
-      JobRoleId: this.hmFilterForm.controls["JobRoleId"].value,
       Status: this.hmFilterForm.controls["Status"].value,
       Name: this.hmSearchForm.controls["SearchText"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
       PageSize: this.SearchBy.PageSize
     };
-
     this.headMasterService.GetAllByCriteria(hmParams).subscribe(response => {
       this.displayedColumns = [
+        'AcademicYear',
         'SchoolName',
         'FullName',
         'Mobile',
@@ -197,11 +191,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
 
     this.hmSearchForm.reset();
     this.hmFilterForm.reset();
-    this.hmFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-
-    this.vcList = [];
-    this.filteredVCItems = [];
-
+    this.hmFilterForm.get('AcademicYearId').setValue(null);
     this.onLoadHeadMastersByCriteria();
   }
 
