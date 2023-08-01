@@ -385,7 +385,7 @@ export const RouteConstants = {
     WhatsappBroadcasting: {
         List: 'whatsapp-broadcasting',
         New: 'whatsapp-broadcasting/:actionType',
-        Edit: 'whatsapp-broadcasting/:actionType/:schoolVTPSectorId',
+        Edit: 'whatsapp-broadcasting/:actionType/:CampainID',
     },
 
     MatTableServer: {

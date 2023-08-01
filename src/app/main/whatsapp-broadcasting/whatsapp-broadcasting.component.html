@@ -17,7 +17,7 @@
                     shopping_basket
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    MESSAGE TEMPLATES
+                    Message list
                 </span>
             </div>
             <!-- / APP TITLE -->
@@ -27,7 +27,7 @@
                 <form name="messageTemplateSearchForm" [formGroup]="messageTemplateSearchForm">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input name="searchText" formControlName="SearchText" placeholder="Search for message templates"
+                        <input name="searchText" formControlName="SearchText" placeholder="Search for a message"
                             matTooltip="Search By Message Type & Status" matTooltipPosition='above'
                             matTooltipClass="allow-cr">
                     </div>
@@ -50,9 +50,9 @@
                     <span>ADD</span>
                 </button>
 
-                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                <!-- <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
                     <mat-icon> cloud_download</mat-icon>
-                </a>
+                </a> -->
             </div>
             <!-- / ADD BUTTON -->
 
@@ -68,7 +68,7 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
                         <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Message Type</mat-label>
+                            <mat-label>Created by</mat-label>
                             <mat-select name="messageTypeId" formControlName="MessageTypeId" appearance="fill">
                                 <mat-option [value]="messageTypeItem.Id"
                                     *ngFor="let messageTypeItem of messageTypeList">
@@ -78,7 +78,25 @@
                         </mat-form-field>
 
                         <mat-form-field fxFlex="50" fxFlex.lt-md="10" fxFlex.lt-sm="100">
-                            <mat-label>Status</mat-label>
+                            <mat-label>Sent to</mat-label>
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option>Select Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" fxFlex.lt-md="10" fxFlex.lt-sm="100">
+                            <mat-label>Sent date</mat-label>
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option>Select Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="50" fxFlex.lt-md="10" fxFlex.lt-sm="100">
+                            <mat-label>Template</mat-label>
                             <mat-select name="status" formControlName="Status" appearance="fill">
                                 <mat-option>Select Status</mat-option>
                                 <mat-option value="true">Active</mat-option>
@@ -116,7 +134,7 @@
                 <!-- TemplateFlowId Column -->
                 <ng-container matColumnDef="TemplateFlowId">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        Flow Id
+                       Message
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
                         <p class="text-truncate">{{messageTemplate.TemplateFlowId}}</p>
@@ -125,7 +143,7 @@
 
                 <!-- MessageType Column -->
                 <ng-container matColumnDef="MessageType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Message Type
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Created By
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
                         <p class="text-truncate">{{messageTemplate.MessageType}}</p>
@@ -134,7 +152,7 @@
 
                 <!-- MessageSubType Column -->
                 <ng-container matColumnDef="MessageSubType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Message Sub Type
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Delivery Date, Time
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{messageTemplate.MessageSubType}}</p>
@@ -143,7 +161,7 @@
 
                 <!-- ApplicableFor Column -->
                 <ng-container matColumnDef="ApplicableFor">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Applicable For
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>User Type
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{messageTemplate.ApplicableFor}}</p>
@@ -165,19 +183,9 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
-                            [routerLink]="['/message-templates', 'view', messageTemplate.MessageTemplateId]"
+                            [routerLink]="['/message-templates', 'view', messageTemplate.CampainID]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">visibility</mat-icon>
-                        </button>
-                        <button *ngIf="PageRights.IsEdit" mat-icon-button
-                            [routerLink]="['/message-templates', 'edit', messageTemplate.MessageTemplateId]"
-                            skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn"
-                            (click)="onDeleteMessageTemplate(messageTemplate.MessageTemplateId)"
-                            *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

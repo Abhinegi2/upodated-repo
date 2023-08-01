@@ -1,1 +1,153 @@
-<p>create-whatsapp-brodcasting works!</p>
+<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/whatsapp-broadcasting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2 subtitle secondary-text" *ngIf="PageRights.ActionType === 'edit'">
+                        {{ messageTemplateModel.TemplateMessage }}
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'new'">
+                        New Whatsapp Message
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'view'">
+                        <span>Message Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button class="add-message-template-button"
+                    (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'SEND NOW' : '') }}</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="messageTemplateForm" [formGroup]="messageTemplateForm"
+                    class="head-master w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Message Template from Glific</mat-label>
+                            <mat-select formControlName="TemplateID" appearance="outline" >
+                                <mat-option [value]="userTypeItem"
+                                    *ngFor="let userTypeItem of userTypeList">
+                                    {{messageApplicableItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>   
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Variable 1</mat-label>
+                            <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Variable 2</mat-label>
+                            <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Variable 3</mat-label>
+                            <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="80" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Message Preview</mat-label>
+                            <textarea matInput name="TemplateMessage" formControlName="TemplateMessage" cdkTextareaAutosize
+                                #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
+                                cdkAutosizeMaxRows="25"></textarea>
+
+                            <mat-error *ngIf="messageTemplateForm.controls.TemplateMessage.invalid">
+                                {{getErrorMessage(messageTemplateForm, 'TemplateMessage')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>User Type</mat-label>
+                            <mat-select formControlName="UserType" appearance="outline" multiple>
+                                <mat-option [value]="userTypeItem"
+                                    *ngFor="let userTypeItem of userTypeList">
+                                    {{userTypeItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Condition</mat-label>
+                            <mat-select formControlName="ConditionId" appearance="outline" multiple>
+                                <mat-option [value]="conditionItem"
+                                    *ngFor="let conditionItem of conditionList">
+                                    {{conditionItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>   
+
+                        <div class="action-buttons">
+                            <button mat-raised-button class="add-message-template-button"
+                                (click)="saveOrUpdateMessageTemplateDetails()">
+                                <span>{{ 'Generate List' }}</span>
+                            </button>
+                        </div>
+                    </div>
+ 
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

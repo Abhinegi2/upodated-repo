@@ -428,6 +428,7 @@ import { CreateMessageTemplateComponent } from './message-templates/create-messa
 import { MessageTemplateService } from './message-templates/message-template.service';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { WhatsappBroadcastingComponent } from './whatsapp-broadcasting/whatsapp-broadcasting.component';
+import { whatsappBroadcastingService } from './whatsapp-broadcasting/whatsapp-broadcasting.service';
 import { CreateWhatsappBrodcastingComponent } from './whatsapp-broadcasting/create-whatsapp-brodcasting/create-whatsapp-brodcasting.component';
 
 const routes: Routes = [
@@ -1354,7 +1355,8 @@ const routes: Routes = [
         StudentsAcademicRolloverService,
         VTClassForAcademicRolloverService,
         VTSchoolSectorsForAcademicRolloverService,
-        MessageTemplateService
+        MessageTemplateService,
+        whatsappBroadcastingService
     ]
 })
 

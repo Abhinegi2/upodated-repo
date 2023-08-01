@@ -32,9 +32,9 @@ export class whatsappBroadcastingService {
             );
     }
 
-    getMessageTemplateById(messageTemplateId: string) {
+    getMessageTemplateById(CampainID: string) {
         let requestParams = {
-            DataId: messageTemplateId
+            DataId: CampainID
         };
 
         return this.http
@@ -60,9 +60,9 @@ export class whatsappBroadcastingService {
             );
     }
 
-    deleteMessageTemplateById(messageTemplateId: string) {
+    deleteMessageTemplateById(CampainID: string) {
         var messageTemplateParams = {
-            DataId: messageTemplateId
+            DataId: CampainID
         };
 
         return this.http

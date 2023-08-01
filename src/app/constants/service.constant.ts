@@ -783,4 +783,12 @@ export class ServiceConstants {
         CreateOrUpdate: "MessageTemplate/CreateOrUpdateMessageTemplateDetails",
         Delete: "MessageTemplate/DeleteMessageTemplateById"
     };
+
+    // public WhatsappBroadcasting = {
+    //     GetAll: "WhatsappBroadcasting/GetMessageTemplates",
+    //     GetAllByCriteria: "WhatsappBroadcasting/GetMessageTemplatesByCriteria",
+    //     GetById: "WhatsappBroadcasting/GetMessageTemplateById",
+    //     CreateOrUpdate: "WhatsappBroadcasting/CreateOrUpdateMessageTemplateDetails",
+    //     Delete: "WhatsappBroadcasting/DeleteMessageTemplateById"
+    // };
 };
