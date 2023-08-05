@@ -24,10 +24,7 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
   UserId: string;
   userList: DropdownModel[];
   userFilterList: any;
-  gvtList: [DropdownModel];
   vtpList: [DropdownModel];
-  vcList: [DropdownModel];
-  vtList: [DropdownModel];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -44,21 +41,11 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   ngOnInit(): void {
     this.genericvtmappingService.getGenericVTMapping(this.UserModel).subscribe(results => {
-      if (results[0].Success) {
-        this.gvtList = results[0].Results;
-      }
+
       if (results[1].Success) {
         this.vtpList = results[1].Results;
       }
 
-      if (results[2].Success) {
-        this.vcList = results[2].Results;
-      }
-
-      if (results[3].Success) {
-        this.vtList = results[3].Results;
-
-      }
       this.onLoadGenericVTMappingByCriteria();
 
     });
@@ -155,10 +142,7 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   creategenericvtmappingFilterForm(): FormGroup {
     return this.formBuilder.group({
-      GVTId: new FormControl(),
       VTPId: new FormControl(),
-      VCId: new FormControl(),
-      VTId: new FormControl(),
       Status: new FormControl()
     });
   }
