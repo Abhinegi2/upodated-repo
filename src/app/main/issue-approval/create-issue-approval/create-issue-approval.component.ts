@@ -59,6 +59,8 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   SectionInputId: string;
   sectionList: DropdownModel[];
 
+  CanUserChangeInput: boolean;
+
   constructor(public commonService: CommonService,
     public router: Router,
     // private urlService: UrlService,
@@ -113,6 +115,8 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.issueApprovalModel = new IssueApprovalModel();
 
+            this.CanUserChangeInput = true;
+
           } else {
             var issueReportingId: string = params.get('issueReportingId');
 
@@ -131,7 +135,9 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
             this.service.subscribe((response: any) => {
               this.issueApprovalModel = response.Result;
-              this.issueApprovalModel.StudentClass = response.Result.StudentClass.split(',');
+              if (response.Result.SectionIds) {
+                this.issueApprovalModel.SectionIds = response.Result.SectionIds.split(',');
+              }
               this.issueApprovalModel.Month = response.Result.Month.split(',');
 
               if (this.PageRights.ActionType == this.Constants.Actions.Edit) {
@@ -186,16 +192,18 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
 
   onChangeClasses(classId): Promise<any> {
-    // this.resetInputsAfter('Class');
-    // this.setFormInputs();
+    this.setFormInputs();
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
 
       this.commonService.GetMasterDataByType({
-        DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId,
-        DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId,
-        DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId,
+        DataType: 'SectionsByACS',
+        DataTypeID1: this.SchoolInputId,
+        DataTypeID2: this.SectorInputId,
+        DataTypeID3: this.JobRoleInputId,
+        DataTypeID4: this.AcademicYearInputId,
+        DataTypeID5: classId,
         UserId: this.UserModel.UserTypeId, roleId:
           this.UserModel.RoleCode, SelectTitle: 'Sections'
       }, false).subscribe((response) => {
@@ -209,13 +217,15 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
         resolve(true);
       });
     });
-
+    this.setUserAction();
     return promise;
   }
 
+  setUserAction() {
+    this.CanUserChangeInput = true;
+  }
+
   onChangeAcademicYear(academicYearId): Promise<any> {
-    // this.resetInputsAfter('AcademicYear');
-    // this.setFormInputs();
 
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -224,14 +234,10 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
         if (response.Success) {
           this.classList = response.Results;
-
-          // this.loadFormInputs(response.Results, 'StudentClass');
         }
         resolve(true);
       });
     });
-
-    // this.setUserAction();
 
     return promise;
   }
@@ -257,6 +263,9 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
           } else if (InputId == 'AcademicYearId') {
             this.academicYearList = response.Results;
             this.issueApprovalForm.controls[InputId].disable();
+          } else if (InputId == 'StudentClass') {
+            this.classList = response.Results;
+            this.issueApprovalForm.controls[InputId].disable();
           }
         }
         resolve(true);
@@ -264,6 +273,15 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
     });
     return promise;
+  }
+
+  setFormInputs() {
+    this.SchoolInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('SchoolId').value : this.issueApprovalModel.SchoolId;
+    this.SectorInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('SectorId').value : this.issueApprovalModel.SectorId;
+    this.JobRoleInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('JobRoleId').value : this.issueApprovalModel.JobRoleId;
+    this.AcademicYearInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('AcademicYearId').value : this.issueApprovalModel.AcademicYearId;
+    this.ClassInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('StudentClass').value : this.issueApprovalModel.StudentClass;
+    this.SectionInputId = this.CanUserChangeInput == true ? this.issueApprovalForm.get('SectionIds').value : this.issueApprovalModel.SectionIds;
   }
 
   onChangeMainIssue(mainIssueId: string) {

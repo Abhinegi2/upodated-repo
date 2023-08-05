@@ -13,6 +13,7 @@ import { DropdownModel } from 'app/models/dropdown.model';
 import { StringNullableChain } from 'lodash';
 import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
 import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
+import { cwd } from 'process';
 
 @Component({
   selector: 'student-class',
@@ -34,6 +35,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   jobRoleList: DropdownModel[];
   socialCategoryList: [DropdownModel];
   vtId: any;
+  classSectionList: [DropdownModel];
 
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
@@ -70,6 +72,10 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
           this.studentClassForm.controls['SchoolId'].disable();
           this.onChangeSchool(this.schoolList[0].Id);
         }
+      }
+
+      if (results[12].Success) {
+        this.classSectionList = results[12].Results;
       }
 
       if (results[1].Success) {
@@ -127,6 +133,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['AcademicYearId'].disable();
     this.studentClassForm.controls['ClassId'].disable();
     this.studentClassForm.controls['SectionId'].disable();
+    this.studentClassForm.controls['ClassSection'].disable();
   }
 
   setSectorJobRole(schoolsectorjobId) {
@@ -147,6 +154,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     this.studentClassForm.controls['AcademicYearId'].setValue(null);
     this.studentClassForm.controls['ClassId'].setValue(null);
     this.studentClassForm.controls['SectionId'].setValue(null);
+    this.studentClassForm.controls['ClassSection'].setValue(null);
 
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
@@ -181,7 +189,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.studentClassForm.controls['AcademicYearId'].setValue(null);
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
-
+      this.studentClassForm.controls['ClassSection'].setValue(null);    
       schoolId = this.studentClassForm.get('SchoolId').value;
     }
 
@@ -195,7 +203,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
         if (response.Success) {
           this.jobRoleList = response.Results;
-          console.log(this.jobRoleList);
           // this.studentClassForm.controls['JobRoleId'].enable();
 
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
@@ -217,6 +224,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.studentClassForm.controls['AcademicYearId'].setValue(null);
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -258,6 +266,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
       this.studentClassForm.controls['ClassId'].setValue(null);
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -297,6 +306,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     if (this.PageRights.ActionType == this.Constants.Actions.New) {
 
       this.studentClassForm.controls['SectionId'].setValue(null);
+      this.studentClassForm.controls['ClassSection'].setValue(null);
 
       var schoolId = this.studentClassForm.get('SchoolId').value;
       var sectorId = this.studentClassForm.get('SectorId').value;
@@ -411,7 +421,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
     this.studentClassService.createOrUpdateStudentClass(this.studentClassModel)
       .subscribe((studentClassResp: any) => {
-
         if (studentClassResp.Success) {
           this.zone.run(() => {
             this.showActionMessage(
@@ -465,7 +474,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
   //Create studentClass form and returns {FormGroup}
   createStudentClassForm(): FormGroup {
-    console.log(this.studentClassModel);
     return this.formBuilder.group({
 
       StudentId: new FormControl(this.studentClassModel.StudentId),
@@ -480,6 +488,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       AcademicYearId: new FormControl({ value: this.studentClassModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       ClassId: new FormControl({ value: this.studentClassModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionId: new FormControl({ value: this.studentClassModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      ClassSection: new FormControl({ value: this.studentClassModel.ClassSection, disabled: this.PageRights.IsReadOnly }, Validators.required),
 
       FirstName: new FormControl({ value: this.studentClassModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       MiddleName: new FormControl({ value: this.studentClassModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
@@ -496,11 +505,11 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
 
-      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }),
+      Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }, Validators.required),
 
       // IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
 
-      CSWNStatus: new FormControl({ value: this.studentClassModel.CSWNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
+      CWSNStatus: new FormControl({ value: this.studentClassModel.CWSNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
 
       SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
 

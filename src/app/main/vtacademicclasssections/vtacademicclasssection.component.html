@@ -168,6 +168,22 @@
             <mat-table matTableExporter class="vtacademicclasssection-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[9]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
+              <!--VTPShortName-->
+            <ng-container matColumnDef="VTPShortName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTPShortName</mat-header-cell>
+                <mat-cell *matCellDef="let vtacademicclasssection">
+                    <p class="text-truncate">{{vtacademicclasssection.VTPShortName}}</p>
+                </mat-cell>
+            </ng-container>
+           
+             <!-- VCFullName -->
+            <ng-container matColumnDef="VCFullName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VCFullName</mat-header-cell>
+                <mat-cell *matCellDef="let vtacademicclasssection">
+                    <p class="text-truncate">{{vtacademicclasssection.VCFullName}}</p>
+                </mat-cell>
+            </ng-container>
+
                  <!-- SchoolName Column -->
                  <ng-container matColumnDef="SchoolName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> School
@@ -242,7 +258,7 @@
 
                 <!-- DateOfAllocation Column -->
                 <ng-container matColumnDef="DateOfAllocation">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>DateOfAllocation
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>School VT Allocation Date
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtacademicclasssection" fxHide fxShow.gt-xs>
                         <p class="text-truncate">{{vtacademicclasssection.DateOfAllocation | date: Constants.ShortDateFormat}}</p>

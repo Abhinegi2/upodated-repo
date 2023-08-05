@@ -79,18 +79,19 @@ export class StudentClassService {
 
     getDropdownforStudentClass(userModel: UserModel): Observable<any[]> {
         let SchoolRequest = this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'School' }, false);
-        let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'StudentGender', SelectTitle: 'Gender' });
+        let genderRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Gender', SelectTitle: 'Gender' });
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         let AcademicYears = this.http.GetMasterDataByType({ DataType: 'AcademicYears', ParentId: userModel.EmailId, SelectTitle: 'Academic Years' });
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'Classes' });
         let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', SelectTitle: 'section' });
-        let cswnRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CSWNStatus',parentId:'CSWNStatus', SelectTitle: 'CSWNStatus' });
+        let cwsnRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CWSNStatus',parentId:'CWSNStatus', SelectTitle: 'CWSNStatus' });
         let streamRequest = this.http.GetMasterDataByType({ DataType: 'DataValues',parentId:'Stream', SelectTitle: 'Stream' });
         let assessmentToBeConductedRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'AssessmentToBeConducted', SelectTitle: 'Assessment To Be Conducted' });
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
 
         let jobroleRequest = this.http.GetMasterDataByType({ DataType: 'JobRoles', SelectTitle: 'JobRole' });
         let vtRequest = this.http.GetMasterDataByType({ DataType: 'SchoolsForVT', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'Vocational Trainer' }, false);
+        let classSection = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'ClassesSection', SelectTitle: 'Classes Section' });
         // let schoolsForVTRequest = this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', UserId: userModel.UserTypeId, SelectTitle: 'Vocational Trainer' }, false);
         // let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYearsByVT', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
         // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
@@ -103,7 +104,7 @@ export class StudentClassService {
             sectionRequest,
             jobroleRequest,
             vtRequest,
-            cswnRequest,
+            cwsnRequest,
             streamRequest,
             assessmentToBeConductedRequest,
             sectorRequest,
@@ -111,6 +112,7 @@ export class StudentClassService {
             // academicYearByGVT,
             // allAcademicYears,
             classRequest,
+            classSection,
             //  schoolsForVTRequest,
             //academicYearRequest,
             // vtpRequest

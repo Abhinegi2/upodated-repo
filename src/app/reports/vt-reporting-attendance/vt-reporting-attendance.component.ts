@@ -26,7 +26,6 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
   districtList: DropdownModel[];
   sectorList: [DropdownModel];
   jobRoleList: DropdownModel[];
-  vtpList: [DropdownModel];
   classList: [DropdownModel];
   monthList: [DropdownModel];
   schoolManagementList: [DropdownModel];
@@ -59,19 +58,15 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
       }
 
       if (results[3].Success) {
-        this.vtpList = results[3].Results;
+        this.classList = results[3].Results;
       }
 
       if (results[4].Success) {
-        this.classList = results[4].Results;
+        this.monthList = results[4].Results;
       }
 
       if (results[5].Success) {
-        this.monthList = results[5].Results;
-      }
-
-      if (results[6].Success) {
-        this.schoolManagementList = results[6].Results;
+        this.schoolManagementList = results[5].Results;
       }
 
       let currentYearItem = this.academicyearList.find(ay => ay.IsSelected == true)
@@ -184,7 +179,6 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
       SectorId: new FormControl(),
       JobRoleId: new FormControl(),
       ClassId: new FormControl(),
-      VTPId: new FormControl(),
       SchoolManagementId: new FormControl()
     });
   }
@@ -201,7 +195,6 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
       DistrictId: this.vtReportingAttendanceForm.get('DistrictId').value,
       SectorId: this.vtReportingAttendanceForm.get('SectorId').value,
       JobRoleId: this.vtReportingAttendanceForm.get('JobRoleId').value,
-      VTPId: this.vtReportingAttendanceForm.get('VTPId').value,
       ClassId: this.vtReportingAttendanceForm.get('ClassId').value,
       MonthId: this.vtReportingAttendanceForm.get('MonthId').value,
       SchoolManagementId: this.vtReportingAttendanceForm.get('SchoolManagementId').value

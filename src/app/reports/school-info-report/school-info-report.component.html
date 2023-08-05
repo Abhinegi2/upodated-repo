@@ -47,8 +47,8 @@
         <!-- / HEADER -->
 
         <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
-                (click)="isShowFilterContainer = !isShowFilterContainer"><span>FILTERS</span></button>
+            <!-- <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="isShowFilterContainer = !isShowFilterContainer"><span>FILTERS</span></button> -->
         </div>
 
         <!-- Filter Section -->
@@ -294,7 +294,7 @@
 
                 <!-- HMName Column -->
                 <ng-container matColumnDef="HMName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Name
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let schoolInfo">
                         <p class="text-truncate">{{schoolInfo.HMName}}</p>
@@ -303,7 +303,7 @@
 
                 <!-- HMMobile Column -->
                 <ng-container matColumnDef="HMMobile">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Mobile
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Mobile
                     </mat-header-cell>
                     <mat-cell *matCellDef="let schoolInfo">
                         <p class="text-truncate">{{schoolInfo.HMMobile}}</p>
@@ -312,7 +312,7 @@
 
                 <!-- HMEmail Column -->
                 <ng-container matColumnDef="HMEmail">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Email
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Email
                     </mat-header-cell>
                     <mat-cell *matCellDef="let schoolInfo">
                         <p class="text-truncate">{{schoolInfo.HMEmail}}</p>
