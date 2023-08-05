@@ -4,6 +4,7 @@ export class HeadMasterModel {
     AcademicYearId: string;
     HMId: string;
     // VTId: string;
+    AcademicYear: string;
     SchoolId: string;
     FirstName: string;
     MiddleName: string;
@@ -24,7 +25,7 @@ export class HeadMasterModel {
     constructor(headMasterItem?: any) {
         headMasterItem = headMasterItem || {};
 
-        this.AcademicYearId = ''
+        this.AcademicYear = ''
         this.HMId = headMasterItem.HMId || FuseUtils.NewGuid();
         // this.VCId = headMasterItem.VTId || '';
         // this.VTPId = headMasterItem.VTId || '';

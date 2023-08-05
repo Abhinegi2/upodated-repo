@@ -54,7 +54,6 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
 
   ngOnInit(): void {
     this.schoolService.getInitSchoolsData().subscribe(results => {
-      console.log(results);
       if (results[0].Success) {
         this.stateList = results[0].Results;
       }
@@ -137,7 +136,6 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
 
     this.schoolService.GetAllByCriteria(schoolParams).subscribe(response => {
       this.displayedColumns = ['SchoolName', 'SchoolUniqueId', 'Udise', 'SchoolManagement', 'CategoryName', 'DivisionName', 'DistrictName', 'BlockName', 'CreatedBy', 'UpdatedBy', 'IsImplemented', 'IsActive', 'Actions']
-
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;

@@ -38,6 +38,10 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
+
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['./','new']" skipLocationChange="true" replaceUrl="false"
                     class="add-vtacademicclasssection-button fuse-white mt-24 mt-md-0">
                     <span>ADD</span>
@@ -51,6 +55,112 @@
 
         </div>
         <!-- / HEADER -->
+
+        <!-- Filter Section -->
+        <div class="filter-content-card" *ngIf="IsShowFilter">
+            <div class="filter-content">
+                <form name="vtAcedemicClassSectionFilterForm" [formGroup]="vtAcedemicClassSectionFilterForm"  fxLayout="column"
+                    fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+<!-- 
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>VT Name</mat-label>
+
+                            <mat-select formControlName="VTId" name="VTId" appearance="fill">
+                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
+                                    {{ vtItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>School</mat-label>
+
+                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill">
+                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of schoolList">
+                                    {{ schoolsItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Sector</mat-label>
+
+                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
+                                (selectionChange)="onChangeSector($event.value)">
+                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
+                                    {{ sectorItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Job Role</mat-label>
+
+                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill" >
+                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
+                                    {{ jobRoleItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label> Academic Year</mat-label>
+
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
+                                <mat-option [value]="academicYearItem.Id"
+                                    *ngFor="let academicYearItem of academicYearList">
+                                    {{ academicYearItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Class</mat-label>
+
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill">
+                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
+                                    {{ classItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Section</mat-label>
+
+                            <mat-select formControlName="SectionId" name="sectionId" appearance="fill">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Status</mat-label>
+                            <mat-select name="status" formControlName="Status" appearance="fill">
+                                <mat-option value="">Status</mat-option>
+                                <mat-option value="true">Active</mat-option>
+                                <mat-option value="false">Inactive</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="clear-filter" fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="onLoadVtAcedemicClassSectionsByFilters()"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button"
+                                (click)="resetFilters()"><span>CLEAR</span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
         <div class="content-card">
