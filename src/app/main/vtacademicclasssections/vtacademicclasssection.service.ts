@@ -85,7 +85,7 @@ export class VTAcademicClassSectionService {
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
 
-        return forkJoin([academicYearRequest, classRequest, sectionRequest, gvtRequest]);
+        return forkJoin([academicYearRequest, classRequest, sectionRequest,sectorRequest, gvtRequest]);
 
     }
 }

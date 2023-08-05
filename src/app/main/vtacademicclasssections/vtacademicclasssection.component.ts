@@ -72,14 +72,14 @@ export class VTAcademicClassSectionComponent extends BaseListComponent<VTAcademi
         this.sectionList = results[2].Results;
       }
 
+      // if (results[3].Success) {
+      //   this.vtList = results[3].Results;
+      // }
+      // if (results[5].Success) {
+      //   this.schoolList = results[5].Results;
+      // }
       if (results[3].Success) {
-        this.vtList = results[3].Results;
-      }
-      if (results[5].Success) {
-        this.schoolList = results[5].Results;
-      }
-      if (results[6].Success) {
-        this.sectorList = results[6].Results;
+        this.sectorList = results[3].Results;
       }
 
     });
