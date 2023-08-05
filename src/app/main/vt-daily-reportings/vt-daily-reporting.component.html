@@ -77,6 +77,16 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        JobRole
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtDailyReporting">
+                        <p class="text-truncate">{{vtDailyReporting.JobRoleName}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- ReportType Column -->
                 <ng-container matColumnDef="ReportType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>

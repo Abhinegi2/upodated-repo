@@ -46,13 +46,13 @@
         </div>
         <!-- / HEADER -->
 
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <!-- <div fxLayout="row" fxLayoutAlign="start center">
             <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
                 (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div>
+        </div> -->
 
         <!-- Filter Section -->
-        <div class="filter-content-card" *ngIf="isShowFilterContainer">
+        <!-- <div class="filter-content-card" *ngIf="isShowFilterContainer">
             <div class="filter-content">
                 <form name="studentEnrollmentForm" [formGroup]="studentEnrollmentForm" class="student-enrollment-report"
                     fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
@@ -174,7 +174,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        </div> -->
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
@@ -293,7 +293,7 @@
 
                 <!-- HMName Column -->
                 <ng-container matColumnDef="HMName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Name
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentEnrollment">
                         <p class="text-truncate">{{studentEnrollment.HMName}}</p>
@@ -302,7 +302,7 @@
 
                 <!-- HMMobile Column -->
                 <ng-container matColumnDef="HMMobile">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Mobile
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Mobile
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentEnrollment">
                         <p class="text-truncate">{{studentEnrollment.HMMobile}}</p>
@@ -311,7 +311,7 @@
 
                 <!-- HMEmail Column -->
                 <ng-container matColumnDef="HMEmail">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HM Email
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>HOS Email
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentEnrollment">
                         <p class="text-truncate">{{studentEnrollment.HMEmail}}</p>

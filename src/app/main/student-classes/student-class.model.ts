@@ -12,6 +12,7 @@ export class StudentClassModel {
     GVTId: string;
     AcademicYearId: string;
     ClassId: string;
+    ClassSection: string;
     SectionId: string;
     FirstName: string;
     MiddleName: string;
@@ -26,7 +27,7 @@ export class StudentClassModel {
     AssessmentToBeConducted: string;
     DateOfBirth: Date;
     Stream: string;
-    CSWNStatus: string;
+    CWSNStatus: string;
     IsStudentVE9And10: string;
     IsSameStudentTrade: string;
     StudentUniqueId: string;
@@ -56,6 +57,7 @@ export class StudentClassModel {
         this.AcademicYearId = studentClassItem.AcademicYearId || '';
         this.ClassId = studentClassItem.ClassId || '';
         this.SectionId = studentClassItem.SectionId || '';
+        this.ClassSection = studentClassItem.ClassSection || '';
         this.DateOfEnrollment = studentClassItem.DateOfEnrollment || '';
         this.FirstName = studentClassItem.FirstName || '';
         this.MiddleName = studentClassItem.MiddleName || '';
@@ -73,7 +75,7 @@ export class StudentClassModel {
         this.AssessmentToBeConducted = studentClassItem.AssessmentToBeConducted || '';
         this.DateOfBirth = studentClassItem.DateOfBirth || '';
         this.Stream = studentClassItem.Stream || '';
-        this.CSWNStatus = studentClassItem.CSWNStatus || '';
+        this.CWSNStatus = studentClassItem.CWSNStatus || '';
         this.SocialCategory = studentClassItem.SocialCategory || '';
         this.WhatappNo = studentClassItem.WhatappNo || '';
         this.DateOfDropout = studentClassItem.DateOfDropout || '';

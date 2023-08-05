@@ -42,9 +42,9 @@
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                 </a>
 
-                <!-- <button mat-raised-button class="fuse-white filter-button"
-                    (click)="IsShowFilter=!IsShowFilter"><span>Filters</span>
-                </button> -->
+                <button mat-raised-button class="fuse-white filter-button"
+                    (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
+                </button>
 
                 <button *ngIf="PageRights.IsAdd" mat-raised-button [routerLink]="['/users','new']" skipLocationChange="false"
                     replaceUrl="true" class="use-white mt-24 mt-md-0">
@@ -73,7 +73,7 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Academic Year</mat-label>
 
                             <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill"
@@ -83,38 +83,8 @@
                                     {{ academicYearIdItem.Name }}
                                 </mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
-                        <mat-form-field fxFlex="50" fxFlex.lt-md="30" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVTP
-                                (selectionChange)="onChangeVTP($event.value)">
-                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="35" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
                         <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Social Category</mat-label>
 
@@ -135,6 +105,37 @@
                                 <mat-option value="false">Inactive</mat-option>
                             </mat-select>
                         </mat-form-field>
+
+                        <!-- <mat-form-field fxFlex="50" fxFlex.lt-md="30" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Training Provider</mat-label>
+
+                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVTP
+                                (selectionChange)="onChangeVTP($event.value)">
+                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
+                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
+                                    {{ vtpItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="35" fxFlex.lt-sm="100" class="filter-disabled">
+                            <mat-label>Vocational Coordinator</mat-label>
+
+                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC>
+                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
+                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
+                                </mat-select-filter>
+                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
+                                    {{ vcItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
 
                         <div class="clear-filter" fxFlex="60" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <button mat-raised-button class="fuse-white filter-button"

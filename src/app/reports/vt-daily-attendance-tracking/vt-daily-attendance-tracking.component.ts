@@ -156,9 +156,9 @@ export class VTDailyAttendanceTrackingComponent extends BaseListComponent<VTDail
             this.vcList = response.Results;
             this.filteredVCItems = this.vcList.slice();
 
-            this.dailyAttendanceTrackingForm.get('VCId').setValue(null);
-            this.dailyAttendanceTrackingForm.get('VTId').setValue(null);
-            this.dailyAttendanceTrackingForm.get('SchoolId').setValue(null);
+            // this.dailyAttendanceTrackingForm.get('VCId').setValue(null);
+            // this.dailyAttendanceTrackingForm.get('VTId').setValue(null);
+            // this.dailyAttendanceTrackingForm.get('SchoolId').setValue(null);
           }
 
           this.IsLoading = false;

@@ -30,7 +30,9 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   vcList: [DropdownModel];
   vtList: [DropdownModel];
   filteredVcItems: any;
+  filteredVtItems: any;
   filteredGVTItems: any;
+  filteredVtpItems: any;
 
 
   minAllocationDate: Date;
@@ -62,16 +64,19 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
 
       if (results[1].Success) {
         this.vtpList = results[1].Results;
+        this.filteredVtpItems = this.vtpList.slice();
       }
 
       if (results[2].Success) {
         this.vcList = results[2].Results;
+        this.filteredVcItems = this.vcList.slice();
       }
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
+        this.filteredVtItems = this.vtList.slice();
       }
-      console.log(this.vtList);
+
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -93,8 +98,8 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.PageRights.IsReadOnly = true;
                 }
 
-                this.onChangeUserType(this.genericvtmappingModel.UserType);
-                this.onChangeUser(this.genericvtmappingModel.UserId);
+                // this.onChangeUserType(this.genericvtmappingModel.UserType);
+                // this.onChangeSSJ(this.genericvtmappingModel.GVTId);
 
                 this.genericvtmappingForm = this.createGenericVTMappingForm();
 
@@ -107,42 +112,70 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
     this.genericvtmappingForm = this.createGenericVTMappingForm();
   }
 
-  onChangeUserType(usertype: any) {
-    if (usertype == 'VC') {
+  // onChangeUserType(usertype: any) {
+  //   if (usertype == 'VC') {
 
-      this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: this.UserModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }).subscribe((response: any) => {
-        this.userFilterList = response.Results;
-        this.userList = this.userFilterList.slice();
-      });
+  //     this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: this.UserModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }).subscribe((response: any) => {
+  //       this.userFilterList = response.Results;
+  //       this.userList = this.userFilterList.slice();
+  //     });
 
-    } else if (usertype == 'VTP') {
+  //   } else if (usertype == 'VTP') {
 
-      this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VocationalTrainingProvider' }).subscribe((response: any) => {
-        this.userFilterList = response.Results;
-        this.userList = this.userFilterList.slice();
-      });
-    }
+  //     this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VocationalTrainingProvider' }).subscribe((response: any) => {
+  //       this.userFilterList = response.Results;
+  //       this.userList = this.userFilterList.slice();
+  //     });
+  //   }
+  // }
+
+  onVTPIdChange():void{
+    const vtpId = this.genericvtmappingForm.get('VTPId').value;
+    const dateOfAllocationVTPControl = this.genericvtmappingForm.get('DateOfAllocation');
+  if(vtpId){
+    dateOfAllocationVTPControl.setValidators([Validators.required]);
+  }else{
+    dateOfAllocationVTPControl.clearValidators();
+  }
   }
 
-  onChangeUser(accountId) {
 
-    var usertype = this.genericvtmappingForm.get('UserType').value;
 
-    console.log(usertype, accountId);
+// Inside your component class
+onVCIdChange(): void {
 
-    if (usertype == 'VC') {
-      this.vocationalCoordinatorService.getVocationalCoordinatorById(accountId).subscribe((response: any) => {
-        var VcModel = response.Result;
-        if (VcModel == null) {
-          var errorMessages = this.getHtmlMessage(["The selected VC details are not present in <b>Vocational Coordinator</b>.<br><br> Please visit the <a href='/vocational-coordinators'><b>Vocational Coordinator</b></a> page and provide required details for the selected VC."]);
-          this.dialogService.openShowDialog(errorMessages);
-          this.genericvtmappingForm.controls['UserId'].setValue(null);
-        }
-      });
-    } else if (usertype == 'VTP') {
+  const vcId = this.genericvtmappingForm.get('VCId').value;
+  const dateOfAllocationVCControl = this.genericvtmappingForm.get('DateOfAllocationVC'); 
 
-    }
+
+  if (vcId) {
+    dateOfAllocationVCControl.setValidators([Validators.required]);
+  } else {
+    dateOfAllocationVCControl.clearValidators();
   }
+}
+
+onChangeDateOfAllocation(): void{
+  const dateOfAllocationVT = this.genericvtmappingForm.get('DateOfAllocation');
+  if(dateOfAllocationVT) {
+    this.genericvtmappingForm.get('DateOfAllocationVC').setValue(null);
+  }
+}
+  // onChangeUser(accountId) {
+  //   var usertype = this.genericvtmappingForm.get('UserType').value;
+  //   console.log(usertype, accountId);
+  //   if (usertype == 'VC') {
+  //     this.vocationalCoordinatorService.getVocationalCoordinatorById(accountId).subscribe((response: any) => {
+  //       var VcModel = response.Result;
+  //       if (VcModel == null) {
+  //         var errorMessages = this.getHtmlMessage(["The selected VC details are not present in <b>Vocational Coordinator</b>.<br><br> Please visit the <a href='/vocational-coordinators'><b>Vocational Coordinator</b></a> page and provide required details for the selected VC."]);
+  //         this.dialogService.openShowDialog(errorMessages);
+  //         this.genericvtmappingForm.controls['UserId'].setValue(null);
+  //       }
+  //     });
+  //   } else if (usertype == 'VTP') {
+  //   }
+  // }
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
@@ -181,12 +214,13 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
       // UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
       // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
       GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
+      VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
+      VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocationVC: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfAllocationVC), disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

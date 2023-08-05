@@ -7,6 +7,7 @@ export class VTAcademicClassSectionModel {
     AcademicYearId: string;
     ClassId: string;
     SectionId: string;
+    SchoolId:string;
     DateOfAllocation: Date;
     DateOfRemoval?: Date;
     IsActive: boolean;
@@ -19,6 +20,7 @@ export class VTAcademicClassSectionModel {
         this.AcademicYearId = vtacademicclasssectionItem.AcademicYearId || '';
         this.ClassId = vtacademicclasssectionItem.ClassId || '';
         this.SectionId = vtacademicclasssectionItem.SectionId || '';
+        this.SchoolId = vtacademicclasssectionItem.SchoolId || '';
         this.VTId = vtacademicclasssectionItem.VTId || '';
         this.GVTId = vtacademicclasssectionItem.GVTId || '';
         this.DateOfAllocation = vtacademicclasssectionItem.DateOfAllocation || '';

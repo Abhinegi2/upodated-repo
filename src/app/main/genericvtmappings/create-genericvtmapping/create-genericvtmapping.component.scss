@@ -5,6 +5,15 @@
             color:black !important;
         }
     }
+    .note{
+        color: red; 
+        margin: 0px 0px 10px 5px !important;
+        font-size: 13px;
+    }
+
+    .padding-bottom-0 > .mat-form-field-wrapper{
+        padding-bottom: 0px !important;
+    }
 
     .content {
         .mat-tab-group,
