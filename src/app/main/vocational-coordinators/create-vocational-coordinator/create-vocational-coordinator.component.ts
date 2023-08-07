@@ -52,12 +52,11 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
   ngOnInit(): void {
 
     this.vocationalCoordinatorService.getDropdownforVocationalCoordinators(this.UserModel).subscribe((results: any) => {
-      console.log(results);
       if (results[0].Success) {
         this.genderList = results[0].Results;
       }
 
-      if (results[2].Success) {
+      if (results[1].Success) {
         this.vcList = results[1].Results;
         this.filteredVcItems = this.vcList.slice();
       }
