@@ -60,9 +60,16 @@ export class VTAcademicClassSectionComponent extends BaseListComponent<VTAcademi
     });
 
     this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
-      if (results[0].Success) {
-        this.academicYearList = results[0].Results;
-      }
+      this.commonService.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' }).subscribe((response: any) => {
+        this.academicYearList = response.Results;
+        let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+        if (currentYearItem != null) {
+          this.AcademicYearId = currentYearItem.Id;
+          this.vtAcedemicClassSectionFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+        }
+      }); 
+       
+      
 
       if (results[1].Success) {
         this.classList = results[1].Results;

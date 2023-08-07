@@ -22,6 +22,8 @@ import { AccountService } from 'app/main/accounts/account.service';
 export class CreateVocationalCoordinatorComponent extends BaseComponent<VocationalCoordinatorModel> implements OnInit {
   vocationalCoordinatorForm: FormGroup;
   vocationalCoordinatorModel: VocationalCoordinatorModel;
+  academicYearList: DropdownModel[];
+
   vtpList: [DropdownModel];
   natureOfAppointmentList: [DropdownModel];
   genderList: [DropdownModel];
@@ -60,10 +62,21 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
         this.filteredVcItems = this.vcList.slice();
       }
 
+      if(results[3].Success){
+            this.academicYearList = results[3].Results;
+          }
+      // this.vocationalCoordinatorService.getInitVocationalCoordinatorsData()
       // if (results[2].Success) {
       //   this.vcList = results[2].Results;
       //   this.filteredVcItems = this.vcList.slice();
       // }
+
+      // this.vocationalCoordinatorService.getInitVocationalCoordinatorsData().subscribe((results)=>{
+      //   console.log(results);
+      //   if(results[0].Success){
+      //     this.academicYearList = results[0].Results;
+      //   }
+      // })
 
 
       // if (results[0].Success) {
@@ -167,6 +180,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
     return this.formBuilder.group({
       // VCId: new FormControl(this.vocationalCoordinatorModel.VCId),
       VCId: new FormControl({ value: this.vocationalCoordinatorModel.VCId, disabled: this.PageRights.IsReadOnly }),
+      AcademicYear: new FormControl(this.vocationalCoordinatorModel.AcademicYear),
       // VTPId: new FormControl({ value: this.vocationalCoordinatorModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       // FirstName: new FormControl({ value: this.vocationalCoordinatorModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       // MiddleName: new FormControl({ value: this.vocationalCoordinatorModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),

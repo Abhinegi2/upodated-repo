@@ -22,7 +22,7 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
   schoolSectorJobRoleFilterForm: FormGroup;
   schoolList: DropdownModel[];
   sectorList: DropdownModel[];
-  jobRoleList: DropdownModel[];
+  jobRoleList: any;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -110,7 +110,7 @@ export class SchoolSectorJobComponent extends BaseListComponent<SchoolSectorJobM
 
   resetFilters(): void {
     this.schoolSectorJobRoleFilterForm.reset();
-
+   this.jobRoleList = [];
     this.onLoadSchoolSectorJobByCriteria();
   }
   onDeleteSchoolSectorJob(schoolsectorjobId: string) {

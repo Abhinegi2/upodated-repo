@@ -80,7 +80,8 @@ export class GenericVTMappingService {
         let vtpRequest = this.http.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'Vocational Training Provider' }, false);
         let vcRequest = this.http.GetMasterDataByType({ DataType: 'AllVCs', SelectTitle: 'Select VC' }, false);
         let vtRequest = this.http.GetMasterDataByType({ DataType: 'AllVocationalTrainers', SelectTitle: 'Select VT' });
+        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([GenericvtRequest, vtpRequest, vcRequest, vtRequest]);
+        return forkJoin([GenericvtRequest, vtpRequest, vcRequest, vtRequest,sectorRequest]);
     }
 }

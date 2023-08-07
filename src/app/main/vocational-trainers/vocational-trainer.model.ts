@@ -1,7 +1,7 @@
 import { FuseUtils } from '@fuse/utils';
 
 export class VocationalTrainerModel {
-    AcademicYearId: string;
+    AcademicYear: string;
     VTId: string;
     VCId: string;
     VTPId: string;
@@ -30,7 +30,7 @@ export class VocationalTrainerModel {
     constructor(vocationalTrainerItem?: any) {
         vocationalTrainerItem = vocationalTrainerItem || {};
 
-        this.AcademicYearId = vocationalTrainerItem.AcademicYearId || '';
+        this.AcademicYear = vocationalTrainerItem.AcademicYear || '';
         this.VTId = vocationalTrainerItem.VTId || FuseUtils.NewGuid();
         this.VCId = vocationalTrainerItem.VCId || '';
         this.VTPId = vocationalTrainerItem.VTPId || '';
