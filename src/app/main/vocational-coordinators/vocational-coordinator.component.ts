@@ -126,9 +126,7 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
       PageSize: this.SearchBy.PageSize
     };
 
-    console.log(vcParams,"he");
     this.vocationalCoordinatorService.GetAllByCriteria(vcParams).subscribe(response => {
-      console.log(response);
       this.displayedColumns = [
         // 'NatureOfAppointment', 
         // 'VTPName',

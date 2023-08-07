@@ -185,18 +185,19 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
 
                     <mat-cell *matCellDef="let vocationalTrainingProvider" fxShow.gt-xs class="text-center">
+                        <div>
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/vocational-training-providers', 'view', vocationalTrainingProvider.VTPId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (vocationalTrainingProvider.IsResigned == false || UserModel.RoleCode == 'SUR')"
+                            *ngIf="PageRights.IsEdit && (vocationalTrainingProvider.IsActive || UserModel.RoleCode == 'SUR')"
                             mat-icon-button
                             [routerLink]="['/vocational-training-providers', 'edit', vocationalTrainingProvider.VTPId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>
-                        </button>
+                        </button></div>
                         <button
                             *ngIf="PageRights.IsDelete && (vocationalTrainingProvider.IsResigned == false || UserModel.RoleCode == 'SUR')"
                             mat-icon-button color="warn"

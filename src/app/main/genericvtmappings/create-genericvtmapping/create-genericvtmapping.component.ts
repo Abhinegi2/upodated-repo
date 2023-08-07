@@ -66,11 +66,14 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.vtpList = results[1].Results;
         this.filteredVtpItems = this.vtpList.slice();
       }
-
+      this.genericvtmappingForm.controls['DateOfAllocation'].disable();
+      
       if (results[2].Success) {
         this.vcList = results[2].Results;
         this.filteredVcItems = this.vcList.slice();
       }
+      this.genericvtmappingForm.controls['DateOfAllocationVC'].disable();
+
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
@@ -82,7 +85,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
           this.PageRights.ActionType = params.get('actionType');
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
-            this.genericvtmappingModel = new GenericVTMappingModel();
+            this.genericvtmappingModel = new GenericVTMappingModel();            
 
           } else {
             var genericvtmappingId: string = params.get('genericvtmappingId')
@@ -132,9 +135,10 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   onVTPIdChange():void{
     const vtpId = this.genericvtmappingForm.get('VTPId').value;
     const dateOfAllocationVTPControl = this.genericvtmappingForm.get('DateOfAllocation');
-  if(vtpId){
-    dateOfAllocationVTPControl.setValidators([Validators.required]);
-  }else{
+    if(vtpId){
+      dateOfAllocationVTPControl.setValidators([Validators.required]);
+      this.genericvtmappingForm.controls['DateOfAllocation'].enable();
+    }else{
     dateOfAllocationVTPControl.clearValidators();
   }
   }
@@ -150,6 +154,7 @@ onVCIdChange(): void {
 
   if (vcId) {
     dateOfAllocationVCControl.setValidators([Validators.required]);
+    this.genericvtmappingForm.controls['DateOfAllocationVC'].enable();
   } else {
     dateOfAllocationVCControl.clearValidators();
   }

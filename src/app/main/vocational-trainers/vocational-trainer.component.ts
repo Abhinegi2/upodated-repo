@@ -145,7 +145,6 @@ console.log(this.vtFilterForm.controls["AcademicYearId"].value);
     // }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
-      console.log(response,"hei")
       this.displayedColumns = [
         'AcademicYear',
         // 'VTPName',
