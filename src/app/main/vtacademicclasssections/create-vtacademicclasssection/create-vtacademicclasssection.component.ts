@@ -56,6 +56,7 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
   ngOnInit(): void {
 
     this.vtacademicclasssectionService.getVTAcademicClassSection(this.UserModel).subscribe(results => {
+      console.log(results);
       if (results[0].Success) {
 
         this.academicYearList = results[0].Results;
@@ -70,8 +71,8 @@ export class CreateVTAcademicClassSectionComponent extends BaseComponent<VTAcade
       //   this.sectionList = results[2].Results;
       // }
 
-      if (results[3].Success) {
-        this.gvtList = results[3].Results;
+      if (results[4].Success) {
+        this.gvtList = results[4].Results;
         this.filteredGVTItems = this.gvtList.slice();
       }
 
