@@ -27,7 +27,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
   vtSearchForm: FormGroup;
   vtFilterForm: FormGroup;
 
-  // academicYearList: DropdownModel[];
+  academicYearList: DropdownModel[];
   vtpList: DropdownModel[];
   filteredVTPItems: any;
   vcList: DropdownModel[];
@@ -57,9 +57,14 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     this.SearchBy.PageSize = 10; // delete after script changed
 
     this.vocationalTrainerService.getInitVocationalTrainersData(this.UserModel).subscribe(results => {
-      // if (results[0].Success) {
-      //   this.academicYearList = results[0].Results;
-      // }
+      if (results[0].Success) {
+        this.academicYearList = results[0].Results;
+      }
+      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      if (currentYearItem != null) {
+        this.AcademicYearId = currentYearItem.Id;
+        this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      }
       
 
       // if (results[1].Success) {
@@ -121,10 +126,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 
   onLoadVocationalTrainersByCriteria(): void {
     this.IsLoading = true;
-
+console.log(this.vtFilterForm.controls["AcademicYearId"].value);
     let vtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-      //  AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
+       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       // VTPId: this.vtFilterForm.controls["VTPId"].value,
       // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
@@ -140,7 +145,9 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
     // }
 
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
+      console.log(response,"hei")
       this.displayedColumns = [
+        'AcademicYear',
         // 'VTPName',
         // 'VCName',
         'VTName',

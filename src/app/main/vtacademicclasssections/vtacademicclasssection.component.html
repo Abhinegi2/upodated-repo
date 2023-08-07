@@ -84,7 +84,7 @@
                             </mat-select>
                         </mat-form-field> -->
 
-                        <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="20">
                             <mat-label>Sector</mat-label>
 
                             <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
@@ -95,7 +95,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="20">
                             <mat-label>Job Role</mat-label>
 
                             <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill" >
@@ -105,7 +105,7 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="20" class="filter-disabled">
                             <mat-label> Academic Year</mat-label>
 
                             <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
@@ -116,13 +116,7 @@
                             </mat-select>
                         </mat-form-field>
 
-
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        
-                        <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                             <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Class</mat-label>
 
                             <mat-select formControlName="ClassId" name="classId" appearance="fill">
@@ -150,6 +144,7 @@
                                 <mat-option value="false">Inactive</mat-option>
                             </mat-select>
                         </mat-form-field>
+
                         <div class="clear-filter" fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="onLoadVtAcedemicClassSectionsByFilters()"><span>SEARCH</span></button>

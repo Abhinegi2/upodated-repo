@@ -24,6 +24,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
   vocationalTrainerModel: VocationalTrainerModel;
   // accountModel: AccountModel;
   // vtpList: [DropdownModel];
+  academicYearList: [DropdownModel];
   socialCategoryList: [DropdownModel];
   // natureOfAppointmentList: [DropdownModel];
   academicQualificationList: [DropdownModel];
@@ -57,7 +58,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
 
   ngOnInit(): void {
     this.vocationalTrainerService.getDropdownforVocationalTrainer(this.UserModel).subscribe((results) => {
-
       if (results[0].Success) {
         this.vtList = results[0].Results;
         this.filteredVTItems = this.vtList.slice();
@@ -85,6 +85,10 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
 
       if (results[5].Success) {
         this.genderList = results[5].Results;
+      }
+
+      if(results[6].Success){
+        this.academicYearList = results[6].Results;
       }
 
       this.route.paramMap.subscribe(params => {
@@ -157,7 +161,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     }
 
     this.setValueFromFormGroup(this.vocationalTrainerForm, this.vocationalTrainerModel);
-    this.vocationalTrainerModel.AcademicYearId = this.UserModel.AcademicYearId;
+    // this.vocationalTrainerModel.AcademicYear = this.UserModel.AcademicYearId;
 
     this.vocationalTrainerService.createOrUpdateVocationalTrainer(this.vocationalTrainerModel)
       .subscribe((vocationalTrainerResp: any) => {
@@ -186,7 +190,7 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     return this.formBuilder.group({
       // VTId: new FormControl(this.vocationalTrainerModel.VTId),
       VTId: new FormControl({ value: this.vocationalTrainerModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      AcademicYearId: new FormControl(this.vocationalTrainerModel.AcademicYearId),
+      AcademicYear: new FormControl(this.vocationalTrainerModel.AcademicYear),
       // VTPId: new FormControl({ value: this.vocationalTrainerModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       // VCId: new FormControl({ value: this.vocationalTrainerModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       // FirstName: new FormControl({ value: this.vocationalTrainerModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),

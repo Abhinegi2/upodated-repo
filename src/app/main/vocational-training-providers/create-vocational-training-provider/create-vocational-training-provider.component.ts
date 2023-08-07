@@ -48,7 +48,7 @@ export class CreateVocationalTrainingProviderComponent extends BaseComponent<Voc
     this.commonService
       .GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' })
       .subscribe((response: any) => {
-
+console.log(response);
         if (response.Success) {
           this.academicYearList = response.Results;
         }

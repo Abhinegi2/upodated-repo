@@ -68,6 +68,12 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results) => {
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
+
+      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      if (currentYearItem != null) {
+        this.AcademicYearId = currentYearItem.Id;
+        this.hmFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      }
       }
 
       // if (results[1].Success) {
@@ -75,15 +81,9 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
       //   this.filteredVTPItems = this.vtpList.slice();
       // }
 
-      if (results[1].Success) {
-        this.sectorList = results[1].Results;
-      }
-
-      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      if (currentYearItem != null) {
-        this.AcademicYearId = currentYearItem.Id;
-        this.hmFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      }
+      // if (results[1].Success) {
+      //   this.sectorList = results[1].Results;
+      // }
 
       //Load initial HeadMasters data
       this.onLoadHeadMastersByCriteria();
@@ -129,7 +129,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
 
   onLoadHeadMastersByCriteria(): void {
     this.IsLoading = true;
-
     let hmParams = {
       UserTypeId: this.UserModel.UserTypeId,
       AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
@@ -140,6 +139,7 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
       PageSize: this.SearchBy.PageSize
     };
     this.headMasterService.GetAllByCriteria(hmParams).subscribe(response => {
+      console.log(response);
       this.displayedColumns = [
         'AcademicYear',
         'SchoolName',
