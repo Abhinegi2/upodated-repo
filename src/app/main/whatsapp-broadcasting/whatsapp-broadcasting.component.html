@@ -1,4 +1,4 @@
-<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+<div id="whatsapp-broadcasting" class="page-layout carded fullwidth inner-scroll">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -17,7 +17,7 @@
                     shopping_basket
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    Message list
+                    WHATSAPP BROADCASTING
                 </span>
             </div>
             <!-- / APP TITLE -->
@@ -27,7 +27,7 @@
                 <form name="messageTemplateSearchForm" [formGroup]="messageTemplateSearchForm">
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
-                        <input name="searchText" formControlName="SearchText" placeholder="Search for a message"
+                        <input name="searchText" formControlName="SearchText" placeholder="Search for a whatsapp-broadcasting message"
                             matTooltip="Search By Message Type & Status" matTooltipPosition='above'
                             matTooltipClass="allow-cr">
                     </div>
@@ -122,22 +122,22 @@
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- TemplateName Column -->
-                <ng-container matColumnDef="TemplateName">
+                <ng-container matColumnDef="TemplateID">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
                         Message Template
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
-                        <p class="text-truncate">{{messageTemplate.TemplateName}}</p>
+                        <p class="text-truncate">{{messageTemplate.TemplateID}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- TemplateFlowId Column -->
-                <ng-container matColumnDef="TemplateFlowId">
+                <ng-container matColumnDef="TemplateMessage">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
                        Message
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
-                        <p class="text-truncate">{{messageTemplate.TemplateFlowId}}</p>
+                        <p class="text-truncate">{{messageTemplate.TemplateMessage}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -151,20 +151,29 @@
                 </ng-container>
 
                 <!-- MessageSubType Column -->
-                <ng-container matColumnDef="MessageSubType">
+                <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Created By
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{messageTemplate.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- MessageSubType Column -->
+                <ng-container matColumnDef="CreatedOn">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Delivery Date, Time
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{messageTemplate.MessageSubType}}</p>
+                        <p class="text-truncate">{{messageTemplate.CreatedOn}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- ApplicableFor Column -->
-                <ng-container matColumnDef="ApplicableFor">
+                <ng-container matColumnDef="UserType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>User Type
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{messageTemplate.ApplicableFor}}</p>
+                        <p class="text-truncate">{{messageTemplate.UserType}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -183,7 +192,7 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
-                            [routerLink]="['/message-templates', 'view', messageTemplate.CampainID]"
+                            [routerLink]="['/whatsapp-broadcasting', 'view', messageTemplate.CampainID]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">visibility</mat-icon>
                         </button>

@@ -94,16 +94,16 @@ export class WhatsappBroadcastingComponent extends BaseListComponent<whatsappBro
     this.IsLoading = true;
 
     let messageTemplateParams = {
-      MessageTypeId: this.messageTemplateFilterForm.controls["MessageTypeId"].value,
-      Status: this.messageTemplateFilterForm.controls["Status"].value,
-      Name: this.messageTemplateSearchForm.controls["SearchText"].value,
+      CampainID: this.messageTemplateFilterForm.controls["CampainID"].value,
+      TemplateMessage: this.messageTemplateFilterForm.controls["TemplateMessage"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
       PageSize: this.SearchBy.PageSize
     };
 
     this.messageTemplateService.GetAllByCriteria(messageTemplateParams).subscribe(response => {
-      this.displayedColumns = ['TemplateName', 'TemplateFlowId', 'MessageType', 'MessageSubType', 'ApplicableFor', 'IsActive', 'Actions'];
+      console.log(response,"resp")
+      this.displayedColumns = ['TemplateID', 'TemplateMessage', 'UserType', 'CreatedBy', 'CreatedOn', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -202,8 +202,8 @@ export class WhatsappBroadcastingComponent extends BaseListComponent<whatsappBro
   //Create MessageTemplateFilter form and returns {FormGroup}
   createMessageTemplateFilterForm(): FormGroup {
     return this.formBuilder.group({
-      MessageTypeId: new FormControl(),
-      Status: new FormControl(),
+      CampainID: new FormControl(),
+      TemplateMessage: new FormControl(),
     });
   }
 }
