@@ -72,7 +72,7 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
     this.IsLoading = true;
     let genericvtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-      // GVTId: this.genericvtmappingFilterForm.controls["GVTId"].value,
+      // SSJId: this.genericvtmappingFilterForm.controls["SSJId"].value,
       // VTPId: this.genericvtmappingFilterForm.controls["VTPId"].value,
       SectorId :this.genericvtmappingFilterForm.controls["SectorId"].value,
       JoRoleId :this.genericvtmappingFilterForm.controls["JobRoleId"].value,
@@ -173,7 +173,7 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   creategenericvtmappingFilterForm(): FormGroup {
     return this.formBuilder.group({
-      // GVTId: new FormControl(),
+      // SSJId: new FormControl(),
       // VTPId: new FormControl(),
       // VCId: new FormControl(),
       // VTId: new FormControl(),
