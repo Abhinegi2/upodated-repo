@@ -102,7 +102,7 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
               if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.studentClassModel.RequestType = this.Constants.PageType.Edit;
                 this.setDropoutReasonValidators();
-                this.setSectorJobRole(this.studentClassModel.GVTId);
+                this.setSectorJobRole(this.studentClassModel.SSJId);
               }
               else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.studentClassModel.RequestType = this.Constants.PageType.View;

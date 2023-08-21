@@ -3,7 +3,7 @@ import { FuseUtils } from '@fuse/utils';
 export class VTAcademicClassSectionModel {
     VTAcademicClassSectionId: string;
     VTId: string;
-    GVTId: string;
+    SSJId: string;
     AcademicYearId: string;
     ClassId: string;
     SectionId: string;
@@ -22,7 +22,7 @@ export class VTAcademicClassSectionModel {
         this.SectionId = vtacademicclasssectionItem.SectionId || '';
         this.SchoolId = vtacademicclasssectionItem.SchoolId || '';
         this.VTId = vtacademicclasssectionItem.VTId || '';
-        this.GVTId = vtacademicclasssectionItem.GVTId || '';
+        this.SSJId = vtacademicclasssectionItem.SSJId || '';
         this.DateOfAllocation = vtacademicclasssectionItem.DateOfAllocation || '';
         this.DateOfRemoval = vtacademicclasssectionItem.DateOfRemoval || '';
         this.IsActive = vtacademicclasssectionItem.IsActive || true;

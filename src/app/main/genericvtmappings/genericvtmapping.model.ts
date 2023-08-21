@@ -4,7 +4,7 @@ export class GenericVTMappingModel {
     GenericVTMappingId: string;
     UserType: string;
     UserId: string;
-    GVTId: string;
+    SSJId: string;
     SectorId: string;
     JobRoleId: string;
     DateOfAllocation: Date;
@@ -27,7 +27,7 @@ export class GenericVTMappingModel {
         this.VTPId = genericvtmappingItem.VTPId || '';
         this.VCId = genericvtmappingItem.VCId || '';
         this.VTId = genericvtmappingItem.VTId || '';
-        this.GVTId = genericvtmappingItem.GVTId || '';
+        this.SSJId = genericvtmappingItem.SSJId || '';
         this.DateOfAllocation = genericvtmappingItem.DateOfAllocation || '';
         this.DateOfRemoval = genericvtmappingItem.DateOfRemoval || '';
         this.DateOfAllocationVC = genericvtmappingItem.DateOfAllocationVC || '';

@@ -102,7 +102,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                 }
 
                 // this.onChangeUserType(this.genericvtmappingModel.UserType);
-                // this.onChangeSSJ(this.genericvtmappingModel.GVTId);
+                // this.onChangeSSJ(this.genericvtmappingModel.SSJId);
 
                 this.genericvtmappingForm = this.createGenericVTMappingForm();
 
@@ -218,7 +218,7 @@ onChangeDateOfAllocation(): void{
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
       // UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
       // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
-      GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SSJId: new FormControl({ value: this.genericvtmappingModel.SSJId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
       VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }),
