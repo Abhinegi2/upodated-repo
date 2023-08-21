@@ -75,15 +75,19 @@
                       
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value">
-                            <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100" *ngFor="let field of fields; let i = index" aria-required="true">
-                              <mat-label>{{ field.label }}</mat-label>
-                              <input matInput [formControlName]="'Variable' + (i + 1)" (change)="updateMessagePreview()">
-                              <mat-error *ngIf="messageTemplateForm.controls['Variable' + (i + 1)].invalid">
-                                {{ field.label }} is required.
-                              </mat-error>
-                            </mat-form-field>
-                    </div>
+                      fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value">
+                   <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100"
+                                   *ngFor="let field of fields; let i = index" aria-required="true">
+                     <mat-label>{{ field.label }}</mat-label>
+                     <mat-select [formControlName]="'Variable' + (i + 1)" (selectionChange)="updateMessagePreview()">
+                       <mat-option *ngFor="let option of dropdownFields" [value]="option">{{ option }}</mat-option>
+                     </mat-select>
+                     <mat-error *ngIf="messageTemplateForm.controls['Variable' + (i + 1)].invalid">
+                       {{ field.label }} is required.
+                     </mat-error>
+                   </mat-form-field>
+                 </div>
+                 
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value">
                         <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">

@@ -58,6 +58,9 @@ export class CreateWhatsappBrodcastingComponent extends BaseComponent<whatsappBr
   userTypeList: string[] = ['PMU', 'VT', 'VC', 'VTP', 'Students'];
   conditionList: string[] = ['All PMU', 'All VT', 'All VC', 'All VTP', 'All Students'];
   @ViewChild('autosize') autosize: CdkTextareaAutosize;
+  dropdownFields: string []= [
+    '@contact.name', '@contact.uuid',
+  ];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -180,9 +183,16 @@ export class CreateWhatsappBrodcastingComponent extends BaseComponent<whatsappBr
         if (matches) {
           this.variables = matches.map(match => match.slice(2, -2));
           this.variableCount = this.variables.length;
+
           this.updateMessage();
           this.updateFields()
         }
+        this.variables.forEach((variable, index) => {
+          const fieldName = `Variable${index + 1}`;
+          this.messageTemplateForm.controls[fieldName].setValue(null);
+          this.messageTemplateForm.controls[fieldName].clearValidators();
+
+        });
       });
       this.IsLoading = false;
       resolve(true);
