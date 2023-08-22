@@ -15,7 +15,7 @@ export class RegexPatternConstants {
     public CharsWithTitleCase = "([A-Z][a-z]*\\s*)+$";
     public AlphaNumericWithTitleCase = "([A-Z][a-z]*\\s*)+[0-9]$";
     public UDISE: string = "^(24[0-9]{9})$";
-    public CharWithTitleCaseSpaceAndSpecialChars: string = "([A-Z][a-z.&+@`'-]*\\s*)+$";
+    public CharWithTitleCaseSpaceAndSpecialChars: string = "([A-Z][a-z.&+@`'-]*\\S*)+$";
     public AlphaNumericWithTitleCaseSpaceAndSpecialChars: string = "([A-Z][a-z0-9.&+@-`]*\\s*)+$";    
     public Password: string = "^.*(?=.*[A-Z])(?=.*[@#$%^&+=]).*$";
     public MobileNumber: string = "^((?![0-5])[0-9]{10})$";
