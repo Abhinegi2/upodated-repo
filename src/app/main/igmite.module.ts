@@ -430,6 +430,10 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { WhatsappBroadcastingComponent } from './whatsapp-broadcasting/whatsapp-broadcasting.component';
 import { whatsappBroadcastingService } from './whatsapp-broadcasting/whatsapp-broadcasting.service';
 import { CreateWhatsappBrodcastingComponent } from './whatsapp-broadcasting/create-whatsapp-brodcasting/create-whatsapp-brodcasting.component';
+import { EmailBroadcastingComponent } from './email-broadcasting/email-broadcasting.component';
+import { CreateEmailBrodcastingComponent } from './email-broadcasting/create-email-brodcasting/create-email-brodcasting.component';
+import { EmailBroadcastingService } from './email-broadcasting/email-broadcating.service';
+import { RichTextEditorComponent } from './rich-text-editor/rich-text-editor.component';
 
 const routes: Routes = [
     { path: RouteConstants.Login, component: LoginComponent },
@@ -784,6 +788,10 @@ const routes: Routes = [
     { path: RouteConstants.WhatsappBroadcasting.New, component: CreateWhatsappBrodcastingComponent },
     { path: RouteConstants.WhatsappBroadcasting.Edit, component: CreateWhatsappBrodcastingComponent },
 
+    { path: RouteConstants.EmailBroadcasting.List, component: EmailBroadcastingComponent },
+    { path: RouteConstants.EmailBroadcasting.New, component: CreateEmailBrodcastingComponent },
+    { path: RouteConstants.EmailBroadcasting.Edit, component: CreateEmailBrodcastingComponent },
+
     //Academic Rollover
     { path: RouteConstants.VocationalTrainer.VTTransfer, component: VTTransferComponent, canActivate: [AuthGuardService] },
     { path: RouteConstants.SchoolVTPSectorsForAcademicRollover.List, component: SchoolVTPSectorsForAcadmicRolloverComponent, canActivate: [AuthGuardService] },
@@ -1014,7 +1022,10 @@ const routes: Routes = [
         CreateMessageTemplateComponent,
         PrivacyPolicyComponent,
         WhatsappBroadcastingComponent,
-        CreateWhatsappBrodcastingComponent
+        CreateWhatsappBrodcastingComponent,
+        EmailBroadcastingComponent,
+        CreateEmailBrodcastingComponent,
+        RichTextEditorComponent
     ],
     imports: [
         RouterModule.forChild(routes),
@@ -1356,7 +1367,8 @@ const routes: Routes = [
         VTClassForAcademicRolloverService,
         VTSchoolSectorsForAcademicRolloverService,
         MessageTemplateService,
-        whatsappBroadcastingService
+        whatsappBroadcastingService,
+        EmailBroadcastingService
     ]
 })
 

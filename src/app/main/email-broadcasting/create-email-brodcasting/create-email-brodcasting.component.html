@@ -1,0 +1,101 @@
+<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/email-broadcasting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2 subtitle secondary-text" *ngIf="PageRights.ActionType === 'edit'">
+                        {{ messageTemplateModel.TemplateName }}
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'new'">
+                        New Email BroadCastings
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'view'">
+                        <span>Message Template Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+               
+                <button mat-raised-button class="add-message-template-button"
+                    (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'SCHEDULE' : 'SAVE') }}</span>
+                </button>
+                <button mat-raised-button class="add-message-template-button"
+                    (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'SAVE AS DRAFT' : 'SAVE') }}</span>
+                </button>
+                <button mat-raised-button class="add-message-template-button"
+                    (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'SEND NOW' : 'SAVE') }}</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="messageTemplateForm" [formGroup]="messageTemplateForm"
+                class="head-master w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                fxFlex fusePerfectScrollbar>
+            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                 fxLayoutGap.lt-md="0px">
+              <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                <mat-label>Email Address</mat-label>
+                <input matInput name="TemplateName" formControlName="TemplateName" required>
+                <mat-error *ngIf="messageTemplateForm.controls.TemplateName.invalid">
+                  {{getErrorMessage(messageTemplateForm, 'TemplateName')}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          
+            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                 fxLayoutGap.lt-md="0px">
+              <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                <mat-label>Email Subject</mat-label>
+                <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
+                <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
+                  {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <rich-text-editor></rich-text-editor>
+          </form>
+          
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

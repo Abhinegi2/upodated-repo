@@ -492,5 +492,11 @@ export const RouteConstants = {
         List: 'message-templates',
         New: 'message-templates/:actionType',
         Edit: 'message-templates/:actionType/:messageTemplateId'
-    }
+    },
+
+    EmailBroadcasting: {
+        List: 'email-broadcasting',
+        New: 'email-broadcasting/:actionType',
+        Edit: 'email-broadcasting/:actionType/:CampainID',
+    },
 }

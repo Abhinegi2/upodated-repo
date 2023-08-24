@@ -795,4 +795,12 @@ export class ServiceConstants {
         GetAccessToken: "WhatsappBroadcasting/GetAccessToken",
         Delete: "WhatsappBroadcasting/DeleteWhatsappBroadcastingById"
     };
+    
+    public EmailBroadcasting = {
+        GetAll: "MessageTemplate/GetMessageTemplates",
+        GetAllByCriteria: "MessageTemplate/GetMessageTemplatesByCriteria",
+        GetById: "MessageTemplate/GetMessageTemplateById",
+        CreateOrUpdate: "MessageTemplate/CreateOrUpdateMessageTemplateDetails",
+        Delete: "MessageTemplate/DeleteMessageTemplateById"
+    };
 };
