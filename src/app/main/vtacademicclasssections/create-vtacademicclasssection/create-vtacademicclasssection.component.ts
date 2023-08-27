@@ -139,7 +139,7 @@ onChangeSSJ(SSJId){
         this.dialogService.openShowDialog(errorMessages);
         this.vtacademicclasssectionForm.controls['VTId'].setValue(null);
       } else {
-        this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValidators([Validators.required]);
+        this.vtacademicclasssectionForm.controls["DateOfAllocation"].setValue({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly });
       }
      });
    }
@@ -208,7 +208,7 @@ onChangeSSJ(SSJId){
       SectionId: new FormControl({ value: this.vtacademicclasssectionModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTId: new FormControl({ value: this.vtacademicclasssectionModel.VTId, disabled: this.PageRights.IsReadOnly }),
       SSJId: new FormControl({ value: this.vtacademicclasssectionModel.SSJId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DateOfAllocation: new FormControl({ value: new Date(this.vtacademicclasssectionModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: this.vtacademicclasssectionModel.DateOfAllocation, disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.vtacademicclasssectionModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vtacademicclasssectionModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
