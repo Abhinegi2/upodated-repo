@@ -67,7 +67,6 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'SchoolVEIncharges', Name: 'School VE Incharges(Not available)', Template: 'SchoolVEIncharges_Template.xlsx' },*/
     ]
     if(this.UserModel.RoleCode == 'HM'||this.UserModel.RoleCode == 'VT'||this.UserModel.RoleCode == 'VC'){
-      console.log(this.UserModel.RoleCode,"rolecodehero")
       this.dataTypetList = this.dataTypetList.filter(item => item.Id === 'Students');
     }
   }
