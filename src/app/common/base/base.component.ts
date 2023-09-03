@@ -375,6 +375,7 @@ export class BaseComponent<T> implements OnInit {
 
         return new FileUploadModel({
             UserId: this.UserModel.UserTypeId,
+            UserRole: this.UserModel.RoleCode,
             ContentId: null,
             FilePath: null,
             ContentType: fileUploaded.ContentType,
