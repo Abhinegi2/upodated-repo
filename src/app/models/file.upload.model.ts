@@ -8,6 +8,7 @@ export class FileUploadModel {
     FileType: string;
     FileSize: number;
     FilePath: string;
+    UserRole:string;
     Base64Data: string;
     UploadFile: any;
 
@@ -15,6 +16,7 @@ export class FileUploadModel {
         fileUpload = fileUpload || {};
 
         this.UserId = fileUpload.UserId || FuseUtils.NewGuid();
+        this.UserRole = fileUpload.UserRole || "";
         this.ContentId = fileUpload.ContentId || FuseUtils.NewGuid();
         this.ContentType = fileUpload.ContentType || "";
         this.FileName = fileUpload.FileName || '';

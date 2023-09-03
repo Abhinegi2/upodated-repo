@@ -73,7 +73,6 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
 
   ngOnInit(): void {
     this.dataUploadForm = this.createDataUploadForm();
-    console.log(this.UserModel.RoleCode,"rolecodeheror")
   }
 
   uploadedFile(event) {
