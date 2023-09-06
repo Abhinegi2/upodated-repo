@@ -39,7 +39,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   jobRoleList: DropdownModel[];
   classList: [DropdownModel];
   sectionList: [DropdownModel];
-  classSectionList: [DropdownModel];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -79,10 +78,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
         this.classList = results[11].Results;
       }
 
-      if (results[12].Success) {
-        this.classSectionList = results[12].Results;
-      }
- 
       if (results[3].Success) {
         this.sectionList = results[3].Results;
       }
@@ -154,7 +149,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       JobRoleId: this.studentFilterForm.controls['JobRoleId'].value,
       ClassId: this.studentFilterForm.controls['ClassId'].value,
       SectionId: this.studentFilterForm.controls['SectionId'].value,
-      ClassSection: this.studentFilterForm.controls['ClassSection'].value,
       UserRole: this.UserModel.RoleCode,
       UserId: this.UserModel.UserTypeId,
       // HMId: null,
@@ -401,8 +395,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       SchoolId: new FormControl(),
       ClassId: new FormControl(),
       SectionId: new FormControl(),
-      Status: new FormControl(),
-      ClassSection: new FormControl()
+      Status: new FormControl()
     });
   }
 }
