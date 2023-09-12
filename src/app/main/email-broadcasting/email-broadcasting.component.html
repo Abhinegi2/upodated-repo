@@ -143,11 +143,11 @@
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxShow.gt-xs>
-                        <button *ngIf="PageRights.IsView" mat-icon-button
+                        <!-- <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/email-broadcasting', 'view', messageTemplate.Id]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">visibility</mat-icon>
-                        </button>
+                        </button> -->
                     </mat-cell>
                 </ng-container>
 

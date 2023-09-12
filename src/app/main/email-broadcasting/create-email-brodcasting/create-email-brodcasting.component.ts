@@ -91,7 +91,7 @@ export class CreateEmailBrodcastingComponent extends BaseComponent<EmailBroadcas
                   this.emailBroadcastingModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-                this.emailTemplateForm = this.createMessageTemplateForm();
+                // this.emailTemplateForm = this.createMessageTemplateForm();
               });
           }
         }
@@ -106,7 +106,7 @@ export class CreateEmailBrodcastingComponent extends BaseComponent<EmailBroadcas
       })
       
     });
-    this.emailTemplateForm = this.createMessageTemplateForm();
+    // this.emailTemplateForm = this.createMessageTemplateForm();
   }
 
   ngAfterViewInit() {
