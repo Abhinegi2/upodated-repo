@@ -127,6 +127,7 @@ export class AppConstants {
     public DocumentType = {
         VTP: "VTPCertificate",
         VTReporting: "VTDailyReporting",
+        EmailAttachments: "EmailAttachments",
         GuestLecture: "GuestLecture",
         FieldVisit: "FieldIndustryVisits",
         BulkUploadData: 'BulkUpload',

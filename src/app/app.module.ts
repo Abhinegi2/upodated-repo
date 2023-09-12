@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { fuseConfig } from 'app/fuse-config';
 import { DatePipe, PlatformLocation, APP_BASE_HREF, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import 'hammerjs';
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
@@ -74,6 +75,7 @@ const appRoutes: Routes = [
         BrowserModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        QuillModule,
         // MatInputModule,
         MatFormFieldModule,
         // MatTableExporterModule,

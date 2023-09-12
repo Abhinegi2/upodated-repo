@@ -94,16 +94,15 @@ export class EmailBroadcastingComponent extends BaseListComponent<EmailBroadcast
     this.IsLoading = true;
 
     let messageTemplateParams = {
-      MessageTypeId: this.messageTemplateFilterForm.controls["MessageTypeId"].value,
-      Status: this.messageTemplateFilterForm.controls["Status"].value,
-      Name: this.messageTemplateSearchForm.controls["SearchText"].value,
+      Id: this.messageTemplateFilterForm.controls["Id"].value,
+      Subject: this.messageTemplateFilterForm.controls["Subject"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
       PageSize: this.SearchBy.PageSize
     };
 
     this.messageTemplateService.GetAllByCriteria(messageTemplateParams).subscribe(response => {
-      this.displayedColumns = ['TemplateName', 'TemplateFlowId', 'MessageType', 'IsActive', 'Actions'];
+      this.displayedColumns = ['Subject', 'CreatedBy', 'MessageType', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
@@ -202,8 +201,8 @@ export class EmailBroadcastingComponent extends BaseListComponent<EmailBroadcast
   //Create MessageTemplateFilter form and returns {FormGroup}
   createMessageTemplateFilterForm(): FormGroup {
     return this.formBuilder.group({
-      MessageTypeId: new FormControl(),
-      Status: new FormControl(),
+      Id: new FormControl(),
+      Subject: new FormControl(),
     });
   }
 }

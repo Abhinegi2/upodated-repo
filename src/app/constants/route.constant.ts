@@ -497,6 +497,6 @@ export const RouteConstants = {
     EmailBroadcasting: {
         List: 'email-broadcasting',
         New: 'email-broadcasting/:actionType',
-        Edit: 'email-broadcasting/:actionType/:CampainID',
+        Edit: 'email-broadcasting/:actionType/:Id',
     },
 }

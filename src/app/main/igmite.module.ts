@@ -433,7 +433,6 @@ import { CreateWhatsappBrodcastingComponent } from './whatsapp-broadcasting/crea
 import { EmailBroadcastingComponent } from './email-broadcasting/email-broadcasting.component';
 import { CreateEmailBrodcastingComponent } from './email-broadcasting/create-email-brodcasting/create-email-brodcasting.component';
 import { EmailBroadcastingService } from './email-broadcasting/email-broadcating.service';
-import { RichTextEditorComponent } from './rich-text-editor/rich-text-editor.component';
 
 const routes: Routes = [
     { path: RouteConstants.Login, component: LoginComponent },
@@ -1024,8 +1023,7 @@ const routes: Routes = [
         WhatsappBroadcastingComponent,
         CreateWhatsappBrodcastingComponent,
         EmailBroadcastingComponent,
-        CreateEmailBrodcastingComponent,
-        RichTextEditorComponent
+        CreateEmailBrodcastingComponent
     ],
     imports: [
         RouterModule.forChild(routes),

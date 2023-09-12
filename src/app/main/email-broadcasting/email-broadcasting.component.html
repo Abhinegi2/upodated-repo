@@ -1,4 +1,4 @@
-<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+<div id="email-broadcasting" class="page-layout carded fullwidth inner-scroll">
 
     <!-- TOP BACKGROUND -->
     <div class="top-bg accent"></div>
@@ -101,22 +101,22 @@
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- TemplateName Column -->
-                <ng-container matColumnDef="TemplateName">
+                <ng-container matColumnDef="Subject">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
                         Subject
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
-                        <p class="text-truncate">{{messageTemplate.TemplateName}}</p>
+                        <p class="text-truncate">{{messageTemplate.Subject}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- TemplateFlowId Column -->
-                <ng-container matColumnDef="TemplateFlowId">
+                <ng-container matColumnDef="CreatedBy">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
                         Created By
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate">
-                        <p class="text-truncate">{{messageTemplate.TemplateFlowId}}</p>
+                        <p class="text-truncate">{{messageTemplate.CreatedBy}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -135,8 +135,8 @@
                         Status
                     </mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxHide fxShow.gt-xs>
-                        <mat-icon *ngIf="messageTemplate.IsActive" class="active-icon green-600 s-16">check</mat-icon>
-                        <mat-icon *ngIf="!messageTemplate.IsActive" class="active-icon red-500 s-16">close</mat-icon>
+                        <!-- <mat-icon *ngIf="messageTemplate.IsActive" class="active-icon green-600 s-16">check</mat-icon>
+                        <mat-icon *ngIf="!messageTemplate.IsActive" class="active-icon red-500 s-16">close</mat-icon> -->
                     </mat-cell>
                 </ng-container>
 
@@ -144,19 +144,9 @@
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let messageTemplate" fxShow.gt-xs>
                         <button *ngIf="PageRights.IsView" mat-icon-button
-                            [routerLink]="['/message-templates', 'view', messageTemplate.MessageTemplateId]"
+                            [routerLink]="['/email-broadcasting', 'view', messageTemplate.Id]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon color="primary">visibility</mat-icon>
-                        </button>
-                        <button *ngIf="PageRights.IsEdit" mat-icon-button
-                            [routerLink]="['/message-templates', 'edit', messageTemplate.MessageTemplateId]"
-                            skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn"
-                            (click)="onDeleteMessageTemplate(messageTemplate.MessageTemplateId)"
-                            *ngIf="PageRights.IsDelete">
-                            <mat-icon>delete_outline</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

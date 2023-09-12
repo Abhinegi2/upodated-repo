@@ -48,9 +48,27 @@
             cursor: pointer;
             color: rgba(0, 0, 0, 0.54);
         }
-        quill-editor {
-            height: 200px;
-            /* Add any other styles you want here */
-          }
+        .action-btn {
+            font-size: 38px;
+            color: royalblue;
+            margin-bottom: 15px;
+            margin-left: 7px;
+            cursor: pointer;
+            margin-left: auto; /* Push the icon to the end of the line */
+        }
+        .input-row {
+            justify-content: space-between; /* Align items to both ends */
+            align-items: flex-end; /* Align items to the bottom */
+        }
+        .quill-editor-container{
+            .mat-field {
+                font: 400 15px/1.125 Muli, Helvetica Neue, Arial, sans-serif;
+                color: gray;
+                padding-left: 1.2%;
+                padding-bottom: 5px;
+            }
+
+        }
+
     }
 }

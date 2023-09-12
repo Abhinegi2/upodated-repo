@@ -24,7 +24,7 @@
                         {{ messageTemplateModel.TemplateName }}
                     </div>
                     <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'new'">
-                        New Email BroadCastings
+                        New Email Broadcasting
                     </div>
                     <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'view'">
                         <span>Message Template Details</span>
@@ -38,15 +38,15 @@
                
                 <button mat-raised-button class="add-message-template-button"
                     (click)="saveOrUpdateMessageTemplateDetails()">
-                    <span>{{ (PageRights.ActionType ==='new'? 'SCHEDULE' : 'SAVE') }}</span>
+                    <span>{{ (PageRights.ActionType ==='new'? 'SCHEDULE' : '') }}</span>
                 </button>
                 <button mat-raised-button class="add-message-template-button"
                     (click)="saveOrUpdateMessageTemplateDetails()">
-                    <span>{{ (PageRights.ActionType ==='new'? 'SAVE AS DRAFT' : 'SAVE') }}</span>
+                    <span>{{ (PageRights.ActionType ==='new'? 'SAVE AS DRAFT' : '') }}</span>
                 </button>
                 <button mat-raised-button class="add-message-template-button"
                     (click)="saveOrUpdateMessageTemplateDetails()">
-                    <span>{{ (PageRights.ActionType ==='new'? 'SEND NOW' : 'SAVE') }}</span>
+                    <span>{{ (PageRights.ActionType ==='new'? 'SEND NOW' : '') }}</span>
                 </button>
             </div>
             <!-- / ADD BUTTON -->
@@ -60,35 +60,59 @@
             <!-- CONTENT -->
             <div class="content">
 
-                <form name="messageTemplateForm" [formGroup]="messageTemplateForm"
+                <form name="emailTemplateForm" [formGroup]="emailTemplateForm"
                 class="head-master w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
                 fxFlex fusePerfectScrollbar>
-            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                 fxLayoutGap.lt-md="0px">
-              <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                <mat-label>Email Address</mat-label>
-                <input matInput name="TemplateName" formControlName="TemplateName" required>
-                <mat-error *ngIf="messageTemplateForm.controls.TemplateName.invalid">
-                  {{getErrorMessage(messageTemplateForm, 'TemplateName')}}
-                </mat-error>
-              </mat-form-field>
-            </div>
+
+                
+            <fieldset formGroupName="emailGroup" *ngIf="isAllowEmail" >
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                fxLayoutGap.lt-md="0px">
+                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                    <mat-label>Email Address</mat-label>
+                    <input matInput name="User_email" formControlName="User_email" required>
+                    <mat-error *ngIf="emailTemplateForm.controls.emailGroup.controls.User_email.invalid">
+                        {{getErrorMessage(emailTemplateForm.controls.emailGroup, 'User_email')}}
+                    </mat-error>
+                </mat-form-field>
+                </div>
+            </fieldset>
           
             <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                  fxLayoutGap.lt-md="0px">
               <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
                 <mat-label>Email Subject</mat-label>
-                <input matInput name="TemplateFlowId" formControlName="TemplateFlowId">
-                <mat-error *ngIf="messageTemplateForm.controls.TemplateFlowId.invalid">
-                  {{getErrorMessage(messageTemplateForm, 'TemplateFlowId')}}
+                <input matInput name="Subject" formControlName="Subject" required>
+                <mat-error *ngIf="emailTemplateForm.controls.Subject.invalid">
+                  {{getErrorMessage(emailTemplateForm, 'Subject')}}
                 </mat-error>
               </mat-form-field>
             </div>
+            <div class="input-row ">
+                <div class="quill-editor-container" >
+                    <mat-label class="mat-field" >Email Content</mat-label>
+                  <div id="editor-container" style="height: 200px; margin-bottom: 10px;"></div>
+                </div>
+              </div>
 
-            <rich-text-editor></rich-text-editor>
+              <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+              fxLayoutGap.lt-md="0px" >
+                  <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="100"
+                      fxFlex.lt-sm="100">
+                      <mat-label>Add Attachments</mat-label>
+                      <ngx-mat-file-input name="emailDocumentFile" formControlName="EmailDocumentFile"
+                          [accept]="AllowedPDFExtensions" [disabled]="PageRights.IsReadOnly"
+                          (change)="uploadedEmailDocumentUploadFile($event)" required>
+                          
+                      </ngx-mat-file-input>
+                      <mat-error *ngIf="emailTemplateForm.controls.EmailDocumentFile.invalid">
+                          {{getErrorMessage(emailTemplateForm, 'EmailDocumentFile')}}
+                      </mat-error>
+                    </mat-form-field>
+                    <span class="material-icons action-btn" (click)="uploadedEmailDocumentUploadFile($event)"
+                    matTooltip="Upload bulk data" matTooltipPosition="above">cloud_upload</span>
+              </div>
           </form>
-          
-
             </div>
             <!-- / CONTENT -->
 
