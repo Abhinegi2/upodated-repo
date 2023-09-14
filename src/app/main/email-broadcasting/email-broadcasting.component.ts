@@ -102,7 +102,7 @@ export class EmailBroadcastingComponent extends BaseListComponent<EmailBroadcast
     };
 
     this.messageTemplateService.GetAllByCriteria(messageTemplateParams).subscribe(response => {
-      this.displayedColumns = ['Subject', 'CreatedBy', 'MessageType', 'IsActive', 'Actions'];
+      this.displayedColumns = ['Subject', 'CreatedBy', 'CreatedOn', 'IsActive', 'Actions'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
