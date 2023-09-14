@@ -52,8 +52,6 @@ export class EmailBroadcastingService {
     }
 
     createOrUpdateMessageTemplate(formData: any) {
-    console.log("hello3")
-
         return this.http
             .HttpPost(this.http.Services.EmailBroadcasting.CreateOrUpdate, formData)
             .pipe(
@@ -66,8 +64,6 @@ export class EmailBroadcastingService {
     }
 
     SendEmailBroadcasting(emaiBroadcastingData) {
-        console.log("hello3")
-    
             return this.http
                 .HttpPost(this.http.Services.EmailBroadcasting.SendEmailBroadcasting, emaiBroadcastingData)
                 .pipe(

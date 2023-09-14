@@ -70,6 +70,7 @@ export class CreateEmailBrodcastingComponent extends BaseComponent<EmailBroadcas
         this.messageTypeList = results[0].Results;
         
       }
+      this.isAllowEmail= true;
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -78,7 +79,6 @@ export class CreateEmailBrodcastingComponent extends BaseComponent<EmailBroadcas
             this.emailBroadcastingModel = new EmailBroadcastingModel();
 
           } else {
-            console.log(this.emailBroadcastingModel, "emailBroadcastingModel")
             var messageTemplateId: string = params.get('Id');
 
             this.messageTemplatesService.getMessageTemplateById(messageTemplateId)
@@ -91,22 +91,29 @@ export class CreateEmailBrodcastingComponent extends BaseComponent<EmailBroadcas
                   this.emailBroadcastingModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-                // this.emailTemplateForm = this.createMessageTemplateForm();
+                this.emailTemplateForm = this.createMessageTemplateForm();
+                this.emailBroadcastingModel.EBSEmailModels = new EmailAddressModel(this.emailBroadcastingModel.EBSEmailModels);
+                this.editor.clipboard.dangerouslyPasteHTML(0, this.emailBroadcastingModel.Body);
+                this.emailTemplateForm = this.formBuilder.group({
+                  ...this.emailTemplateForm.controls,
+                  emailGroup: this.formBuilder.group({
+                    User_email: new FormControl({ value: this.emailBroadcastingModel.EBSEmailModels.User_email, disabled: this.PageRights.IsReadOnly }),
+                  })
+                });
+
               });
           }
         }
       });
     });
-    this.isAllowEmail= true;
+    this.emailTemplateForm = this.createMessageTemplateForm();
     this.emailBroadcastingModel.EBSEmailModels = new EmailAddressModel(this.emailBroadcastingModel.EBSEmailModels);
     this.emailTemplateForm = this.formBuilder.group({
       ...this.emailTemplateForm.controls,
       emailGroup: this.formBuilder.group({
         User_email: new FormControl({ value: this.emailBroadcastingModel.EBSEmailModels.User_email, disabled: this.PageRights.IsReadOnly }),
       })
-      
     });
-    // this.emailTemplateForm = this.createMessageTemplateForm();
   }
 
   ngAfterViewInit() {
