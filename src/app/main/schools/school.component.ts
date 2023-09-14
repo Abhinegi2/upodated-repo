@@ -123,6 +123,7 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
     this.IsLoading = true;
 
     let schoolParams = {
+      userTypeId: this.UserModel.UserTypeId,
       divisionId: this.schoolFilterForm.controls["DivisionId"].value,
       districtId: this.schoolFilterForm.controls["DistrictId"].value,
       schoolCategoryId: this.schoolFilterForm.controls["SchoolCategoryId"].value,
