@@ -53,6 +53,11 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
     this.vocationalCoordinatorService.getInitVocationalCoordinatorsData().subscribe(results => {
       if (results[0].Success) {
         this.academicYearList = results[0].Results;
+        let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      if (currentYearItem != null) {
+        this.AcademicYearId = currentYearItem.Id;
+        this.vcFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
+      }
       }
 
       if (results[1].Success) {
@@ -62,12 +67,6 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
 
       if (results[2].Success) {
         this.natureOfAppointmentList = results[2].Results;
-      }
-
-      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      if (currentYearItem != null) {
-        this.AcademicYearId = currentYearItem.Id;
-        this.vcFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
       }
 
       this.SearchBy.PageIndex = 0; // delete after script changed
@@ -114,10 +113,8 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
 
     this.onLoadVocationalCoordinatorsByCriteria();
   }
-
   onLoadVocationalCoordinatorsByCriteria(): void {
     this.IsLoading = true;
-
     let vcParams = {
       AcademicYearId: this.vcFilterForm.controls["AcademicYearId"].value,
       VTPId: this.vcFilterForm.controls["VTPId"].value,
@@ -133,6 +130,7 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
       this.displayedColumns = [
         // 'NatureOfAppointment', 
         // 'VTPName',
+        'AcademicYear',
         'FullName',
         'Mobile',
         'EmailId',

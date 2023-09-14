@@ -60,7 +60,7 @@
                         <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>Select School/Sector/JobRole</mat-label>
 
-                            <mat-select formControlName="GVTId" required appearance="outline"
+                            <mat-select formControlName="SSJId" required appearance="outline"
                                 matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt (selectionChange)="onChangeSSJ($event.value)" >
 
@@ -71,7 +71,7 @@
                                     {{ gvtItem.Name }}
                                 </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="vtacademicclasssectionForm.controls.GVTId.invalid ">
+                            <mat-error *ngIf="vtacademicclasssectionForm.controls.SSJId.invalid ">
                            School/Sector/JobRole is required.
                           </mat-error>
                      </mat-form-field>

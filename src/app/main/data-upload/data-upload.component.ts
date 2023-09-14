@@ -38,6 +38,7 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
 
     // Set the default school Model
     this.fileUploadModel = new FileUploadModel();
+    
     this.dataTypetList = <DropdownModel[]>[
       { Id: '', Name: 'Select Excel Template' },
       { Id: 'Division', Name: 'Division', Template: 'Divisions_Template.xlsx' },
@@ -65,6 +66,9 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       
       { Id: 'SchoolVEIncharges', Name: 'School VE Incharges(Not available)', Template: 'SchoolVEIncharges_Template.xlsx' },*/
     ]
+    if(this.UserModel.RoleCode == 'HM'||this.UserModel.RoleCode == 'VT'||this.UserModel.RoleCode == 'VC'){
+      this.dataTypetList = this.dataTypetList.filter(item => item.Id === 'Students');
+    }
   }
 
   ngOnInit(): void {

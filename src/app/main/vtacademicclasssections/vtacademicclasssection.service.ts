@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { forkJoin, Observable } from "rxjs";
 import { retry, catchError, tap } from "rxjs/operators";
 import { BaseService } from 'app/services/base.service';
+import { CommonService } from "app/services/common.service";
 
 @Injectable()
 export class VTAcademicClassSectionService {
-    constructor(private http: BaseService) { }
+    constructor(private http: BaseService, private commonService: CommonService) { }
 
     getVTAcademicClassSections(): Observable<any> {
         return this.http
@@ -80,8 +81,11 @@ export class VTAcademicClassSectionService {
         let classRequest = this.http.GetMasterDataByType({ DataType: 'SchoolClasses', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Classes' });
         let sectionRequest = this.http.GetMasterDataByType({ DataType: 'Sections', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Section' });
         let gvtRequest = this.http.GetMasterDataByType({ DataType: 'GenericVocationalTrainers', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Generic Vocational Trainer' }, false);
-
+        let SchoolRequest = this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'School' }, false);
+        let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([academicYearRequest, classRequest, sectionRequest, gvtRequest]);
+
+        return forkJoin([academicYearRequest, classRequest, sectionRequest,sectorRequest, gvtRequest]);
+
     }
 }

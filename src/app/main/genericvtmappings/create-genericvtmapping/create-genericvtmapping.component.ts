@@ -66,11 +66,14 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
         this.vtpList = results[1].Results;
         this.filteredVtpItems = this.vtpList.slice();
       }
-
+      this.genericvtmappingForm.controls['DateOfAllocation'].disable();
+      
       if (results[2].Success) {
         this.vcList = results[2].Results;
         this.filteredVcItems = this.vcList.slice();
       }
+      this.genericvtmappingForm.controls['DateOfAllocationVC'].disable();
+
 
       if (results[3].Success) {
         this.vtList = results[3].Results;
@@ -82,7 +85,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
           this.PageRights.ActionType = params.get('actionType');
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
-            this.genericvtmappingModel = new GenericVTMappingModel();
+            this.genericvtmappingModel = new GenericVTMappingModel();            
 
           } else {
             var genericvtmappingId: string = params.get('genericvtmappingId')
@@ -99,7 +102,7 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                 }
 
                 // this.onChangeUserType(this.genericvtmappingModel.UserType);
-                // this.onChangeSSJ(this.genericvtmappingModel.GVTId);
+                // this.onChangeSSJ(this.genericvtmappingModel.SSJId);
 
                 this.genericvtmappingForm = this.createGenericVTMappingForm();
 
@@ -129,37 +132,35 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
   //   }
   // }
 
-  // onChangeSSJ(GVTId) {
+  onVTPIdChange():void{
+    const vtpId = this.genericvtmappingForm.get('VTPId').value;
+    const dateOfAllocationVTPControl = this.genericvtmappingForm.get('DateOfAllocation');
+    if(vtpId){
+      dateOfAllocationVTPControl.setValidators([Validators.required]);
+      this.genericvtmappingForm.controls['DateOfAllocation'].enable();
+    }else{
+    dateOfAllocationVTPControl.clearValidators();
+  }
+  }
 
-  //   this.commonService.GetMasterDataByType({
-  //     DataType: 'VTForSSJId',
-  //     RoleId: this.UserModel.RoleCode,
-  //     ParentId: GVTId,
-  //     SelectTitle: 'Vocational Trainers'
-  //   }, false).subscribe((response: any) => {
-  //     this.vtList = response.Results;
-  //     this.filteredVtItems = this.vtList.slice();
 
-  //     // this.userList = this.userFilterList.slice();
-  //   });
-  // }
+
 // Inside your component class
 onVCIdChange(): void {
 
   const vcId = this.genericvtmappingForm.get('VCId').value;
-
   const dateOfAllocationVCControl = this.genericvtmappingForm.get('DateOfAllocationVC'); 
 
 
   if (vcId) {
     dateOfAllocationVCControl.setValidators([Validators.required]);
+    this.genericvtmappingForm.controls['DateOfAllocationVC'].enable();
   } else {
     dateOfAllocationVCControl.clearValidators();
   }
 }
 
 onChangeDateOfAllocation(): void{
-  console.log("hello");
   const dateOfAllocationVT = this.genericvtmappingForm.get('DateOfAllocation');
   if(dateOfAllocationVT) {
     this.genericvtmappingForm.get('DateOfAllocationVC').setValue(null);
@@ -217,11 +218,11 @@ onChangeDateOfAllocation(): void{
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
       // UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
       // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
-      GVTId: new FormControl({ value: this.genericvtmappingModel.GVTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      SSJId: new FormControl({ value: this.genericvtmappingModel.SSJId, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),
       VTId: new FormControl({ value: this.genericvtmappingModel.VTId, disabled: this.PageRights.IsReadOnly }),
-      DateOfAllocation: new FormControl({ value: new Date(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
+      DateOfAllocation: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfAllocation), disabled: this.PageRights.IsReadOnly }),
       DateOfRemoval: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfRemoval), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.genericvtmappingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
       DateOfAllocationVC: new FormControl({ value: this.getDateValue(this.genericvtmappingModel.DateOfAllocationVC), disabled: this.PageRights.IsReadOnly }),

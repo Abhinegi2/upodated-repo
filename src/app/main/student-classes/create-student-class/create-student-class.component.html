@@ -155,20 +155,6 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Select Class Section</mat-label>
-
-                            <mat-select formControlName="ClassSection" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of classSectionList">
-                                    {{ sectionItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="studentClassForm.controls.ClassSection.invalid">
-                                {{getErrorMessage(studentClassForm, 'ClassSection')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Select Vocational Section</mat-label>
 
                             <mat-select formControlName="SectionId" required appearance="outline"
@@ -181,6 +167,21 @@
                                 {{getErrorMessage(studentClassForm, 'SectionId')}}
                             </mat-error>
                         </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                            <mat-label>Select Class Section</mat-label>
+
+                            <mat-select formControlName="ClassSection" required appearance="outline"
+                                [disabled]="PageRights.IsReadOnly">
+                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of classSectionList">
+                                    {{ sectionItem.Name }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="studentClassForm.controls.ClassSection.invalid">
+                                {{getErrorMessage(studentClassForm, 'ClassSection')}}
+                            </mat-error>
+                        </mat-form-field>
+                        
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -302,7 +303,9 @@
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Stream</mat-label>
+                         
                             <mat-select name="stream" formControlName="Stream"
+                            [required]= "selectedClass === 'Class 11' || selectedClass === 'Class 12'"
                                 appearance="outline" [disabled]="PageRights.IsReadOnly">
                                 <mat-option value="Science PCB">Science PCB</mat-option>
                                 <mat-option value="Science PCM">Science PCM</mat-option>

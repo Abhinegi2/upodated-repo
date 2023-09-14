@@ -40,7 +40,7 @@ export class SearchFilterModel {
         this.AcademicYearId = '';
 
         this.SortOrder = 'asc';
-        this.PageIndex = 1;
+        this.PageIndex = 0;
         this.PageSize = 10000;
         this.TotalResults = 0;
         this.PageSizeOptions = [10, 25, 100, 250, 500];
