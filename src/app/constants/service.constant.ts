@@ -783,4 +783,26 @@ export class ServiceConstants {
         CreateOrUpdate: "MessageTemplate/CreateOrUpdateMessageTemplateDetails",
         Delete: "MessageTemplate/DeleteMessageTemplateById"
     };
+
+    public WhatsappBroadcasting = {
+        GetAll: "WhatsappBroadcasting/GetWhatsappBroadcastings",
+        GetAllByCriteria: "WhatsappBroadcasting/GetWhatsappBroadcastingsByCriteria",
+        GetById: "WhatsappBroadcasting/GetWhatsappBroadcastingById",
+        GetGlificTemplate: "WhatsappBroadcasting/GetGlificTemplateData",
+        GetTemplateDataById: "WhatsappBroadcasting/GetTemplateDataById",
+        CreateOrUpdate: "WhatsappBroadcasting/CreateOrUpdateWhatsappBroadcastingDetails",
+        CreateContactGroup: "WhatsappBroadcasting/CreateContactGroup",
+        GetAccessToken: "WhatsappBroadcasting/GetAccessToken",
+        Delete: "WhatsappBroadcasting/DeleteWhatsappBroadcastingById"
+    };
+    
+    public EmailBroadcasting = {
+        GetAll: "EmailBroadcating/GetMessageTemplates",
+        SendEmailBroadcasting: "EmailBroadcating/SendEmailBroadcasting",
+        UploadImg: "EmailBroadcating/GetUploadFilesData",
+        GetAllByCriteria: "EmailBroadcating/GetMessageTemplatesByCriteria",
+        GetById: "EmailBroadcating/GetMessageTemplateById",
+        CreateOrUpdate: "EmailBroadcating/CreateOrUpdateMessageTemplateDetails",
+        Delete: "EmailBroadcating/DeleteMessageTemplateById"
+    };
 };

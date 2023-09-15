@@ -382,6 +382,12 @@ export const RouteConstants = {
         Edit: 'school-vtp-sectors/:actionType/:schoolVTPSectorId',
     },
 
+    WhatsappBroadcasting: {
+        List: 'whatsapp-broadcasting',
+        New: 'whatsapp-broadcasting/:actionType',
+        Edit: 'whatsapp-broadcasting/:actionType/:CampainID',
+    },
+
     MatTableServer: {
         List: 'mat-table-server',
     },
@@ -486,5 +492,11 @@ export const RouteConstants = {
         List: 'message-templates',
         New: 'message-templates/:actionType',
         Edit: 'message-templates/:actionType/:messageTemplateId'
-    }
+    },
+
+    EmailBroadcasting: {
+        List: 'email-broadcasting',
+        New: 'email-broadcasting/:actionType',
+        Edit: 'email-broadcasting/:actionType/:Id',
+    },
 }

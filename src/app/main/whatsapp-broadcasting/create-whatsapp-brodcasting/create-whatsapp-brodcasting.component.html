@@ -1,0 +1,173 @@
+<div id="message-template" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="column" fxLayoutAlign="center center" fxLayout.gt-sm="row"
+            fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/whatsapp-broadcasting'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                    [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2 subtitle secondary-text" *ngIf="PageRights.ActionType === 'edit'">
+                        {{ messageTemplateModel.TemplateMessage }}
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'new'">
+                        New Whatsapp Broadcasting Message
+                    </div>
+                    <div class="subtitle secondary-text" *ngIf="PageRights.ActionType == 'view'">
+                        <span>Message Details</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- ADD BUTTON -->
+            <div class="action-buttons">
+                <button mat-raised-button class="add-message-template-button"
+                (click)="saveOrUpdateMessageTemplateDetails()">
+                    <span>{{ (PageRights.ActionType ==='new'? 'SEND NOW' : '') }}</span>
+                </button>
+            </div>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="messageTemplateForm" [formGroup]="messageTemplateForm"
+                    class="head-master w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                    fxFlex fusePerfectScrollbar>
+                    <!-- <mat-tab label="Basic Info"> -->
+                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100" aria-required="true" >
+                            <mat-label>Message Template from Glific</mat-label>
+                            <mat-select formControlName="TemplateID" appearance="outline" (selectionChange)="onChangeTemplateType($event.value)" >
+                                <mat-option [value]="userTypeItem.id"
+                                    *ngFor="let userTypeItem of gifictemplate">
+                                    {{userTypeItem.label}}</mat-option>
+                            </mat-select>
+                        </mat-form-field> 
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value" [attr.aria-disabled]="true" style="margin-left: 10px; margin-bottom: 10px;">
+                        <div fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100" class="custom-text-container" >
+                          <span class="custom-text">{{ glificMessage }}</span>
+                        </div>
+                      </div>
+                      
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                      fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value">
+                   <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100"
+                                   *ngFor="let field of fields; let i = index" aria-required="true">
+                     <mat-label>{{ field.label }}</mat-label>
+                     <mat-select [formControlName]="'Variable' + (i + 1)" (selectionChange)="updateMessagePreview()">
+                       <mat-option *ngFor="let option of dropdownFields" [value]="option">{{ option }}</mat-option>
+                     </mat-select>
+                     <mat-error *ngIf="messageTemplateForm.controls['Variable' + (i + 1)].invalid">
+                       {{ field.label }} is required.
+                     </mat-error>
+                   </mat-form-field>
+                 </div>
+                 
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px" *ngIf="messageTemplateForm.controls.TemplateID.value">
+                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                          <mat-label>Message Preview</mat-label>
+                          <textarea matInput name="TemplateMessage" formControlName="TemplateMessage" cdkTextareaAutosize
+                                    #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="25"
+                                    [(ngModel)]="messagepreview"></textarea>
+                          <mat-error *ngIf="messageTemplateForm.controls.TemplateMessage.invalid">
+                            {{ getErrorMessage(messageTemplateForm, 'TemplateMessage') }}
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px" >
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" aria-required="true">
+                            <mat-label>User Type</mat-label>
+                            <mat-select formControlName="UserType" appearance="outline" (selectionChange)="onChangeuserType($event.value)" >
+                                <mat-option [value]="userTypeItem"
+                                    *ngFor="let userTypeItem of userTypeList">
+                                    {{userTypeItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Condition</mat-label>
+                            <mat-select formControlName="ConditionId" appearance="outline" >
+                                <mat-option [value]="conditionItem"
+                                    *ngFor="let conditionItem of conditionList">
+                                    {{conditionItem}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>   
+
+                        <div class="action-buttons mt-md-8">
+                            <button mat-raised-button class="add-message-template-button fuse-white mt-24 mt-md-0"
+                                (click)="saveOrUpdateMessageTemplateDetails()">
+                                <span>{{ 'Generate List' }}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="content-card" *ngIf="messageTemplateForm.controls.UserType.value">
+                    <mat-table class="message-template-table responsive-table" [dataSource]="tableDataSource" matSort
+                    fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+
+                    <ng-container matColumnDef="select">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Select</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()" (change)="selectHandler(row)"
+                                [checked]="selection.isSelected(row)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="Name">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                          <mat-cell *matCellDef="let row">{{ row.Name }}</mat-cell>
+                        </ng-container>
+                      
+                        <!-- Phone Column -->
+                        <ng-container matColumnDef="Description">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+                          <mat-cell *matCellDef="let row">{{ row.Description }}</mat-cell>
+                        </ng-container>
+                        <!-- Phone Column -->
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;" class="messageTemplate"></mat-row>
+                    </mat-table>
+                </div>
+                <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                  [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                  [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+                </mat-paginator>
+                </form>
+            </div>
+            <!-- / CONTENT -->
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
