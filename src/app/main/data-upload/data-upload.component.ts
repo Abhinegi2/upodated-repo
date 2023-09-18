@@ -51,20 +51,10 @@ export class DataUploadComponent extends BaseListComponent<DataUploadModel> impl
       { Id: 'VocationalTrainers', Name: 'Vocational Trainers', Template: 'VocationalTrainers_Template.xlsx' },
       { Id: 'SectorJobRoles', Name: 'Sector Job Roles',class:"data-active", Template: 'SectorJobRoles_Template.xlsx' },
       { Id: 'SchoolSectorJobRole', Name: 'School Sector JobRole', Template: 'SchoolsSectorJobRole_Template.xlsx' },
-      // { Id: 'VTP Mapping (GVT)', Name: 'VTP Mapping (GVT)', Template: 'VTP_Mapping_GVT.xlsx' },
-      // { Id: 'VC_Mapping_(GVT)', Name: 'VC Mapping (GVT)', Template: 'VC_Mapping_GVT.xlsx' },
       { Id: 'VTP/VC/VTGenericMapping', Name: 'VTP/VC/VT Generic Mapping', Template: 'VTPVCVTGeneric_Mapping_Template.xlsx' },
       { Id: 'VTAcademicClassSection', Name: 'VT Academic Class Section', Template: 'VTAcademicClassSection_Template.xlsx' },
       { Id: 'Students', Name: 'Students', Template: 'Students_Template.xlsx' },
-     // { Id: 'Employer', Name: 'Employer', Template: 'Employers_Template.xlsx'  },
       { Id: 'CourseModules', Name: 'Course Modules', Template: 'CourseModules_Template.xlsx' }
-      /* { Id: 'VCSchoolSectors', Name: 'VC School Sectors Obsolete', Template: 'VCSchoolSectors_Template_Obsolete.xlsx'},
-      { Id: 'VTSchoolSectors', Name: 'VT School Sectors Obsolete', Template: 'VTSchoolSectors_Template_Obsolete.xlsx' },
-      { Id: 'VTPSectors', Name: 'VTP Sectors Obsolete', Template: 'VTPSectors_Template_Obsolete.xlsx' },
-      { Id: 'VTClasses', Name: 'VT Classes Obsolete', Template: 'VTClasses_Template_Obsolete.xlsx' },
-      { Id: 'SchoolVTPSectors', Name: 'School VTP Sectors Obsolete', Template: 'SchoolVTPSectors_Template_Obsolete.xlsx' },
-      
-      { Id: 'SchoolVEIncharges', Name: 'School VE Incharges(Not available)', Template: 'SchoolVEIncharges_Template.xlsx' },*/
     ]
     if(this.UserModel.RoleCode == 'HM'||this.UserModel.RoleCode == 'VT'||this.UserModel.RoleCode == 'VC'){
       this.dataTypetList = this.dataTypetList.filter(item => item.Id === 'Students');
