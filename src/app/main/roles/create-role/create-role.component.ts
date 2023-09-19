@@ -9,7 +9,6 @@ import { DialogService } from 'app/common/confirm-dialog/dialog.service';
 import { RouteConstants } from 'app/constants/route.constant'
 import { RoleService } from '../role.service';
 import { RoleModel } from '../role.model';
-// import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'role',
@@ -31,15 +30,11 @@ export class CreateRoleComponent extends BaseComponent<RoleModel> implements OnI
     private route: ActivatedRoute,
     private roleService: RoleService,
     private dialogService: DialogService,
-    //private sanitizer: DomSanitizer,
     private formBuilder: FormBuilder) {
     super(commonService, router, routeParams, snackBar);
 
     // Set the default role Model
     this.roleModel = new RoleModel();
-
-    // this.safeHtml = this.sanitizer.bypassSecurityTrustHtml('<h2>Welcome Bypass Security</h2>');
-    // <span [innerHtml]="safeHtml"></span>
   }
 
   ngOnInit(): void {

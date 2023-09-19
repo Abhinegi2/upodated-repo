@@ -14,7 +14,6 @@ import { DropdownModel } from 'app/models/dropdown.model';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment, Moment } from "moment";
 
 @Component({
@@ -188,8 +187,6 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
               }
               else if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.onChangeDistrict(this.StudentDetail.DistrictOfResidence).then(result => {
-
-                  //this.StudentDetail.SectorsInterestedIn = this.StudentDetail.SectorsInterestedIn.split(',');
                   this.StudentDetail.TopicsOfInterest = this.StudentDetail.TopicsOfInterest.split(',');
 
                   this.vtStudentExitSurveyDetailModel = this.StudentDetail;
@@ -323,34 +320,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
       this.validateAllFormFields(this.vtStudentExitSurveyDetailForm);
       return;
     }
-
-    // if (this.IsSectorDisabled == false) {
-    //   this.StudentModel.Sector = this.vtStudentExitSurveyDetailForm.controls.studentDetailGroup.get("Sector").value;
-    //   this.StudentModel.JobRole = this.vtStudentExitSurveyDetailForm.controls.studentDetailGroup.get("JobRole").value;
-    //   this.vtStudentExitSurveyDetailService.createOrUpdateExitStudentDetail(this.StudentModel)
-    //     .subscribe((vtStudentExitSurveyDetailResp: any) => {
-
-    //       if (vtStudentExitSurveyDetailResp.Success) {
-    //         this.zone.run(() => {
-    //           this.showActionMessage(
-    //             this.Constants.Messages.RecordSavedMessage,
-    //             this.Constants.Html.SuccessSnackbar
-    //           );
-
-    //           this.router.navigate([RouteConstants.VTStudentExitSurveyDetail.List]);
-    //         });
-    //       }
-    //       else {
-    //         var errorMessages = this.getHtmlMessage(vtStudentExitSurveyDetailResp.Errors)
-    //         this.dialogService.openShowDialog(errorMessages);
-    //       }
-    //     }, error => {
-    //       console.log('VTStudentExitSurveyDetail deletion errors =>', error);
-    //     });
-    // }
-
     this.vtStudentExitSurveyDetailForm.removeControl('studentDetailGroup');
-
     let topicOfInterest = this.vtStudentExitSurveyDetailForm.get('TopicsOfInterest').value;
     this.setValueFromFormGroup(this.vtStudentExitSurveyDetailForm, this.vtStudentExitSurveyDetailModel);
     if (topicOfInterest !== null && topicOfInterest !== "") {

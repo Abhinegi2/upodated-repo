@@ -52,13 +52,10 @@
 
                 <form name="vtpMonthlyBillSubmissionStatusForm" [formGroup]="vtpMonthlyBillSubmissionStatusForm" class="vtp-monthly-bill-submission-status w-100-p p-24 mr-24" fxLayout="column"
                       fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
-                    <!-- <mat-tab label="Basic Info"> -->
-
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline"  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Month</mat-label>
-                            <!-- <input matInput name="month" formControlName="Month" required digitOnly minlength="1" maxlength="2" min="0" max="12"> -->
                             <mat-select name="month" formControlName="Month" appearance="outline" [disabled]="PageRights.IsReadOnly" required>
                                 <mat-option [value]="monthItem.Name"
                                     *ngFor="let monthItem of monthList">
@@ -161,14 +158,6 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-
-                    <!-- <div fxLayout="row" fxLayoutAlign="start start">
-                        <span class="checkbox-space">Is Active?</span>
-                        <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
-                        </mat-checkbox>
-                    </div> -->
-                    <!-- </mat-tab>
-                    </mat-tab-group> -->
                 </form>
 
             </div>

@@ -181,7 +181,6 @@ export class CreateSchoolComponent extends BaseComponent<SchoolModel> implements
       AcademicYearId: new FormControl({ value: this.schoolModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       PhaseId: new FormControl({ value: this.schoolModel.PhaseId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SchoolUniqueId: new FormControl({ value: this.schoolModel.Udise, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(11), Validators.minLength(11), Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-      // new FormControl({ value: this.schoolModel.StateName, disabled: this.PageRights.IsReadOnly }, Validators.required)
       StateName: new FormControl({ value: this.UserModel.DefaultStateId=this.Constants.DefaultStateId, disabled: (this.UserModel.DefaultStateId = this.Constants.DefaultStateId) }),
       DivisionId: new FormControl({ value: this.schoolModel.DivisionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       DistrictCode: new FormControl({ value: this.schoolModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, Validators.required),      

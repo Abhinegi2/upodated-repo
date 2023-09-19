@@ -145,10 +145,8 @@ export class CreateJobRoleComponent extends BaseComponent<JobRoleModel> implemen
   }
 
   onChangeJobRole(evt) {
-    //var sectorItem = this.sectorList.find(x => x.Id == this.jobRoleForm.get('SectorId').value);
     var sectorItem = this.sectorList.find(x => x.Id == this.sectorCtrl.value);
     var jobRoleText = this.jobRoleForm.get('JobRoleName').value;
-
     this.remarkText = sectorItem.Name + (jobRoleText == null ? '' : '-' + jobRoleText);
     this.jobRoleForm.get('Remarks').setValue(this.remarkText);
   }

@@ -124,7 +124,6 @@ export class CreateVTStudentAssessmentComponent extends BaseComponent<VTStudentA
       GroupPhoto: new FormControl({ value: this.vtStudentAssessmentModel.GroupPhoto, disabled: this.PageRights.IsReadOnly }),
       TestimonialTitle: new FormControl({ value: this.vtStudentAssessmentModel.TestimonialTitle, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150), Validators.pattern(this.Constants.Regex.CharsWithSpace)]),
       TestimonialDetails: new FormControl({ value: this.vtStudentAssessmentModel.TestimonialDetails, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(250), Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)]),
-      // IsActive: new FormControl({ value: this.vtStudentAssessmentModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

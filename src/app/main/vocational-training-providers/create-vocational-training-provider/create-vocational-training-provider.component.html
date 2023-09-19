@@ -53,9 +53,6 @@
                 <form name="vocationalTrainingProviderForm" [formGroup]="vocationalTrainingProviderForm"
                     class="vocational-training-provider w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
-                    <!-- <mat-tab label="Basic Info"> -->
-                    <!-- <div class="tab-content p-24" fusePerfectScrollbar> -->
-
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline"  fxFlex>
@@ -262,10 +259,6 @@
                                 {{getErrorMessage(vocationalTrainingProviderForm, 'ContractEndDate')}}
                             </mat-error>
                         </mat-form-field>
-                        <!-- <mat-icon matDatepickerToggleIcon
-                            (click)="clearDateValueInFormControl(vocationalTrainingProviderForm, 'DateOfResignationFromSchool', $event)"
-                            *ngIf="vocationalTrainingProviderForm.controls.DateOfResignationFromSchool.value && PageRights.ActionType !='view'">
-                            clear</mat-icon> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -290,9 +283,6 @@
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
                         </mat-checkbox>
                     </div>
-                    <!-- </div> -->
-                    <!-- </mat-tab>
-                    </mat-tab-group> -->
                 </form>
 
             </div>

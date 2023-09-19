@@ -54,8 +54,6 @@
                 <form name="vtGuestLectureConductedForm" [formGroup]="vtGuestLectureConductedForm"
                     class="vt-guest-lecture-conducted w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
-                    <!-- <mat-tab label="Basic Info"> -->
-                    
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
@@ -122,37 +120,6 @@
                                 {{getErrorMessage(vtGuestLectureConductedForm, 'AcademicYearId')}}
                             </mat-error>
                         </mat-form-field>
-
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Class Taught</mat-label>
-
-                            <mat-select formControlName="classTaughtId" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeClass($event.value)">
-                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
-                                    {{ classItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.classTaughtId.invalid">
-                                {{getErrorMessage(vtGuestLectureConductedForm, 'classTaughtId')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Section Taugh</mat-label>
-
-                            <mat-select formControlName="SectionIds" required appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="sectionItem.Id" *ngFor="let sectionItem of sectionList">
-                                    {{ sectionItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vtGuestLectureConductedForm.controls.SectionIds.invalid">
-                                {{getErrorMessage(vtGuestLectureConductedForm, 'SectionIds')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
                         <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Class Taught</mat-label>
@@ -592,9 +559,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- unpaid valid-- {{vtGuestLectureConductedForm.controls["GLConductedBy"].valid}}  <br>
- 
-                    paid valid -- {{vtGuestLectureConductedForm.controls["GLName"].valid}}  <br> -->
                 </form>
             </div>
             <!-- / CONTENT -->

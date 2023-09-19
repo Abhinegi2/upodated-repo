@@ -40,24 +40,19 @@ export class CreatePhaseComponent extends BaseComponent<PhaseModel> implements O
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
         this.PageRights.ActionType = params.get('actionType');
-
         if (this.PageRights.ActionType == this.Constants.Actions.New) {
           this.phaseModel = new PhaseModel();
-
         } else {
           var phaseId: string = params.get('phaseId')
-
           this.phaseService.getPhaseById(phaseId)
             .subscribe((response: any) => {
               this.phaseModel = response.Result;
-
               if (this.PageRights.ActionType == this.Constants.Actions.Edit)
                 this.phaseModel.RequestType = this.Constants.PageType.Edit;
               else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                 this.phaseModel.RequestType = this.Constants.PageType.View;
                 this.PageRights.IsReadOnly = true;
               }
-
               this.phaseForm = this.createPhaseForm();
             });
         }
@@ -69,7 +64,6 @@ export class CreatePhaseComponent extends BaseComponent<PhaseModel> implements O
 
   saveOrUpdatePhaseDetails() {
     this.setValueFromFormGroup(this.phaseForm, this.phaseModel);
-
     this.phaseService.createOrUpdatePhase(this.phaseModel)
       .subscribe((phaseResp: any) => {
 
@@ -79,7 +73,6 @@ export class CreatePhaseComponent extends BaseComponent<PhaseModel> implements O
               this.Constants.Messages.RecordSavedMessage,
               this.Constants.Html.SuccessSnackbar
             );
-
             this.router.navigate([RouteConstants.Phase.List]);
           });
         }

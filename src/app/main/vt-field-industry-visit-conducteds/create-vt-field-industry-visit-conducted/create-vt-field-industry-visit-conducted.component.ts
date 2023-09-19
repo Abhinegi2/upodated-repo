@@ -110,17 +110,7 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
                   this.vtFieldIndustryVisitConductedModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-
                 this.unitSessionsModels = this.vtFieldIndustryVisitConductedModel.UnitSessionsModels;
-
-                // this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: this.vtFieldIndustryVisitConductedModel.ClassTaughtId }).subscribe(response => {
-                //   if (response.Success) {
-                //     this.sectionList = response.Results;
-
-                //     this.vtFieldIndustryVisitConductedForm = this.createVTFieldIndustryVisitConductedForm();
-                //   }
-                // });
-
                 this.schoolsectorjobService.getSchoolSectorJobById(this.vtFieldIndustryVisitConductedModel.SSJId)
                   .subscribe((response: any) => {
                     var schoolsectorjobModel = response.Result;
@@ -128,7 +118,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
                     this.vtFieldIndustryVisitConductedModel.SchoolId = schoolsectorjobModel.SchoolId;
                     this.vtFieldIndustryVisitConductedModel.SectorId = schoolsectorjobModel.SectorId;
                     this.vtFieldIndustryVisitConductedModel.JobRoleId = schoolsectorjobModel.JobRoleId;
-
                     this.setInputs(this.vtFieldIndustryVisitConductedModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
                       this.setInputs(this.vtFieldIndustryVisitConductedModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                         this.setInputs(this.vtFieldIndustryVisitConductedModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
@@ -143,20 +132,17 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
                       });
                     });
                   });
-
               });
           }
         }
       });
     });
-
     this.vtFieldIndustryVisitConductedForm = this.createVTFieldIndustryVisitConductedForm();
   }
 
   onChangeSchool(schoolId): Promise<any> {
     this.resetInputsAfter('School');
     this.setFormInputs();
-
     this.IsLoading = true;
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -169,7 +155,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
             this.vtFieldIndustryVisitConductedForm.controls['SchoolId'].setValue(null);
           }
-
           this.loadFormInputs(response.Results, 'SectorId');
         }
         resolve(true);
@@ -182,17 +167,14 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
   onChangeSector(sectorId): Promise<any> {
     this.resetInputsAfter('Sector');
     this.setFormInputs();
-
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
       }).subscribe((response) => {
-
         if (response.Success) {
           this.jobRoleList = response.Results;
           this.loadFormInputs(response.Results, 'JobRoleId');
         }
-
         resolve(true);
       });
     });
@@ -201,7 +183,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
-
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
@@ -213,7 +194,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
             this.vtFieldIndustryVisitConductedForm.controls['JobRoleId'].setValue(null);
           }
-
           this.loadFormInputs(response.Results, 'AcademicYearId');
         }
         resolve(true);
@@ -225,20 +205,17 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
   onChangeAcademicYear(academicYearId): Promise<any> {
     this.resetInputsAfter('AcademicYear');
     this.setFormInputs();
-
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
           this.loadFormInputs(response.Results, 'ClassTaughtId');
         }
-
         resolve(true);
       });
     });
     return promise;
   }
-
 
   onChangeClassForTaught(classId): Promise<any> {
     this.resetInputsAfter('Class');
@@ -252,27 +229,10 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-          // this.loadFormInputs(response.Results, 'SectionIds');
         }
         resolve(true);
       });
     });
-
-    // let moduleItem = this.vtFieldIndustryVisitConductedForm.get('ModuleId').value;
-    // if (moduleItem != null && moduleItem.Id != null) {
-    //   this.onChangeCourseModule(moduleItem);
-    // }
-
-    // this.sectionList = <DropdownModel[]>[];
-    // this.unitList = <DropdownModel[]>[];
-    // this.sessionList = <DropdownModel[]>[];
-    // this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
-
-    // this.vtFieldIndustryVisitConductedForm.get("SectionIds").setValue(null);
-
-    // let studentAttendancesControls = <FormArray>this.vtFieldIndustryVisitConductedForm.get('StudentAttendances');
-    // studentAttendancesControls.clear();
-
     return promise;
   }
 
@@ -385,55 +345,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
     return promise;
   }
 
-  // onChangeClassForTaught(classId): void {
-  //   if (classId != null) {
-  //     this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId }).subscribe(response => {
-  //       if (response.Success) {
-  //         this.sectionList = response.Results;
-  //       }
-  //     });
-
-  //     let moduleItem = this.vtFieldIndustryVisitConductedForm.get('ModuleId').value;
-  //     if (moduleItem != null && moduleItem.Id != null) {
-  //       this.onChangeCourseModule(moduleItem);
-  //     }
-  //   }
-
-  //   this.sectionList = <DropdownModel[]>[];
-  //   this.unitList = <DropdownModel[]>[];
-  //   this.sessionList = <DropdownModel[]>[];
-  //   this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
-
-  //   this.vtFieldIndustryVisitConductedForm.get("SectionIds").setValue(null);
-
-  //   let studentAttendancesControls = <FormArray>this.vtFieldIndustryVisitConductedForm.get('StudentAttendances');
-  //   studentAttendancesControls.clear();
-  // }
-
-  // onChangeSectionForTaught(sectionId) {
-  //   if (sectionId != null) {
-  //     let classId = this.vtFieldIndustryVisitConductedForm.get("ClassTaughtId").value;
-
-  //     this.commonService.getStudentsByClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId, DataId2: sectionId }).subscribe(response => {
-  //       if (response.Success) {
-  //         let studentAttendancesControls = <FormArray>this.vtFieldIndustryVisitConductedForm.get('StudentAttendances');
-  //         studentAttendancesControls.clear();
-
-  //         response.Results.forEach(studentItem => {
-  //           studentAttendancesControls.push(this.formBuilder.group(studentItem));
-  //         });
-
-  //         // let initialFormValues = this.vtFieldIndustryVisitConductedForm.value;
-  //         // this.vtFieldIndustryVisitConductedForm.reset(initialFormValues);
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     let studentAttendancesControls = <FormArray>this.vtFieldIndustryVisitConductedForm.get('StudentAttendances');
-  //     studentAttendancesControls.clear();
-  //   }
-  // }
-
   onChangeSectionForTaught(sectionId) {
     this.setFormInputs();
     if (sectionId != null) {
@@ -457,7 +368,6 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
               });
 
               let initialFormValues = this.vtFieldIndustryVisitConductedForm.value;
-              // this.vtFieldIndustryVisitConductedForm.reset(initialFormValues);
             }
           });
         }
@@ -468,26 +378,7 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
       let studentAttendancesControls = <FormArray>this.vtFieldIndustryVisitConductedForm.get('StudentAttendances');
       studentAttendancesControls.clear();
     }
-    // this.setUserAction();
   }
-
-
-  // onChangeCourseModule(moduleItem): void {
-  //   let classId = this.vtFieldIndustryVisitConductedForm.get('ClassTaughtId').value;
-
-  //   if (classId != '' && moduleItem.Id != null) {
-  //     this.commonService.GetUnitsByClassAndModuleId({ DataId: classId, DataId1: moduleItem.Id, DataId2: this.UserModel.UserTypeId, SelectTitle: 'Unit Taught' }).subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.unitList = response.Results;
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     this.unitList = <DropdownModel[]>[];
-  //     this.sessionList = <DropdownModel[]>[];
-  //   }
-  // }
-
   onChangeCourseModule(moduleItem): void {
     this.setFormInputs();
     let classId = this.vtFieldIndustryVisitConductedForm.get('ClassTaughtId').value;
@@ -620,14 +511,9 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
       SectorId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.SectorId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       JobRoleId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.JobRoleId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       AcademicYearId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-
       ClassTaughtId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.ClassTaughtId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionIds: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
-
-
-      // ClassTaughtId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.ClassTaughtId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       ReportingDate: new FormControl({ value: new Date(this.vtFieldIndustryVisitConductedModel.ReportingDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // SectionIds: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.SectionIds, disabled: this.PageRights.IsReadOnly }, Validators.required),
       FieldVisitTheme: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.FieldVisitTheme, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       FieldVisitActivities: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.FieldVisitActivities, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(200)),
       ModuleId: new FormControl({ value: this.vtFieldIndustryVisitConductedModel.ModuleId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50)]),

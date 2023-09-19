@@ -495,8 +495,6 @@ export class CompareDashboardComponent extends BaseListComponent<CompareDashboar
 
   //download vtp and sector from kpis
   exportFromKpisDataExcel(evt, exportType) {
-    //evt.preventDefault();
-
     let excelDataSource: any = [];
     //Programme Information Graph
     if (exportType == 'Schools') {
@@ -529,32 +527,8 @@ export class CompareDashboardComponent extends BaseListComponent<CompareDashboar
     else if (exportType == 'Trainers') {
       excelDataSource = this.trainersData;
     }
-    // else if (exportType == 'SchoolVisitStatus') {
-    //     this.exportExcelFromTable(this.vocationalTrainerChartData, "SchoolVisitStatus");
-    // }
-
     this.exportExcelFromTable(excelDataSource, exportType).then(resp => {
       //this.capturedImageFromContainer(exportType, resp);
     })
   }
-
-  // capturedImageFromContainer(containerId, respId) {
-
-  //   html2canvas(document.querySelector("#" + containerId)).then(canvas => {
-  //     // Convert the canvas to blob
-  //     canvas.toBlob(function (blob) {
-  //       let fileName = containerId + '-' + respId + '.png';
-
-  //       // To download directly on browser default 'downloads' location
-  //       let link = document.createElement("a");
-  //       link.download = fileName;
-  //       link.href = URL.createObjectURL(blob);
-  //       link.click();
-
-  //       // To save manually somewhere in file explorer
-  //       //this.window.saveAs(blob, 'image.png');
-
-  //     }, 'image/png');
-  //   });
-  // }
 }

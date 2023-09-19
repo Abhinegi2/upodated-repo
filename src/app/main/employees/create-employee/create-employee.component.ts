@@ -112,7 +112,6 @@ export class CreateEmployeeComponent extends BaseComponent<EmployeeModel> implem
       Telephone: new FormControl({ value: this.employeeModel.Telephone, disabled: this.PageRights.IsReadOnly }),
       Mobile: new FormControl({ value: this.employeeModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.MobileNumber)]),
       EmailId: new FormControl({ value: this.employeeModel.EmailId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // IsActive: new FormControl({ value: this.employeeModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

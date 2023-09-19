@@ -193,34 +193,11 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
         this.vtList = response.Results;
       }
     });
-
-    // return new Promise((resolve, reject) => {
-    //   this.commonService.GetMasterDataByType({
-    //     DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
-    //   }).subscribe((response) => {
-
-    //     if (response.Success) {
-    //       this.academicYearList = response.Results;
-    //       if (response.Results.length == 1) {
-    //         this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
-    //         this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
-    //       }
-
-    //       this.loadFormInputs(response.Results, 'AcademicYearId');
-    //     }
-    //     resolve(true);
-    //   });
-    // });
-
   }
 
   setFormInputs() {
     this.SchoolInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SchoolId').value : this.vcSchoolVisitReportModel.SchoolId;
     this.SectorInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SectorId').value : this.vcSchoolVisitReportModel.SectorId;
-    // this.JobRoleInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('JobRoleId').value : this.vcSchoolVisitReportModel.JobRoleId;
-    // this.AcademicYearInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('AcademicYearId').value : this.vcSchoolVisitReportModel.AcademicYearId;
-    // this.ClassInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('ClassTaughtId').value : this.vcSchoolVisitReportModel.ClassTaughtId;
-    // this.SectionInputId = this.CanUserChangeInput == true ? this.vcSchoolVisitReportForm.get('SectionIds').value : this.vcSchoolVisitReportModel.SectionIds;
   }
 
   loadFormInputs(response, InputName) {
@@ -254,32 +231,11 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
     if (input == 'School') {
       this.vcSchoolVisitReportForm.controls['SectorId'].setValue(null);
       this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
     }
 
     if (input == 'Sector') {
       this.vcSchoolVisitReportForm.controls['JobRoleId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
-      // this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
     }
-
-    // if (input == 'JobRole') {
-    //   this.vcSchoolVisitReportForm.controls['AcademicYearId'].setValue(null);
-    //   this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
-    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
-    // }
-
-    // if (input == 'AcademicYear') {
-    //   this.vcSchoolVisitReportForm.controls['ClassTaughtId'].setValue(null);
-    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
-    // }
-
-    // if (input == 'Class') {
-    //   this.vcSchoolVisitReportForm.controls['SectionIds'].setValue(null);
-    // }
   }
 
   setUserAction() {
@@ -306,17 +262,6 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
             this.jobRoleList = response.Results;
             this.vcSchoolVisitReportForm.controls[InputId].disable();
           }
-
-          // else if (InputId == 'AcademicYearId') {
-          //   this.academicYearList = response.Results;
-          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
-          // } else if (InputId == 'ClassTaughtId') {
-          //   this.classList = response.Results;
-          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
-          // } else if (InputId == 'SectionIds') {
-          //   this.sectionList = response.Results;
-          //   this.vcSchoolVisitReportForm.controls[InputId].disable();
-          // }
         }
         resolve(true);
       });
@@ -324,22 +269,6 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
     });
     return promise;
   }
-
-  // onChangeSchool(schoolId) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: schoolId, SelectTitle: "Sector" }).subscribe((response) => {
-  //     if (response.Success) {
-  //       this.sectorList = response.Results;
-  //     }
-  //   });
-  // }
-
-  // onChangeSector(sectorId): void {
-  //   this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: "Job Role" }).subscribe((response) => {
-  //     if (response.Success) {
-  //       this.jobRoleList = response.Results;
-  //     }
-  //   });
-  // }
 
   uploadedSVPhotoWithPrincipalPhotoFile(event) {
     if (event.target.files.length > 0) {

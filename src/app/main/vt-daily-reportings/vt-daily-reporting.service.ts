@@ -145,18 +145,9 @@ export class VTDailyReportingService {
                 teachingVocationalEducation.ActivityTypeIds = teachingVocationalEducationCtrl.get('ActivityTypeIds').value;
                 teachingVocationalEducation.ClassTypeId = teachingVocationalEducationCtrl.get('ClassTypeId').value;
                 teachingVocationalEducation.ClassTime = teachingVocationalEducationCtrl.get('ClassTime').value;
-                //teachingVocationalEducation.ClassPicture = teachingVocationalEducationCtrl.get('ClassPicture').value;
-                //teachingVocationalEducation.LessonPlanPicture = teachingVocationalEducationCtrl.get('LessonPlanPicture').value;
                 teachingVocationalEducation.ReasonOfNotConductingTheClassIds = teachingVocationalEducationCtrl.get('ReasonOfNotConductingTheClassIds').value;
                 teachingVocationalEducation.ReasonDetails = teachingVocationalEducationCtrl.get('ReasonDetails').value;
-
                 teachingVocationalEducation.StudentAttendances = teachingVocationalEducationCtrl.get('StudentAttendances').value;
-
-                //teachingVocationalEducation.ModuleId = teachingVocationalEducationCtrl.get('ModuleId').value;
-                //teachingVocationalEducation.UnitId = teachingVocationalEducationCtrl.get('UnitId').value;
-                //teachingVocationalEducation.SessionsTaught = teachingVocationalEducationCtrl.get('SessionsTaught').value;
-                //teachingVocationalEducation.UnitSessionsModels = teachingVocationalEducationCtrl.get('UnitSessionsModels').value;
-
                 dailyReportingModel.TeachingVocationalEducations.push(teachingVocationalEducation);
             }
         }
@@ -288,11 +279,6 @@ export class VTDailyReportingService {
 
             dailyReportingModel.ObservationDetails = formGroup.controls.observationDayGroup.get('ObservationDetails').value;
             dailyReportingModel.OBStudentCount = formGroup.controls.observationDayGroup.get('OBStudentCount').value;
-
-            // dailyReportingModel.ObservationDay = new VTRObservationDayModel();
-            // dailyReportingModel.ObservationDay.ClassId = formGroup.controls.observationDayGroup.get('ClassId').value;
-            // dailyReportingModel.ObservationDay.StudentId = formGroup.controls.observationDayGroup.get('StudentId').value;
-            // dailyReportingModel.ObservationDay.IsPresent = formGroup.controls.observationDayGroup.get('IsPresent').value;
         }
 
         // Leave

@@ -65,23 +65,10 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
         this.AcademicYearId = currentYearItem.Id;
         this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
       }
-      
-
-      // if (results[1].Success) {
-      //   this.vtpList = results[1].Results;
-      //   this.filteredVTPItems = this.vtpList.slice();
-      // }
 
       if (results[1].Success) {
         this.socialCategoryList = results[1].Results;
       }
-
-      // let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      // if (currentYearItem != null) {
-      //   this.AcademicYearId = currentYearItem.Id;
-      //   this.vtFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      // }
-
       //Load initial VocationalTrainers data
       this.onLoadVocationalTrainersByCriteria();
 
@@ -129,9 +116,7 @@ export class VocationalTrainerComponent extends BaseListComponent<VocationalTrai
 console.log(this.vtFilterForm.controls["AcademicYearId"].value);
     let vtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-       AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
-      // VTPId: this.vtFilterForm.controls["VTPId"].value,
-      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtFilterForm.controls['VCId'].value,
+      AcademicYearId: this.vtFilterForm.controls["AcademicYearId"].value,
       SocialCategoryId: this.vtFilterForm.controls["SocialCategoryId"].value,
       Status: this.vtFilterForm.controls["Status"].value,
       Name: this.vtSearchForm.controls["SearchText"].value,
@@ -139,16 +124,9 @@ console.log(this.vtFilterForm.controls["AcademicYearId"].value);
       PageIndex: this.SearchBy.PageIndex,
       PageSize: this.SearchBy.PageSize
     };
-
-    // if (this.UserModel.RoleCode == "HM") {
-    //   vtParams.HMId = this.UserModel.UserTypeId;
-    // }
-
     this.vocationalTrainerService.GetAllByCriteria(vtParams).subscribe(response => {
       this.displayedColumns = [
         'AcademicYear',
-        // 'VTPName',
-        // 'VCName',
         'VTName',
         'Mobile',
         'Email',
@@ -167,8 +145,6 @@ console.log(this.vtFilterForm.controls["AcademicYearId"].value);
         'CreatedBy',
         'UpdatedBy',
         'IsActive',
-        // 'NatureOfAppointment',
-        // 'IsResigned',
         'Actions'];
         if(this.UserModel.RoleCode=='HM'){
           this.displayedColumns ['7'] = 'SectorName';
@@ -237,9 +213,7 @@ console.log(this.vtFilterForm.controls["AcademicYearId"].value);
           }
           this.vcList = response.Results;
           this.filteredVCItems = this.vcList.slice();
-
         }
-
         this.IsLoading = false;
         resolve(true);
       }, error => {

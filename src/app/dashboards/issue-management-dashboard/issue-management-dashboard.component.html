@@ -143,9 +143,6 @@
 
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="resetDashboardFilters()"><span>CLEAR</span></button>
-
-                            <!-- <button mat-raised-button class="fuse-white filter-button"
-                                (click)="refreshSummaryDashboard()"><span>REFRESH</span></button> -->
                         </div>
                     </div>
                 </form>
@@ -180,8 +177,6 @@
                                 <div><small>HIGH</small></div>
                             </div>
                         </div>
-                        <!-- <p style="text-align: center; width: 100%;padding: 10px;">Course Material Status(for classes)
-                        </p> -->
                         <div *ngIf="issueManagementChartCount > 0">
                             <mat-card class="issue-graph-card" (click)="onTotalCardClick()">
                                 <mat-card-content>
@@ -198,20 +193,11 @@
                         </div>
                     </div>
                 </div>
-
-
-
-                <!-- </div> -->
-                <!-- /DETAILED GRAPH CONTENT CARD -->
-                <!-- <div fxLayout="row" class="programme-information-title">
-                <h2 class="programme-information">PROGRAMME INFORMATION</h2>
-            </div> -->
                 <div fxLayout="row" fxLayout.lt-md="column" class="input-row" class="issue-card-first-row">
                     <div fxFlex="20%" fxLayoutAlign="center">
                         <mat-card class="issue-dashboard-card">
 
                             <mat-card-title class="card-title">
-                                <!-- <div style="width: 30px; height:30px; border-radius: 15px; background: red;"></div>  -->
                                 <span class="colored-label"></span>
                                 TOTAL
                             </mat-card-title>
@@ -354,9 +340,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">ISSUE RAISED</span>
                     </div>
                     <div fxFlex="20%">
@@ -426,9 +409,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">GUEST LECTURE / FIELD VISIT ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -463,14 +443,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Guest Lecture / Field Visit Issues
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="resultData.length > 0">  -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
                             (window:resize)="onResize($event)">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -498,9 +476,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">TOOLS AND EQUIPMENTS ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -535,14 +510,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Tools And Equipments Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
                             (window:resize)="onResize($event)">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -570,9 +543,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">LAB ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -607,14 +577,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Lab Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
                             (window:resize)="onResize($event)">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -642,9 +610,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">PAYMENT ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -679,14 +644,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Payment Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
                             (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -714,9 +677,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">SYLLABUS ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -751,14 +711,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Syllabus Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
                             (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -786,9 +744,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">EXAM ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -823,14 +778,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Exam Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
                             (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -858,9 +811,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">CERTIFICATE ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -895,14 +845,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Certificate Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
                             (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -930,9 +878,6 @@
                         <span class="issue-management-title"><a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0"
                                 style="color: black !important;">ISSUE MANAGEMENT</a></span>
                         <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        <!-- <span>
-                            <mat-icon class="right-arrow">arrow_right</mat-icon>
-                        </span> -->
                         <span style="padding-top: 3px;">COORDINATOR ISSUES</span>
                     </div>
                     <div fxFlex="20%" class="mx-width">
@@ -967,14 +912,12 @@
                         <p style="text-align: center; width: 100%;padding: 10px;">Coordinator Issue
                         </p>
                         <mat-divider></mat-divider>
-                        <!-- <div *ngIf="drilldownchartdatacount > 0"> -->
                         <ngx-charts-bar-vertical-stacked [view]="viewIssueRaisedGraph" [scheme]="issueStatusColor"
                             [results]="drillDownChartData" [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis"
                             [legend]="showLegend" [showXAxisLabel]="showXAxisLabelGraph"
                             [showYAxisLabel]="showYAxisLabelGraph" [xAxisLabel]="xAxisLabel"
                             (window:resize)="onResize($event)" [yAxisLabel]="yAxisLabel">
                         </ngx-charts-bar-vertical-stacked>
-                        <!-- </div> -->
                     </div>
                     <mat-divider [vertical]="true"></mat-divider>
                     <div fxFlex="25%" class="check side mx-width" fxLayoutAlign="center">
@@ -995,7 +938,6 @@
 
         </div>
         <!-- / CONTENT CARD -->
-
     </div>
     <!-- / CENTER -->
 </div>

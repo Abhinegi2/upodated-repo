@@ -8,13 +8,11 @@ import { fuseAnimations } from '@fuse/animations';
 import { DialogService } from 'app/common/confirm-dialog/dialog.service';
 import { RouteConstants } from 'app/constants/route.constant'
 import { VTStudentExitSurveyDetailService } from '../vt-student-exit-survey-detail.service';
-//import { VTStudentDetailModel } from '../vt-student-exit-survey-detail.model';
 import { VTStudentDetailModel } from '../vt-student-detail.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
-// tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment, Moment } from "moment";
 
 @Component({
@@ -26,7 +24,6 @@ import { default as _rollupMoment, Moment } from "moment";
 })
 export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetailModel> implements OnInit {
   vtStudentDetailForm: FormGroup;
-  //vtStudentDetailModel: VTStudentDetailModel;
   vtStudentDetailModel: VTStudentDetailModel;
   studentList: [DropdownModel];
   genderList: any;
@@ -125,8 +122,6 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
     this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }).subscribe((response: any) => {
       this.vtpList = response.Results;
     });
-
-    // this.saveOrUpdateVTStudentDetailDetails();
 
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {

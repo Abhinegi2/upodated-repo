@@ -27,25 +27,12 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
   schoolId: string;
   AcademicYearId: string;
   academicYearAllList: [DropdownModel];
-
-  // academicYearList: [DropdownModel];
-  // sectorList: [DropdownModel];
-  // jobRoleList: [DropdownModel];
-
   vtpList: DropdownModel[];
   vtpFilterList: any;
-
   vcList: DropdownModel[];
   VCList: any = [];
-
   vtList: DropdownModel[];
   VTList: any = [];
-
-  // schoolList: DropdownModel[];
-  // filteredSchoolItems: any;
-
-
-
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
   sectorList: DropdownModel[];
@@ -114,21 +101,9 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
                 this.schoolsectorjobService.getSchoolSectorJobById(this.toolEquipmentModel.SSJId)
                   .subscribe((response: any) => {
                     var schoolsectorjobModel = response.Result;
-
                     this.toolEquipmentModel.SchoolId = schoolsectorjobModel.SchoolId;
                     this.toolEquipmentModel.SectorId = schoolsectorjobModel.SectorId;
                     this.toolEquipmentModel.JobRoleId = schoolsectorjobModel.JobRoleId;
-
-                    // this.onChangeSchool(this.toolEquipmentModel.SchoolId).then(sResp => {
-                    //   this.onChangeSector(this.toolEquipmentModel.SectorId).then(vvResp => {
-                    //     this.onChangeJobRole(this.toolEquipmentModel.JobRoleId).then(vvResp => {
-                    //       // this.onChangeAcademicYear(this.toolEquipmentModel.AcademicYearId).then(vResp => {
-                    //       this.toolEquipmentForm = this.createToolEquipmentForm();
-                    //       // });
-                    //     });
-                    //   });
-                    // });
-
                     this.setInputs(this.toolEquipmentModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
                       this.setInputs(this.toolEquipmentModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                         this.setInputs(this.toolEquipmentModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
@@ -139,7 +114,6 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
                       });
                     });
                   });
-                // }
               });
           }
         }
@@ -163,7 +137,6 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidSchoolSectorJob]));
             this.toolEquipmentForm.controls['SchoolId'].setValue(null);
           }
-
           this.loadFormInputs(response.Results, 'SectorId');
         }
         resolve(true);
@@ -181,12 +154,10 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
       this.commonService.GetMasterDataByType({
         DataType: 'JobRolesBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: sectorId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Job Role"
       }).subscribe((response) => {
-
         if (response.Success) {
           this.jobRoleList = response.Results;
           this.loadFormInputs(response.Results, 'JobRoleId');
         }
-
         resolve(true);
       });
     });
@@ -203,14 +174,10 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
 
         if (response.Success) {
           this.academicYearList = response.Results;
-
-          console.log(response.Results);
-
           if (response.Results.length == 1) {
             this.dialogService.openShowDialog(this.getHtmlMessage([this.Constants.Messages.InvalidVTACS]));
             this.toolEquipmentForm.controls['JobRoleId'].setValue(null);
           }
-
           this.loadFormInputs(response.Results, 'AcademicYearId');
         }
         resolve(true);
@@ -304,125 +271,6 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
     });
     return promise;
   }
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     let vcRequest = null;
-  //     if (this.UserModel.RoleCode == 'HM') {
-  //       vcRequest = this.commonService.GetVCByHMId(this.AcademicYearId, this.UserModel.UserTypeId, vtpId);
-  //     }
-  //     else {
-  //       vcRequest = this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }, false);
-  //     }
-
-
-  //     vcRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.VCList = [];
-  //         this.vtList = [];
-  //         this.filteredSchoolItems = [];
-
-  //         this.VCList = response.Results;
-  //         this.vcList = this.VCList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVC(vcId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.IsLoading = true;
-
-  //     let schoolRequest = null;
-  //     if (this.UserModel.RoleCode == 'HM') {
-  //       schoolRequest = this.commonService.GetSchoolByHMId(this.AcademicYearId, this.UserModel.UserTypeId, vcId);
-  //     }
-  //     else {
-  //       schoolRequest = this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVC', ParentId: vcId, SelectTitle: 'School' }, false);
-  //     }
-
-  //     schoolRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vcId = vcId;
-  //         this.schoolList = response.Results;
-  //         this.filteredSchoolItems = this.schoolList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeSchool(schoolId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.IsLoading = true;
-
-  //     let vtRequest = null;
-  //     if (this.UserModel.RoleCode == 'HM') {
-  //       vtRequest = this.commonService.GetVTBySchoolIdHMId(this.AcademicYearId, this.UserModel.UserTypeId, this.vcId, schoolId);
-  //     }
-  //     else {
-  //       vtRequest = this.commonService.GetMasterDataByType({ DataType: 'TrainersBySchool', ParentId: schoolId, SelectTitle: 'Vocational Trainer' }, false);
-  //     }
-
-  //     vtRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.VTList = response.Results;
-  //         this.vtList = this.VTList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVT(vtId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.IsLoading = true;
-  //     this.toolEquipmentService.getAcademicYearSectorByUser(vtId).subscribe((results: any) => {
-  //       if (results[0].Success) {
-  //         this.academicYearList = results[0].Results;
-  //       }
-
-  //       if (results[1].Success) {
-  //         this.sectorList = results[1].Results;
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeSector(sectorId: string) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'JobRolesForVT', ParentId: sectorId, SelectTitle: 'Job Role' }).subscribe(response => {
-  //     if (response.Success) {
-  //       this.jobRoleList = response.Results;
-  //     }
-  //   });
-  // }
 
   saveOrUpdateToolEquipmentDetails() {
     if (!this.toolEquipmentForm.valid) {

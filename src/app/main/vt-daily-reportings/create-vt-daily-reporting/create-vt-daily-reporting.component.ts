@@ -526,17 +526,7 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
         });
 
         this.vtDailyReportingService.getDropdownForTeachingVocationalEducation(this.UserModel).subscribe((response) => {
-          // if (response[0].Success) {
-          //   this.classTaughtList = response[0].Results;
-          // }
-
           this.classTaughtList = this.classList;
-
-          // var currentSelectedClass = this.vtDailyReportingForm.get('ClassId').value;
-          // if (currentSelectedClass) {
-          //   this.vtDailyReportingForm.controls.teachingVocationalEducationGroup.get("ClassTaughtId").setValue(currentSelectedClass);
-          // }
-
           if (response[1].Success) {
             this.moduleTaughtList = response[1].Results;
           }
@@ -569,65 +559,10 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
             this.sectionTaughtList = response[8].Results;
           }
 
-
-          // if (this.classTaughtList.length > 1) {
-          //   let teachingVocationalEducationControls = <FormArray>this.vtDailyReportingForm.controls.teachingVocationalEducationGroup.get('teachingVocationalEducations');
-          //   teachingVocationalEducationControls.clear();
-
-          //   this.tveClassSectionList = [];
-          //   this.classSectionList = [];
-
-          //   for (let classIndex = 1; classIndex < this.classTaughtList.length; classIndex++) {
-          //     let sections = this.sectionList.filter(c => c.ClassId == this.classTaughtList[classIndex].Id);
-
-          //     for (let sectionIndex = 0; sectionIndex < sections.length; sectionIndex++) {
-          //       this.tveClassSectionList.push({ ClassId: this.classTaughtList[classIndex].Id, SectionId: sections[sectionIndex].SectionId });
-
-          //       this.classSectionList.push(sections);
-          //     }
-          //   }
-
-          //   for (let tveIndex = 0; tveIndex < this.tveClassSectionList.length; tveIndex++) {
-          //     teachingVocationalEducation = new VTRTeachingVocationalEducationModel();
-          //     teachingVocationalEducation.SequenceNo = tveIndex + 1;
-          //     teachingVocationalEducation.ClassTaughtId = this.tveClassSectionList[tveIndex].ClassId;
-          //     teachingVocationalEducation.ClassSectionIds = this.tveClassSectionList[tveIndex].SectionId;
-
-          //     this.unitList[tveIndex] = <DropdownModel[]>[];
-          //     this.sessionList[tveIndex] = <DropdownModel[]>[];
-          //     this.unitSessionsModels[tveIndex] = <ModuleUnitSessionModel[]>[];
-
-          //     let tveFormGroup = this.createTeachingVocationalEducation(teachingVocationalEducation);
-          //     let studentsForSection = this.studentList.filter(s => s.ClassId == teachingVocationalEducation.ClassTaughtId && s.SectionId == teachingVocationalEducation.ClassSectionIds);
-          //     let studentAttendancesControls = <FormArray>tveFormGroup.get('StudentAttendances');
-          //     studentAttendancesControls.clear();
-
-          //     if (studentsForSection.length > 0) {
-          //       studentsForSection.forEach(studentItem => {
-          //         studentAttendancesControls.push(this.formBuilder.group(studentItem));
-          //       });
-          //     }
-
-          //     teachingVocationalEducationControls.push(tveFormGroup);
-          //   }
-          // }
-
           if (this.PageRights.ActionType == this.Constants.Actions.View) {
             let teachingVocationalEducationControls = <FormArray>this.vtDailyReportingForm.controls.teachingVocationalEducationGroup.get('teachingVocationalEducations');
             teachingVocationalEducationControls.clear();
             this.unitSessionsModels = [];
-
-            // this.sectionTaughtList = this.sectionList;
-
-            // this.sectionTaughtList = <DropdownModel[]>[];
-            // this.sectionTaughtList.forEach(sectionItem => {
-            //   let section = this.sectionTaughtList.find(s => s.Id == sectionItem.Id);
-
-            //   if (section == null) {
-            //     this.sectionTaughtList.push(new DropdownModel({ Id: sectionItem.Id, Name: sectionItem.Name }));
-            //   }
-            // });
-
             let sortTeachingVocationalEducations = this.vtDailyReportingModel.TeachingVocationalEducations.sort((a, b) => { return a.SequenceNo - b.SequenceNo; });
             sortTeachingVocationalEducations.forEach(tveItem => {
               this.unitSessionsModels.push(tveItem.UnitSessionsModels);
@@ -722,13 +657,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
             ExamDetails: new FormControl({ value: this.vtDailyReportingModel.AssessorInOtherSchoolForExam.ExamDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),
           })
         });
-
-        // this.commonService.GetClassesByVTId({ DataId: this.UserModel.LoginId, DataId1: this.UserModel.UserTypeId, SelectTitle: 'Class' }).subscribe((response) => {
-        //   if (response.Success) {
-        //     this.studentClassList = response.Results;
-        //   }
-        // });
-
         this.studentClassList = this.classList;
       }
 
@@ -1011,19 +939,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
     if (sectionId != null) {
       let classId = formGroup.get("ClassTaughtId").value;
       formGroup.get('DidYouTeachToday').setValue(true);
-
-      // this.commonService.getStudentsByClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId, DataId2: sectionId }).subscribe(response => {
-      //   if (response.Success) {
-      //     //let studentsForSection = this.studentList.filter(s => s.ClassId == classId && s.SectionId == sectionId);
-      //     let studentAttendancesControls = <FormArray>formGroup.get('StudentAttendances');
-      //     studentAttendancesControls.clear();
-
-      //     response.Results.forEach(studentItem => {
-      //       studentAttendancesControls.push(this.formBuilder.group(studentItem));
-      //     });
-      //   }
-      // });
-
       this.commonService.GetMasterDataByType({ DataType: 'GetSchoolSectorJobId', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'SSJ' }).subscribe((response) => {
         if (response.Success) {
           let SSJID = response.Results[1].Id;
@@ -1041,9 +956,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
               response.Results.forEach(studentItem => {
                 studentAttendancesControls.push(this.formBuilder.group(studentItem));
               });
-
-              // let initialFormValues = this.vtGuestLectureConductedForm.value;
-              // this.vtGuestLectureConductedForm.reset(initialFormValues);
             }
           });
         }
@@ -1116,9 +1028,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       );
 
       moduleCtrl.setValue({ Id: null, Name: "Select Modules Taught", Description: "", SequenceNo: 1 });
-      // unitCtrl.setValue('');
-      // sessionIdsCtrl.setValue('');
-
       this.unitList[tveIndex] = <DropdownModel[]>[];
       this.sessionList[tveIndex] = <DropdownModel[]>[];
     }
@@ -1381,8 +1290,6 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
       ReportingDate: new FormControl({ value: new Date(this.vtDailyReportingModel.ReportingDate), disabled: this.PageRights.IsReadOnly }),
       ReportType: new FormControl({ value: this.vtDailyReportingModel.ReportType, disabled: this.PageRights.IsReadOnly }, Validators.required),
       WorkingDayTypeIds: new FormControl({ value: this.vtDailyReportingModel.WorkingDayTypeIds, disabled: this.PageRights.IsReadOnly }),
-      //SchoolEventCelebration: new FormControl({ value: this.vtDailyReportingModel.SchoolEventCelebration, disabled: this.PageRights.IsReadOnly }),
-      //OBSDayDetails: new FormControl({ value: this.vtDailyReportingModel.OBSDayDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
     });
   }
 

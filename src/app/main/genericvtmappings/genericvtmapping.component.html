@@ -93,47 +93,6 @@
                                 <mat-option value="false">Inactive</mat-option>
                             </mat-select>
                         </mat-form-field>
-
-                     <!-- <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" >
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" name="vcId" appearance="fill">
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of vcList">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Trainer </mat-label>
-
-                            <mat-select formControlName="VTId" name="vtId" appearance="fill">
-                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
-                                    {{ vtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Generic VT Name </mat-label>
-
-                            <mat-select formControlName="SSJId" name="SSJId" appearance="fill">
-                                <mat-option [value]="genericVtItem.Id" *ngFor="let genericVtItem of GVTItems">
-                                    {{ vtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -156,24 +115,6 @@
 
             <mat-table matTableExporter class="genericvtmapping-table responsive-table" #table [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[8]"
             matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
-
-                <!-- UserType Column -->
-                <!-- <ng-container matColumnDef="UserType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserType</mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.UserType}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
-
-                <!-- UserName Column -->
-                <!-- <ng-container matColumnDef="UserName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>UserName</mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.UserName}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
                 <ng-container matColumnDef="VTPShortName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTPShortName</mat-header-cell>
                     <mat-cell *matCellDef="let genericvtmapping">
@@ -218,13 +159,6 @@
                         <p class="text-truncate">{{genericvtmapping.JobRoleName}}</p>
                     </mat-cell>
                 </ng-container>               
-                <!-- EmailId Column -->
-                <!-- <ng-container matColumnDef="EmailId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>EmailId</mat-header-cell>
-                    <mat-cell *matCellDef="let genericvtmapping">
-                        <p class="text-truncate">{{genericvtmapping.EmailId}}</p>
-                    </mat-cell>
-                </ng-container> -->
 
                 <!-- DateOfAllocation Column -->
                 <ng-container matColumnDef="DateOfAllocation">

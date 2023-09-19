@@ -10,12 +10,9 @@ import { RouteConstants } from 'app/constants/route.constant'
 import { HMIssueReportingService } from '../../hm-issue-reportings/hm-issue-reporting.service';
 import { VCIssueReportingService } from '../../vc-issue-reportings/vc-issue-reporting.service';
 import { VTIssueReportingService } from '../../vt-issue-reportings/vt-issue-reporting.service';
-// import { HMIssueReportingModel } from '../hm-issue-reportings/hm-issue-reporting.model';
 import { IssueApprovalModel } from '../issue-approval.model';
 import { IssueApprovalService } from '../issue-approval.service';
 import { DropdownModel } from 'app/models/dropdown.model';
-// import { Observable } from 'rxjs';
-// import { UrlService } from 'app/common/shared/url.service';
 import { SchoolSectorJobService } from 'app/main/schoolsectorjobs//schoolsectorjob.service';
 
 @Component({
@@ -35,7 +32,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   studentClassList: [DropdownModel];
   monthList: [DropdownModel];
   studentTypeList: any;
-  // previousUrl: Observable<string> = this.urlService.previousUrl$;
   service: any;
   updateService: any;
   issueStatusList: any;
@@ -63,7 +59,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
 
   constructor(public commonService: CommonService,
     public router: Router,
-    // private urlService: UrlService,
     public routeParams: ActivatedRoute,
     public snackBar: MatSnackBar,
     private zone: NgZone,
@@ -82,10 +77,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
   }
 
   ngOnInit(): void {
-    // this.urlService.previousUrl$.subscribe((previousUrl: string) => {
-    //   console.log('previous url: ', previousUrl);
-    // });
-
     this.issueApprovalService.getDropdownforIssueReporting(this.UserModel).subscribe((results) => {
       if (results[0].Success) {
         this.monthList = results[0].Results;
@@ -161,11 +152,9 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
                     this.setInputs(this.issueApprovalModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                       this.setInputs(this.issueApprovalModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
                         this.setInputs(this.issueApprovalModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
-                          // this.onChangeAcademicYear(this.issueApprovalModel.AcademicYearId);
                           this.setInputs(this.issueApprovalModel.StudentClass, 'StudentClass', 'ClassById').then(vResp => {
                             this.onChangeClasses(this.issueApprovalModel.StudentClass).then(vResp => {
                               this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
-                              // this.hmIssueReportingForm = this.createHMIssueReportingForm();
                               this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
                               this.issueApprovalForm.get('Remarks').setValue(this.issueApprovalModel.Remarks);
                               this.issueApprovalForm = this.createIssueApprovalForm();
@@ -177,10 +166,6 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
                     });
                   });
                 });
-
-              // this.onChangeMainIssue(this.issueApprovalModel.MainIssue);
-              // this.issueApprovalForm.get('Remarks').setValue(this.issueApprovalModel.Remarks);
-              // this.issueApprovalForm = this.createIssueApprovalForm();
             });
           }
         }
@@ -376,23 +361,17 @@ export class CreateIssueApprovalComponent extends BaseComponent<IssueApprovalMod
       SchoolId: new FormControl({ value: this.issueApprovalModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
       SectorId: new FormControl({ value: this.issueApprovalModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.issueApprovalModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
-
       AcademicYearId: new FormControl({ value: this.issueApprovalModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       StudentClass: new FormControl({ value: this.issueApprovalModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionIds: new FormControl({ value: this.issueApprovalModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
-
-
-
       MainIssue: new FormControl({ value: this.issueApprovalModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       SubIssue: new FormControl({ value: this.issueApprovalModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
-      // StudentClass: new FormControl({ value: this.issueApprovalModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       Month: new FormControl({ value: this.issueApprovalModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       StudentType: new FormControl({ value: this.issueApprovalModel.StudentType, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       NoOfStudents: new FormControl({ value: this.issueApprovalModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       IssueDetails: new FormControl({ value: this.issueApprovalModel.IssueDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       ApprovalStatus: new FormControl({ value: this.issueApprovalModel.ApprovalStatus, disabled: false }, Validators.maxLength(50)),
       Remarks: new FormControl({ value: this.issueApprovalModel.Remarks, disabled: false }, Validators.maxLength(350)),
-      // AssignForAction: new FormControl({value: this.issueApprovalModel.AssignForAction, disabled: false }),
     });
   }
 }

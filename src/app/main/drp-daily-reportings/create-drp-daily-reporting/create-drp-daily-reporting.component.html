@@ -36,7 +36,6 @@
                 *ngIf="PageRights.ActionType ==='new'" (click)="saveOrUpdateDRPDailyReportingDetails()">
                 <span>ADD</span>
             </button>
-            <!-- [disabled]="dailyReportingForm.invalid" -->
             <button mat-raised-button class="save-drp-daily-reporting-button"
                 *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateDRPDailyReportingDetails()">
                 <span>SAVE</span>
@@ -53,7 +52,6 @@
                 <form name="dailyReportingForm" [formGroup]="dailyReportingForm"
                     class="drp-daily-reporting w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
-                    <!-- <mat-tab label="Basic Info"> -->
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                     fxLayoutGap.lt-md="0px">
@@ -104,72 +102,6 @@
                             </mat-form-field>
                         </div>
                     </div>
-
-                    <!-- Industry Exposure Visit -->
-                    <!-- <fieldset formGroupName="industryExposureVisitGroup" *ngIf="isAllowIndustryExposureVisit">
-                        <legend>Industry Exposure Visit</legend>
-                        <div class="drp-daily-type industry-exposure-visit" *ngIf="isAllowIndustryExposureVisit">
-
-                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline"  fxFlex="70" fxFlex.lt-md="75"
-                                    fxFlex.lt-sm="100">
-                                    <mat-label>Type of Industry Linkage</mat-label>
-                                    <mat-select name="typeOfIndustryLinkage" formControlName="TypeOfIndustryLinkage"
-                                        required appearance="outline" [disabled]="PageRights.IsReadOnly">
-                                        <mat-option [value]="industryLinkageItem.Id"
-                                            *ngFor="let industryLinkageItem of industryLinkageList">
-                                            {{ industryLinkageItem.Name }}
-                                        </mat-option>
-                                    </mat-select>
-                                    <mat-error
-                                        *ngIf="dailyReportingForm.controls.industryExposureVisitGroup.controls.TypeOfIndustryLinkage.invalid">
-                                        {{getErrorMessage(dailyReportingForm.controls.industryExposureVisitGroup, 'TypeOfIndustryLinkage')}}
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
-                                    fxFlex.lt-sm="100">
-                                    <mat-label>Contact Person Name</mat-label>
-                                    <input matInput name="contactPersonName" formControlName="ContactPersonName"
-                                        required>
-                                    <mat-error
-                                        *ngIf="dailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonName.invalid">
-                                        {{getErrorMessage(dailyReportingForm.controls.industryExposureVisitGroup, 'ContactPersonName')}}
-                                    </mat-error>
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
-                                    fxFlex.lt-sm="100">
-                                    <mat-label>Contact Person Mobile</mat-label>
-                                    <input matInput name="contactPersonMobile" formControlName="ContactPersonMobile"
-                                        digitOnly maxlength="10" minlength="10" required>
-                                    <mat-error
-                                        *ngIf="dailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonMobile.invalid">
-                                        {{getErrorMessage(dailyReportingForm.controls.industryExposureVisitGroup, 'ContactPersonMobile')}}
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="75"
-                                    fxFlex.lt-sm="100">
-                                    <mat-label>Contact Person Email</mat-label>
-                                    <input matInput name="contactPersonEmail" formControlName="ContactPersonEmail"
-                                        required>
-                                    <mat-error
-                                        *ngIf="dailyReportingForm.controls.industryExposureVisitGroup.controls.ContactPersonEmail.invalid">
-                                        {{getErrorMessage(dailyReportingForm.controls.industryExposureVisitGroup, 'ContactPersonEmail')}}
-                                    </mat-error>
-                                </mat-form-field>
-                            </div>
-
-                        </div>
-                    </fieldset> -->
 
                     <!-- School -->
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

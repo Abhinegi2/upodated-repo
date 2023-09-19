@@ -143,12 +143,9 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
         domain: ['#f46a19e8']
     };
 
-    // vtChkList = ['REPORTING VT', 'NON REPORTING VT'];
     vtChkList = [{ name: 'REPORTING VT', value: 'ReportedVT', checked: true }];
-    // vtChkList = [{ name: 'REPORTING VT', value: 'ReportedVT', checked:true },{ name: 'NON REPORTING VT', value: 'NonReportedVT', checked:true }];
     VTColorScheme = {
         domain: ['#29ded8']
-        //domain: ['#29ded8', '#ff0043']
     }
 
     jobRoleChkList = ['Total'];
@@ -525,7 +522,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
             this.onChangeFieldVisitXaxis(null, 'ByTimeline');
 
             //VT Attendance Chart
-            // dashboardParams.DataType = 'ByMonth';
             this.summaryDashboardService.GetVCAndVTAttendanceReports(dashboardParams).subscribe(response => {
                 this.vtAttendanceCount = response[0].Results;
                 this.vcAttendanceCount = response[1].Results;
@@ -542,7 +538,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                     ];
                 }
                 else {
-                    //this.vtAttendanceCount = JSON.parse('[{"name":"VT Attendance", "value":0, "series":[{"name":"", "value":0}]}]');
                 }
 
                 if (this.vcAttendanceCount.length > 0) {
@@ -553,7 +548,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                         }];
                 }
                 else {
-                    //this.vcAttendanceCount = JSON.parse('[{"name":"VC Attendance", "value":0, "series":[{"name":"", "value":0}]}]');
                 }
 
                 if (this.vtAttendanceCount.length == 0 && this.vcAttendanceCount.length > 0) {
@@ -574,13 +568,8 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                     ];
                 }
 
-                // if (this.vtAttendanceChart.length > 0 && this.vcAttendanceChart.length > 0)
                 if (this.vtAttendanceChart.length > 0) {
                     this.vtVcAttendanceChart = [
-                        // {
-                        //     "name": "VC Attendance",
-                        //     "series": this.vcAttendanceCount.map(vcAttendance => ({ name: vcAttendance.Name, value: vcAttendance.Percentage }))
-                        // },
                         {
                             "name": "VT Attendance",
                             "series": this.vtAttendanceCount.map(vtAttendance => ({ name: vtAttendance.Name, value: vtAttendance.Percentage }))
@@ -595,10 +584,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
             }, error => {
                 console.log(error);
             });
-
-            //this.onChangeVtAttendanceXaxis(null, 'ByMonth');
-            //this.onChangeVcAttendanceXaxis(null, 'ByMonth');
-
             //StudentAttendance Chart
             this.onChangeStudentAttendanceXaxis(null, 'ByTimeline');
 
@@ -1028,7 +1013,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                 for (const iterator2 of iterator.series) {
                     if (iterator2.name === name) {
                         iterator2.value = 0;
-                        //iterator2.name = null;
                     }
                 }
             }
@@ -1578,7 +1562,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                         for (const iterator2 of iterator.series) {
 
                             iterator2.value = null;
-                            //iterator2.name = null;
                         }
                     }
                 }
@@ -1600,7 +1583,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                     for (const iterator2 of iterator.series) {
                         if (iterator2.name === name) {
                             iterator2.value = 0;
-                            //iterator2.name = null;
                         }
                     }
                 }
@@ -1823,7 +1805,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                 for (const iterator2 of iterator.series) {
                     if (iterator2.name === name) {
                         iterator2.value = 0;
-                        //iterator2.name = null;
                     }
                 }
             }
@@ -1831,14 +1812,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
         this.schoolVisitStatusChart = temp2;
 
     }
-    //End: School visit status detailed graph
-    //detailed graph end
-
-    // //API calling for graphs
-    // if (this.xaxis == 'ByVTP') {
-    //     //this.onChangeSchoolChartXaxis(null, 'ByVTP');
-    // }
-
     public onClassesCardClick() {
         this.setDefaultCardStates();
         this.isDrillDownOpen = true;
@@ -1973,7 +1946,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
     }
 
     exportDrildownDataExcel(evt, exportType) {
-        //evt.preventDefault();
 
         let excelDataSource: any = [];
         //Programme Information Graph
@@ -2008,10 +1980,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
         else if (exportType == 'VtAndVcAttendance') {
             excelDataSource = this.vtAttendanceChartData;
         }
-        // else if (exportType == 'SchoolVisitStatus') {
-        //     this.exportExcelFromTable(this.vocationalTrainerChartData, "SchoolVisitStatus");
-        // }
-
         this.exportExcelFromTable(excelDataSource, exportType).then(resp => {
             this.capturedImageFromContainer(exportType, resp);
         })
@@ -2030,10 +1998,6 @@ export class SummaryDashboardComponent extends BaseListComponent<SummaryDashboar
                 link.download = fileName;
                 link.href = URL.createObjectURL(blob);
                 link.click();
-
-                // To save manually somewhere in file explorer
-                //this.window.saveAs(blob, 'image.png');
-
             }, 'image/png');
         });
     }

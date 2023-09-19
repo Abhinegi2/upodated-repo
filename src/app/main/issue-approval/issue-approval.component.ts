@@ -11,8 +11,6 @@ import { fuseAnimations } from '@fuse/animations';
 import { DialogService } from 'app/common/confirm-dialog/dialog.service';
 import { IssueApprovalService } from './issue-approval.service';
 import { RouteConstants } from 'app/constants/route.constant';
-// import { UrlService } from 'app/common/shared/url.service';
-// import { Observable } from 'rxjs';
 
 @Component({
   selector: 'data-list-view',
@@ -26,11 +24,8 @@ export class IssueApprovalComponent extends BaseListComponent<IssueApprovalModel
   issueType: any;
   currentUrl: string = null;
   service: any;
-  // previousUrl: Observable<string> = this.urlService.previousUrl$;
-
   constructor(public commonService: CommonService,
     public router: Router,
-    // private urlService: UrlService,
     public routeParams: ActivatedRoute,
     public snackBar: MatSnackBar,
     public zone: NgZone,

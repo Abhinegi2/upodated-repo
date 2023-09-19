@@ -77,12 +77,9 @@ export class StudentClassDetailService {
     }
 
     getDropdownforStudentClassDetails(userModel: UserModel): Observable<any[]> {
-        // let studentsRequest = this.http.GetStudentsByVTId({ DataId: userModel.LoginId });
         let studentsRequest = this.http.GetMasterDataByType({ DataType: 'StudentsByVT', RoleId: userModel.RoleCode, userId: userModel.UserTypeId, SelectTitle: 'Students' });
-
         let socialCategoryRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SocialCategory', SelectTitle: 'Social Category' });
         let religionRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Religion', SelectTitle: 'Religion' });
-
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([studentsRequest, socialCategoryRequest, religionRequest]);
     }

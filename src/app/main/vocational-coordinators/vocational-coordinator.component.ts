@@ -128,8 +128,6 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
 
     this.vocationalCoordinatorService.GetAllByCriteria(vcParams).subscribe(response => {
       this.displayedColumns = [
-        // 'NatureOfAppointment', 
-        // 'VTPName',
         'AcademicYear',
         'FullName',
         'Mobile',
@@ -143,7 +141,6 @@ export class VocationalCoordinatorComponent extends BaseListComponent<Vocational
         'UpdatedBy',
         'DateOfResignation',
         'IsActive',
-       // 'IsResigned',
         'Actions'];
 
       this.tableDataSource.data = response.Results;

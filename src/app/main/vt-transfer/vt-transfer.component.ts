@@ -141,7 +141,6 @@ export class VTTransferComponent extends BaseListComponent<VTTransferModel> impl
       FromVCId: new FormControl({ value: this.vtTransferModel.FromVCId, disabled: false }, Validators.required),
       FromVTId: new FormControl({ value: this.vtTransferModel.FromVTId, disabled: false }, Validators.required),
       FromSchoolId: new FormControl({ value: this.vtTransferModel.FromSchoolId, disabled: false }, Validators.required),
-
       ToVTPId: new FormControl({ value: this.vtTransferModel.ToVTPId, disabled: false }, Validators.required),
       ToVCId: new FormControl({ value: this.vtTransferModel.ToVCId, disabled: false }, Validators.required),
       ToVTId: new FormControl({ value: this.vtTransferModel.ToVTId, disabled: false }, Validators.required),

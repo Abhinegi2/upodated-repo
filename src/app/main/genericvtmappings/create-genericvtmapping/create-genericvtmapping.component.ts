@@ -100,10 +100,6 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
                   this.genericvtmappingModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-
-                // this.onChangeUserType(this.genericvtmappingModel.UserType);
-                // this.onChangeSSJ(this.genericvtmappingModel.SSJId);
-
                 this.genericvtmappingForm = this.createGenericVTMappingForm();
 
               });
@@ -114,23 +110,6 @@ export class CreateGenericVTMappingComponent extends BaseComponent<GenericVTMapp
 
     this.genericvtmappingForm = this.createGenericVTMappingForm();
   }
-
-  // onChangeUserType(usertype: any) {
-  //   if (usertype == 'VC') {
-
-  //     this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', RoleId: this.UserModel.RoleCode, ParentId: 'Vocational Coordinator', SelectTitle: 'Vocational Coordinator' }).subscribe((response: any) => {
-  //       this.userFilterList = response.Results;
-  //       this.userList = this.userFilterList.slice();
-  //     });
-
-  //   } else if (usertype == 'VTP') {
-
-  //     this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VocationalTrainingProvider' }).subscribe((response: any) => {
-  //       this.userFilterList = response.Results;
-  //       this.userList = this.userFilterList.slice();
-  //     });
-  //   }
-  // }
 
   onVTPIdChange():void{
     const vtpId = this.genericvtmappingForm.get('VTPId').value;
@@ -166,21 +145,6 @@ onChangeDateOfAllocation(): void{
     this.genericvtmappingForm.get('DateOfAllocationVC').setValue(null);
   }
 }
-  // onChangeUser(accountId) {
-  //   var usertype = this.genericvtmappingForm.get('UserType').value;
-  //   console.log(usertype, accountId);
-  //   if (usertype == 'VC') {
-  //     this.vocationalCoordinatorService.getVocationalCoordinatorById(accountId).subscribe((response: any) => {
-  //       var VcModel = response.Result;
-  //       if (VcModel == null) {
-  //         var errorMessages = this.getHtmlMessage(["The selected VC details are not present in <b>Vocational Coordinator</b>.<br><br> Please visit the <a href='/vocational-coordinators'><b>Vocational Coordinator</b></a> page and provide required details for the selected VC."]);
-  //         this.dialogService.openShowDialog(errorMessages);
-  //         this.genericvtmappingForm.controls['UserId'].setValue(null);
-  //       }
-  //     });
-  //   } else if (usertype == 'VTP') {
-  //   }
-  // }
 
   saveOrUpdateGenericVTMappingDetails() {
     if (!this.genericvtmappingForm.valid) {
@@ -216,8 +180,6 @@ onChangeDateOfAllocation(): void{
   createGenericVTMappingForm(): FormGroup {
     return this.formBuilder.group({
       GenericVTMappingId: new FormControl(this.genericvtmappingModel.GenericVTMappingId),
-      // UserType: new FormControl({ value: this.genericvtmappingModel.UserType, disabled: this.PageRights.IsReadOnly }),
-      // UserId: new FormControl({ value: this.genericvtmappingModel.UserId, disabled: this.PageRights.IsReadOnly }),
       SSJId: new FormControl({ value: this.genericvtmappingModel.SSJId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VTPId: new FormControl({ value: this.genericvtmappingModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       VCId: new FormControl({ value: this.genericvtmappingModel.VCId, disabled: this.PageRights.IsReadOnly }),

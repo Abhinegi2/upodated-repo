@@ -118,7 +118,6 @@ export class CreateVTStudentPlacementDetailComponent extends BaseComponent<VTStu
       HigherEducationVE: new FormControl({ value: this.vtStudentPlacementDetailModel.HigherEducationVE, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)),
       HigherEductaionOther: new FormControl({ value: this.vtStudentPlacementDetailModel.HigherEductaionOther, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)),
       StudentPlacementStatus: new FormControl({ value: this.vtStudentPlacementDetailModel.StudentPlacementStatus, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)),
-      //IsActive: new FormControl({ value: this.vtStudentPlacementDetailModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

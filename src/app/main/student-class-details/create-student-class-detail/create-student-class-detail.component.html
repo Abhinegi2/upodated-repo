@@ -128,16 +128,6 @@
                                 {{getErrorMessage(studentClassDetailForm, 'DateOfBirth')}}
                             </mat-error>
                         </mat-form-field>
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="Constants.DefaultStateId != 'MH'">
-                            <mat-label>Aadhaar Number</mat-label>
-                            <input matInput name="aadhaarNumber" formControlName="AadhaarNumber" digitOnly
-                                minlength="12" maxlength="12">
-                            <mat-error *ngIf="studentClassDetailForm.controls.AadhaarNumber.invalid">
-                                {{getErrorMessage(studentClassDetailForm, 'AadhaarNumber')}}
-                            </mat-error>
-                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -177,19 +167,6 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline" class="pr-20" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                <mat-label>Select Religion</mat-label>
-                                <mat-select name="religion" formControlName="Religion" required appearance="outline"
-                                    [disabled]="PageRights.IsReadOnly">
-                                    <mat-option [value]="religionItem.Id" *ngFor="let religionItem of religionList">
-                                        {{ religionItem.Name }}
-                                    </mat-option>
-                                </mat-select>
-                                <mat-error *ngIf="studentClassDetailForm.controls.Religion.invalid">
-                                    {{getErrorMessage(studentClassDetailForm, 'Religion')}}
-                                </mat-error>
-                            </mat-form-field> -->
-
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>CWSN Status</mat-label>
                             <mat-select name="cwsnStatus" formControlName="CWSNStatus" required appearance="outline"
@@ -203,15 +180,6 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-
-                    <!-- <div fxLayout="row" fxLayoutAlign="start center">
-                            <span class="checkbox-space">Is Active?</span>
-                            <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
-                            </mat-checkbox>
-                        </div> -->
-                    <!-- </div> -->
-                    <!-- </mat-tab>
-                    </mat-tab-group> -->
                 </form>
 
             </div>

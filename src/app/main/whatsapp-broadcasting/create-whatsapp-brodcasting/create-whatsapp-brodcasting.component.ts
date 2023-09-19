@@ -87,7 +87,6 @@ export class CreateWhatsappBrodcastingComponent extends BaseComponent<whatsappBr
       this.SearchBy.PageSize = 10; // delete after script changed
       this.generateTable();
 
-      // var campainID: string = '1';
       //Load initial messageTemplates data
       this.messageTemplatesService.getGlificTemplate()
         .subscribe((response: any) => {

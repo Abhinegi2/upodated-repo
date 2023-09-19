@@ -95,20 +95,7 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
       this.loginModel.RememberMe = true;
     }
 
-    this.loginForm = this.createLoginForm();
-
-    // this.deviceInfo = this.deviceService.getDeviceInfo();
-    // const isMobile = this.deviceService.isMobile();
-    // const isTablet = this.deviceService.isTablet();
-    // const isDesktopDevice = this.deviceService.isDesktop();
-    // console.log(this.deviceInfo);
-    // console.log(isMobile);  // returns if the device is a mobile device (android / iPhone / windows-phone etc)
-    // console.log(isTablet);  // returns if the device us a tablet (iPad etc)
-    // console.log(isDesktopDevice); // returns if the app is running on a Desktop browser.
-
-    // this.authenticationService.getIPAddress().subscribe((response: any) => {
-    //   console.log('Client IP Address : ', response);
-    // });    
+    this.loginForm = this.createLoginForm();  
   }
 
   setVisiblePassword(): void {
@@ -239,10 +226,6 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
               if (passwordExpiredOn < currentDate) {
                 this.router.navigateByUrl(RouteConstants.Account.ResetPassword);
               }
-              // if (dpasswordExpiredOn = true) {
-              //   this.router.navigateByUrl(RouteConstants.Account.ResetPassword);
-              // }
-
               else {
                 // login successful so redirect to return url
                 this.router.navigateByUrl(currentUser.LandingPageUrl);

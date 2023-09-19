@@ -229,7 +229,6 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
         this.isAllowSchool = true;
 
         this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'School' }).subscribe((response) => {
-          // this.commonService.GetSchoolsByVCId({ DataId: this.UserModel.LoginId, DataId1: this.UserModel.UserTypeId, SelectTitle: 'School' }).subscribe((response) => {
           if (response.Success) {
             this.schoolList = response.Results;
           }
@@ -264,13 +263,10 @@ export class CreateVCDailyReportingComponent extends BaseComponent<VCDailyReport
       delete this.vcDailyReportingForm.value['holidayGroup'];
       delete this.vcDailyReportingForm.controls['industryExposureVisitGroup'];
       delete this.vcDailyReportingForm.value['industryExposureVisitGroup'];
-
       this.vcDailyReportingForm.controls["WorkingDayTypeIds"].clearValidators();
       this.vcDailyReportingForm.controls["SchoolId"].clearValidators();
-
       this.vcDailyReportingForm.controls["WorkingDayTypeIds"].updateValueAndValidity();
       this.vcDailyReportingForm.controls["SchoolId"].updateValueAndValidity();
-
       let initialFormValues = this.vcDailyReportingForm.value;
       this.vcDailyReportingForm.reset(initialFormValues);
     }

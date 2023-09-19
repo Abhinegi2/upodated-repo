@@ -52,19 +52,9 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
   ngOnInit(): void {
 
     this.vocationaltrainerdetailService.getDropdownforVocationalTrainerDetail(this.UserModel).subscribe(results => {
-
-      // if (results[0].Success) {
-      //   this.vtpList = results[0].Results;
-      // }
-
       if (results[0].Success) {
         this.socialCategoryList = results[0].Results;
       }
-
-      // if (results[2].Success) {
-      //   this.natureOfAppointmentList = results[2].Results;
-      // }
-
       if (results[1].Success) {
         this.academicQualificationList = results[1].Results;
       }
@@ -85,11 +75,6 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
         this.vtList = results[5].Results;
         this.filteredVTItems = this.vtList.slice();
       }
-
-      // if (results[6].Success) {
-      //   this.vcList = results[6].Results;
-      //   this.filteredVCItems = this.vcList.slice();
-      // }
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -117,12 +102,7 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
                   let dateOfResignationCtrl = this.vocationaltrainerdetailForm.get("DateOfResignation");
                   this.onChangeDateEnableDisableCheckBox(this.vocationaltrainerdetailForm, dateOfResignationCtrl);
                 }
-
-                // this.onChangeVTP(this.vocationaltrainerdetailModel.VTPId);
-
-
                 this.vocationaltrainerdetailForm = this.createVocationaltrainerdetailForm();
-                // this.onChangeDivision(this.vocationaltrainerdetailModel.DivisionId);
               });
           }
         }
@@ -131,30 +111,6 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
 
     this.vocationaltrainerdetailForm = this.createVocationaltrainerdetailForm();
   }
-
-  // onChangeVTP(vtpId) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinatorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.LoginId, ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }).subscribe((response) => {
-  //     if (response.Success) {
-  //       this.vocationalCoordinatorList = response.Results;
-  //     }
-  //   });
-
-  // }
-  // onChangeState(stateId: any) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
-  //     this.divisionList = response.Results;
-  //     this.districtList = <DropdownModel[]>[];
-  //   });
-  // }
-
-  // onChangeDivision(divisionId: any) {
-  //   var stateCode = this.vocationaltrainerdetailForm.get('StateCode').value;
-
-  //   this.commonService.GetMasterDataByType({ DataType: 'Districts', UserId: stateCode, ParentId: divisionId, SelectTitle: 'District' }).subscribe((response: any) => {
-  //     this.districtList = response.Results;
-  //   });
-  // }
-
   saveOrUpdateVocationaltrainerdetailDetails() {
     if (!this.vocationaltrainerdetailForm.valid) {
       this.validateAllFormFields(this.vocationaltrainerdetailForm);
@@ -190,16 +146,8 @@ export class CreateVocationaltrainerdetailComponent extends BaseComponent<Vocati
     return this.formBuilder.group({
       VocationaltrainerdetailId: new FormControl(this.vocationaltrainerdetailModel.VocationaltrainerdetailId),
       VTId: new FormControl({ value: this.vocationaltrainerdetailModel.VTId, disabled: this.PageRights.IsReadOnly }),
-      // AcademicYearId: new FormControl(this.vocationaltrainerdetailModel.AcademicYearId),
-      // VTPId: new FormControl({ value: this.vocationaltrainerdetailModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // VCId: new FormControl({ value: this.vocationaltrainerdetailModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // FirstName: new FormControl({ value: this.vocationaltrainerdetailModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       MiddleName: new FormControl({ value: this.vocationaltrainerdetailModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // LastName: new FormControl({ value: this.vocationaltrainerdetailModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // FullName: new FormControl({ value: this.vocationaltrainerdetailModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
-      // Mobile: new FormControl({ value: this.vocationaltrainerdetailModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.vocationaltrainerdetailModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
-      // Email: new FormControl({ value: this.vocationaltrainerdetailModel.Email, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       Gender: new FormControl({ value: this.vocationaltrainerdetailModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.vocationaltrainerdetailModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
       SocialCategory: new FormControl({ value: this.vocationaltrainerdetailModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),

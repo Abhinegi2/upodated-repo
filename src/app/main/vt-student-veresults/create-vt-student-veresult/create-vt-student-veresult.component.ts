@@ -116,7 +116,6 @@ export class CreateVTStudentVEResultComponent extends BaseComponent<VTStudentVER
       InternalMarks: new FormControl({ value: this.vtStudentVEResultModel.InternalMarks, disabled: this.PageRights.IsReadOnly }, Validators.pattern(this.Constants.Regex.Number)),
       TotalMarks: new FormControl({ value: this.vtStudentVEResultModel.TotalMarks, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       Grade: new FormControl({ value: this.vtStudentVEResultModel.Grade, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)]),
-      // IsActive: new FormControl({ value: this.vtStudentVEResultModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

@@ -77,8 +77,6 @@ export class CreateSchoolSectorJobComponent extends BaseComponent<SchoolSectorJo
                     this.IsLoading = true;
                   });
                 });
-
-                // this.schoolsectorjobForm = this.createSchoolSectorJobForm();
               });
           }
         }
