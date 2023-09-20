@@ -605,7 +605,6 @@ export class IssueManagementDashboardComponent extends BaseListComponent<IssueMa
         for (const iterator2 of iterator.series) {
           if (iterator2.name === name) {
             iterator2.value = 0;
-            //iterator2.name = null;
           }
         }
       }
@@ -633,7 +632,6 @@ export class IssueManagementDashboardComponent extends BaseListComponent<IssueMa
 
         if (iterator.name === name) {
           iterator.series = [];
-          //iterator2.name = null;
         }
       }
     }

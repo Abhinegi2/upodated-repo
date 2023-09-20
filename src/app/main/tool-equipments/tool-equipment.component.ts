@@ -135,10 +135,7 @@ export class ToolEquipmentComponent extends BaseListComponent<ToolEquipmentModel
   onLoadToolEquipmentsByCriteria(): any {
     this.IsLoading = true;
     this.SearchBy.AcademicYearId = this.toolEquipmentFilterForm.controls['AcademicYearId'].value;
-    //this.SearchBy.VTPId = this.toolEquipmentFilterForm.controls['VTPId'].value;
-    //this.SearchBy.VCId = this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.toolEquipmentFilterForm.controls['VCId'].value;
     this.SearchBy.VTId = this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.toolEquipmentFilterForm.controls['VTId'].value;
-    //this.SearchBy.HMId = this.UserModel.RoleCode == 'HM' ? this.UserModel.UserTypeId : this.toolEquipmentFilterForm.controls['HMId'].value;
     this.SearchBy.SchoolId = this.toolEquipmentFilterForm.controls['SchoolId'].value;
     this.SearchBy.SectorId = this.toolEquipmentFilterForm.controls['SectorId'].value;
     this.SearchBy.JobRoleId = this.toolEquipmentFilterForm.controls['JobRoleId'].value;

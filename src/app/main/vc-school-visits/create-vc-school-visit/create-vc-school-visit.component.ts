@@ -137,7 +137,6 @@ export class CreateVCSchoolVisitComponent extends BaseComponent<VCSchoolVisitMod
       HMRatingVtqualityteaching: new FormControl({ value: this.vcSchoolVisitModel.HMRatingVtqualityteaching, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       HMRatingVtglfvquality: new FormControl({ value: this.vcSchoolVisitModel.HMRatingVtglfvquality, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       HMRatingInitiativestaken: new FormControl({ value: this.vcSchoolVisitModel.HMRatingInitiativestaken, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-     // IsActive: new FormControl({ value: this.vcSchoolVisitModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

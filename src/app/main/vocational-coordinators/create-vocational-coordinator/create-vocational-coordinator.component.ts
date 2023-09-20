@@ -44,8 +44,6 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
 
     // Set the default vocationalCoordinator Model
     this.vocationalCoordinatorModel = new VocationalCoordinatorModel();
-    //this.vocationalCoordinatorModel = new VocationalCoordinatorModel().getVocationalCoordinatorTestData();
-
     this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
   }
 
@@ -64,28 +62,6 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
       if(results[3].Success){
             this.academicYearList = results[3].Results;
           }
-      // this.vocationalCoordinatorService.getInitVocationalCoordinatorsData()
-      // if (results[2].Success) {
-      //   this.vcList = results[2].Results;
-      //   this.filteredVcItems = this.vcList.slice();
-      // }
-
-      // this.vocationalCoordinatorService.getInitVocationalCoordinatorsData().subscribe((results)=>{
-      //   console.log(results);
-      //   if(results[0].Success){
-      //     this.academicYearList = results[0].Results;
-      //   }
-      // })
-
-
-      // if (results[0].Success) {
-      //   this.vtpList = results[0].Results;
-      // }
-
-      // if (results[1].Success) {
-      //   this.natureOfAppointmentList = results[1].Results;
-      // }
-
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
           this.PageRights.ActionType = params.get('actionType');
@@ -113,14 +89,7 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
                   this.PageRights.IsReadOnly = true;
                 }
                 this.onChangeVC(this.vocationalCoordinatorModel.VCId);
-
-                // this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
-                // this.onChangeVC().then(response => {
-                // this.onChangeSector(this.schoolsectorjobModel.SectorId).then(response => {
                 this.vocationalCoordinatorForm = this.createVocationalCoordinatorForm();
-                // this.IsLoading = true;
-                // });
-                // });
               });
           }
         }
@@ -137,9 +106,6 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
       this.vocationalCoordinatorForm.controls['Mobile'].setValue(accountModel.Mobile);
       this.vocationalCoordinatorForm.controls['Mobile'].disable();
     });
-    // // var VCName = this.vocationalCoordinatorForm.controls['VCId'].html();
-    // var selectedValue = this.vocationalCoordinatorService.getDropDownText(this.mySelect, VCId)[0].name;
-    // console.log(selectedValue);
   }
 
 
@@ -150,8 +116,6 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
     }
 
     this.setValueFromFormGroup(this.vocationalCoordinatorForm, this.vocationalCoordinatorModel);
-    // this.vocationalCoordinatorModel.AcademicYearId = this.UserModel.AcademicYearId;
-
     this.vocationalCoordinatorService.createOrUpdateVocationalCoordinator(this.vocationalCoordinatorModel)
       .subscribe((vocationalCoordinatorResp: any) => {
 
@@ -177,23 +141,14 @@ export class CreateVocationalCoordinatorComponent extends BaseComponent<Vocation
   //Create vocationalCoordinator form and returns {FormGroup}
   createVocationalCoordinatorForm(): FormGroup {
     return this.formBuilder.group({
-      // VCId: new FormControl(this.vocationalCoordinatorModel.VCId),
       VCId: new FormControl({ value: this.vocationalCoordinatorModel.VCId, disabled: this.PageRights.IsReadOnly }),
       AcademicYear: new FormControl(this.vocationalCoordinatorModel.AcademicYear),
-      // VTPId: new FormControl({ value: this.vocationalCoordinatorModel.VTPId, disabled: this.PageRights.IsReadOnly }),
-      // FirstName: new FormControl({ value: this.vocationalCoordinatorModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // MiddleName: new FormControl({ value: this.vocationalCoordinatorModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // LastName: new FormControl({ value: this.vocationalCoordinatorModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       FullName: new FormControl({ value: this.vocationalCoordinatorModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Mobile: new FormControl({ value: this.vocationalCoordinatorModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.vocationalCoordinatorModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       EmailId: new FormControl({ value: this.vocationalCoordinatorModel.EmailId, disabled: (this.PageRights.IsReadOnly || this.PageRights.ActionType == this.Constants.Actions.Edit) }, [Validators.required, Validators.maxLength(50), Validators.pattern(this.Constants.Regex.Email)]),
-      // NatureOfAppointment: new FormControl({ value: this.vocationalCoordinatorModel.NatureOfAppointment, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100)]),
       Gender: new FormControl({ value: this.vocationalCoordinatorModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(50)]),
       DateOfJoining: new FormControl({ value: new Date(this.vocationalCoordinatorModel.DateOfJoining), disabled: this.PageRights.IsReadOnly }, Validators.required),
-      //DateOfJoining2: new FormControl({ value: new Date(this.vocationalCoordinatorModel.DateOfJoining2), disabled: this.PageRights.IsReadOnly }, Validators.required),
-
-
       DateOfResignation: new FormControl({ value: this.getDateValue(this.vocationalCoordinatorModel.DateOfResignation), disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.vocationalCoordinatorModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });

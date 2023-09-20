@@ -141,15 +141,6 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
                 }
 
                 this.unitSessionsModels = this.vtGuestLectureConductedModel.UnitSessionsModels;
-
-                // this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: this.vtGuestLectureConductedModel.ClassTaughtId }).subscribe(response => {
-                //   if (response.Success) {
-                //     this.sectionList = response.Results;
-
-                //     this.vtGuestLectureConductedForm = this.createVTGuestLectureConductedForm();
-                //   }
-                //   });
-
                 this.schoolsectorjobService.getSchoolSectorJobById(this.vtGuestLectureConductedModel.SSJId)
                   .subscribe((response: any) => {
                     var schoolsectorjobModel = response.Result;
@@ -157,7 +148,6 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
                     this.vtGuestLectureConductedModel.SchoolId = schoolsectorjobModel.SchoolId;
                     this.vtGuestLectureConductedModel.SectorId = schoolsectorjobModel.SectorId;
                     this.vtGuestLectureConductedModel.JobRoleId = schoolsectorjobModel.JobRoleId;
-
                     this.setInputs(this.vtGuestLectureConductedModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
                       this.setInputs(this.vtGuestLectureConductedModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
                         this.setInputs(this.vtGuestLectureConductedModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
@@ -283,27 +273,10 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: this.JobRoleInputId, DataTypeID4: this.AcademicYearInputId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-          // this.loadFormInputs(response.Results, 'SectionIds');
         }
         resolve(true);
       });
     });
-
-    // let moduleItem = this.vtGuestLectureConductedForm.get('ModuleId').value;
-    // if (moduleItem != null && moduleItem.Id != null) {
-    //   this.onChangeCourseModule(moduleItem);
-    // }
-
-    // this.sectionList = <DropdownModel[]>[];
-    // this.unitList = <DropdownModel[]>[];
-    // this.sessionList = <DropdownModel[]>[];
-    // this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
-
-    // this.vtGuestLectureConductedForm.get("SectionIds").setValue(null);
-
-    // let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
-    // studentAttendancesControls.clear();
-
     return promise;
   }
 
@@ -416,33 +389,6 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     return promise;
   }
 
-
-
-  // onChangeClassForTaught(classId): void {
-  //   if (classId != null) {
-  //     this.commonService.GetSectionsByVTClassId({ DataId: this.UserModel.UserTypeId, DataId1: classId }).subscribe(response => {
-  //       if (response.Success) {
-  //         this.sectionList = response.Results;
-  //       }
-  //     });
-
-  //     let moduleItem = this.vtGuestLectureConductedForm.get('ModuleId').value;
-  //     if (moduleItem != null && moduleItem.Id != null) {
-  //       this.onChangeCourseModule(moduleItem);
-  //     }
-  //   }
-
-  //   this.sectionList = <DropdownModel[]>[];
-  //   this.unitList = <DropdownModel[]>[];
-  //   this.sessionList = <DropdownModel[]>[];
-  //   this.unitSessionsModels = <ModuleUnitSessionModel[]>[];
-
-  //   this.vtGuestLectureConductedForm.get("SectionIds").setValue(null);
-
-  //   let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
-  //   studentAttendancesControls.clear();
-  // }
-
   onChangeSectionForTaught(sectionId) {
     this.setFormInputs();
     if (sectionId != null) {
@@ -464,9 +410,6 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
               response.Results.forEach(studentItem => {
                 studentAttendancesControls.push(this.formBuilder.group(studentItem));
               });
-
-              // let initialFormValues = this.vtGuestLectureConductedForm.value;
-              // this.vtGuestLectureConductedForm.reset(initialFormValues);
             }
           });
         }
@@ -477,7 +420,6 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
       let studentAttendancesControls = <FormArray>this.vtGuestLectureConductedForm.get('StudentAttendances');
       studentAttendancesControls.clear();
     }
-    // this.setUserAction();
   }
 
   onChangeCourseModule(moduleItem): void {

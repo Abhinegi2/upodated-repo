@@ -78,75 +78,8 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="25" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVtp
-                                (selectionChange)="onChangeVTP($event.value)">
-                                <mat-select-filter class="select-filter" *ngIf="SelectVtp.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-                        <!-- 
-                        <mat-form-field fxFlex="20" fxFlex.lt-md="20" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC
-                                (selectionChange)="onChangeVC($event.value)">
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
-                        <!-- <mat-form-field fxFlex="35" fxFlex.lt-md="15" fxFlex.lt-sm="100">
-                            <mat-label>School</mat-label>
-
-                            <mat-select formControlName="SchoolId" appearance="fill" matTooltip="Select School"
-                                matTooltipPosition='above' matTooltipClass="allow-cr" #SelectSchool>
-                                <mat-select-filter class="select-filter" *ngIf="SelectSchool.focused"
-                                    [array]="schoolList"
-                                    [displayMember]="'Name'"></mat-select-filter>
-                                <mat-option [value]="schoolItem.Id" *ngFor="let schoolItem of filteredSchoolItems">
-                                    {{ schoolItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="15" fxFlex.lt-sm="100">
-                            <mat-label>Sector</mat-label>
-
-                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
-                                (selectionChange)="onChangeSector($event.value)">
-                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
-                                    {{ sectorItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="15" fxFlex.lt-sm="100">
-                            <mat-label>Job Role</mat-label>
-
-                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
-                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
-                                    {{ jobRoleItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
                         <mat-form-field fxFlex="15" fxFlex.lt-md="10" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>
-
                             <mat-select name="status" formControlName="Status" appearance="fill">
                                 <mat-option value="">Status</mat-option>
                                 <mat-option value="true">Active</mat-option>
@@ -258,8 +191,6 @@
                         <p class="text-truncate">{{headMaster.UpdatedBy}}</p>
                     </mat-cell>
                 </ng-container>
-                    
-
 
                 <!-- DateOfResignationFromSchool Column -->
                 <ng-container matColumnDef="DateOfResignationFromSchool">

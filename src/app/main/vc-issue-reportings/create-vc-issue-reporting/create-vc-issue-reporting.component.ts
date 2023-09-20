@@ -105,7 +105,6 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
             this.issueReportingService.getVCIssueReportingById(vcIssueReportingId)
               .subscribe((response: any) => {
                 this.vcIssueReportingModel = response.Result;
-                // this.vcIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
                 this.vcIssueReportingModel.SectionIds = response.Result.SectionIds.split(',');
                 this.vcIssueReportingModel.Month = response.Result.Month.split(',');
 
@@ -415,15 +414,12 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
       this.validateAllFormFields(this.vcIssueReportingForm);
       return;
     }
-    // var studentClass = this.vcIssueReportingForm.get('StudentClass').value;
     var SectionIds = this.vcIssueReportingForm.get('SectionIds').value;
     var month = this.vcIssueReportingForm.get('Month').value;
     this.setValueFromFormGroup(this.vcIssueReportingForm, this.vcIssueReportingModel);
-    // this.vcIssueReportingModel.StudentClass = studentClass.join(',');
     this.vcIssueReportingModel.SectionIds = SectionIds.join(',');
     this.vcIssueReportingModel.Month = month.join(',');
     this.vcIssueReportingModel.VCId = this.UserModel.UserTypeId;
-    // this.vcIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
 
     this.issueReportingService.createOrUpdateVCIssueReporting(this.vcIssueReportingModel)
       .subscribe((vcIssueReportingResp: any) => {
@@ -460,19 +456,15 @@ export class CreateVCIssueReportingComponent extends BaseComponent<VCIssueReport
     return this.formBuilder.group({
       VCIssueReportingId: new FormControl(this.vcIssueReportingModel.VCIssueReportingId),
       VCId: new FormControl(this.vcIssueReportingModel.VCId),
-
       SchoolId: new FormControl({ value: this.vcIssueReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
       SectorId: new FormControl({ value: this.vcIssueReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.vcIssueReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
-
       AcademicYearId: new FormControl({ value: this.vcIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionIds: new FormControl({ value: this.vcIssueReportingModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
-
       IssueReportDate: new FormControl({ value: new Date(this.vcIssueReportingModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
       MainIssue: new FormControl({ value: this.vcIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SubIssue: new FormControl({ value: this.vcIssueReportingModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // StudentClass: new FormControl({ value: this.vcIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Month: new FormControl({ value: this.vcIssueReportingModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.required),
       StudentType: new FormControl({ value: this.vcIssueReportingModel.StudentType, disabled: this.PageRights.IsReadOnly }, Validators.required),
       NoOfStudents: new FormControl({ value: this.vcIssueReportingModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),

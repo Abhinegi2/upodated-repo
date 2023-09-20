@@ -150,13 +150,6 @@ export class CreateDRPDailyReportingComponent extends BaseComponent<DRPDailyRepo
           }
 
           else {
-
-            // this.dailyReportingForm = this.formBuilder.group({
-            //   ...this.dailyReportingForm.controls,
-
-            //   WorkingDayTypeIds: new FormControl({ value: this.dailyReportingModel.WorkingDayTypeIds, disabled: this.PageRights.IsReadOnly }, Validators.required),
-            // });
-
             this.dailyReportingForm.controls["WorkingDayTypeIds"].setValidators([Validators.required]);
             this.dailyReportingForm.controls["WorkingDayTypeIds"].updateValueAndValidity();
             this.workTypeList = response.Results;

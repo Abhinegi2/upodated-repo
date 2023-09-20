@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { fuseAnimations } from '@fuse/animations';
 import { DialogService } from 'app/common/confirm-dialog/dialog.service';
-
 import { DropdownModel } from 'app/models/dropdown.model';
 import { MessageTemplateModel } from '../message-template.model';
 import { MessageTemplateService } from '../message-template.service';

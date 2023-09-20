@@ -53,7 +53,6 @@
 
                 <form name="jobRoleForm" [formGroup]="jobRoleForm" class="school w-100-p p-24 mr-24" fxLayout="column"
                     fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
-                    <!-- <mat-tab label="Basic Info"> -->
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
@@ -67,13 +66,6 @@
                                     {{ sectorItem.Name }}
                                 </mat-option>
                             </mat-autocomplete>
-
-                            <!-- <mat-select formControlName="SectorId" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeSector($event)">
-                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
-                                    {{ sectorItem.Name }}
-                                </mat-option>
-                            </mat-select> -->
 
                             <mat-error *ngIf="jobRoleForm.controls.SectorId.invalid">
                                 {{getErrorMessage(jobRoleForm, 'SectorId')}}
@@ -127,8 +119,7 @@
                         <mat-checkbox matInput formControlName="IsActive" [disabled]="PageRights.IsReadOnly">
                         </mat-checkbox>
                     </div>
-                    <!-- </mat-tab>
-                    </mat-tab-group> -->
+        
                 </form>
 
             </div>

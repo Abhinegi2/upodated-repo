@@ -75,16 +75,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         this.hmFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
       }
       }
-
-      // if (results[1].Success) {
-      //   this.vtpList = results[1].Results;
-      //   this.filteredVTPItems = this.vtpList.slice();
-      // }
-
-      // if (results[1].Success) {
-      //   this.sectorList = results[1].Results;
-      // }
-
       //Load initial HeadMasters data
       this.onLoadHeadMastersByCriteria();
 
@@ -154,7 +144,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
         'DateOfResignationFromSchool',
         'IsActive',
         'CreatedByUserId',
-        // 'IsResigned',
         'Actions'];
 
       this.tableDataSource.data = response.Results;
@@ -194,73 +183,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.hmFilterForm.get('AcademicYearId').setValue(null);
     this.onLoadHeadMastersByCriteria();
   }
-
-  // onChangeAY(AYId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.vtpList = [];
-  //     this.filteredVTPItems = [];
-  //     let vtpRequest = this.commonService.GetVTPByAYId(this.UserModel.RoleCode, this.UserModel.UserTypeId, AYId)
-
-  //     vtpRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vtpList = response.Results;
-  //         this.filteredVTPItems = this.vtpList.slice();
-  //       }
-
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     let vcRequest = this.commonService.GetVCByAYAndVTPId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.AcademicYearId, vtpId);
-
-  //     vcRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vcList = response.Results;
-  //         this.filteredVCItems = this.vcList.slice();
-  //         this.hmFilterForm.get('JobRoleId').setValue(null);
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVC(vcId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVC', ParentId: vcId, SelectTitle: 'School' }).subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.schoolList = response.Results;
-  //         this.filteredSchoolItems = this.schoolList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeSector(sectorId: string): void {
-  //   this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: 'Job Role' }).subscribe((response: any) => {
-  //     this.jobRoleList = response.Results;
-  //     this.hmFilterForm.get('JobRoleId').setValue(null);
-  //   });
-  // }
-
   onDeleteHeadMaster(hmId: string) {
     this.dialogService
       .openConfirmDialog(this.Constants.Messages.DeleteConfirmationMessage)
@@ -327,7 +249,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
       this.IsLoading = false;
     });
   }
-
   //Create HeadMaster Filter form and returns {FormGroup}
   createHeadMasterFilterForm(): FormGroup {
     return this.formBuilder.group({

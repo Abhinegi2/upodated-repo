@@ -64,16 +64,6 @@
                     fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>School</mat-label>
-
-                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill">
-                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of schoolList">
-                                    {{ schoolsItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
                         <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Sector</mat-label>
 
@@ -191,20 +181,11 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- IsActive Column -->
-                <!-- <ng-container matColumnDef="IsActive">
-                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Active?
-                    </mat-header-cell>
-                    
-                </ng-container> -->
-
                 <ng-container matColumnDef="Actions" stickyEnd>
                     <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
                     <mat-cell *matCellDef="let schoolsectorjob" fxShow.gt-xs>
-                        <!-- <mat-cell *matCellDef="let schoolsectorjob" class="text-center"> -->
                             <mat-icon *ngIf="schoolsectorjob.IsActive" class="data-active s-20">check</mat-icon>
                             <mat-icon *ngIf="!schoolsectorjob.IsActive" class="data-inactive s-20">close</mat-icon>
-                        <!-- </mat-cell> -->
                         <button *ngIf="PageRights.IsView" mat-icon-button
                             [routerLink]="['/schoolsectorjobs', 'view', schoolsectorjob.SchoolSectorJobId]" skipLocationChange="true"
                             replaceUrl="false">
@@ -232,7 +213,6 @@
             <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
                 [pageSizeOptions]="[5, 10, 25, 100]">
             </mat-paginator>
-
         </div>
         <!-- / CONTENT CARD -->
     </div>

@@ -161,8 +161,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', ParentId: schoolId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sectors' }).subscribe((response) => {
         if (response.Success) {
           this.sectorList = response.Results;
-          // this.studentClassForm.controls['SectorId'].enable();
-
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School is not mapped with any <b>Sector</b> and <b>JobRole</b>.<br><br> Please visit the <a href='/schoolsectorjobs'><b>School Sector JobRole</b></a> page and assign a Sector & Jobrole to the required School."]);
             this.dialogService.openShowDialog(errorMessages);
@@ -203,8 +201,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
         if (response.Success) {
           this.jobRoleList = response.Results;
-          // this.studentClassForm.controls['JobRoleId'].enable();
-
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['JobRoleId'].setValue(this.jobRoleList[1].Id);
             this.studentClassForm.controls['JobRoleId'].disable();
@@ -241,14 +237,11 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
         if (response.Success) {
           this.academicYearList = response.Results;
-          // this.studentClassForm.controls['AcademicYearId'].enable();
-
           if (response.Results.length == 1) {
             var errorMessages = this.getHtmlMessage(["The selected School Sector JobRole is not mapped with any <b>Academic Class Section</b>.<br><br> Please visit the <a href='/vtacademicclasssections'><b>VT Academic Class Sections</b></a> page."]);
             this.dialogService.openShowDialog(errorMessages);
             this.studentClassForm.controls['JobRoleId'].setValue(null);
           }
-
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['AcademicYearId'].setValue(response.Results[1].Id);
             this.studentClassForm.controls['AcademicYearId'].disable();
@@ -284,8 +277,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.commonService.GetMasterDataByType({ DataType: 'ClassesByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, ParentId: academicYearId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Classes' }).subscribe((response) => {
         if (response.Success) {
           this.classList = response.Results;
-          // this.studentClassForm.controls['ClassId'].enable();
-
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['ClassId'].setValue(response.Results[1].Id);
             this.studentClassForm.controls['ClassId'].disable();
@@ -327,8 +318,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
       this.commonService.GetMasterDataByType({ DataType: 'SectionsByACS', DataTypeID1: schoolId, DataTypeID2: sectorId, DataTypeID3: jobRoleId, DataTypeID4: academicYearId, DataTypeID5: classId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'Sections' }).subscribe((response) => {
         if (response.Success) {
           this.sectionList = response.Results;
-          // this.studentClassForm.controls['SectionId'].enable();
-
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['SectionId'].setValue(response.Results[1].Id);
             this.studentClassForm.controls['SectionId'].disable();
@@ -478,57 +467,41 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
 
       StudentId: new FormControl(this.studentClassModel.StudentId),
       //for PMU(GTVID)
-
       SchoolId: new FormControl({ value: this.studentClassModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
-
       StudentUniqueNumber: new FormControl({ value: this.studentClassModel.StudentUniqueNumber, disabled: true }),
       SectorId: new FormControl({ value: this.studentClassModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.studentClassModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
-
       AcademicYearId: new FormControl({ value: this.studentClassModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       ClassId: new FormControl({ value: this.studentClassModel.ClassId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionId: new FormControl({ value: this.studentClassModel.SectionId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       ClassSection: new FormControl({ value: this.studentClassModel.ClassSection, disabled: this.PageRights.IsReadOnly }, Validators.required),
-
       FirstName: new FormControl({ value: this.studentClassModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars), Validators.pattern(this.Constants.Regex.NoSpaceInNameFields)]),
       MiddleName: new FormControl({ value: this.studentClassModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars), Validators.pattern(this.Constants.Regex.NoSpaceInNameFields)]),
       LastName: new FormControl({ value: this.studentClassModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars), Validators.pattern(this.Constants.Regex.NoSpaceInNameFields)]),
       FullName: new FormControl({ value: this.studentClassModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Gender: new FormControl({ value: this.studentClassModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
-
       FatherName: new FormControl({ value: this.studentClassModel.FatherName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       MotherName: new FormControl({ value: this.studentClassModel.MotherName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       GuardianName: new FormControl({ value: this.studentClassModel.GuardianName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-
       Mobile: new FormControl({ value: this.studentClassModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       SecondMobileNo: new FormControl({ value: this.studentClassModel.SecondMobileNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       AssessmentToBeConducted: new FormControl({ value: this.studentClassModel.AssessmentToBeConducted, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.studentClassModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
-
       Stream: new FormControl({ value: this.studentClassModel.Stream, disabled: this.PageRights.IsReadOnly }),
-
-      // IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-
       CWSNStatus: new FormControl({ value: this.studentClassModel.CWSNStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
-
       SocialCategory: new FormControl({ value: this.studentClassModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
-
       WhatappNo: new FormControl({ value: this.studentClassModel.WhatappNo, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(25), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       StudentUniqueId: new FormControl({ value: this.studentClassModel.StudentUniqueId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(25), Validators.pattern(this.Constants.Regex.AlphaNumeric)]),
       DateOfEnrollment: new FormControl({ value: new Date(this.studentClassModel.DateOfEnrollment), disabled: this.PageRights.IsReadOnly }, Validators.required),
       DateOfDropout: new FormControl({ value: this.getDateValue(this.studentClassModel.DateOfDropout), disabled: this.PageRights.IsReadOnly }),
       DropoutReason: new FormControl({ value: this.studentClassModel.DropoutReason, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(350)]),
       IsActive: new FormControl({ value: this.studentClassModel.IsActive, disabled: this.PageRights.IsReadOnly }),
-
       //For PMU-Admin
       VTPId: new FormControl({ value: this.studentClassModel.VTPId, disabled: this.PageRights.IsReadOnly }),
       VCId: new FormControl({ value: this.studentClassModel.VCId, disabled: this.PageRights.IsReadOnly }),
-
       VTId: new FormControl({ value: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentClassModel.VTId), disabled: this.PageRights.IsReadOnly }),
-
       IsStudentVE9And10: new FormControl({ value: this.studentClassModel.IsStudentVE9And10, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
       IsSameStudentTrade: new FormControl({ value: this.studentClassModel.IsSameStudentTrade, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(10)),
-
     });
   }
 }

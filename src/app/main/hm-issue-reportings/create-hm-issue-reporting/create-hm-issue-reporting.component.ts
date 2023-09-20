@@ -105,11 +105,8 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
             this.issueReportingService.getHMIssueReportingById(hmIssueReportingId)
               .subscribe((response: any) => {
                 this.hmIssueReportingModel = response.Result;
-
-                // this.hmIssueReportingModel.StudentClass = response.Result.StudentClass.split(',');
                 this.hmIssueReportingModel.SectionIds = response.Result.SectionIds.split(',');
                 this.hmIssueReportingModel.Month = response.Result.Month.split(',');
-
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
                   this.hmIssueReportingModel.RequestType = this.Constants.PageType.Edit;
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
@@ -139,18 +136,6 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
                         });
                       });
                     });
-
-                    // this.setInputs(this.hmIssueReportingModel.SchoolId, 'SchoolId', 'SchoolById').then(sResp => {
-                    //   this.setInputs(this.hmIssueReportingModel.SectorId, 'SectorId', 'SectorById').then(vvResp => {
-                    //     this.setInputs(this.hmIssueReportingModel.JobRoleId, 'JobRoleId', 'JobRoleById').then(vvResp => {
-                    //       this.setInputs(this.hmIssueReportingModel.AcademicYearId, 'AcademicYearId', 'AcademicYearById').then(vResp => {
-                    //         this.onChangeAcademicYear(this.hmIssueReportingModel.AcademicYearId);
-                    //         this.onChangeMainIssue(this.hmIssueReportingModel.MainIssue);
-                    //         this.hmIssueReportingForm = this.createHMIssueReportingForm();
-                    //       });
-                    //     });
-                    //   });
-                    // });
                   });
               });
           }
@@ -391,54 +376,17 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
     });
   }
 
-  // onStudentClassChange(selectedSectionIds) {
-  //   if (selectedSectionIds.length == 0) {
-  //     this.studentClassList.forEach(studentClassItem => {
-  //       studentClassItem.IsDisabled = false;
-  //     });
-  //   }
-  //   else {
-  //     if (selectedSectionIds[0] == this.notApplicableId) {
-  //       this.studentClassList.forEach(studentClassItem => {
-  //         if (studentClassItem.Id != selectedSectionIds[0]) {
-  //           studentClassItem.IsDisabled = true;
-  //         }
-  //       });
-  //     }
-  //     else {
-  //       let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
-  //       studentClassItem.IsDisabled = true;
-  //     }
-  //   }
-  // }
-
-  // selectAll(ev) {
-  //   if (ev._selected) {
-  //     this.hmIssueReportingForm.get('StudentClass').setValue(['214', '215', '216', '217']);
-  //     ev._selected = true;
-  //   }
-
-  //   if (ev._selected == false) {
-  //     this.hmIssueReportingForm.get('StudentClass').setValue(null);
-  //     let studentClassItem = this.studentClassList.find(s => s.Id == this.notApplicableId);
-  //     studentClassItem.IsDisabled = false;
-  //   }
-  // }
-
   saveOrUpdateHMIssueReportingDetails() {
     if (!this.hmIssueReportingForm.valid) {
       this.validateAllFormFields(this.hmIssueReportingForm);
       return;
     }
-    // var studentClass = this.hmIssueReportingForm.get('StudentClass').value;
     var SectionIds = this.hmIssueReportingForm.get('SectionIds').value;
     var month = this.hmIssueReportingForm.get('Month').value;
     this.setValueFromFormGroup(this.hmIssueReportingForm, this.hmIssueReportingModel);
     this.hmIssueReportingModel.SectionIds = SectionIds.join(',');
     this.hmIssueReportingModel.Month = month.join(',');
     this.hmIssueReportingModel.HMId = this.UserModel.UserTypeId;
-    // this.hmIssueReportingModel.AcademicYearId = this.UserModel.AcademicYearId;
-
     this.issueReportingService.createOrUpdateHMIssueReporting(this.hmIssueReportingModel)
       .subscribe((hmIssueReportingResp: any) => {
 
@@ -466,19 +414,14 @@ export class CreateHMIssueReportingComponent extends BaseComponent<HMIssueReport
     return this.formBuilder.group({
       HMIssueReportingId: new FormControl(this.hmIssueReportingModel.HMIssueReportingId),
       IssueReportDate: new FormControl({ value: new Date(this.hmIssueReportingModel.IssueReportDate), disabled: this.PageRights.IsReadOnly }, Validators.required),
-
       SchoolId: new FormControl({ value: this.hmIssueReportingModel.SchoolId, disabled: this.PageRights.IsReadOnly }),
       SectorId: new FormControl({ value: this.hmIssueReportingModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.hmIssueReportingModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
-
       AcademicYearId: new FormControl({ value: this.hmIssueReportingModel.AcademicYearId, disabled: this.PageRights.IsReadOnly }),
       StudentClass: new FormControl({ value: this.hmIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SectionIds: new FormControl({ value: this.hmIssueReportingModel.SectionIds, disabled: this.PageRights.IsReadOnly }),
-
       MainIssue: new FormControl({ value: this.hmIssueReportingModel.MainIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
       SubIssue: new FormControl({ value: this.hmIssueReportingModel.SubIssue, disabled: this.PageRights.IsReadOnly }, Validators.required),
-
-      // StudentClass: new FormControl({ value: this.hmIssueReportingModel.StudentClass, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Month: new FormControl({ value: this.hmIssueReportingModel.Month, disabled: this.PageRights.IsReadOnly }, Validators.required),
       StudentType: new FormControl({ value: this.hmIssueReportingModel.StudentType, disabled: this.PageRights.IsReadOnly }, Validators.required),
       NoOfStudents: new FormControl({ value: this.hmIssueReportingModel.NoOfStudents, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),

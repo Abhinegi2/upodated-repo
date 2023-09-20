@@ -22,16 +22,12 @@ import { AccountService } from 'app/main/accounts/account.service';
 export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTrainerModel> implements OnInit {
   vocationalTrainerForm: FormGroup;
   vocationalTrainerModel: VocationalTrainerModel;
-  // accountModel: AccountModel;
-  // vtpList: [DropdownModel];
   academicYearList: [DropdownModel];
   socialCategoryList: [DropdownModel];
-  // natureOfAppointmentList: [DropdownModel];
   academicQualificationList: [DropdownModel];
   professionalQualificationList: [DropdownModel];
   industryTrainingExperienceList: [DropdownModel];
   genderList: [DropdownModel];
-  // vocationalCoordinatorList: any;
   vtList: [DropdownModel];
   filteredVTItems: any;
 
@@ -50,9 +46,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
 
     // Set the default vocationalTrainer Model
     this.vocationalTrainerModel = new VocationalTrainerModel();
-    //this.vocationalTrainerModel = new VocationalTrainerModel().getVocationalTrainerTestData();
-    // this.accountModel = new AccountModel();
-
     this.vocationalTrainerForm = this.createVocationalTrainerForm();
   }
 
@@ -62,14 +55,9 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
         this.vtList = results[0].Results;
         this.filteredVTItems = this.vtList.slice();
       }
-
       if (results[1].Success) {
         this.socialCategoryList = results[1].Results;
       }
-
-      // if (results[2].Success) {
-      //   this.natureOfAppointmentList = results[2].Results;
-      // }
 
       if (results[2].Success) {
         this.academicQualificationList = results[2].Results;
@@ -124,8 +112,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
                   let dateOfResignationCtrl = this.vocationalTrainerForm.get("DateOfResignation");
                   this.onChangeDateEnableDisableCheckBox(this.vocationalTrainerForm, dateOfResignationCtrl);
                 }
-
-                // this.onChangeVTP(this.vocationalTrainerModel.VTPId);
                 this.onChangeVT(this.vocationalTrainerModel.VTId);
 
                 this.vocationalTrainerForm = this.createVocationalTrainerForm();
@@ -135,15 +121,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
       });
     });
   }
-
-  // onChangeVTP(vtpId) {
-  //   this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinatorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.LoginId, ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }).subscribe((response) => {
-  //     if (response.Success) {
-  //       this.vocationalCoordinatorList = response.Results;
-  //     }
-  //   });
-  // }
-
   onChangeVT(accountId) {
     this.accountService.getAccountById(accountId).subscribe((response: any) => {
       var accountModel = response.Result;
@@ -161,7 +138,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
     }
 
     this.setValueFromFormGroup(this.vocationalTrainerForm, this.vocationalTrainerModel);
-    // this.vocationalTrainerModel.AcademicYear = this.UserModel.AcademicYearId;
 
     this.vocationalTrainerService.createOrUpdateVocationalTrainer(this.vocationalTrainerModel)
       .subscribe((vocationalTrainerResp: any) => {
@@ -188,14 +164,8 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
   //Create vocationalTrainer form and returns {FormGroup}
   createVocationalTrainerForm(): FormGroup {
     return this.formBuilder.group({
-      // VTId: new FormControl(this.vocationalTrainerModel.VTId),
       VTId: new FormControl({ value: this.vocationalTrainerModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       AcademicYear: new FormControl(this.vocationalTrainerModel.AcademicYear),
-      // VTPId: new FormControl({ value: this.vocationalTrainerModel.VTPId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // VCId: new FormControl({ value: this.vocationalTrainerModel.VCId, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      // FirstName: new FormControl({ value: this.vocationalTrainerModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // MiddleName: new FormControl({ value: this.vocationalTrainerModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      // LastName: new FormControl({ value: this.vocationalTrainerModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(50), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
       FullName: new FormControl({ value: this.vocationalTrainerModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Mobile: new FormControl({ value: this.vocationalTrainerModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.vocationalTrainerModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
@@ -203,7 +173,6 @@ export class CreateVocationalTrainerComponent extends BaseComponent<VocationalTr
       Gender: new FormControl({ value: this.vocationalTrainerModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       DateOfBirth: new FormControl({ value: new Date(this.vocationalTrainerModel.DateOfBirth), disabled: this.PageRights.IsReadOnly }, Validators.required),
       SocialCategory: new FormControl({ value: this.vocationalTrainerModel.SocialCategory, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
-      // NatureOfAppointment: new FormControl({ value: this.vocationalTrainerModel.NatureOfAppointment, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       AcademicQualification: new FormControl({ value: this.vocationalTrainerModel.AcademicQualification, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       ProfessionalQualification: new FormControl({ value: this.vocationalTrainerModel.ProfessionalQualification, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
       ProfessionalQualificationDetails: new FormControl({ value: this.vocationalTrainerModel.ProfessionalQualificationDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),

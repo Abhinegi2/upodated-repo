@@ -24,13 +24,8 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   genderList: [DropdownModel];
   yearsInSchool: number;
   academicYearList: [DropdownModel];
-  // vtpList: DropdownModel[];
-  // vcList: DropdownModel[];
-
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
-
-  // vtList: DropdownModel[];
   VtId: any;
   constructor(public commonService: CommonService,
     public router: Router,
@@ -45,8 +40,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
     // Set the default headMaster Model
     this.headMasterModel = new HeadMasterModel();
-    //this.headMasterModel = new HeadMasterModel().getHeadMasterTestData();
-
     this.headMasterForm = this.createHeadMasterForm();
   }
 
@@ -59,9 +52,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
       if (results[1].Success) {
         this.genderList = results[1].Results;
       }
-      // if (results[2].Success) {
-      //   this.vtpList = results[2].Results;
-      // }
       this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results)=>{
         console.log(results);
         if(results[0].Success){
@@ -75,20 +65,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
           if (this.PageRights.ActionType == this.Constants.Actions.New) {
             this.headMasterModel = new HeadMasterModel();
-
-            // if (this.UserModel.RoleCode == 'VC') {
-            //   this.commonService.getVocationalTrainingProvidersByUserId(this.UserModel).then(vtpResp => {
-            //     this.headMasterModel.VTPId = vtpResp[0].Id;
-
-            // this.onChangeVTP(this.headMasterModel.VTPId).then(vcResp => {
-            //   this.headMasterModel.VCId = this.UserModel.UserTypeId;
-            //   this.headMasterForm = this.createHeadMasterForm();
-
-            //   this.onChangeVC(this.headMasterModel.VCId);
-            // });
-            //   });
-            // }
-
           } else {
             var hmId: string = params.get('hmId')
 
@@ -104,71 +80,13 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
                 }
 
                 this.onChangeDateCalculateYear(this.headMasterModel.DateOfJoining);
-                // this.onChangeVTP(this.headMasterModel.VTPId).then(vtpResp => {
-                // this.onChangeVC(this.headMasterModel.VCId).then(vcResp => {
-                // this.onChangeSchool(this.headMasterModel.SchoolId).then(sResp => {
                 this.headMasterForm = this.createHeadMasterForm();
-                // });
-                // });
-                // });
               });
           }
         }
       });
     });
   }
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.commonService.GetMasterDataByType({ DataType: 'VocationalCoordinators', ParentId: vtpId, SelectTitle: 'Vocational Coordinator' }, false).subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.filteredSchoolItems = []
-  //         this.vcList = [];
-  //         this.vtList = [];
-  //         this.vcList = response.Results;
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVC(vcId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVC', ParentId: vcId, SelectTitle: 'School' }, false).subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.schoolList = response.Results;
-  //         this.filteredSchoolItems = this.schoolList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeSchool(schoolId): Promise<any> {
-  //   this.IsLoading = true;
-  //   let promise = new Promise((resolve, reject) => {
-
-  //     this.commonService.GetMasterDataByType({ DataType: 'TrainersBySchool', ParentId: schoolId, /*SelectTitle: 'Vocational Trainer'*/ }, false).subscribe((response: any) => {
-  //       if (response.Success) {
-  // this.vtList = response.Results;
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
   onChangeDateCalculateYear(event) {
     let dateOfJoining = new Date(event.value);
     let today = new Date();
@@ -185,12 +103,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
 
     this.headMasterModel.YearsInSchool = this.headMasterForm.get("YearsInSchool").value;
     this.setValueFromFormGroup(this.headMasterForm, this.headMasterModel);
-    // this.headMasterModel.AcademicYearId = this.UserModel.AcademicYearId;
-
-    // if (this.UserModel.RoleCode == 'VT') {
-    //   this.headMasterModel.VTId = this.UserModel.UserTypeId;
-    // }
-
     this.headMasterService.createOrUpdateHeadMaster(this.headMasterModel)
       .subscribe((headMasterResp: any) => {
 
@@ -216,9 +128,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   //Create headMaster form and returns {FormGroup}
   createHeadMasterForm(): FormGroup {
     return this.formBuilder.group({
-      // VTPId: new FormControl({ value: this.headMasterModel.VTPId, disabled: this.PageRights.IsReadOnly }),
-      // VCId: new FormControl({ value: this.headMasterModel.VCId, disabled: this.PageRights.IsReadOnly }),
-      // VTId: new FormControl({ value: this.headMasterModel.VTId, disabled: this.PageRights.IsReadOnly }),
       HMId: new FormControl(this.headMasterModel.HMId),
       SchoolId: new FormControl({ value: this.headMasterModel.SchoolId, disabled: this.PageRights.IsReadOnly }, /*Validators.required*/),
       FirstName: new FormControl({ value: this.headMasterModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),

@@ -120,7 +120,6 @@ export class CreateVTMonthlyTeachingPlanComponent extends BaseComponent<VTMonthl
       FVLocation: new FormControl({ value: this.vtMonthlyTeachingPlanModel.FVLocation, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
       GLPlannedDate: new FormControl({ value: this.getDateValue(this.vtMonthlyTeachingPlanModel.GLPlannedDate), disabled: this.PageRights.IsReadOnly }),
       OtherDetails: new FormControl({ value: this.vtMonthlyTeachingPlanModel.OtherDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
-      // IsActive: new FormControl({ value: this.vtMonthlyTeachingPlanModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

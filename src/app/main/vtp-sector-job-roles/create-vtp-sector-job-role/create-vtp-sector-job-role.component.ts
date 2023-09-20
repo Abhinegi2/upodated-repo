@@ -121,7 +121,6 @@ export class CreateVTPSectorJobRoleComponent extends BaseComponent<VTPSectorJobR
       SectorId: new FormControl({ value: this.vtpSectorJobRoleModel.SectorId, disabled: this.PageRights.IsReadOnly }),
       JobRoleId: new FormControl({ value: this.vtpSectorJobRoleModel.JobRoleId, disabled: this.PageRights.IsReadOnly }),
       VTPSectorJobRoleName: new FormControl({ value: this.vtpSectorJobRoleModel.VTPSectorJobRoleName, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(150)),
-      //IsActive: new FormControl({ value: this.vtpSectorJobRoleModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

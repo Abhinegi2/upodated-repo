@@ -72,12 +72,8 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
     this.IsLoading = true;
     let genericvtParams: any = {
       UserTypeId: this.UserModel.UserTypeId,
-      // SSJId: this.genericvtmappingFilterForm.controls["SSJId"].value,
-      // VTPId: this.genericvtmappingFilterForm.controls["VTPId"].value,
       SectorId :this.genericvtmappingFilterForm.controls["SectorId"].value,
       JoRoleId :this.genericvtmappingFilterForm.controls["JobRoleId"].value,
-      // VCId: this.genericvtmappingFilterForm.controls["VCId"].value,
-      // VTId: this.genericvtmappingFilterForm.controls["VTId"].value,
       Status: this.genericvtmappingFilterForm.controls["Status"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
@@ -86,14 +82,12 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
     this.genericvtmappingService.GetAllByCriteria(genericvtParams).subscribe(response => {
       this.displayedColumns = [
-        // 'UserType', 'UserName',
         'VTPShortName',
         'VCFullName',
         'VTFullName',
         'SchoolName',
         'SectorName',
         'JobRoleName',
-        // 'EmailId', 
         'DateOfAllocation',  
         'DateOfAllocationVC',
         'CreatedBy', 
@@ -138,8 +132,6 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   resetFilters(): void {
     this.genericvtmappingFilterForm.reset();
-    // this.genericvtmappingFilterForm.get['JobRoleId'].setValue(null);
-    // this.filteredVCItems = [];
     this.jobRoleList = [];
     this.onLoadGenericVTMappingByCriteria();
   }
@@ -173,10 +165,6 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
 
   creategenericvtmappingFilterForm(): FormGroup {
     return this.formBuilder.group({
-      // SSJId: new FormControl(),
-      // VTPId: new FormControl(),
-      // VCId: new FormControl(),
-      // VTId: new FormControl(),
       SectorId: new FormControl(),
       JobRoleId: new FormControl(),
       Status: new FormControl()

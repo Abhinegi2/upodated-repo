@@ -114,7 +114,6 @@ export class CreateVTStudentResultOtherSubjectComponent extends BaseComponent<VT
       SubjectName: new FormControl({ value: this.vtStudentResultOtherSubjectModel.SubjectName, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(150), Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)]),
       SubjectNumber: new FormControl({ value: this.vtStudentResultOtherSubjectModel.SubjectNumber, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
       SubjectMarks: new FormControl({ value: this.vtStudentResultOtherSubjectModel.SubjectMarks, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.pattern(this.Constants.Regex.Number)]),
-      // IsActive: new FormControl({ value: this.vtStudentResultOtherSubjectModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

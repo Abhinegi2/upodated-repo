@@ -68,12 +68,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       if (results[9].Success) {
         this.sectorList = results[9].Results;
       }
-      
-      // if (results[1].Success) {
-      //   this.vtpList = results[1].Results;
-      //   this.filteredVTPItems = this.vtpList.slice();
-      // }
-
       if (results[11].Success) {
         this.classList = results[11].Results;
       }
@@ -141,8 +135,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     let studentParams: any = {
       AcademicYearId: this.studentFilterForm.controls["AcademicYearId"].value,
-      // VTPId: this.studentFilterForm.controls["VTPId"].value,
-      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
       VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
       SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       SectorId: this.studentFilterForm.controls["SectorId"].value,
@@ -151,9 +143,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       SectionId: this.studentFilterForm.controls['SectionId'].value,
       UserRole: this.UserModel.RoleCode,
       UserId: this.UserModel.UserTypeId,
-      // HMId: null,
       Status: this.studentFilterForm.controls["Status"].value,
-      // IsRollover: 0,
       Name: this.studentSearchForm.controls["SearchText"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
@@ -167,7 +157,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     this.studentClassService.GetAllByCriteria(studentParams).subscribe(response => {
 
       this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'ClassSection', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'SectorName', 'JobRoleName', 'VTName', 'VTEmailId', 'Gender', 'AssessmentToBeConducted', 'CWSNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
-
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
@@ -203,105 +192,11 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
     this.onLoadStudentsByCriteria();
   }
 
-  // onChangeAY(AYId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.vtpList = [];
-  //     this.filteredVTPItems = [];
-  //     let vtpRequest = this.commonService.GetVTPByAYId(this.UserModel.RoleCode, this.UserModel.UserTypeId, AYId)
-
-  //     vtpRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         this.vtpList = response.Results;
-  //         this.filteredVTPItems = this.vtpList.slice();
-  //       }
-
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVTP(vtpId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     let vcRequest = this.commonService.GetVCByAYAndVTPId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vtpId);
-
-  //     vcRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         if (this.UserModel.RoleCode == 'VC') {
-  //           this.studentFilterForm.get('VCId').setValue(response.Results[0].Id);
-  //           this.studentFilterForm.controls['VCId'].disable();
-  //           this.onChangeVC(this.vcId)
-  //         }
-  //         this.vcList = response.Results;
-  //         this.filteredVCItems = this.vcList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
-  // onChangeVC(vcId): Promise<any> {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.IsLoading = true;
-  //     this.vtList = [];
-  //     this.filteredVTItems = [];
-  //     let vtRequest = this.commonService.GetVTByAYAndVCId(this.UserModel.RoleCode, this.UserModel.UserTypeId, this.currentAcademicYearId, vcId);
-
-  //     vtRequest.subscribe((response: any) => {
-  //       if (response.Success) {
-  //         if (this.UserModel.RoleCode == 'VT') {
-  //           this.studentFilterForm.get('VTId').setValue(response.Results[0].Id);
-  //           this.studentFilterForm.controls['VTId'].disable();
-  //           this.onChangeVT(response.Results[0].Id)
-  //         }
-  //         this.vtList = response.Results;
-  //         this.filteredVTItems = this.vtList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
-
   onChangeSector(sectorId: string): void {
     this.commonService.GetMasterDataByType({ DataType: 'JobRoles', ParentId: sectorId, SelectTitle: 'Job Role' }).subscribe((response: any) => {
       this.jobRoleList = response.Results;
     });
   }
-
-  // onChangeVT(vtId) {
-  //   let promise = new Promise((resolve, reject) => {
-  //     this.IsLoading = true;
-  //     this.commonService.GetMasterDataByType({ DataType: 'SchoolsByVT', userId: this.UserModel.LoginId, ParentId: vtId, SelectTitle: 'School' }, false).subscribe((response: any) => {
-  //       if (response.Success) {
-
-  //         this.schoolList = response.Results;
-  //         this.filteredSchoolItems = this.schoolList.slice();
-  //       }
-
-  //       this.IsLoading = false;
-  //       resolve(true);
-  //     }, error => {
-  //       console.log(error);
-  //       resolve(false);
-  //     });
-  //   });
-  //   return promise;
-  // }
 
   onDeleteStudentClass(studentId: string) {
     this.dialogService
@@ -337,18 +232,13 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     let studentParams: any = {
       AcademicYearId: this.studentFilterForm.controls["AcademicYearId"].value,
-      // VTPId: this.studentFilterForm.controls["VTPId"].value,
-      // VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VCId'].value,
-      // VTId: this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : this.studentFilterForm.controls['VTId'].value,
       SectorId: this.studentFilterForm.controls["SectorId"].value,
       JobRoleId: this.studentFilterForm.controls['JobRoleId'].value,
       SchoolId: this.studentFilterForm.controls["SchoolId"].value,
       ClassId: this.studentFilterForm.controls['ClassId'].value,
       UserRole: this.UserModel.RoleCode,
       UserId: this.UserModel.UserTypeId,
-      // HMId: null,
       Status: this.studentFilterForm.controls["Status"].value,
-      // IsRollover: 0,
       Name: this.studentSearchForm.controls["SearchText"].value,
       CharBy: null,
       PageIndex: this.SearchBy.PageIndex,
@@ -365,7 +255,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
           if (obj.hasOwnProperty('IsActive')) {
             obj.IsActive = obj.IsActive ? 'Yes' : 'No';
           }
-
           delete obj.StudentId;
           delete obj.IsAYRollover;
           delete obj.DeletedBy;
@@ -387,8 +276,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
   createStudentFilterForm(): FormGroup {
     return this.formBuilder.group({
       AcademicYearId: new FormControl(),
-      // VTPId: new FormControl(),
-      // VCId: new FormControl(),
       VTId: new FormControl(),
       SectorId: new FormControl(),
       JobRoleId: new FormControl(),

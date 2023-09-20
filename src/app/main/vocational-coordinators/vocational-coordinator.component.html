@@ -83,29 +83,6 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-
-                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Training Provider</mat-label>
-                            <mat-select name="vtpId" formControlName="VTPId" appearance="fill" #SelectVTP>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
-                        <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Nature Of Appointment</mat-label>
-                            <mat-select name="natureOfAppointmentId" formControlName="NatureOfAppointmentId"
-                                appearance="fill" filteredVTPItems>
-                                <mat-option [value]="noaItem.Id" *ngFor="let noaItem of natureOfAppointmentList">
-                                    {{ noaItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
                         <mat-form-field fxFlex="10" fxFlex.lt-md="10" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>
                             <mat-select name="status" formControlName="Status" appearance="fill">
@@ -133,25 +110,6 @@
             <mat-table matTableExporter class="vocational-coordinator-table responsive-table" #table
                 #exporter="matTableExporter" [hiddenColumns]="[8]" [dataSource]="tableDataSource" matSort
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}" style="width: 100%;">
-
-                <!-- NatureOfAppointment Column -->
-                <!-- <ng-container matColumnDef="NatureOfAppointment">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Nature Of Appointment
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalCoordinator" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{vocationalCoordinator.NatureOfAppointment}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
-                <!-- VTPName Column -->
-                <!-- <ng-container matColumnDef="VTPName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalCoordinator">
-                        <p class="text-truncate">{{vocationalCoordinator.VTPName}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Year

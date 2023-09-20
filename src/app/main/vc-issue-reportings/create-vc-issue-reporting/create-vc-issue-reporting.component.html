@@ -122,38 +122,6 @@
                                 {{getErrorMessage(vcIssueReportingForm, 'AcademicYearId')}}
                             </mat-error>
                         </mat-form-field>
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Classes</mat-label>
-
-                            <mat-select formControlName="ClassId" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
-                                    {{ classItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vcIssueReportingForm.controls.ClassId.invalid">
-                                {{getErrorMessage(vcIssueReportingForm, 'ClassId')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
-                        
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Classes Affected</mat-label>
-                            <mat-select name="studentClass" formControlName="StudentClass" appearance="outline" multiple
-                                (selectionChange)="onStudentClassChange($event.value)"
-                                [disabled]="PageRights.IsReadOnly" required>
-                                <mat-option [value]="213" (click)="selectAll(ev)" #ev>All Classes</mat-option>
-                                <mat-option [value]="studentClassItem.Name" [disabled]="studentClassItem.IsDisabled"
-                                    *ngFor="let studentClassItem of classList">
-                                    {{ studentClassItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
-                                {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
                         <mat-form-field appearance="outline"  fxFlex="34" fxFlex.lt-md="50"
                         fxFlex.lt-sm="100">
                             <mat-label>Class</mat-label>
@@ -235,21 +203,6 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Classes Affected</mat-label>
-                            <mat-select name="studentClass" formControlName="StudentClass" multiple appearance="outline"
-                                (selectionChange)="onStudentClassChange($event.value)"
-                                [disabled]="PageRights.IsReadOnly" required>
-                                <mat-option [value]="213" (click)="selectAll(ev)" #ev>All Classes</mat-option>
-                                <mat-option [value]="studentClassItem.Name" [disabled]="studentClassItem.IsDisabled"
-                                    *ngFor="let studentClassItem of studentClassList">
-                                    {{ studentClassItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="vcIssueReportingForm.controls.StudentClass.invalid">
-                                {{getErrorMessage(vcIssueReportingForm, 'StudentClass')}}
-                            </mat-error>
-                        </mat-form-field> -->
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Months Affected</mat-label>

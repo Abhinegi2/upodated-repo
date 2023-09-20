@@ -105,7 +105,6 @@ export class CreateVTStatusOfInductionInserviceTrainingComponent extends BaseCom
       VTStatusOfInductionInserviceTrainingId: new FormControl(this.vtStatusOfInductionInserviceTrainingModel.VTStatusOfInductionInserviceTrainingId),
       IndustryTrainingStatus: new FormControl({ value: this.vtStatusOfInductionInserviceTrainingModel.IndustryTrainingStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(50), Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)]),
       InserviceTrainingStatus: new FormControl({ value: this.vtStatusOfInductionInserviceTrainingModel.InserviceTrainingStatus, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(50), Validators.pattern(this.Constants.Regex.AlphaNumericWithDashDotMinusSpace)]),
-      // IsActive: new FormControl({ value: this.vtStatusOfInductionInserviceTrainingModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

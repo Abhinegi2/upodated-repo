@@ -78,13 +78,6 @@ export class VTAcademicClassSectionComponent extends BaseListComponent<VTAcademi
       if (results[2].Success) {
         this.sectionList = results[2].Results;
       }
-
-      // if (results[3].Success) {
-      //   this.vtList = results[3].Results;
-      // }
-      // if (results[5].Success) {
-      //   this.schoolList = results[5].Results;
-      // }
       if (results[3].Success) {
         this.sectorList = results[3].Results;
       }

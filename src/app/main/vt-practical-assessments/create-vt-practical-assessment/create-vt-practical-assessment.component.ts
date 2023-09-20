@@ -131,7 +131,6 @@ export class CreateVTPracticalAssessmentComponent extends BaseComponent<VTPracti
       AssessorGroupPhoto: new FormControl({ value: this.vtPracticalAssessmentModel.AssessorGroupPhoto, disabled: this.PageRights.IsReadOnly }),
       VCPMUNameVisit: new FormControl({ value: this.vtPracticalAssessmentModel.VCPMUNameVisit, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       RemarksDetails: new FormControl({ value: this.vtPracticalAssessmentModel.RemarksDetails, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),
-     // IsActive: new FormControl({ value: this.vtPracticalAssessmentModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }

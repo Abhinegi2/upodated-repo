@@ -7,7 +7,6 @@ export class IssueApprovalModel {
     HMId: string;
     VCId: string;
     VTId: string;
-
     SchoolId: string;
     SectorId: string;
     JobRoleId: string;
@@ -15,20 +14,15 @@ export class IssueApprovalModel {
     AcademicYearId: string;
     StudentClass: string;
     SectionIds: string;
-
-
     IssueReportDate: any;
     MainIssue: string;
     SubIssue: string;
-    // StudentClass: string;
     Month: string;
     StudentType: string;
     NoOfStudents: any;
     IssueDetails: string;
     ApprovalStatus: string;
     Remarks: string;
-    // AssignForAction: string;
-    // VocationalCoordinator: string;
     IsActive: boolean;
     RequestType: any;
 
@@ -53,8 +47,6 @@ export class IssueApprovalModel {
         this.IssueDetails = issueApprovalItem.IssueDetails || '';
         this.ApprovalStatus = issueApprovalItem.ApprovalStatus || '';
         this.Remarks = issueApprovalItem.Remarks || '';
-        // this.AssignForAction = issueApprovalItem.AssignForAction || '';
-        // this.VocationalCoordinator = issueApprovalItem.VocationalCoordinator || '';
         this.IsActive = issueApprovalItem.IsActive || true;
         this.RequestType = 0; // New
     }

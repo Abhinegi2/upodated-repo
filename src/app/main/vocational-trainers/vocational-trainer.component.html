@@ -104,33 +104,6 @@
                                 <mat-option value="false">Inactive</mat-option>
                             </mat-select>
                         </mat-form-field>
-
-                        <!-- <mat-form-field fxFlex="50" fxFlex.lt-md="30" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill" #SelectVTP
-                                (selectionChange)="onChangeVTP($event.value)">
-                                <mat-select-filter class="select-filter" *ngIf="SelectVTP.focused" [array]="vtpList"
-                                    (filteredReturn)="this.filteredVTPItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of filteredVTPItems">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
-                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="35" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" name="vcId" appearance="fill" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVCItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
@@ -154,25 +127,6 @@
             <mat-table matTableExporter class="vocational-trainer-table responsive-table" #table
                 [dataSource]="tableDataSource" #exporter="matTableExporter" [hiddenColumns]="[7]" matSort
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
-
-                <!-- VTPName Column -->
-                <!-- <ng-container matColumnDef="VTPName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTP Name
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalTrainer">
-                        <p class="text-truncate">{{vocationalTrainer.VTPName}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
-                <!-- VCName Column -->
-                <!-- <ng-container matColumnDef="VCName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VC Name
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalTrainer">
-                        <p class="text-truncate">{{vocationalTrainer.VCName}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
                   <!-- AcademicYear Column -->
                   <ng-container matColumnDef="AcademicYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Year
@@ -351,24 +305,6 @@
                         <p class="text-truncate">{{vocationalTrainer.DateOfResignation | date: Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
-
-                <!-- NatureOfAppointment Column -->
-                <!-- <ng-container matColumnDef="NatureOfAppointment">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Nature Of Appointment
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalTrainer">
-                        <p class="text-truncate">{{vocationalTrainer.NatureOfAppointment}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
-                <!-- IsResigned Column -->
-                <!-- <ng-container matColumnDef="IsResigned">
-                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Is Resigned?
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vocationalTrainer" class="text-center">
-                        <span>{{ (vocationalTrainer.IsResigned ? 'Yes' : 'No') }}</span>
-                    </mat-cell>
-                </ng-container> -->
 
                 <!-- IsActive Column -->
                 <ng-container matColumnDef="IsActive">

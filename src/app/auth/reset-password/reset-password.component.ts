@@ -97,12 +97,6 @@ export class ResetPasswordComponent extends BaseComponent<any> implements OnInit
         }
 
         this.setValueFromFormGroup(this.resetPasswordForm, this.resetPasswordModel);
-
-        // if (this.resetPasswordModel.UserId != this.UserModel.LoginId) {
-        //     this.dialogService.openShowDialog("User login Id doesn’t match current Id in authorization");
-        //     return;
-        // }
-
         this.accountService.resetPassword(this.resetPasswordModel)
             .subscribe((passwordResp: any) => {
                 if (passwordResp.Success) {

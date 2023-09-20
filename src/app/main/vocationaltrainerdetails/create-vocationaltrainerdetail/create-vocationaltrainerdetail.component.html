@@ -62,7 +62,6 @@
                             <mat-select formControlName="VTId" required appearance="outline"
                                 matTooltip="Select Vocational Trainer" matTooltipPosition='above'
                                 matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectVt>
-                                <!-- (selectionChange)="onChangeVT($event.value)"> -->
                                 <mat-select-filter class="select-filter" *ngIf="SelectVt.focused" [array]="vtList"
                                     (filteredReturn)="this.filteredVTItems = $event" [displayMember]="'Name'">
                                 </mat-select-filter>
@@ -116,26 +115,10 @@
                                 </mat-error>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Block Name</mat-label>
-                            <input matInput name="blockName" formControlName="BlockName" required
-                                matTooltip="Enter Block name. Ensure first letter should be capital of each word."
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.BlockName.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'BlockName')}}
-                            </mat-error>
-                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Address</mat-label>
-                            <input matInput name="address" formControlName="Address" required>
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.Address.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'Address')}}
-                            </mat-error>
-                        </mat-form-field> -->
                         <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50"
                          fxFlex.lt-sm="100">
                          <mat-label>Social Category</mat-label>
@@ -153,13 +136,6 @@
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>City</mat-label>
-                            <input matInput name="city" formControlName="City">
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.City.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'City')}}
-                            </mat-error>
-                        </mat-form-field> -->
                         <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="50"
                             fxFlex.lt-sm="100">
                             <mat-label>Aadhaar Number</mat-label>
@@ -186,15 +162,6 @@
                             </mat-error>
                         </mat-form-field>
 
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput name="pincode" formControlName="Pincode" digitOnly minlength="6"
-                                maxlength="6" matTooltip="Enter the 6 digit pincode." matTooltipPosition="above">
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.Pincode.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'Pincode')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
                         <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100">
                             <mat-label>Professional Qualification</mat-label>
@@ -213,15 +180,6 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Business Type</mat-label>
-                            <input matInput name="businessType" formControlName="BusinessType" required
-                                matTooltip="Enter Nature/ Area of Business (Example - Travel Agency)"
-                                matTooltipPosition="above">
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.BusinessType.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'BusinessType')}}
-                            </mat-error>
-                        </mat-form-field> -->
                           <mat-form-field appearance="outline"  fxFlex="100" fxFlex.lt-md="100"
                             fxFlex.lt-sm="100">
                          <mat-label>Professional Qualification Details</mat-label>
@@ -244,26 +202,10 @@
                                 {{getErrorMessage(vocationaltrainerdetailForm, 'IndustryExperienceMonths')}}
                             </mat-error>
                         </mat-form-field>
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Employee Count</mat-label>
-                            <input matInput name="employeeCount" formControlName="EmployeeCount" required digitOnly>
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.EmployeeCount.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'EmployeeCount')}}
-                            </mat-error>
-                        </mat-form-field> -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <!-- <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="100" fxFlex.lt-sm="100">
-                            <mat-label>Outlets</mat-label>
-                            <input matInput name="outlets" formControlName="Outlets"
-                                matTooltip="Enter other oulets location." matTooltipPosition="above">
-                            <mat-error *ngIf="vocationaltrainerdetailForm.controls.Outlets.invalid">
-                                {{getErrorMessage(vocationaltrainerdetailForm, 'Outlets')}}
-                            </mat-error>
-                        </mat-form-field> -->
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100">
                             <mat-label>Training Experience Months</mat-label>
@@ -275,18 +217,6 @@
                                 {{getErrorMessage(vocationaltrainerdetailForm, 'TrainingExperienceMonths')}}
                             </mat-error>
                         </mat-form-field>
-                        <!-- <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Vocational Coordinator</mat-label>
-
-                            <mat-select formControlName="VCId" appearance="fill" #SelectVC>
-                                <mat-select-filter class="select-filter" *ngIf="SelectVC.focused" [array]="vcList"
-                                    (filteredReturn)="filteredVcItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="vcItem.Id" *ngFor="let vcItem of filteredVCItems">
-                                    {{ vcItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>  -->
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

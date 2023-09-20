@@ -56,23 +56,6 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-
-                        <!-- <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
-                            fxFlex.lt-sm="100">
-                            <mat-label>Vocational Training Provider</mat-label>
-
-                            <mat-select formControlName="VTPId" appearance="outline" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="" disabled="true">Select Vocational Training Provider</mat-option>
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="genericvtmappingForm.controls.VTPId.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'VTPId')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
                         <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
                             <mat-label>Vocational Training Provider</mat-label>
 
@@ -112,9 +95,6 @@
                                 {{getErrorMessage(genericvtmappingForm, 'VCId')}}
                             </mat-error>
                         </mat-form-field>
-
-
-
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"

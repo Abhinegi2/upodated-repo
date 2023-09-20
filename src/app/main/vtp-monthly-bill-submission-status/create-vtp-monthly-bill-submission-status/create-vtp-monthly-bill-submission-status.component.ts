@@ -127,7 +127,6 @@ export class CreateVTPMonthlyBillSubmissionStatusComponent extends BaseComponent
       DiaryentryDone: new FormControl({ value: this.vtpMonthlyBillSubmissionStatusModel.DiaryentryDone, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       DiaryentryNumber: new FormControl({ value: this.vtpMonthlyBillSubmissionStatusModel.DiaryentryNumber, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
       Details: new FormControl({ value: this.vtpMonthlyBillSubmissionStatusModel.Details, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(50)),
-      // IsActive: new FormControl({ value: this.vtpMonthlyBillSubmissionStatusModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }
 }
