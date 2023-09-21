@@ -1,34 +1,32 @@
-# Fuse - Angular
+# New Lighthouse(Base) - Skill Education in schools
 
-Material Design Admin Template with Angular 8 and Angular Material
+## Introduction
 
-## The Community
+👋 Welcome to New Lighthouse, Our Mission is to Integrate Vocational Education/Skill Development Programs into mainstream academia, providing underprivileged students with valuable skills for early employment.
 
-Share your ideas, discuss Fuse and help each other.
 
-[Click here](http://fusetheme.com/community) to see our Community page.
+## Architecture
 
-## Development server
+Here you can check the New Lighthouse [Architecture](https://docs.google.com/presentation/d/1jgdvISTEu2sPxDKZ6jUHqmb5_ylz20RemXGXS9is2Fk/edit?usp=sharing) to get a better understanding.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4503/`. The app will automatically reload if you change any of the source files.
+## Installation
 
-## Code scaffolding
+To set up the codebase you can follow these general steps:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Install the necessary software:</br>
+   `Node.js`: < v16.13.2 </br>
+   `NPM`: < v8.1.2 </br>
+   `Visual Studio`: [https://code.visualstudio.com/](https://code.visualstudio.com/)
 
-## Build
+2. Clone the codebase from [Github](https://github.com/LAHI-Lighthoue/lighthouse-base-web.git)  to your local machine.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+3. Now we need to download angular Cli by running this command-
+   `npm install -g @angular/cli`
 
-## Running unit tests
+4. Open a terminal in the project's root directory and run
+   `npm install` to install the project's dependencies.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+5. Now to start frontend server we just need to run `ng serve` command.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Now you can visit [http://localhost:4213/login](http://localhost:4213/login) from your browser.
 
