@@ -28,7 +28,7 @@
                     <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                         <mat-icon>search</mat-icon>
                         <input formControlName="SearchText" placeholder="Search for students"
-                            matTooltip="Search By School Name, UDISE, VT Name, Student Name" matTooltipPosition='above'
+                            matTooltip="Search By School Name, UDISE, Student Name" matTooltipPosition='above'
                             matTooltipClass="allow-cr">
                     </div>
                 </form>
@@ -66,20 +66,8 @@
                     fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>School</mat-label>
-
-                            <mat-select formControlName="SchoolId" name="SchoolId" appearance="fill"
-                                [disabled]="PageRights.IsReadOnly" #SelectSchool>  
-                                <mat-option [value]="schoolsItem.Id" *ngFor="let schoolsItem of schoolList">
-                                    {{ schoolsItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
                         <mat-form-field fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Sector</mat-label>
-
                             <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
                                 (selectionChange)="onChangeSector($event.value)">
                                 <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
@@ -90,7 +78,6 @@
 
                         <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Job Role</mat-label>
-
                             <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill" >
                                 <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
                                     {{ jobRoleItem.Name }}
@@ -100,7 +87,6 @@
 
                         <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label> Academic Year</mat-label>
-
                             <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
                                 <mat-option [value]="academicYearItem.Id"
                                     *ngFor="let academicYearItem of academicYearList">
@@ -127,21 +113,6 @@
                             </mat-select>
                         </mat-form-field>
 
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Trainer </mat-label>
-                            <mat-select formControlName="VTId" name="vtId" appearance="fill">
-                                <mat-option [value]="vtItem.Id" *ngFor="let vtItem of vtList">
-                                    {{ vtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
                         <mat-form-field fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>
                             <mat-select name="status" formControlName="Status" appearance="fill">
@@ -151,6 +122,10 @@
                             </mat-select>
                         </mat-form-field>
 
+                    </div>
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
                         <div class="clear-filter" fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="onLoadStudentsByFilters()"><span>SEARCH</span></button>
@@ -163,9 +138,9 @@
         </div>
         <!-- /Filter Section -->
 
+
         <!-- CONTENT CARD -->
         <div class="content-card">
-
             <mat-table class="student-class-table responsive-table" #table [dataSource]="tableDataSource" matSort
                 fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
                  <!-- StudentUniqueNumber Column -->
@@ -248,16 +223,16 @@
                     </mat-cell>
                 </ng-container>
 
-                    <!-- CreatedBy Column -->
-                    <ng-container matColumnDef="CreatedBy">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass">
-                            <p class="text-truncate">{{studentClass.CreatedBy}}</p>
-                        </mat-cell>
-                    </ng-container>
+                <!-- CreatedBy Column -->
+                <ng-container matColumnDef="CreatedBy">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CreatedBy
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.CreatedBy}}</p>
+                    </mat-cell>
+                </ng-container>
 
-                        <!-- UpdatedBy Column -->
+                <!-- UpdatedBy Column -->
                 <ng-container matColumnDef="UpdatedBy">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md> UpdatedBy
                     </mat-header-cell>
@@ -266,43 +241,43 @@
                     </mat-cell>
                 </ng-container>
 
-                    <!-- StudentUniqueId Column -->
-                    <ng-container matColumnDef="StudentUniqueId">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Unique Id
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass">
-                            <p class="text-truncate">{{studentClass.StudentUniqueId}}</p>
-                        </mat-cell>
-                    </ng-container>
+                <!-- StudentUniqueId Column -->
+                <ng-container matColumnDef="StudentUniqueId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Unique Id
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.StudentUniqueId}}</p>
+                    </mat-cell>
+                </ng-container>
 
-                      <!-- Mobile Column -->
-                      <ng-container matColumnDef="Mobile">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass">
-                            <p class="text-truncate">{{studentClass.Mobile}}</p>
-                        </mat-cell>
-                    </ng-container>
+                    <!-- Mobile Column -->
+                    <ng-container matColumnDef="Mobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.Mobile}}</p>
+                    </mat-cell>
+                </ng-container>
 
-                      <!-- WhatappNo Column -->
-                      <ng-container matColumnDef="WhatappNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WhatsApp No
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass">
-                            <p class="text-truncate">{{studentClass.WhatappNo}}</p>
-                        </mat-cell>
-                    </ng-container>
+                    <!-- WhatappNo Column -->
+                    <ng-container matColumnDef="WhatappNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WhatsApp No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.WhatappNo}}</p>
+                    </mat-cell>
+                </ng-container>
 
-                      <!-- Second Mobile No Column -->
-                      <ng-container matColumnDef="SecondMobileNo">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Second Mobile No
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass">
-                            <p class="text-truncate">{{studentClass.SecondMobileNo}}</p>
-                        </mat-cell>
-                    </ng-container>
+                    <!-- Second Mobile No Column -->
+                    <ng-container matColumnDef="SecondMobileNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Second Mobile No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass">
+                        <p class="text-truncate">{{studentClass.SecondMobileNo}}</p>
+                    </mat-cell>
+                </ng-container>
 
-                      <!-- IsStudentVE9And10 Column -->
+                <!-- IsStudentVE9And10 Column -->
                 <ng-container matColumnDef="IsStudentVE9And10">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Did students have a VE in 9th & 10th?
                     </mat-header-cell>
@@ -310,86 +285,86 @@
                         <p class="text-truncate">{{studentClass.IsStudentVE9And10}}</p>
                     </mat-cell>
                 </ng-container>
-                
-                      <!-- CWSNStatus Column -->
-                      <ng-container matColumnDef="CWSNStatus">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CWSNStatus
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.CWSNStatus}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!-- JobRoleName Column -->
-                    <ng-container matColumnDef="JobRoleName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRole Name
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.JobRoleName}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                       <!-- Father Name Column -->
-                       <ng-container matColumnDef="FatherName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Father Name
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.FatherName}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                       <!-- Mother Name Column -->
-                       <ng-container matColumnDef="MotherName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mother Name
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.MotherName}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                       <!-- Guardian Name Column -->
-                       <ng-container matColumnDef="GuardianName">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guardian Name
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.GuardianName}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                    <!-- AssessmentToBeConducted Column -->
-                    <ng-container matColumnDef="AssessmentToBeConducted">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Assessment To Be Conducted
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.AssessmentToBeConducted}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                     <!-- DateOfBirth Column -->
-                     <ng-container matColumnDef="DateOfBirth">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Birth
-                        </mat-header-cell>
-                        <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                            <p class="text-truncate">{{studentClass.DateOfBirth | date: "dd/MM/yyyy"}}</p>
-                        </mat-cell>
-                    </ng-container>
-
-                   <!-- IsSameStudentTrade Column -->
-                   <ng-container matColumnDef="IsSameStudentTrade">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is the student continuing the same trade?
+            
+                    <!-- CWSNStatus Column -->
+                    <ng-container matColumnDef="CWSNStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CWSNStatus
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{studentClass.IsSameStudentTrade}}</p>
+                        <p class="text-truncate">{{studentClass.CWSNStatus}}</p>
                     </mat-cell>
                 </ng-container>
 
-                   <!-- SocialCategory Column -->
-                   <ng-container matColumnDef="SocialCategory">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
+                <!-- JobRoleName Column -->
+                <ng-container matColumnDef="JobRoleName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>JobRole Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{studentClass.SocialCategory}}</p>
+                        <p class="text-truncate">{{studentClass.JobRoleName}}</p>
                     </mat-cell>
+                </ng-container>
+
+                    <!-- Father Name Column -->
+                    <ng-container matColumnDef="FatherName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Father Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.FatherName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- Mother Name Column -->
+                    <ng-container matColumnDef="MotherName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Mother Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.MotherName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- Guardian Name Column -->
+                    <ng-container matColumnDef="GuardianName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Guardian Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.GuardianName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AssessmentToBeConducted Column -->
+                <ng-container matColumnDef="AssessmentToBeConducted">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Assessment To Be Conducted
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.AssessmentToBeConducted}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                    <!-- DateOfBirth Column -->
+                    <ng-container matColumnDef="DateOfBirth">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Date Of Birth
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                        <p class="text-truncate">{{studentClass.DateOfBirth | date: "dd/MM/yyyy"}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsSameStudentTrade Column -->
+                <ng-container matColumnDef="IsSameStudentTrade">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Is the student continuing the same trade?
+                </mat-header-cell>
+                <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                    <p class="text-truncate">{{studentClass.IsSameStudentTrade}}</p>
+                </mat-cell>
+                </ng-container>
+
+                <!-- SocialCategory Column -->
+                <ng-container matColumnDef="SocialCategory">
+                <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>SocialCategory
+                </mat-header-cell>
+                <mat-cell *matCellDef="let studentClass" fxHide fxShow.gt-xs>
+                    <p class="text-truncate">{{studentClass.SocialCategory}}</p>
+                </mat-cell>
                 </ng-container>
 
                 <!-- Gender Column -->
@@ -418,8 +393,6 @@
                         <p class="text-truncate">{{studentClass.SectorName}}</p>
                     </mat-cell>
                 </ng-container>
-
-               
 
                 <!-- DateOfEnrollment Column -->
                 <ng-container matColumnDef="DateOfEnrollment">

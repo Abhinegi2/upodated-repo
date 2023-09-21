@@ -87,6 +87,7 @@ export class AppConstants {
     }
     //State Code
     public StateCode = {
+        Uttarakhand: '01',
         Delhi: '07', //Example
         Maharastra: '06', //Example
         Oddisa: '05', //Example
@@ -97,6 +98,7 @@ export class AppConstants {
         LHDelhi: '02',
         MHDelhi: '03',
         GJDelhi: '04',
+        LHUttarakhand: '05',
     }
     //Gender Code
     public GenderCode = {

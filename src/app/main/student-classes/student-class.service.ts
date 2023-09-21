@@ -92,10 +92,6 @@ export class StudentClassService {
         let jobroleRequest = this.http.GetMasterDataByType({ DataType: 'JobRoles', SelectTitle: 'JobRole' });
         let vtRequest = this.http.GetMasterDataByType({ DataType: 'SchoolsForVT', UserId: userModel.UserTypeId, roleId: userModel.RoleCode, SelectTitle: 'Vocational Trainer' }, false);
         let classSection = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'ClassesSection', SelectTitle: 'Classes Section' });
-        // let schoolsForVTRequest = this.commonService.GetMasterDataByType({ DataType: 'UsersByRole', UserId: userModel.UserTypeId, SelectTitle: 'Vocational Trainer' }, false);
-        // let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYearsByVT', RoleId: userModel.RoleCode, ParentId: userModel.UserTypeId, SelectTitle: 'Academic Year' });
-        // let vtpRequest = this.commonService.GetVTPByAYId(userModel.RoleCode, userModel.UserTypeId, userModel.AcademicYearId)
-
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
         return forkJoin([
             SchoolRequest,
@@ -109,13 +105,8 @@ export class StudentClassService {
             assessmentToBeConductedRequest,
             sectorRequest,
             socialCategoryRequest,
-            // academicYearByGVT,
-            // allAcademicYears,
             classRequest,
             classSection,
-            //  schoolsForVTRequest,
-            //academicYearRequest,
-            // vtpRequest
         ]);
     }
 }

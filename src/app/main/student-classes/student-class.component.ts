@@ -56,11 +56,6 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
   ngOnInit(): void {
     this.studentClassService.getDropdownforStudentClass(this.UserModel).subscribe(results => {
-
-      if (results[0].Success) {
-        this.schoolList = results[0].Results;
-      }
-
       if (results[2].Success) {
         this.academicYearList = results[2].Results;
       }
@@ -68,16 +63,13 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
       if (results[9].Success) {
         this.sectorList = results[9].Results;
       }
+
       if (results[11].Success) {
         this.classList = results[11].Results;
       }
 
       if (results[3].Success) {
         this.sectionList = results[3].Results;
-      }
-
-      if (results[5].Success) {
-        this.vtList = results[5].Results;
       }
 
       let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
@@ -156,7 +148,7 @@ export class StudentClassComponent extends BaseListComponent<StudentClassModel> 
 
     this.studentClassService.GetAllByCriteria(studentParams).subscribe(response => {
 
-      this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'ClassSection', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'SectorName', 'JobRoleName', 'VTName', 'VTEmailId', 'Gender', 'AssessmentToBeConducted', 'CWSNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
+      this.displayedColumns = ['StudentUniqueNumber', 'SchoolName', 'AcademicYear', 'StudentName', 'StudentUniqueId', 'Stream', 'ClassName', 'SectionName', 'ClassSection', 'DateOfBirth', 'FatherName', 'MotherName', 'GuardianName', 'Mobile', 'SecondMobileNo', 'WhatappNo', 'SectorName', 'JobRoleName', 'Gender', 'AssessmentToBeConducted', 'CWSNStatus', 'IsStudentVE9And10', 'IsSameStudentTrade', 'DateOfEnrollment', 'CreatedBy', 'UpdatedBy', 'DateOfDropout', 'IsActive', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
