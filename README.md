@@ -1,4 +1,4 @@
-# New Lighthouse(Base) - Skill Education in schools
+# Lighthouse Base Web - Skill Education in schools
 
 ## Introduction
 
