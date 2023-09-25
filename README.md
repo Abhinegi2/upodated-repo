@@ -3,6 +3,7 @@
 ## Introduction
 
 ![lahi-logo](https://github.com/LAHI-Lighthoue/lighthouse-base-web/assets/108608673/9e4e88b8-60f1-43ba-98b7-72b745f192fc)
+
 👋 Welcome to New Lighthouse, Our Mission is to Integrate Vocational Education/Skill Development Programs into mainstream academia, providing underprivileged students with valuable skills for early employment.
 
 
