@@ -5,13 +5,11 @@ import { StudentAttendanceModel } from 'app/models/student.attendance.model';
 export class VTGuestLectureConductedModel {
     VTGuestLectureId: string;
     VTId: string;
-
     SchoolId: string;
     SectorId: string;
     JobRoleId: string;
     AcademicYearId: string;
     SSJId: string;
-
     ClassTaughtId: string;
     SectionIds: string;
     ReportingDate: any;
@@ -36,7 +34,7 @@ export class VTGuestLectureConductedModel {
     GLDesignation: string;
     GLWorkExperience: any;
     GLPhotoFile: any;
-
+    Remarks: any;
     UnitSessionsModels: ModuleUnitSessionModel[];
     StudentAttendances: StudentAttendanceModel[];
     GeoLocation: string;
@@ -50,13 +48,10 @@ export class VTGuestLectureConductedModel {
 
         this.VTGuestLectureId = vtGuestLectureConductedItem.VTGuestLectureId || FuseUtils.NewGuid();
         this.VTId = vtGuestLectureConductedItem.VTId || FuseUtils.NewGuid();
-
         this.SSJId = vtGuestLectureConductedItem.SSJId || '';
         this.AcademicYearId = vtGuestLectureConductedItem.AcademicYearId || '';
         this.SectorId = vtGuestLectureConductedItem.SectorId || '';
         this.JobRoleId = vtGuestLectureConductedItem.JobRoleId || '';
-
-
         this.ClassTaughtId = vtGuestLectureConductedItem.ClassTaughtId || '';
         this.SectionIds = vtGuestLectureConductedItem.SectionIds || '';
         this.ReportingDate = vtGuestLectureConductedItem.ReportingDate || '';
@@ -81,10 +76,9 @@ export class VTGuestLectureConductedModel {
         this.GLDesignation = vtGuestLectureConductedItem.GLDesignation || '';
         this.GLWorkExperience = vtGuestLectureConductedItem.GLWorkExperience || '';
         this.GLPhotoFile = vtGuestLectureConductedItem.GLPhotoFile || '';
-
+        this.Remarks = vtGuestLectureConductedItem.Remarks || '';
         this.UnitSessionsModels = <ModuleUnitSessionModel[]>[];
         this.StudentAttendances = <StudentAttendanceModel[]>[];
-
         this.IsActive = vtGuestLectureConductedItem.IsActive || true;
         this.GeoLocation = '3-3';
         this.Latitude = '3';

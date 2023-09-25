@@ -625,6 +625,7 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
       GLWorkExperience: new FormControl({ value: this.vtGuestLectureConductedModel.GLWorkExperience, disabled: this.PageRights.IsReadOnly }),
       GLPhotoFile: new FormControl({ value: this.vtGuestLectureConductedModel.GLPhotoFile, disabled: this.PageRights.IsReadOnly }, Validators.required),
       IsGLLecturerPhotoFile: new FormControl({ value: false, disabled: this.PageRights.IsReadOnly }),
+      Remarks: new FormControl({ value: this.vtGuestLectureConductedModel.Remarks, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(350)),
       IsGLPhotoFile: new FormControl({ value: false, disabled: this.PageRights.IsReadOnly }),
       StudentAttendances: this.formBuilder.array(this.vtGuestLectureConductedModel.StudentAttendances.map(studentModel => this.setStudentAttendanceFormGroup(studentModel)))
     });

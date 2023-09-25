@@ -98,29 +98,32 @@
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                    fxLayoutGap.lt-md="0px">
+                    <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75"
+                    fxFlex.lt-sm="100">
+                        <mat-label>School/Sector/JobRole</mat-label>
+
+                        <mat-select formControlName="SSJId"  required appearance="outline"
+                            matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
+                            matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
+                        
+                            <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
+                                (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
+                            </mat-select-filter>
+                            <mat-option [value]="" disabled="true">Select School/Sector/JobRole</mat-option>
+                            <mat-option [value]="gvtItem.Id" *ngFor="let gvtItem of filteredGVTItems">
+                                {{ gvtItem.Name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="genericvtmappingForm.controls.SSJId.invalid">
+                            {{getErrorMessage(genericvtmappingForm, 'SSJId')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>  
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
-                            <mat-label>School/Sector/JobRole</mat-label>
-
-                            <mat-select formControlName="SSJId"  required appearance="outline"
-                                matTooltip="Select School/Sector/JobRole" matTooltipPosition='above'
-                                matTooltipClass="allow-cr" [disabled]="PageRights.IsReadOnly" #SelectGvt>
-                            
-                                <mat-select-filter class="select-filter" *ngIf="SelectGvt.focused" [array]="gvtList"
-                                    (filteredReturn)="this.filteredGVTItems = $event" [displayMember]="'Name'">
-                                </mat-select-filter>
-                                <mat-option [value]="" disabled="true">Select School/Sector/JobRole</mat-option>
-                                <mat-option [value]="gvtItem.Id" *ngFor="let gvtItem of filteredGVTItems">
-                                    {{ gvtItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="genericvtmappingForm.controls.SSJId.invalid">
-                                {{getErrorMessage(genericvtmappingForm, 'SSJId')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="67" fxFlex.lt-md="67" fxFlex.lt-sm="100">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Vocational Trainer</mat-label>
 
                             <mat-select formControlName="VTId"  appearance="outline"
@@ -140,13 +143,7 @@
                             </mat-error>
                         </mat-form-field>
 
-                    </div>  
-
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px"> 
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Date Of School VTP Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation"
                             [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
@@ -158,6 +155,11 @@
                               {{getErrorMessage(genericvtmappingForm, 'DateOfAllocation')}}
                              </mat-error>
                         </mat-form-field>
+
+                    </div>  
+
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px"> 
 
                         <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="33" fxFlex.lt-sm="100">
                             <mat-label>Date Of School VC Allocation</mat-label>

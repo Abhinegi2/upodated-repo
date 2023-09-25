@@ -60,11 +60,8 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
 
   ngOnInit(): void {
     this.accountService.getUserDropdowns(this.UserModel).subscribe((results) => {
+      this.onChangePassword();
       if (results[0].Success) {
-        //  980200d7-de58-4140-ab62-845e5eec08d1	VC	Vocational Coordinator
-        //  259b3087-4e2a-435a-accc-cf8980ffbcca	VT	Vocational Trainer
-        //  cd6b4973-f87f-4887-bff2-6146447d11df	HM	Head Master	 
-
         if (this.UserModel.RoleCode == "SUR") {
           this.roleList = results[0].Results;
         }
@@ -118,6 +115,10 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
     });
   }
 
+  onChangePassword() {
+    this.accountForm.controls['Password'].setValue('Pass$123');
+  }
+  
   onChangeState(stateId: string): any {
     let promise = new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({ DataType: 'Divisions', ParentId: stateId, SelectTitle: 'Division' }).subscribe((response: any) => {
@@ -255,12 +256,12 @@ export class CreateAccountComponent extends BaseListComponent<AccountModel> impl
 
       AccountId: new FormControl(this.accountModel.AccountId),
       LoginId: new FormControl({ value: this.accountModel.LoginId, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
-      Password: new FormControl({ value: this.accountModel.Password, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(35), Validators.pattern(this.Constants.Regex.Password)]),
+      Password: new FormControl({ value: this.accountModel.Password, disabled: true }, [Validators.required, Validators.maxLength(35), Validators.pattern(this.Constants.Regex.Password)]),
       UserId: new FormControl({ value: this.accountModel.UserId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(40)]),
       UserName: new FormControl({ value: this.accountModel.UserName, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(100)),
-      FirstName: new FormControl({ value: this.accountModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
-      MiddleName: new FormControl({ value: this.accountModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
-      LastName: new FormControl({ value: this.accountModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.FirstCharsCapital)]),
+      FirstName: new FormControl({ value: this.accountModel.FirstName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.CharsWithSpace)]),
+      MiddleName: new FormControl({ value: this.accountModel.MiddleName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.CharsWithSpace)]),
+      LastName: new FormControl({ value: this.accountModel.LastName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(35), Validators.pattern(this.Constants.Regex.CharsWithSpace)]),
       RoleId: new FormControl({ value: this.accountModel.RoleId, disabled: this.PageRights.IsReadOnly }),
       Designation: new FormControl({ value: this.accountModel.Designation, disabled: this.PageRights.IsReadOnly }),
       EmailId: new FormControl({ value: this.accountModel.EmailId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
