@@ -68,7 +68,7 @@
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
                                     *ngIf="PageRights.ActionType == 'new'">
                                     <mat-label>Password</mat-label>
-                                    <input matInput name="password" formControlName="Password" type="password" required>
+                                    <input matInput name="password" formControlName="Password" type="text" required disabled >
                                     <mat-error *ngIf="accountForm.controls.Password.invalid">
                                         {{getErrorMessage(accountForm, 'Password')}}
                                     </mat-error>

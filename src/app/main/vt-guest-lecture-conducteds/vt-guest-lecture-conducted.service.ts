@@ -124,7 +124,6 @@ export class VTGuestLectureConductedService {
         guestLectureModel.SectorId = formGroup.get('SectorId').value;
         guestLectureModel.JobRoleId = formGroup.get('JobRoleId').value;
         guestLectureModel.AcademicYearId = formGroup.get('AcademicYearId').value;
-
         guestLectureModel.ClassTaughtId = formGroup.get("ClassTaughtId").value;
         guestLectureModel.SectionIds = formGroup.get("SectionIds").value;
         guestLectureModel.ReportingDate = this.http.getDateTimeFromControl(formGroup.get("ReportingDate").value);
@@ -133,7 +132,6 @@ export class VTGuestLectureConductedService {
         guestLectureModel.ClassTime = formGroup.get("ClassTime").value;
         guestLectureModel.MethodologyIds = formGroup.get("MethodologyIds").value;
         guestLectureModel.GLMethodologyDetails = formGroup.get("GLMethodologyDetails").value;
-        //guestLectureModel.GLPhotoInClass = formGroup.get("GLPhotoInClass").value;;
         guestLectureModel.GLConductedBy = formGroup.get("GLConductedBy").value;
         guestLectureModel.GLPersonDetails = formGroup.get("GLPersonDetails").value;
         guestLectureModel.GLName = formGroup.get("GLName").value;
@@ -145,14 +143,8 @@ export class VTGuestLectureConductedService {
         guestLectureModel.GLCompany = formGroup.get("GLCompany").value;
         guestLectureModel.GLDesignation = formGroup.get("GLDesignation").value;
         guestLectureModel.GLWorkExperience = formGroup.get("GLWorkExperience").value;
-        //guestLectureModel.GLPhoto = formGroup.get("GLPhoto").value;
-
-        //guestLectureModel.ModuleId = formGroup.get("ModuleId").value;
-        //guestLectureModel.UnitId = formGroup.get("UnitId").value;
-        //guestLectureModel.SessionIds = formGroup.get("SessionIds").value;
-
+        guestLectureModel.Remarks = formGroup.get("Remarks").value;
         guestLectureModel.StudentAttendances = formGroup.get("StudentAttendances").value;
-        //guestLectureModel.UnitSessionsModels = formGroup.get("UnitSessionsModels").value;
 
         return guestLectureModel;
     }

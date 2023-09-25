@@ -75,7 +75,10 @@
                             (click)="downloadUploadedExcelResults()" matTooltip="Download Uploaded Excel Results"
                             matTooltipPosition="above">get_app</span>
                     </div>
-
+                    <div>
+                        <span class="data-delete s-22" *ngIf="UserModel.RoleCode == 'ADM'">Note: The maximum data limit for bulk upload is <b>1000</b> entries</span>
+                        <span class="data-delete s-22" *ngIf="UserModel.RoleCode == 'VC' || UserModel.RoleCode === 'VT' || UserModel.RoleCode === 'HM'">Note: The maximum data limit for bulk upload is <b>400</b> entries</span>
+                    </div>
                 </form>
 
             </div>

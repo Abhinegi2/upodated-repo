@@ -8,7 +8,7 @@ export class RegexPatternConstants {
     public AlphaNumericWithDashDotMinusSpace: string = "^[a-zA-Z0-9_.-\\s]*$";
     public CharsWithSpace: string = "^[a-zA-Z ]*$";
     public Number: string = "^[0-9]*$";
-    public Email: string = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+[.][a-z]+$';
+    public Email: string = '^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]+$';
     public QPCode: string = "^([A-Z]{3})([\s/])?([A-Z]{1})([0-9]{4})$";
     public FirstCharsCapital = "^([A-Z][a-z]*)$";  //"^([A-Z][a-z]*((\\s[A-Za-z])?[a-z]*)*)$";
     public CharsWithTitleCase = "([A-Z][a-z]*\\s*)+$";

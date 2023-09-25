@@ -131,7 +131,7 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
 
-                        <button *ngIf="PageRights.IsEdit && account.IsActive && 'Roles : SUR'.indexOf(account.RoleCode) == -1" mat-icon-button
+                        <button *ngIf="PageRights.IsEdit && account.IsActive && 'Roles : SUR'.indexOf(account.RoleCode) == -1 && account.AccountType !== 'Head Master'" mat-icon-button
                         [routerLink]="['/users', 'edit', account.AccountId]" skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
@@ -140,10 +140,6 @@
                             <mat-icon class="data-delete s-22">delete_outline</mat-icon>
                         </button>
 
-                        <!-- <button *ngIf="account.AccountType=='Vocational Trainer'" mat-raised-button [routerLink]="['/vocational-trainers', 'edit', account.AccountId]" 
-                        skipLocationChange="true" replaceUrl="false" class="add-vocational-trainer-button fuse-white mt-24 mt-md-0">
-                            <span>{{'Add VT Details'}}</span>
-                        </button> -->
                     </mat-cell>
                 </ng-container>
 
