@@ -215,7 +215,7 @@ export class StudentEnrollmentComponent extends BaseListComponent<StudentEnrollm
     reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
 
     this.reportService.GetStudentEnrollmentReportsByCriteria(reportParams).subscribe(response => {
-      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VTPName', 'VCName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'JobRoleName', 'ClassName', 'TotalEnrollmentStudents', 'EnrolledBoys', 'EnrolledGirls', 'Dropout'];
+      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VTPName', 'VCName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'JobRoleName', 'ClassName', 'TotalEnrollmentStudents', 'EnrolledBoys', 'EnrolledGirls', 'NewEnrollment', 'Dropout'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
