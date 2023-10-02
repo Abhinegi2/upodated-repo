@@ -28,7 +28,8 @@
         </div>
         
         <div fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
-            <span class="username mr-12" fxHide fxShow.gt-sm>{{currentUser.AccountType}}</span>
+            <span *ngIf="currentUser.AccountType == 'Head Master' "  class="username mr-12" fxHide fxShow.gt-sm>HOS</span>
+            <span *ngIf="currentUser.AccountType != 'Head Master' "  class="username mr-12" fxHide fxShow.gt-sm>{{currentUser.AccountType}}</span>
         </div>
 
         <div class="" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="start center">
