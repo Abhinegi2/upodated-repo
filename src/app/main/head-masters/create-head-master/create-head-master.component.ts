@@ -27,6 +27,8 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
   VtId: any;
+  AcademicYear: string;
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -56,6 +58,13 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
         console.log(results);
         if(results[0].Success){
           this.academicYearList = results[0].Results;
+          let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
+      if (currentYearItem != null) {
+        
+        this.AcademicYear = currentYearItem.Name;
+        console.log(this.AcademicYear , "this.AcademicYear ");
+        this.headMasterForm.controls['AcademicYear'].setValue(this.AcademicYear);
+      }
         }
       })
 
