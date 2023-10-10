@@ -55,21 +55,6 @@
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
 
-                        <!-- <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-sm="75">
-                            <mat-label>Academic Year</mat-label>
-    
-                            <mat-select name="academicYear" formControlName="AcademicYear" required
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option [value]="academicYearItem.Name"
-                                    *ngFor="let academicYearItem of academicYearList">
-                                    {{ academicYearItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="headMasterForm.controls.AcademicYear.invalid">
-                                {{getErrorMessage(headMasterForm, 'AcademicYear')}}
-                            </mat-error>
-                        </mat-form-field> -->
-
                         <mat-form-field appearance="outline" fxFlex="65" fxFlex.lt-md="100" fxFlex.lt-sm="100">
                             <mat-label>School</mat-label>
 

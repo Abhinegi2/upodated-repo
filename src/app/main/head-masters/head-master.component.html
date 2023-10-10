@@ -66,18 +66,6 @@
                     fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-
-                        <!-- <mat-form-field fxFlex="20" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Academic Year</mat-label>
-
-                            <mat-select name="academicYearId" formControlName="AcademicYearId" appearance="fill">
-                                <mat-option [value]="academicYearIdItem.Id"
-                                    *ngFor="let academicYearIdItem of academicYearList">
-                                    {{ academicYearIdItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field> -->
-
                         <mat-form-field fxFlex="15" fxFlex.lt-md="10" fxFlex.lt-sm="100">
                             <mat-label>Status</mat-label>
                             <mat-select name="status" formControlName="Status" appearance="fill">
@@ -103,16 +91,7 @@
 
             <mat-table matTableExporter class="head-master-table responsive-table" #table [dataSource]="tableDataSource"
                 #exporter="matTableExporter" [hiddenColumns]="[8]" matSort fusePerfectScrollbar
-                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">AcademicYear
-                 
-                   <!-- HeadMaster Column -->
-                   <!-- <ng-container matColumnDef="AcademicYear">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Year
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let headMaster">
-                        <p class="text-truncate">{{headMaster.AcademicYear}}</p>
-                    </mat-cell>
-                </ng-container> -->
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">SchoolName
 
                 <!-- SchoolName Column -->
                 <ng-container matColumnDef="SchoolName">

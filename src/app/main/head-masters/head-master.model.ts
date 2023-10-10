@@ -3,7 +3,6 @@ import { FuseUtils } from '@fuse/utils';
 export class HeadMasterModel {
     AcademicYearId: string;
     HMId: string;
-    AcademicYear: string;
     SchoolId: string;
     FirstName: string;
     MiddleName: string;
@@ -22,7 +21,6 @@ export class HeadMasterModel {
     constructor(headMasterItem?: any) {
         headMasterItem = headMasterItem || {};
 
-        this.AcademicYear = ''
         this.HMId = headMasterItem.HMId || FuseUtils.NewGuid();
         this.SchoolId = headMasterItem.VTSchoolSectorId || '';
         this.FirstName = headMasterItem.FirstName || '';

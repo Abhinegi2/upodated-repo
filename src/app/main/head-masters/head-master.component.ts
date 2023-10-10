@@ -34,7 +34,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
 
-  academicYearList: DropdownModel[];
   sectorList: DropdownModel[];
   jobRoleList: DropdownModel[];
   socialCategoryList: DropdownModel[];
@@ -66,15 +65,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.currentUser = this.UserModel.UserId;
 
     this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results) => {
-      if (results[0].Success) {
-        this.academicYearList = results[0].Results;
-
-      let currentYearItem = this.academicYearList.find(ay => ay.IsSelected == true)
-      if (currentYearItem != null) {
-        this.AcademicYearId = currentYearItem.Id;
-        this.hmFilterForm.get('AcademicYearId').setValue(this.AcademicYearId);
-      }
-      }
       //Load initial HeadMasters data
       this.onLoadHeadMastersByCriteria();
 
@@ -121,7 +111,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
     this.IsLoading = true;
     let hmParams = {
       UserTypeId: this.UserModel.UserTypeId,
-      AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
       Status: this.hmFilterForm.controls["Status"].value,
       Name: this.hmSearchForm.controls["SearchText"].value,
       CharBy: null,
@@ -179,7 +168,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
 
     this.hmSearchForm.reset();
     this.hmFilterForm.reset();
-    this.hmFilterForm.get('AcademicYearId').setValue(null);
     this.onLoadHeadMastersByCriteria();
   }
   onDeleteHeadMaster(hmId: string) {
@@ -214,7 +202,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
 
     let hmParams = {
       UserTypeId: this.UserModel.UserTypeId,
-      AcademicYearId: this.hmFilterForm.controls["AcademicYearId"].value,
       VTPId: this.hmFilterForm.controls["VTPId"].value,
       VCId: this.hmFilterForm.controls["VCId"].value,
       VTId: (this.UserModel.RoleCode == 'VT' ? this.UserModel.UserTypeId : null),
@@ -251,7 +238,6 @@ export class HeadMasterComponent extends BaseListComponent<HeadMasterModel> impl
   //Create HeadMaster Filter form and returns {FormGroup}
   createHeadMasterFilterForm(): FormGroup {
     return this.formBuilder.group({
-      AcademicYearId: new FormControl(),
       VTPId: new FormControl(),
       VCId: new FormControl(),
       SchoolId: new FormControl(),
