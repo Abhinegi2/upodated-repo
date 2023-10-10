@@ -20,15 +20,15 @@
                     SUMMARY DASHBOARD
                 </span>
             </div>
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                    (click)=toggleDisplayDivIf()>
+                    <span>FILTERS</span>
+                </button>
+            </div>
             <!-- / APP TITLE -->
         </div>
         <!-- / HEADER -->
-        <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
-                (click)=toggleDisplayDivIf()>
-                <span>FILTERS</span>
-            </button>
-        </div>
         <!-- Filter Section -->
         <div class="filter-content-card" *ngIf="isShowDivIf">
             <div class="filter-content">
