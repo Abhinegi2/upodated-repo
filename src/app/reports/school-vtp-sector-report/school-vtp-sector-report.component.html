@@ -37,6 +37,8 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
                 <a *ngIf="PageRights.IsExport" class="export-excel"
                     (click)="exporter.exportTable('xlsx', {fileName:'SchoolVTPSectors', sheet: 'SchoolVTPSectors', Props: {Author: 'Lighthouse'}})">
                     <mat-icon> cloud_download</mat-icon>
@@ -45,11 +47,6 @@
             <!-- / ADD BUTTON -->
         </div>
         <!-- / HEADER -->
-
-        <!-- <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
-                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div> -->
 
         <!-- Filter Section -->
         <div class="filter-content-card" *ngIf="isShowFilterContainer">
@@ -164,12 +161,12 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <!-- <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="getSchoolVTPSectorReports()"><span>SEARCH</span></button>
                             <button mat-raised-button class="fuse-white filter-button"
                                 (click)="resetReportFilters()"><span>CLEAR</span></button>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
             </div>

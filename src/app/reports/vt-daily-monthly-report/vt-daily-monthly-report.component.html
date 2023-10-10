@@ -38,9 +38,9 @@
             <!-- ADD BUTTON -->
             <div class="action-buttons">
 
-                <!-- <button mat-raised-button class="fuse-white filter-button" style="margin: 10px;"
+                <button mat-raised-button class="fuse-white filter-button" style="margin: 10px;"
                     (click)="IsShowFilter=!IsShowFilter"><span>FILTERS</span>
-                </button> -->
+                </button>
 
                 <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
                     <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
@@ -56,7 +56,7 @@
         <!-- / HEADER -->
 <!-- 
         Filter Section -->
-        <!-- <div class="filter-content-card" *ngIf="IsShowFilter">
+        <div class="filter-content-card" *ngIf="IsShowFilter">
             <div class="filter-content">
                 <form name="vtDailyMonthlyFilterForm" [formGroup]="vtDailyMonthlyFilterForm"
                     class="vt-daily-monthly-report" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
@@ -180,7 +180,7 @@
                     </div>
                 </form>
             </div>
-        </div> -->
+        </div>
         <!-- /Filter Section -->
 
         <div fxLayout="column" fxLayout.gt-sm="row">

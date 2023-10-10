@@ -37,6 +37,8 @@
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
+                <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
+                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
                 <a *ngIf="PageRights.IsExport" class="export-excel"
                     (click)="exporter.exportTable('xlsx', {fileName:'StudentEnrollment', sheet: 'StudentEnrollment', Props: {Author: 'Lighthouse'}})">
                     <mat-icon> cloud_download</mat-icon>
@@ -46,13 +48,8 @@
         </div>
         <!-- / HEADER -->
 
-        <!-- <div fxLayout="row" fxLayoutAlign="start center">
-            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
-                (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div> -->
-
         <!-- Filter Section -->
-        <!-- <div class="filter-content-card" *ngIf="isShowFilterContainer">
+        <div class="filter-content-card" *ngIf="isShowFilterContainer">
             <div class="filter-content">
                 <form name="studentEnrollmentForm" [formGroup]="studentEnrollmentForm" class="student-enrollment-report"
                     fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
@@ -174,7 +171,7 @@
                     </div>
                 </form>
             </div>
-        </div> -->
+        </div>
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
