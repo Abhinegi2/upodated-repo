@@ -27,6 +27,8 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
   schoolList: DropdownModel[];
   filteredSchoolItems: any;
   VtId: any;
+  AcademicYear: string;
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -52,12 +54,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
       if (results[1].Success) {
         this.genderList = results[1].Results;
       }
-      this.headMasterService.getInitHeadMastersData(this.UserModel).subscribe((results)=>{
-        console.log(results);
-        if(results[0].Success){
-          this.academicYearList = results[0].Results;
-        }
-      })
 
       this.route.paramMap.subscribe(params => {
         if (params.keys.length > 0) {
@@ -71,14 +67,12 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
             this.headMasterService.getHeadMasterById(hmId)
               .subscribe((response: any) => {
                 this.headMasterModel = response.Result;
-                console.log(response.Result);
                 if (this.PageRights.ActionType == this.Constants.Actions.Edit)
                   this.headMasterModel.RequestType = this.Constants.PageType.Edit;
                 else if (this.PageRights.ActionType == this.Constants.Actions.View) {
                   this.headMasterModel.RequestType = this.Constants.PageType.View;
                   this.PageRights.IsReadOnly = true;
                 }
-
                 this.onChangeDateCalculateYear(this.headMasterModel.DateOfJoining);
                 this.headMasterForm = this.createHeadMasterForm();
               });
@@ -136,7 +130,6 @@ export class CreateHeadMasterComponent extends BaseComponent<HeadMasterModel> im
       FullName: new FormControl({ value: this.headMasterModel.FullName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(150)]),
       Mobile: new FormControl({ value: this.headMasterModel.Mobile, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
       Mobile1: new FormControl({ value: this.headMasterModel.Mobile1, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
-      AcademicYear: new FormControl({ value: this.headMasterModel.AcademicYear, disabled: this.PageRights.IsReadOnly }),
       Email: new FormControl({ value: this.headMasterModel.Email, disabled: (this.PageRights.IsReadOnly ) }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       Gender: new FormControl({ value: this.headMasterModel.Gender, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10)]),
       YearsInSchool: new FormControl({ value: this.headMasterModel.YearsInSchool, disabled: true }, Validators.pattern(this.Constants.Regex.Number)),
