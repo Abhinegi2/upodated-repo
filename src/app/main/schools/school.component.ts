@@ -212,8 +212,8 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
 
   exportExcel(): void {
     this.IsLoading = true;
-
     let schoolParams = {
+      UserTypeId: this.UserModel.UserTypeId,
       divisionId: this.schoolFilterForm.controls["DivisionId"].value,
       districtId: this.schoolFilterForm.controls["DistrictId"].value,
       schoolCategoryId: this.schoolFilterForm.controls["SchoolCategoryId"].value,
