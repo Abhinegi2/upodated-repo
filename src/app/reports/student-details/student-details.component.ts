@@ -409,6 +409,28 @@ export class StudentDetailComponent
     this.getStudentClassDetailsReports();
   }
 
+  
+  exportFilterData(): void {
+    this.SearchBy.PageIndex = 0;
+    this.SearchBy.PageSize = 25000000;
+
+    this.getStudentClassDetailsReportsData().then(response => {
+
+      response.Results.forEach(
+        function (obj) {
+          delete obj.TotalRows;
+        });
+
+      this.exportExcelFromTable(response.Results, "StudentDetailsReport");
+
+      this.IsLoading = false;
+      this.SearchBy.PageSize = 250;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
+  
   exportExcel(): void {
       if (!this.studentFilterForm.valid) {
           this.validateAllFormFields(this.studentFilterForm);
