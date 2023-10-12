@@ -56,8 +56,11 @@
                     (click)="IsShowFilter=!IsShowFilter" matTooltipPosition="left"
                     matTooltip="Show/Hide Filters"><span>FILTERS</span>
                 </button>
-
-                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportFilterData()"
+                    matTooltip="Download with filters data" matTooltipPosition="left">
+                    <mat-icon color="primary" > cloud_download</mat-icon>
+                </a>
+                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()"  matTooltip="Download without filters data">
                     <mat-icon> cloud_download</mat-icon>
                 </a>
             </div>
