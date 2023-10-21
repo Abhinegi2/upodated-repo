@@ -141,7 +141,7 @@ console.log(response);
       ApprovalYear: new FormControl({ value: this.vocationalTrainingProviderModel.ApprovalYear, disabled: this.PageRights.IsReadOnly }, Validators.required),
       CertificationNo: new FormControl({ value: this.vocationalTrainingProviderModel.CertificationNo, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(30)]),
       CertificationAgency: new FormControl({ value: this.vocationalTrainingProviderModel.CertificationAgency, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(150), Validators.pattern(this.Constants.Regex.CharWithTitleCaseSpaceAndSpecialChars)]),
-      VTPMobileNo: new FormControl({ value: this.vocationalTrainingProviderModel.VTPMobileNo, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(10), Validators.minLength(10), Validators.pattern(this.Constants.Regex.MobileNumber)]),
+      VTPMobileNo: new FormControl({ value: this.vocationalTrainingProviderModel.VTPMobileNo, disabled: this.PageRights.IsReadOnly }, [Validators.required]),
       VTPEmailId: new FormControl({ value: this.vocationalTrainingProviderModel.VTPEmailId, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(100), Validators.pattern(this.Constants.Regex.Email)]),
       VTPAddress: new FormControl({ value: this.vocationalTrainingProviderModel.VTPAddress, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(350)]),
       PrimaryContactPerson: new FormControl({ value: this.vocationalTrainingProviderModel.PrimaryContactPerson, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(100), Validators.pattern(this.Constants.Regex.CharsWithTitleCase)]),

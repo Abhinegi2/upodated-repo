@@ -7,7 +7,7 @@ export class SchoolModel {
     SchoolTypeId: string;
     SchoolManagementId: string;
     Udise: string;
-    SchoolUniqueId: string;
+    // SchoolUniqueId: string;
     AcademicYearId: string;
     PhaseId: string;
     StateName: string;
@@ -33,7 +33,7 @@ export class SchoolModel {
         this.SchoolTypeId = schoolItem.SchoolTypeId || '';
         this.SchoolManagementId = schoolItem.SchoolManagementId || '';
         this.Udise = schoolItem.Udise || '';
-        this.SchoolUniqueId = schoolItem.SchoolUniqueId || '';
+        // this.SchoolUniqueId = schoolItem.SchoolUniqueId || '';
         this.AcademicYearId = schoolItem.AcademicYearId || '';
         this.PhaseId = schoolItem.PhaseId || '';
         this.StateName = schoolItem.StateName || '';
