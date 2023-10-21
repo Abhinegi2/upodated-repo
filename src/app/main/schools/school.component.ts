@@ -136,7 +136,7 @@ export class SchoolComponent extends BaseListComponent<SchoolModel> implements O
     };
 
     this.schoolService.GetAllByCriteria(schoolParams).subscribe(response => {
-      this.displayedColumns = ['SchoolName', 'SchoolUniqueId', 'Udise', 'SchoolManagement', 'CategoryName', 'DivisionName', 'DistrictName', 'BlockName', 'CreatedBy', 'UpdatedBy', 'IsImplemented', 'IsActive', 'Actions']
+      this.displayedColumns = ['SchoolName', /*'SchoolUniqueId',*/ 'Udise', 'SchoolManagement', 'CategoryName', 'DivisionName', 'DistrictName', 'BlockName', 'CreatedBy', 'UpdatedBy', 'IsImplemented', 'IsActive', 'Actions']
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
