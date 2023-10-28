@@ -44,10 +44,36 @@ To set up the codebase you can follow these general steps:
    ```
    to install the project's dependencies.
 
-8. Now to start frontend server we just need to run the following command-
+8. Now to start the frontend server we just need to run the following command-
    ```sh
    ng serve
    ```
 
 Now you can visit [http://localhost:4213/login](http://localhost:4213/login) from your browser.
 
+## New State Onboarding Process
+
+**1. Request a New State Fork**
+
+- To onboard a new state for a new lighthouse, start by requesting the Lahini development team to create a fork from the base repository.
+
+**2. Clone and Customize**
+
+- Once you have the forked repository, clone it from GitHub. Then, customize the code according to the specific requirements of the new state.
+
+**3. Production Deployment**
+- After completing the necessary customizations, initiate a production deployment to finalize the new state onboarding process.
+
+## Syncing Lighthouse Base with Forked Repo
+
+If you need to keep your forked repository in sync with the base repository, you can follow these steps:
+
+**1. Sync with Base Changes**
+
+- To update your forked repository with the latest changes from the base, use the "Sync Fork" option provided by GitHub. This will automatically synchronize your fork with the latest changes from the base repository.
+- If you encounter merge conflicts during the synchronization, you can resolve them using GitHub CLI or other Git tools.
+
+**2. Propagate Forked Repo Changes to Base**
+
+- If you have made changes to your forked repository and want to incorporate them into the base repository, you can create a pull request in the forked repository. Make sure to set the base branch to the upstream branch. This action will also create a new pull request in the base repository.
+- You can also achieve this using GitHub CLI or similar tools.
