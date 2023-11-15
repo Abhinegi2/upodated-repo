@@ -60,7 +60,7 @@ export class AppConstants {
     public ShortDateFormat: string = "dd/MM/yyyy";
     public FullDateFormat: string = "dd/MM/yyyy hh:mm:ss a";
     public DefaultStateId: string = "DL";
-    public BackDatedReportingDays: number = 45;
+    public BackDatedReportingDays: number = 2;
 
     public UserRoleIds: string = "Roles : DisRP,DisEO,BRP";
     public SuperUser: string = "a9a77b00-1db2-45f5-9387-fd3232771608";
