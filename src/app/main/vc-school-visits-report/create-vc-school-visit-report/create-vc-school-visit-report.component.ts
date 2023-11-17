@@ -120,15 +120,79 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
                 this.onChangeSchool(this.vcSchoolVisitReportModel.SchoolId);
                 this.onChangeSector(this.vcSchoolVisitReportModel.SectorId);
                 this.vcSchoolVisitReportForm = this.createVCSchoolVisitForm();
+                this.vcSchoolVisitReportForm.get('Class9Boys').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });
+                this.vcSchoolVisitReportForm.get('Class10Boys').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });    this.vcSchoolVisitReportForm.get('Class11Boys').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });    this.vcSchoolVisitReportForm.get('Class12Boys').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });
+                this.vcSchoolVisitReportForm.get('Class9Girls').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });
+                this.vcSchoolVisitReportForm.get('Class10Girls').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });    this.vcSchoolVisitReportForm.get('Class11Girls').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });    this.vcSchoolVisitReportForm.get('Class12Girls').valueChanges.subscribe(() => {
+                  this.calculateTotals();
+                });
+                this.calculateTotals(); // Initial calculation
               });
           }
         }
       });
     });
-
     this.vcSchoolVisitReportForm = this.createVCSchoolVisitForm();
+    this.vcSchoolVisitReportForm.get('Class9Boys').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
+    this.vcSchoolVisitReportForm.get('Class10Boys').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });    this.vcSchoolVisitReportForm.get('Class11Boys').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });    this.vcSchoolVisitReportForm.get('Class12Boys').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
+    
+    this.vcSchoolVisitReportForm.get('Class9Girls').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
+    this.vcSchoolVisitReportForm.get('Class10Girls').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });    this.vcSchoolVisitReportForm.get('Class11Girls').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });    this.vcSchoolVisitReportForm.get('Class12Girls').valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
+    this.calculateTotals();
   }
 
+
+  calculateTotals(): void {
+    const class9Boys = +this.vcSchoolVisitReportForm.get('Class9Boys').value || 0;
+    const class10Boys = +this.vcSchoolVisitReportForm.get('Class10Boys').value || 0;
+    const class11Boys = +this.vcSchoolVisitReportForm.get('Class11Boys').value || 0;
+    const class12Boys = +this.vcSchoolVisitReportForm.get('Class12Boys').value || 0;
+  
+    const class9Girls = +this.vcSchoolVisitReportForm.get('Class9Girls').value || 0;
+    const class10Girls = +this.vcSchoolVisitReportForm.get('Class10Girls').value || 0;
+    const class11Girls = +this.vcSchoolVisitReportForm.get('Class11Girls').value || 0;
+    const class12Girls = +this.vcSchoolVisitReportForm.get('Class12Girls').value || 0;
+  
+    const totalBoys = class9Boys + class10Boys + class11Boys + class12Boys;
+    const totalGirls = class9Girls + class10Girls + class11Girls + class12Girls;
+  
+    this.vcSchoolVisitReportForm.patchValue({
+      TotalBoys: totalBoys,
+      TotalGirls: totalGirls,
+    });
+  }
+  
+  
   onChangeSchool(schoolId): Promise<any> {
     this.resetInputsAfter('School');
     this.setFormInputs();
@@ -347,7 +411,7 @@ export class CreateVCSchoolVisitReportComponent extends BaseComponent<VCSchoolVi
       VCId: new FormControl({ value: this.UserModel.UserTypeId, disabled: this.PageRights.IsReadOnly }, Validators.required),
       VCName: new FormControl({ value: this.UserModel.UserName, disabled: true }),
       CompanyName: new FormControl({ value: this.vcSchoolVisitReportModel.CompanyName, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(200)]),
-      Month: new FormControl({ value: this.vcSchoolVisitReportModel.Month, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(20)]),
+      // Month: new FormControl({ value: this.vcSchoolVisitReportModel.Month, disabled: this.PageRights.IsReadOnly }, [Validators.required, Validators.maxLength(20)]),
       VisitDate: new FormControl({ value: new Date(this.vcSchoolVisitReportModel.VisitDate), disabled: this.PageRights.IsReadOnly }),
       SchoolId: new FormControl({ value: this.vcSchoolVisitReportModel.SchoolId, disabled: this.PageRights.IsReadOnly }, [Validators.required]),
       DistrictCode: new FormControl({ value: this.vcSchoolVisitReportModel.DistrictCode, disabled: this.PageRights.IsReadOnly }, [Validators.required]),
