@@ -73,7 +73,7 @@
                     </div>
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <!-- <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Month of Visit</mat-label>
                             <mat-select name="month" formControlName="Month" appearance="outline"
                                 [disabled]="PageRights.IsReadOnly" required>
@@ -84,7 +84,7 @@
                             <mat-error *ngIf="vcSchoolVisitReportForm.controls.Month.invalid">
                                 {{getErrorMessage(vcSchoolVisitReportForm, 'Month')}}
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
 
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date of Visit</mat-label>
@@ -351,21 +351,19 @@
                         fxLayoutGap.lt-md="0px">
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Total Boys Count</mat-label>
-                            <input matInput name="totalBoys" formControlName="TotalBoys" required digitOnly
-                                minlength="1" maxlength="4">
+                            <input matInput name="totalBoys" formControlName="TotalBoys" readonly>
                             <mat-error *ngIf="vcSchoolVisitReportForm.controls.TotalBoys.invalid">
-                                {{getErrorMessage(vcSchoolVisitReportForm, 'TotalBoys')}}
+                              {{ getErrorMessage(vcSchoolVisitReportForm, 'TotalBoys') }}
                             </mat-error>
-                        </mat-form-field>
+                          </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                          <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Total Girls Count</mat-label>
-                            <input matInput name="totalGirls" formControlName="TotalGirls" required digitOnly
-                                minlength="1" maxlength="4">
+                            <input matInput name="totalGirls" formControlName="TotalGirls" readonly>
                             <mat-error *ngIf="vcSchoolVisitReportForm.controls.TotalGirls.invalid">
-                                {{getErrorMessage(vcSchoolVisitReportForm, 'TotalGirls')}}
+                              {{ getErrorMessage(vcSchoolVisitReportForm, 'TotalGirls') }}
                             </mat-error>
-                        </mat-form-field>
+                          </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
