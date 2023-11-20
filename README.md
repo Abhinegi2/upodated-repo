@@ -35,7 +35,7 @@ To set up the codebase you can follow these general steps:
 
 4. Now we need to download angular Cli by running this command-
    ```sh
-   npm install -g @angular/cli
+   npm install -g @angular/cli@9.0.1
    ```
 
 6. Open a terminal in the project's root directory and run
