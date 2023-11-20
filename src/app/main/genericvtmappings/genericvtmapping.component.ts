@@ -84,7 +84,9 @@ export class GenericVTMappingComponent extends BaseListComponent<GenericVTMappin
       this.displayedColumns = [
         'VTPShortName',
         'VCFullName',
+        'VCEmailId',
         'VTFullName',
+        'VTEmail',
         'SchoolName',
         'SectorName',
         'JobRoleName',
