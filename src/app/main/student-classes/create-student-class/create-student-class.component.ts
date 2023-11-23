@@ -128,12 +128,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
   }
   setEditInputValidation() {
     this.studentClassForm.controls['SchoolId'].disable();
-    this.studentClassForm.controls['SectorId'].disable();
-    this.studentClassForm.controls['JobRoleId'].disable();
-    this.studentClassForm.controls['AcademicYearId'].disable();
-    this.studentClassForm.controls['ClassId'].disable();
-    this.studentClassForm.controls['SectionId'].disable();
-    this.studentClassForm.controls['ClassSection'].disable();
   }
 
   setSectorJobRole(schoolsectorjobId) {
@@ -320,7 +314,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
           this.sectionList = response.Results;
           if (response.Results.length == 2 && this.UserModel.RoleCode == 'VT') {
             this.studentClassForm.controls['SectionId'].setValue(response.Results[1].Id);
-            this.studentClassForm.controls['SectionId'].disable();
           }
         }
         resolve(true);
@@ -328,7 +321,6 @@ export class CreateStudentClassComponent extends BaseComponent<StudentClassModel
     });
 
     if (this.PageRights.ActionType == this.Constants.Actions.Edit || this.PageRights.ActionType == this.Constants.Actions.View) {
-      this.studentClassForm.controls['SectionId'].disable();
       this.setEditInputValidation();
     }
     return promise;
