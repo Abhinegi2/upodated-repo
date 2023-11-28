@@ -202,6 +202,7 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
                     }
                   }
                 });
+                userNavigations = currentUser.RoleCode === 'VC' ? userNavigations.filter(item => item.id !== 'settings') : userNavigations;
 
                 sessionStorage.setItem('userNavigations', JSON.stringify(userNavigations));
                 sessionStorage.setItem('userRoleTransactions', JSON.stringify(tranResp.Results));
