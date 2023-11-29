@@ -85,6 +85,21 @@
 
                         <div fxLayout="row" fxLayoutAlign="start start">
                             <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
+                                            fxFlex.lt-sm="100%">
+                              <mat-label>Stakeholders</mat-label>
+                              <mat-select name="stakeholders" formControlName="StakeHolders" multiple>
+                                <mat-option *ngFor="let stakeholder of stakeholdersList" [value]="stakeholder.code">
+                                  {{ stakeholder.label }}
+                                </mat-option>
+                              </mat-select>
+                              <mat-error *ngIf="siteHeaderForm.controls.StakeHolders.invalid">
+                                <!-- Provide appropriate error message -->
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+
+                        <div fxLayout="row" fxLayoutAlign="start start">
+                            <mat-form-field appearance="outline" fxFlex="0 1 calc(35%)" fxFlex.lt-md="0 1 calc(70%)"
                                 fxFlex.lt-sm="100%">
                                 <mat-label>Display Order</mat-label>
                                 <input matInput name="displayOrder" formControlName="DisplayOrder" required>

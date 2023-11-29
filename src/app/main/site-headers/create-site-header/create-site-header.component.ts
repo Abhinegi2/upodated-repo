@@ -21,6 +21,13 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
   siteHeaderForm: FormGroup;
   siteHeaderModel: SiteHeaderModel;
 
+  stakeholdersList = [
+    { label: 'PMU-Admin', code: 'PMU' },
+    { label: 'Vocational Coordinator', code: 'VC' },
+    { label: 'Vocational Trainer', code: 'VT' },
+    { label: 'Head Master', code: 'HM' },
+  ];
+
   constructor(public commonService: CommonService,
     public router: Router,
     public routeParams: ActivatedRoute,
@@ -51,6 +58,10 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
             .subscribe((response: any) => {
               this.siteHeaderModel = response.Result;
 
+              if(response.Result.Stakeholders !== null){
+                this.siteHeaderModel.StakeHolders = response.Result.Stakeholders.split(",");
+              }
+
               if (this.PageRights.ActionType == this.Constants.Actions.Edit)
                 this.siteHeaderModel.RequestType = this.Constants.PageType.Edit;
               else if (this.PageRights.ActionType == this.Constants.Actions.View) {
@@ -69,6 +80,13 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
 
   saveOrUpdateSiteHeaderDetails() {
     this.setValueFromFormGroup(this.siteHeaderForm, this.siteHeaderModel);
+
+    let stakeholdersList = this.siteHeaderForm.get("StakeHolders").value;
+
+    if (stakeholdersList){
+      this.siteHeaderModel.StakeHolders = stakeholdersList.join(",");
+
+    }
 
     this.siteHeaderService.createOrUpdateSiteHeader(this.siteHeaderModel)
       .subscribe((siteHeaderResp: any) => {
@@ -99,6 +117,7 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
       ShortName: new FormControl({ value: this.siteHeaderModel.ShortName, disabled: this.PageRights.IsReadOnly }, Validators.required),
       LongName: new FormControl({ value: this.siteHeaderModel.LongName, disabled: this.PageRights.IsReadOnly }),
       Description: new FormControl({ value: this.siteHeaderModel.Description, disabled: this.PageRights.IsReadOnly }),
+      StakeHolders: new FormControl({ value: this.siteHeaderModel.StakeHolders, disabled: this.PageRights.IsReadOnly }),
       DisplayOrder: new FormControl({ value: this.siteHeaderModel.DisplayOrder, disabled: this.PageRights.IsReadOnly }, Validators.required),
       Remarks: new FormControl({ value: this.siteHeaderModel.Remarks, disabled: this.PageRights.IsReadOnly }),
       IsActive: new FormControl({ value: this.siteHeaderModel.IsActive, disabled: this.PageRights.IsReadOnly }),
