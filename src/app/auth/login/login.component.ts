@@ -151,7 +151,7 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
           // store user details and basic auth credentials in local storage to keep user logged in between page refreshes
           sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
           AppConstants.AuthToken = currentUser.AuthToken;
-
+          
           this.authenticationService.getUserTransactionsById(this.loginModel)
             .subscribe((tranResp: any) => {
               if (tranResp.Success && tranResp.Errors.length == 0) {
@@ -174,7 +174,8 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
                         //url: tranItem.RouteUrl,
                         badge: [],
                         children: [],
-                        isVissible: tranItem.IsHeaderMenu
+                        isVissible: tranItem.IsHeaderMenu,
+                        StakeHolders: tranItem.StakeHolders
                       };
 
                       let subMenuItems = tranResp.Results.filter(ob => ob.HeaderName === tranItem.HeaderName);
@@ -202,8 +203,22 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
                     }
                   }
                 });
+                let filteredUserNavigation = [];
+                
+                if (currentUser.RoleCode !== "SUR")
+                {
+                    userNavigations.forEach(item => {
+                      if (item.StakeHolders && item.StakeHolders.includes(currentUser.RoleCode)) {
+                        filteredUserNavigation.push({ ...item });
+                      }
+                    });
+                  }
+                  else
+                  {
+                    filteredUserNavigation = userNavigations;
+                  }
 
-                sessionStorage.setItem('userNavigations', JSON.stringify(userNavigations));
+                sessionStorage.setItem('userNavigations', JSON.stringify(filteredUserNavigation));
                 sessionStorage.setItem('userRoleTransactions', JSON.stringify(tranResp.Results));
 
                 if (this.loginModel.RememberMe) {

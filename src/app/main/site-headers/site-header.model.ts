@@ -6,6 +6,7 @@ export class SiteHeaderModel {
     LongName: string;
     Description: string;
     DisplayOrder: any;
+    StakeHolders: string;
     Remarks: string;
     IsActive: boolean;
     RequestType: any;
@@ -18,6 +19,7 @@ export class SiteHeaderModel {
         this.LongName = siteHeaderItem.LongName || '';
         this.Description = siteHeaderItem.Description || '';
         this.DisplayOrder = siteHeaderItem.DisplayOrder || '';
+        this.StakeHolders = siteHeaderItem.StakeHolders || '';
         this.Remarks = siteHeaderItem.Remarks || '';
         this.IsActive = siteHeaderItem.IsActive || true;
         this.RequestType = 0; // New
