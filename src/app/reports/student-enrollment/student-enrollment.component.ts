@@ -232,4 +232,36 @@ export class StudentEnrollmentComponent extends BaseListComponent<StudentEnrollm
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.studentEnrollmentForm.get('AcademicYearId').value,
+      DivisionId: this.studentEnrollmentForm.get('DivisionId').value,
+      DistrictId: this.studentEnrollmentForm.get('DistrictId').value,
+      SectorId: this.studentEnrollmentForm.get('SectorId').value,
+      JobRoleId: this.studentEnrollmentForm.get('JobRoleId').value,
+      VTPId: this.studentEnrollmentForm.get('VTPId').value,
+      ClassId: this.studentEnrollmentForm.get('ClassId').value,
+      MonthId: this.studentEnrollmentForm.get('MonthId').value,
+      SchoolManagementId: this.studentEnrollmentForm.get('SchoolManagementId').value
+    };
+
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetStudentEnrollmentReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "StudentEnrollment");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

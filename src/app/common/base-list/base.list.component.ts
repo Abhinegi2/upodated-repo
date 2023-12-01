@@ -84,13 +84,29 @@ export class BaseListComponent<T> extends BaseComponent<T> implements OnInit {
             //converts a DOM TABLE element to a worksheet
             //const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(dataTable.nativeElement);
             const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataSource);
+            
+            // Create a callback function to format numeric values
+            const exportNumberFormatter = (row, cellData, eOpt) => {
+                if (typeof cellData === 'number') {
+                eOpt.style.numFmt = '0.00';
+                }
+                return cellData;
+            };
 
             const wb: XLSX.WorkBook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, dataType);
 
+            const exportOptions = {
+                Props: { Author: 'Lighthouse' },
+                Callbacks: {
+                beforeCellWrite: exportNumberFormatter,
+                },
+            };
+
             /* save to file */
             let fileName = dataType + '-' + currentDateTime + '.xlsx';
             XLSX.writeFile(wb, fileName);
+            XLSX.writeFile(wb, fileName, exportOptions);
 
             resolve(currentDateTime);
         });
