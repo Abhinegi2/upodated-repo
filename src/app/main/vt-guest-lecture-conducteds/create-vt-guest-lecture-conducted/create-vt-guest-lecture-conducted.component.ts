@@ -222,6 +222,8 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetFormInputs();
+
 
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -346,6 +348,36 @@ export class CreateVTGuestLectureConductedComponent extends BaseComponent<VTGues
     if (input == 'Class') {
       this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
     }
+  }
+
+  resetFormInputs(): void {
+    this.vtGuestLectureConductedForm.controls['ClassTaughtId'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['SectionIds'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['ReportingDate'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLType'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLTopic'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['ClassTime'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['ModuleId'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['UnitId'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['SessionIds'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['MethodologyIds'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLLecturerPhotoFile'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['IsGLLecturerPhotoFile'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLMethodologyDetails'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLConductedBy'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLPersonDetails'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLName'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLQualification'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLMobile'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLEmail'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLWorkExperience'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLAddress'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLWorkStatus'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLCompany'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLDesignation'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['GLPhotoFile'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['IsGLPhotoFile'].setValue(null);
+    this.vtGuestLectureConductedForm.controls['Remarks'].setValue(null);
   }
 
   setUserAction() {

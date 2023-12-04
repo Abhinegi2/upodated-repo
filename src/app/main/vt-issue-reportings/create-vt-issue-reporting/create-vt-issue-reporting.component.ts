@@ -222,6 +222,7 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetFormInputs();
 
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -353,6 +354,20 @@ export class CreateVTIssueReportingComponent extends BaseComponent<VTIssueReport
     if (input == 'Class') {
       this.vtIssueReportingForm.controls['SectionIds'].setValue(null);
     }
+  }
+
+  resetFormInputs(): void {
+    this.vtIssueReportingForm.controls['AcademicYearId'].setValue(null);
+    this.vtIssueReportingForm.controls['StudentClass'].setValue(null);
+    this.vtIssueReportingForm.controls['SectionIds'].setValue(null);
+    this.vtIssueReportingForm.controls['IssueReportDate'].setValue(null);
+    this.vtIssueReportingForm.controls['MainIssue'].setValue(null);
+    this.vtIssueReportingForm.controls['SubIssue'].setValue(null);
+    this.vtIssueReportingForm.controls['Month'].setValue(null);
+    this.vtIssueReportingForm.controls['StudentType'].setValue(null);
+    this.vtIssueReportingForm.controls['NoOfStudents'].setValue(null);
+    this.vtIssueReportingForm.controls['IssueDetails'].setValue(null);
+    this.vtIssueReportingForm.controls['IssueStatus'].setValue(null);
   }
 
   setUserAction() {
