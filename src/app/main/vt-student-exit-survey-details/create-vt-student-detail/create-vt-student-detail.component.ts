@@ -93,12 +93,13 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
     });
 
     this.stateCode = this.UserModel.DefaultStateId;
-    this.commonService.GetMasterDataByType({ DataType: 'DistrictsBySateCode', ParentId: this.stateCode, SelectTitle: 'District' }).subscribe((response: any) => {
+    this.commonService.GetMasterDataByType({ DataType: 'DistrictsBySateCode', ParentId: this.Constants.DefaultStateId, SelectTitle: 'District' }).subscribe((response: any) => {
       this.districtList = response.Results;
     });
 
-    this.commonService.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' }).subscribe((response: any) => {
+    this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'School'},false).subscribe((response: any) => {
       this.schoolList = response.Results;
+      console.log(this.schoolList);
     });
 
     this.commonService.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'School Classes' }).subscribe((response: any) => {
@@ -119,8 +120,9 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
       }
     });
 
-    this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }).subscribe((response: any) => {
+    this.commonService.GetMasterDataByType({  DataType: 'VTPBYVT', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'VTP' }).subscribe((response: any) => {
       this.vtpList = response.Results;
+      console.log(this.vtpList);
     });
 
     this.route.paramMap.subscribe(params => {
@@ -158,7 +160,7 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
     let udiseCode = this.schoolList.find(ay => ay.Name == udise);
 
     this.vtStudentDetailForm.get('UdiseCode').setValue(udiseCode.Description);
-    this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: udiseCode.Id, SelectTitle: "Sector" }).subscribe((response) => {
+    this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: udiseCode.Id, SelectTitle: "Sector" }).subscribe((response) => {
       if (response.Success) {
         this.sectorList = response.Results;
 
@@ -257,7 +259,7 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
       Category: new FormControl({ value: this.vtStudentDetailModel.Category, disabled: this.PageRights.IsReadOnly }),
       Sector: new FormControl({ value: this.vtStudentDetailModel.Sector, disabled: this.PageRights.IsReadOnly },),
       JobRole: new FormControl({ value: this.vtStudentDetailModel.JobRole, disabled: this.PageRights.IsReadOnly }),
-      VTPName: new FormControl({ value: this.vtStudentDetailModel.VTPName, disabled: this.PageRights.IsReadOnly }, Validators.required)
+      VTPId: new FormControl({ value: this.vtStudentDetailModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required)
     });
   }
 }
