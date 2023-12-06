@@ -142,17 +142,16 @@ export class VTStudentExitSurveyDetailService {
     }
 
     getStudentExitSurveyDropdown(userModel: UserModel): Observable<any[]> {
-        let districtRequest = this.http.GetMasterDataByType({ DataType: 'DistrictsBySateCode', ParentId: userModel.DefaultStateId, SelectTitle: 'District' });
+        let districtRequest = this.http.GetMasterDataByType({ DataType: 'DistrictsBySateCode', ParentId: 'DL', SelectTitle: 'District' });
         let sectorRequest = this.http.GetMasterDataByType({ DataType: 'Sectors', SelectTitle: 'Sector' });
         let natureOfWorkRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NatureOfWork', SelectTitle: 'Nature Of Work' });
         let sectorsOfEmploymentRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'SectorsOfEmployment', SelectTitle: 'Sector Of Employment' });
-        let veNotContinuingReasonsRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'VENotContinuingReasons', SelectTitle: 'The Reason' });
         let topicsOfJobInterestRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'TopicsOfJobInterest', SelectTitle: 'Your Interest' });
         let preferredLocationRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'PreferredLocationForEmployment', SelectTitle: 'Preferred Location For Employment' });
         let academicYearRequest = this.http.GetMasterDataByType({ DataType: 'AcademicYears', SelectTitle: 'Academic Year' });
         let religionRequest = this.http.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'Religion', SelectTitle: 'Religion' });
 
         // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
-        return forkJoin([districtRequest, sectorRequest, natureOfWorkRequest, sectorsOfEmploymentRequest, veNotContinuingReasonsRequest, topicsOfJobInterestRequest, preferredLocationRequest, academicYearRequest, religionRequest]);
+        return forkJoin([districtRequest, sectorRequest, natureOfWorkRequest, sectorsOfEmploymentRequest, topicsOfJobInterestRequest, preferredLocationRequest, academicYearRequest, religionRequest]);
     }
 }
