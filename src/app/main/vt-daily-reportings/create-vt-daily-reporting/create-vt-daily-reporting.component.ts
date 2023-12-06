@@ -280,7 +280,9 @@ export class CreateVTDailyReportingComponent extends BaseComponent<VTDailyReport
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetWorkTypesFormGroups();
 
+    this.vtDailyReportingForm.controls['WorkingDayTypeIds'].setValue(null);
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"

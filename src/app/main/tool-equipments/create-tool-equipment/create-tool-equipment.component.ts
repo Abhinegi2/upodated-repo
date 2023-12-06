@@ -166,6 +166,7 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetFormInputs();
 
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -239,6 +240,15 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
 
   setUserAction() {
     this.CanUserChangeInput = true;
+  }
+
+  resetFormInputs(): void {
+    this.toolEquipmentForm.controls['TEReceiveStatus'].setValue(null);
+    this.toolEquipmentForm.controls['ReceiptDate'].setValue(null);
+    this.toolEquipmentForm.controls['TEStatus'].setValue(null);
+    this.toolEquipmentForm.controls['RMStatus'].setValue(null);
+    this.toolEquipmentForm.controls['RMFundStatus'].setValue(null);
+    this.toolEquipmentForm.controls['Details'].setValue(null);
   }
 
 
