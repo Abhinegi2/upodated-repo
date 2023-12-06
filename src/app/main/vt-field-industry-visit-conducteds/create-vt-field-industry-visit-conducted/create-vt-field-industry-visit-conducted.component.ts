@@ -183,6 +183,7 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetFormInputs();
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
         DataType: 'YearsBySSJ', DataTypeID1: this.SchoolInputId, DataTypeID2: this.SectorInputId, DataTypeID3: jobRoleId, UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: "Academic Years"
@@ -308,6 +309,30 @@ export class CreateVTFieldIndustryVisitConductedComponent extends BaseComponent<
     this.CanUserChangeInput = true;
   }
 
+  resetFormInputs(): void {
+    this.vtFieldIndustryVisitConductedForm.controls['AcademicYearId'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['ClassTaughtId'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['SectionIds'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['ReportingDate'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FieldVisitTheme'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FieldVisitActivities'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['ModuleId'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['UnitId'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['SessionIds'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVOrganisation'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVOrganisationAddress'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVDistance'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVPictureFile'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['IsFVPictureFile'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVContactPersonName'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVContactPersonMobile'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVContactPersonEmail'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVContactPersonDesignation'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVOrganisationInterestStatus'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FVOrignisationOJTStatus'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['FeedbackFromOrgnisation'].setValue(null);
+    this.vtFieldIndustryVisitConductedForm.controls['Remarks'].setValue(null);
+  }
 
   setInputs(parentId, InputId, dataType): Promise<any> {
 

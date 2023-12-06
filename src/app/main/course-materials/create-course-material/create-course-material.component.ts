@@ -210,6 +210,7 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
   onChangeJobRole(jobRoleId): Promise<any> {
     this.resetInputsAfter('JobRole');
     this.setFormInputs();
+    this.resetFormInputs();
 
     return new Promise((resolve, reject) => {
       this.commonService.GetMasterDataByType({
@@ -346,6 +347,16 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
     if (input == 'Class') {
       this.courseMaterialForm.controls['SectionIds'].setValue(null);
     }
+  }
+
+  
+  resetFormInputs(): void {
+    this.courseMaterialForm.controls['AcademicYearId'].setValue(null);
+    this.courseMaterialForm.controls['ClassId'].setValue(null);
+    this.courseMaterialForm.controls['SectionIds'].setValue(null);
+    this.courseMaterialForm.controls['CMStatus'].setValue(null);
+    this.courseMaterialForm.controls['ReceiptDate'].setValue(null);
+    this.courseMaterialForm.controls['Details'].setValue(null);
   }
 
   setUserAction() {

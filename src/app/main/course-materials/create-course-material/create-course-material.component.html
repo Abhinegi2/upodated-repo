@@ -172,34 +172,34 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Receipt Date</mat-label>
-                            <input matInput name="receiptDate" formControlName="ReceiptDate" [max]="CurrentDate"
-                                [matDatepicker]="receiptDate"
-                                [required]="courseMaterialForm.controls.CMStatus.value == 'Yes'"
-                                [disabled]="PageRights.IsReadOnly">
-                            <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
-                            <mat-datepicker #receiptDate></mat-datepicker>
-
-                            <mat-error *ngIf="courseMaterialForm.controls.ReceiptDate.invalid">
-                                {{getErrorMessage(courseMaterialForm, 'ReceiptDate')}}
-                            </mat-error>
-                        </mat-form-field>
-
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
                         <div class="cm-status" style="width: 100%;">
                             <mat-label fxFlex="35" class="radio-label-sc">Course Material Availability</mat-label>
                             <mat-radio-group name="cmStatus" formControlName="CMStatus" required appearance="outline"
-                                fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                                (change)="onChangeOnCMStatusType($event)" fxLayoutGap="20px" class="radio-space-sc"
-                                [disabled]="PageRights.IsReadOnly"
-                                [ngClass]="{'mat-form-field-invalid': courseMaterialForm.controls.CMStatus.touched && courseMaterialForm.controls.CMStatus.value == ''}">
+                                            fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100" (change)="onChangeOnCMStatusType($event)"
+                                            fxLayoutGap="20px" class="radio-space-sc"
+                                            [disabled]="PageRights.IsReadOnly"
+                                            [ngClass]="{'mat-form-field-invalid': courseMaterialForm.controls.CMStatus.touched && courseMaterialForm.controls.CMStatus.value == ''}">
                                 <mat-radio-button value="Yes">Yes</mat-radio-button>
                                 <mat-radio-button value="No">No</mat-radio-button>
                             </mat-radio-group>
                         </div>
+                    
+                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Receipt Date</mat-label>
+                            <input matInput name="receiptDate" formControlName="ReceiptDate" [max]="CurrentDate"
+                                   [matDatepicker]="receiptDate"
+                                   [required]="courseMaterialForm.controls.CMStatus.value == 'Yes'"
+                                   [disabled]="courseMaterialForm.controls.CMStatus.value == 'No' || PageRights.IsReadOnly">
+                            <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
+                            <mat-datepicker #receiptDate></mat-datepicker>
+                    
+                            <mat-error *ngIf="courseMaterialForm.controls.ReceiptDate.invalid">
+                                {{getErrorMessage(courseMaterialForm, 'ReceiptDate')}}
+                            </mat-error>
+                        </mat-form-field>
                     </div>
+                    
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
