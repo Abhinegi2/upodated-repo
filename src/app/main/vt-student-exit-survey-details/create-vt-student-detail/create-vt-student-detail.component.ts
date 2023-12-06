@@ -8,11 +8,13 @@ import { fuseAnimations } from '@fuse/animations';
 import { DialogService } from 'app/common/confirm-dialog/dialog.service';
 import { RouteConstants } from 'app/constants/route.constant'
 import { VTStudentExitSurveyDetailService } from '../vt-student-exit-survey-detail.service';
+//import { VTStudentDetailModel } from '../vt-student-exit-survey-detail.model';
 import { VTStudentDetailModel } from '../vt-student-detail.model';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment, Moment } from "moment";
 
 @Component({
@@ -24,6 +26,7 @@ import { default as _rollupMoment, Moment } from "moment";
 })
 export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetailModel> implements OnInit {
   vtStudentDetailForm: FormGroup;
+  //vtStudentDetailModel: VTStudentDetailModel;
   vtStudentDetailModel: VTStudentDetailModel;
   studentList: [DropdownModel];
   genderList: any;
@@ -97,9 +100,8 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
       this.districtList = response.Results;
     });
 
-    this.commonService.GetMasterDataByType({ DataType: 'Schools', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'School'},false).subscribe((response: any) => {
+    this.commonService.GetMasterDataByType({ DataType: 'Schools', SelectTitle: 'School' }).subscribe((response: any) => {
       this.schoolList = response.Results;
-      console.log(this.schoolList);
     });
 
     this.commonService.GetMasterDataByType({ DataType: 'SchoolClasses', SelectTitle: 'School Classes' }).subscribe((response: any) => {
@@ -120,10 +122,11 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
       }
     });
 
-    this.commonService.GetMasterDataByType({  DataType: 'VTPBYVT', UserId: this.UserModel.UserTypeId, roleId: this.UserModel.RoleCode, SelectTitle: 'VTP' }).subscribe((response: any) => {
+    this.commonService.GetMasterDataByType({ DataType: 'VocationalTrainingProviders', SelectTitle: 'VTP' }).subscribe((response: any) => {
       this.vtpList = response.Results;
-      console.log(this.vtpList);
     });
+
+    // this.saveOrUpdateVTStudentDetailDetails();
 
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
@@ -160,7 +163,7 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
     let udiseCode = this.schoolList.find(ay => ay.Name == udise);
 
     this.vtStudentDetailForm.get('UdiseCode').setValue(udiseCode.Description);
-    this.commonService.GetMasterDataByType({ DataType: 'SectorsBySSJ', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: udiseCode.Id, SelectTitle: "Sector" }).subscribe((response) => {
+    this.commonService.GetMasterDataByType({ DataType: 'SectorsByUserId', RoleId: this.UserModel.RoleCode, UserId: this.UserModel.UserTypeId, ParentId: udiseCode.Id, SelectTitle: "Sector" }).subscribe((response) => {
       if (response.Success) {
         this.sectorList = response.Results;
 
@@ -259,7 +262,7 @@ export class CreateVTStudentDetailComponent extends BaseComponent<VTStudentDetai
       Category: new FormControl({ value: this.vtStudentDetailModel.Category, disabled: this.PageRights.IsReadOnly }),
       Sector: new FormControl({ value: this.vtStudentDetailModel.Sector, disabled: this.PageRights.IsReadOnly },),
       JobRole: new FormControl({ value: this.vtStudentDetailModel.JobRole, disabled: this.PageRights.IsReadOnly }),
-      VTPId: new FormControl({ value: this.vtStudentDetailModel.VTId, disabled: this.PageRights.IsReadOnly }, Validators.required)
+      VTPName: new FormControl({ value: this.vtStudentDetailModel.VTPName, disabled: this.PageRights.IsReadOnly }, Validators.required)
     });
   }
 }

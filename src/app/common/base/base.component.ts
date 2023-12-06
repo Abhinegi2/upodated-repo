@@ -429,4 +429,23 @@ export class BaseComponent<T> implements OnInit {
             formGroup.controls[controlId].markAsUntouched();
         });
     }
+
+    clearFormControlAsInitialState(formControl: any) {
+        try {
+            formControl.patchValue(null);
+            formControl.clearValidators();
+            formControl.updateValueAndValidity();
+            formControl.markAsPristine();
+            formControl.markAsUntouched();
+        }
+        catch (error) {
+            console.error('FormControl error message : ', error);
+            //throw new Error('An error occurred');
+        }
+    }
+
+    isValidRequiredFields(formControl: any): boolean {
+        return formControl.touched && formControl.status == 'INVALID' && (formControl.value == null || formControl.value == undefined);
+    }
+
 }

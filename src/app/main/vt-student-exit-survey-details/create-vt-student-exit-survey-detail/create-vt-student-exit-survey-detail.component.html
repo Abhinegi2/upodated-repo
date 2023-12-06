@@ -11,14 +11,16 @@
         <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
 
             <!-- APP TITLE -->
-            <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutAlign="start start"
+                fxLayoutGap="10px">
 
-                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/vt-student-exit-survey-details'">
-                    <mat-icon>arrow_back</mat-icon>
-                </button>
-
-                <div fxLayout="column" fxLayoutAlign="start start"
+                <div fxLayout="row" fxLayout.lt-md="column" fxFlex.lt-md="75" fxFlex.lt-sm="100"
                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <button fxFlex="15" mat-icon-button class="mr-0 mr-sm-16"
+                        [routerLink]="'/vt-student-exit-survey-details'">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+
                     <div class="h2" *ngIf="PageRights.PageType ==='Edit'">
                         {{ vtStudentExitSurveyDetailModel.Name }}
                     </div>
@@ -29,17 +31,24 @@
                         <span>VT Student Exit Survey Detail Details</span>
                     </div>
                 </div>
+
+                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                    *ngIf="isIncompleteStudentDetails">
+                    <span class="incomplete-student-details">{{ incompleteStudentMessages }}</span>
+                </div>
             </div>
             <!-- / APP TITLE -->
 
             <button mat-raised-button class="add-vt-student-exit-survey-detail-button"
-                *ngIf="PageRights.ActionType ==='add'" (click)="saveOrUpdateVTStudentExitSurveyDetailDetails()">
-                <span>ADD</span>
+                *ngIf="PageRights.ActionType ==='add' && !isIncompleteStudentDetails"
+                (click)="saveOrUpdateVTStudentExitSurveyDetailDetails()">
+                <span>SAVE</span>
             </button>
 
             <button mat-raised-button class="save-vt-student-exit-survey-detail-button"
-                *ngIf="PageRights.ActionType ==='edit'" (click)="saveOrUpdateVTStudentExitSurveyDetailDetails()">
-                <span>SAVE</span>
+                [disabled]="isIncompleteStudentDetails" *ngIf="PageRights.ActionType ==='edit'"
+                (click)="saveOrUpdateVTStudentExitSurveyDetailDetails()">
+                <span>UPDATE</span>
             </button>
         </div>
         <!-- / HEADER -->
@@ -53,13 +62,40 @@
                 <form name="vtStudentExitSurveyDetailForm" [formGroup]="vtStudentExitSurveyDetailForm"
                     class="vt-student-exit-survey-detail w-100-p p-24 mr-24" fxLayout="column" fxLayoutAlign="start"
                     fxFlex="1 0 auto" fxFlex fusePerfectScrollbar>
+
                     <div>
-                        <div class="vtStudentDetailForm" formGroupName="studentDetailGroup">
+                        <!-- Academic Information -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Academic Information</legend>
+
                             <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                                 fxLayoutGap.lt-md="0px">
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                                    <mat-label>Student Unique Id</mat-label>
+                                    <mat-label>AcademicYear</mat-label>
+                                    <input matInput name="AcademicYear" formControlName="AcademicYear" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Student Unique ID (Saral ID)</mat-label>
                                     <input matInput name="StudentUniqueId" formControlName="StudentUniqueId" digitOnly>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Student Seat No. provided by Board</mat-label>
+                                    <input matInput name="SeatNo" formControlName="SeatNo">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <mat-label>State</mat-label>
+                                    <input matInput name="State" formControlName="State">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <mat-label>Division</mat-label>
+                                    <input matInput name="Division" formControlName="Division">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
@@ -81,7 +117,7 @@
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                    <mat-label>Select Class</mat-label>
+                                    <mat-label>Class</mat-label>
                                     <input matInput name="Class" formControlName="Class">
                                 </mat-form-field>
                             </div>
@@ -89,780 +125,783 @@
                             <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                                 fxLayoutGap.lt-md="0px">
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                                    <mat-label>Select Sector</mat-label>
-                                    <mat-select formControlName="Sector" required appearance="outline"
-                                        (selectionChange)="onChangeSector($event.value)">
-                                        <mat-option [value]="sectorItem.Name" *ngFor="let sectorItem of sectorList">
-                                            {{ sectorItem.Name }}
-                                        </mat-option>
-                                    </mat-select>
+                                    <mat-label>Sector</mat-label>
+                                    <input matInput name="Sector" formControlName="Sector">
                                 </mat-form-field>
 
                                 <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                                    <mat-label>Select Job Role</mat-label>
+                                    <mat-label>Job Role</mat-label>
                                     <input matInput name="JobRole" formControlName="JobRole">
                                 </mat-form-field>
                             </div>
 
                             <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                                 fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>VTP Name</mat-label>
+                                    <input matInput name="VTPName" formControlName="VTPName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>VC Name</mat-label>
+                                    <input matInput name="VCName" formControlName="VCName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                     <mat-label>VT Name</mat-label>
                                     <input matInput name="VTName" formControlName="VTName">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                     <mat-label>VT Mobile</mat-label>
-                                    <input matInput name="VTMobile" formControlName="VTMobile">
+                                    <input matInput name="VTMobile" formControlName="VTMobile" required digitOnly
+                                        minlength="10" maxlength="10">
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
+                        <!-- </div> -->
+
+                        <!-- Personal Information -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Personal Information</legend>
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Student First Name</mat-label>
+                                    <input matInput name="StudentFirstName" formControlName="StudentFirstName">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                                    <mat-label>Select VTP</mat-label>
-                                    <input matInput name="VTPName" formControlName="VTPName">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Student Middle Name</mat-label>
+                                    <input matInput name="StudentMiddleName" formControlName="StudentMiddleName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Student Last Name</mat-label>
+                                    <input matInput name="StudentLastName" formControlName="StudentLastName">
                                 </mat-form-field>
                             </div>
 
                             <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
                                 fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
                                     <mat-label>Student Full Name</mat-label>
-                                    <input matInput name="studentFullName" formControlName="StudentFullName">
+                                    <input matInput name="StudentFullName" formControlName="StudentFullName">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                    <mat-label>Student Father Name</mat-label>
-                                    <input matInput name="fatherName" formControlName="FatherName">
-                                </mat-form-field>
-
-                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                    <mat-label>Student Mother Name</mat-label>
-                                    <input matInput name="motherName" formControlName="MotherName">
-                                </mat-form-field>
-                            </div>
-
-                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                                fxLayoutGap.lt-md="0px">
-                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
                                     <mat-label>Gender</mat-label>
                                     <input matInput name="Gender" formControlName="Gender">
                                 </mat-form-field>
 
-                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
                                     <mat-label>Date Of Birth</mat-label>
-                                    <input matInput [matDatepicker]="dateOfBirth" name="DOB" formControlName="DOB"
-                                        [disabled]="IsDisabled">
+                                    <input matInput [matDatepicker]="dateOfBirth" name="DOB" formControlName="DOB">
                                     <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                                     <mat-datepicker #dateOfBirth></mat-datepicker>
                                 </mat-form-field>
+                            </div>
 
-                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                                    <mat-label>Select Social Category</mat-label>
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Student Father Name</mat-label>
+                                    <input matInput name="FatherName" formControlName="FatherName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Student Mother Name</mat-label>
+                                    <input matInput name="MotherName" formControlName="MotherName">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Social Category</mat-label>
                                     <input matInput name="Category" formControlName="Category">
                                 </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="70" fxFlex.lt-sm="100">
+                                    <mat-label>Religion</mat-label>
+                                    <mat-select name="Religion" formControlName="Religion" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly" required>
+                                        <mat-option *ngFor="let religionItem of religionList"
+                                            [value]="religionItem.Name">
+                                            {{religionItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.Religion.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'Religion')}}
+                                    </mat-error>
+                                </mat-form-field>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Actual Survey Form -->
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Religion</mat-label>
-                            <mat-select name="Religion" formControlName="Religion" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly" required>
-                                <mat-option *ngFor="let religionItem of religionList" [value]="religionItem.Name">
-                                    {{religionItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.Religion.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'Religion')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Student Seat No. provided by Board</mat-label>
-                            <input matInput name="SeatNo" formControlName="SeatNo" required>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.SeatNo.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'SeatNo')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Student Mobile Number</mat-label>
-                            <input matInput name="StudentMobileNo" formControlName="StudentMobileNo" required digitOnly
-                                minlength="10" maxlength="10">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.StudentMobileNo.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'StudentMobileNo')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Student WhatsApp Number</mat-label>
-                            <input matInput name="StudentWANo" formControlName="StudentWANo" required digitOnly
-                                minlength="10" maxlength="10">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.StudentWANo.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'StudentWANo')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Parent Mobile Number Available</mat-label>
-                            <input matInput name="ParentMobileNo" formControlName="ParentMobileNo" required digitOnly
-                                minlength="10" maxlength="10">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.ParentMobileNo.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'ParentMobileNo')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Enter Village/City/Town of Residence</mat-label>
-                            <input matInput name="CityOfResidence" formControlName="CityOfResidence"
-                                [disabled]="PageRights.IsReadOnly" required>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CityOfResidence.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CityOfResidence')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>District Of Residence</mat-label>
-                            <mat-select name="districtCode" formControlName="DistrictOfResidence" required
-                                appearance="outline" [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeDistrict($event.value)">
-                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Name">
-                                    {{districtItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.DistrictOfResidence.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'DistrictOfResidence')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Block Of Residence</mat-label>
-                            <input matInput name="BlockOfResidence" formControlName="BlockOfResidence"
-                                [disabled]="PageRights.IsReadOnly" required>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.BlockOfResidence.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'BlockOfResidence')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Pincode</mat-label>
-                            <input matInput name="pinCode" formControlName="PinCode" [disabled]="PageRights.IsReadOnly"
-                                digitOnly minlength="6" maxlength="6" required>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.PinCode.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'PinCode')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                    </div>
-
-                    <!-- Status Of Employement -->
-                    <!-- For 12th class students -->
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 12'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Did You Do Internship in Class 10th or 12th?</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="DoneInternship" formControlName="DoneInternship" appearance="outline"
-                                fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
-                                class="radio-space-tc" [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.DoneInternship.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'DoneInternship')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 10'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Do you want to continue your eduction post 10th? </mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WillContHigherStudies" formControlName="WillContHigherStudies"
-                                appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                                fxLayoutGap="20px" class="radio-space-tc" [disabled]="PageRights.IsReadOnly"
-                                (change)="onChangeHigherStudies($event.value)">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WillContHigherStudies')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 12'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Are you willing to continue your higher education?</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WillContHigherStudies" formControlName="WillContHigherStudies"
-                                appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                                fxLayoutGap="20px" class="radio-space-tc" [disabled]="PageRights.IsReadOnly"
-                                (change)="onChangeHigherStudies($event.value)">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WillContHigherStudies')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Whether Full Time/Part Time?</mat-label>
-
-                            <mat-select name="WillBeFullTime" formControlName="WillBeFullTime" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
-                                    [value]="natureOfWorkItem.Id">
-                                    {{natureOfWorkItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.WillBeFullTime.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WillBeFullTime')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'">
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Which Course Will You Pursue? </mat-label>
-
-                            <mat-select name="CourseToPursue" formControlName="CourseToPursue" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeCourseToPursue($event.value)">
-                                <mat-option *ngFor="let courseToBePursueItem of courseToBePursueList"
-                                    [value]="courseToBePursueItem.Name">
-                                    {{courseToBePursueItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CourseToPursue.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CourseToPursue')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Other Course Details </mat-label>
-
-                            <input matInput name="otherCourse" formControlName="OtherCourse">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.OtherCourse.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'OtherCourse')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Stream Of Education </mat-label>
-
-                            <mat-select name="StreamOfEducation" formControlName="StreamOfEducation"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let streamOfEducationItem of streamOfEducationList"
-                                    [value]="streamOfEducationItem.Name">
-                                    {{streamOfEducationItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.StreamOfEducation.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'StreamOfEducation')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 12'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Are you willing to continue any skill training?</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WillingToContSkillTraining"
-                                formControlName="WillingToContSkillTraining" appearance="outline" fxFlex="100"
-                                fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                                [disabled]="PageRights.IsReadOnly"
-                                (change)="onChangeWillingToContSkillTraining($event.value)">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error
-                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillingToContSkillTraining.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WillingToContSkillTraining')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px" *ngIf="className == 'Class 12'">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.WillingToContSkillTraining.value == 'Yes'">
-                            <mat-label>Full time/Part Time (willingness)</mat-label>
-
-                            <mat-select name="SkillTrainingType" formControlName="SkillTrainingType"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
-                                    [value]="natureOfWorkItem.Id">
-                                    {{natureOfWorkItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.SkillTrainingType.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'SkillTrainingType')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.WillingToContSkillTraining.value == 'Yes'">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Course Name/ Scheme</mat-label>
-
-                            <input matInput name="CourseForTraining" formControlName="CourseForTraining">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CourseForTraining.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CourseForTraining')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.WillingToContSkillTraining.value == 'Yes'">
-                            <mat-label>Sector/Trade</mat-label>
-
-                            <mat-select name="SectorForTraining" formControlName="SectorForTraining"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeSectorForTraining($event.value)">
-                                <mat-option *ngFor="let sectorOfEmployementItem of sectorOfEmployementList"
-                                    [value]="sectorOfEmployementItem.Name">
-                                    {{sectorOfEmployementItem.Name}}
-                                </mat-option>
-                                <mat-option value="Other">Other</mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.SectorForTraining.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'SectorForTraining')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.SectorForTraining.value == 'Other'">
-                            <mat-label>Other if any </mat-label>
-
-                            <input matInput name="OtherSectorsIfAny" formControlName="OtherSectorsIfAny">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.OtherSectorsIfAny.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'OtherSectorsIfAny')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="className == 'Class 12'">
-                            <mat-label>Are you interested in Job or Self Employment after 12th?</mat-label>
-
-                            <mat-select name="InterestedInJobOrSelfEmployment"
-                                (selectionChange)="onChangeInterestedInJobOrSE($event.value)"
-                                formControlName="InterestedInJobOrSelfEmployment" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let Item of InterestedInJob" [value]="Item.value">
-                                    {{Item.key}}</mat-option>
-                            </mat-select>
-
-                            <mat-error
-                                *ngIf="vtStudentExitSurveyDetailForm.controls.InterestedInJobOrSelfEmployment.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'InterestedInJobOrSelfEmployment')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.InterestedInJobOrSelfEmployment.value == 'Yes'">
-                            <mat-label>What are you interested in?</mat-label>
-
-                            <mat-select name="TopicsOfInterest" multiple formControlName="TopicsOfInterest"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let topicsOfJobInterestItem of topicsOfJobInterestList"
-                                    [value]="topicsOfJobInterestItem.Name">
-                                    {{topicsOfJobInterestItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.TopicsOfInterest.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'TopicsOfInterest')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.InterestedInJobOrSelfEmployment.value == 'Yes'">
-                            <mat-label>Employment is Full Time or Part Time?</mat-label>
-
-                            <mat-select name="IsFullTime" formControlName="IsFullTime" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
-                                    [value]="natureOfWorkItem.Id">
-                                    {{natureOfWorkItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.IsFullTime.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'IsFullTime')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                            *ngIf="vtStudentExitSurveyDetailForm.controls.InterestedInJobOrSelfEmployment.value == 'Yes'">
-                            <mat-label>Sector Of Employement</mat-label>
-
-                            <mat-select name="SectorsOfEmployment" formControlName="SectorsOfEmployment"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let sectorOfEmployementItem of sectorOfEmployementList"
-                                    [value]="sectorOfEmployementItem.Name">
-                                    {{sectorOfEmployementItem.Name}}
-                                </mat-option>
-                                <mat-option value="Other">Other</mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.SectorsOfEmployment.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'SectorsOfEmployment')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.InterestedInJobOrSelfEmployment.value == 'Yes'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Tools & Equipment Receiving Status</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="IsRelevantToVocCourse" formControlName="IsRelevantToVocCourse"
-                                appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
-                                class="radio-space-tc" [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.IsRelevantToVocCourse.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'IsRelevantToVocCourse')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Do you want to pursue any skill training? (ITI, PMKVY, Private Training)
-                            </mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WantToPursueAnySkillTraining"
-                                formControlName="WantToPursueAnySkillTraining" appearance="outline" fxFlex="100"
-                                fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                                [disabled]="PageRights.IsReadOnly"
-                                (change)="WantToPursueAnySkillTraining($event.value)">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.WantToPursueAnySkillTraining.value == 'Yes'">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Full time/Part Time (willingness)</mat-label>
-
-                            <mat-select name="TrainingType" formControlName="TrainingType" appearance="outline"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
-                                    [value]="natureOfWorkItem.Id">
-                                    {{natureOfWorkItem.Name}}
-                                </mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.TrainingType.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'TrainingType')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Select Sectors in which you are interested?</mat-label>
-
-                            <mat-select name="SectorForSkillTraining" formControlName="SectorForSkillTraining"
-                                appearance="outline" [disabled]="PageRights.IsReadOnly"
-                                (selectionChange)="onChangeSectorForSkillTraining($event.value)">
-                                <mat-option *ngFor="let sectorOfEmployementItem of sectorOfEmployementList"
-                                    [value]="sectorOfEmployementItem.Name">
-                                    {{sectorOfEmployementItem.Name}}
-                                </mat-option>
-                                <mat-option value="Other">Other</mat-option>
-                            </mat-select>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.SectorForSkillTraining.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'SectorForSkillTraining')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        *ngIf="vtStudentExitSurveyDetailForm.controls.SectorForSkillTraining.value == 'Other'">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>If other reasons, please mention </mat-label>
-
-                            <input matInput name="OthersIfAny" formControlName="OthersIfAny">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.OthersIfAny.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'OthersIfAny')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 12'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Are you willing to go for higher technical education?</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-radio-group name="WillingToGoForTechHighEdu"
-                                formControlName="WillingToGoForTechHighEdu" appearance="outline" fxFlex="100"
-                                fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                                [disabled]="PageRights.IsReadOnly" (change)="onChangeHigherStudies($event.value)">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.WillingToGoForTechHighEdu.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WillingToGoForTechHighEdu')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 12'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>There are different programs available for job and continued education together.
-                                For Example HCL-Tech Bee, Tech Mahindra.
-                                Will you be interested to know more about these opportunities?
-                            </mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WantToKnowAbtPgmsForJobsNContEdu"
-                                formControlName="WantToKnowAbtPgmsForJobsNContEdu" appearance="outline" fxFlex="100"
-                                fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error
-                                *ngIf="vtStudentExitSurveyDetailForm.controls.WantToKnowAbtPgmsForJobsNContEdu.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'WantToKnowAbtPgmsForJobsNContEdu')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" *ngIf="className == 'Class 10'">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Do you want to know about the opportunities in technical education,
-                                Apprenticeship, Self employment?
-                            </mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="WantToKnowAboutOpportunities"
-                                formControlName="WantToKnowAboutOpportunities" appearance="outline" fxFlex="100"
-                                fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                                [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error
-                                *ngIf="vtStudentExitSurveyDetailForm.controls.WantToKnowAboutOpportunities.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'WantToKnowAboutOpportunities')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-label>Can Lend A Hand India get in touch with you for such programs?
-                            </mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="CanLahiGetInTouch" formControlName="CanLahiGetInTouch"
-                                appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                                fxLayoutGap="20px" class="radio-space-tc" [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CanLahiGetInTouch.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CanLahiGetInTouch')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row">
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-                            <mat-label>Can Send The Updates?</mat-label>
-                        </div>
-
-                        <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio" fxLayoutGap="10px"
-                            fxLayoutGap.lt-md="0px">
-
-                            <mat-radio-group name="CanSendTheUpdates" formControlName="CanSendTheUpdates"
-                                appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
-                                fxLayoutGap="20px" class="radio-space-tc" [disabled]="PageRights.IsReadOnly">
-                                <mat-radio-button value="Yes">Yes</mat-radio-button>
-                                <mat-radio-button value="No">No</mat-radio-button>
-                            </mat-radio-group>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CanSendTheUpdates.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CanSendTheUpdates')}}
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>collect email id/confirm if already there</mat-label>
-
-                            <input matInput name="CollectedEmailId" formControlName="CollectedEmailId">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CollectedEmailId.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CollectedEmailId')}}
-                            </mat-error>
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
-                            <mat-label>Survey completed by Student/Parent</mat-label>
-
-                            <input matInput name="SurveyCompletedByStudentORParent"
-                                formControlName="SurveyCompletedByStudentORParent">
-
-                            <mat-error
-                                *ngIf="vtStudentExitSurveyDetailForm.controls.SurveyCompletedByStudentORParent.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm,
-                                'SurveyCompletedByStudentORParent')}}
-                            </mat-error>
-                        </mat-form-field>
 
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Student Mobile Number</mat-label>
+                                    <input matInput name="StudentMobileNo" formControlName="StudentMobileNo" required
+                                        digitOnly minlength="10" maxlength="10">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Student WhatsApp Number</mat-label>
+                                    <input matInput name="StudentWhatsAppNo" formControlName="StudentWhatsAppNo"
+                                        digitOnly minlength="10" maxlength="10">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Parent Mobile Number Available</mat-label>
+                                    <input matInput name="ParentMobileNo" formControlName="ParentMobileNo" required
+                                        digitOnly minlength="10" maxlength="10">
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
+
+                        <!-- Residential Information -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Residential Information</legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Enter Village/City/Town of Residence</mat-label>
+                                    <input matInput name="CityOfResidence" formControlName="CityOfResidence"
+                                        [disabled]="PageRights.IsReadOnly" required (change)="getStudentAddress()">
+
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CityOfResidence.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CityOfResidence')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="34" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <mat-label>District Of Residence</mat-label>
+                                    <mat-select name="districtOfResidence" formControlName="DistrictOfResidence"
+                                        required appearance="outline" [disabled]="PageRights.IsReadOnly">
+                                        <mat-option *ngFor="let districtItem of districtList"
+                                            [value]="districtItem.Name">
+                                            {{districtItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+
+                                    <mat-error
+                                        *ngIf="vtStudentExitSurveyDetailForm.controls.DistrictOfResidence.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'DistrictOfResidence')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <mat-label>Block Of Residence</mat-label>
+                                    <input matInput name="BlockOfResidence" formControlName="BlockOfResidence"
+                                        [disabled]="PageRights.IsReadOnly" required (change)="getStudentAddress()">
+
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.BlockOfResidence.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'BlockOfResidence')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Pincode</mat-label>
+                                    <input matInput name="pinCode" formControlName="PinCode"
+                                        [disabled]="PageRights.IsReadOnly" digitOnly minlength="6" maxlength="6"
+                                        (change)="getStudentAddress()">
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="65" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                    <mat-label>Student Address</mat-label>
+                                    <input matInput name="StudentAddress" formControlName="StudentAddress">
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.StudentAddress.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'StudentAddress')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
+
+                        <!-- Education post 10th -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Education post {{className == 'Class 10'?10:12}}th</legend>
+
+                            <!-- Class 12 Questions -->
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
+                                *ngIf="className == 'Class 12'">
+                                <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio"
+                                    fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                                    <mat-label>Did you do internship during your class 11th / 12th?</mat-label>
+                                </div>
+
+                                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                    fxLayoutGap.lt-md="0px">
+
+                                    <mat-radio-group fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                        fxLayoutGap="20px" appearance="outline" class="radio-space-tc"
+                                        name="DoneInternship" formControlName="DoneInternship"
+                                        [disabled]="PageRights.IsReadOnly" [required]="className == 'Class 12'"
+                                        (change)="onChangeDoneInternship($event.value)">
+                                        <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                        <mat-radio-button value="No">No</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+
+                            <!-- Class 12 Questions -->
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
+                                *ngIf="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.DoneInternship.value == 'Yes'">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Select the Sector you completed the Internship in</mat-label>
+
+                                    <mat-select name="InternshipCompletedSector"
+                                        formControlName="InternshipCompletedSector" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        [required]="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.DoneInternship.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.InternshipCompletedSector)}">
+                                        <mat-option [value]="sectorItem.Name" *ngFor="let sectorItem of sectorList">
+                                            {{ sectorItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+
+                                <mat-label>
+                                    Do you want to continue your education post {{className == 'Class 10'?10:12}}th?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WillContHigherStudies"
+                                    formControlName="WillContHigherStudies" [disabled]="PageRights.IsReadOnly" required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillContHigherStudies)}"
+                                    (change)="onChangeWillContHigherStudies($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'">
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Whether Full Time/Part Time?</mat-label>
+
+                                    <mat-select name="IsFullTime" formControlName="IsFullTime" appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.IsFullTime)}">
+                                        <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
+                                            [value]="natureOfWorkItem.Name">
+                                            {{natureOfWorkItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Name of the course to be pursued </mat-label>
+
+                                    <mat-select name="CourseToPursue" formControlName="CourseToPursue"
+                                        appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.CourseToPursue)}"
+                                        (selectionChange)="onChangeCourseToPursue($event.value)">
+                                        <mat-option *ngFor="let courseToBePursueItem of courseToBePursueList"
+                                            [value]="courseToBePursueItem.Name">
+                                            {{courseToBePursueItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Other'">
+                                    <mat-label>Other Course Details </mat-label>
+
+                                    <input matInput name="otherCourse" formControlName="OtherCourse"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Other'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.OtherCourse)}">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="(className == 'Class 10' && vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Continue in class 11' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes') || (className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes')">
+                                <mat-label>Name of the Stream willing to study </mat-label>
+
+                                <mat-radio-group fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="StreamOfEducation"
+                                    formControlName="StreamOfEducation" [disabled]="PageRights.IsReadOnly"
+                                    [required]="(className == 'Class 10' && vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Continue in class 11' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes') || (className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes')"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.StreamOfEducation)}">
+                                    <mat-radio-button *ngIf="className == 'Class 10'" value="Science">Science
+                                    </mat-radio-button>
+                                    <mat-radio-button *ngIf="className == 'Class 10'" value="Commerce">Commerce
+                                    </mat-radio-button>
+                                    <mat-radio-button *ngIf="className == 'Class 12'" value="Science">Engineering
+                                    </mat-radio-button>
+                                    <mat-radio-button *ngIf="className == 'Class 12'" value="Commerce">Medical
+                                    </mat-radio-button>
+                                    <mat-radio-button value="Arts & Humanities">Arts & Humanities</mat-radio-button>
+                                    <mat-radio-button value="Undecided">Undecided</mat-radio-button>
+                                    <mat-radio-button value="Other">Other</mat-radio-button>
+                                </mat-radio-group>
+
+                                <mat-form-field appearance="outline" fxFlex="15" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtStudentExitSurveyDetailForm.controls.StreamOfEducation.value == 'Other'">
+                                    <mat-label>Other Stream Studying</mat-label>
+
+                                    <input matInput name="otherStreamStudying" formControlName="OtherStreamStudying"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.OtherStreamStudying)}"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.StreamOfEducation.value == 'Other'">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'">
+                                <mat-label>Does the Field of Studies contain Vocational Subjects? </mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WillContVocEdu"
+                                    formControlName="WillContVocEdu" [disabled]="PageRights.IsReadOnly"
+                                    [required]="vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes'"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillContVocEdu)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="(className == 'Class 10' && vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Continue in class 11') || (className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes')">
+                                <mat-label *ngIf="className == 'Class 10'">Will you continue Vocational Education in
+                                    class 11th? </mat-label>
+                                <mat-label *ngIf="className == 'Class 12'">Will you continue Vocational Education?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WillContVocational11"
+                                    formControlName="WillContVocational11" [disabled]="PageRights.IsReadOnly"
+                                    [required]="(className == 'Class 10' && vtStudentExitSurveyDetailForm.controls.CourseToPursue.value == 'Continue in class 11') || (className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.WillContHigherStudies.value == 'Yes')"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillContVocational11)}"
+                                    (change)="onChangeWillContVocational11($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                    <mat-radio-button value="Undecided">Undecided</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'No'">
+                                <div fxLayout="row" fxLayout.lt-md="column" class="input-row mat-radio"
+                                    fxLayoutGap="10px" fxLayoutGap.lt-md="0px">
+                                    <mat-label class="mr-24">Reason for Not continuing Vocational Education?</mat-label>
+                                </div>
+                                <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                    <mat-label>Reason for Not continuing Vocational Education? </mat-label>
+
+                                    <input matInput [disabled]="PageRights.IsReadOnly" name="ReasonsNOTToContinue"
+                                        formControlName="ReasonsNOTToContinue"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'No'">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'Yes'">
+                                <mat-label>Will you continue in the same sector?</mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WillContSameSector"
+                                    formControlName="WillContSameSector" [disabled]="PageRights.IsReadOnly"
+                                    [required]="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'Yes'"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillContSameSector)}"
+                                    (change)="onChangeWillContSameSector($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'Yes' && vtStudentExitSurveyDetailForm.controls.WillContSameSector.value == 'No'">
+
+                                <mat-form-field appearance="outline" fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>If No, then which Sector /Trade</mat-label>
+
+                                    <mat-select fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                        appearance="outline" name="SectorForTraining"
+                                        formControlName="SectorForTraining" [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.WillContVocational11.value == 'Yes' && vtStudentExitSurveyDetailForm.controls.WillContSameSector.value == 'No'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.SectorForTraining)}"
+                                        (selectionChange)="onChangeSectorForTraining($event.value)">
+                                        <mat-option *ngFor="let sectorOfEmployementItem of sectorOfEmployementList"
+                                            [value]="sectorOfEmployementItem.Name">
+                                            {{sectorOfEmployementItem.Name}}
+                                        </mat-option>
+                                        <mat-option value="Other">Other</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtStudentExitSurveyDetailForm.controls.SectorForTraining.value == 'Other'">
+                                    <mat-label>Other Sector</mat-label>
+
+                                    <input matInput name="otherSector" formControlName="OtherSector"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.SectorForTraining.value == 'Other'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.OtherSector)}">
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
+
+                        <!-- Employment Details -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Employment Details</legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label>Are you Currently Employed? </mat-label>
+
+                                <mat-radio-group fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="CurrentlyEmployed"
+                                    formControlName="CurrentlyEmployed" [disabled]="PageRights.IsReadOnly" required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed)}"
+                                    (change)="onChangeCurrentlyEmployed($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'">
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="100" fxFlex.lt-sm="100">
+                                    <mat-label>Details Of Employment (Title of the work)</mat-label>
+
+                                    <input matInput name="WorkTitle" formControlName="WorkTitle"
+                                        [readonly]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WorkTitle)}">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'">
+                                <mat-label>Types of Employment </mat-label>
+
+                                <mat-radio-group fxFlex="60" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="DetailsOfEmployment"
+                                    formControlName="DetailsOfEmployment" [disabled]="PageRights.IsReadOnly"
+                                    [required]="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.DetailsOfEmployment)}">
+                                    <mat-radio-button value="Wage Employment">Wage Employment</mat-radio-button>
+                                    <mat-radio-button value="Salaried">Salaried</mat-radio-button>
+                                    <mat-radio-button value="Self Employed">Self Employed</mat-radio-button>
+                                    <mat-radio-button value="Business">Business</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    class="mr-24">
+                                    <mat-label>Whether Full Time/Part Time?</mat-label>
+
+                                    <mat-select name="WillBeFullTime" formControlName="WillBeFullTime"
+                                        appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillBeFullTime)}">
+                                        <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
+                                            [value]="natureOfWorkItem.Name">
+                                            {{natureOfWorkItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                                    *ngIf="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'">
+                                    <mat-label> Sector of Employment</mat-label>
+
+                                    <mat-select formControlName="SectorsOfEmployment" required appearance="outline"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.SectorsOfEmployment)}">
+                                        <mat-option [value]="sectorItem.Name" *ngFor="let sectorItem of sectorList">
+                                            {{ sectorItem.Name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'">
+                                <mat-label>Is your employment relevant to Vocational Skill Course that you completed?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="IsVSCompleted"
+                                    formControlName="IsVSCompleted" [disabled]="PageRights.IsReadOnly"
+                                    [required]="vtStudentExitSurveyDetailForm.controls.CurrentlyEmployed.value == 'Yes'"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.IsVSCompleted)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </fieldset>
+
+                        <!-- Support -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Support</legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label>Do you want to pursue any skill training (ITI, PMKVY, Private Training)?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WantToPursueAnySkillTraining"
+                                    formControlName="WantToPursueAnySkillTraining" [disabled]="PageRights.IsReadOnly"
+                                    required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WantToPursueAnySkillTraining)}"
+                                    (change)="onChangeWantToPursueAnySkillTraining($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                    <mat-radio-button value="Undecided">Undecided</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.WantToPursueAnySkillTraining.value == 'Yes'">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Full time/Part Time (willingness)</mat-label>
+
+                                    <mat-select name="IsFulltimeWillingness" formControlName="IsFulltimeWillingness"
+                                        appearance="outline" [disabled]="PageRights.IsReadOnly"
+                                        [required]="vtStudentExitSurveyDetailForm.controls.WantToPursueAnySkillTraining.value == 'Yes'"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.IsFulltimeWillingness)}">
+                                        <mat-option *ngFor="let natureOfWorkItem of natureOfWorkList"
+                                            [value]="natureOfWorkItem.Name">
+                                            {{natureOfWorkItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label>Have you registered on Employment Portal?</mat-label>
+
+                                <mat-radio-group fxFlex="60" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="HveRegisteredOnEmploymentPortal"
+                                    formControlName="HveRegisteredOnEmploymentPortal" [disabled]="PageRights.IsReadOnly"
+                                    required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.HveRegisteredOnEmploymentPortal)}"
+                                    (change)="onChangeHveRegisteredOnEmploymentPortal($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="vtStudentExitSurveyDetailForm.controls.HveRegisteredOnEmploymentPortal.value == 'Yes'">
+                                <mat-label>Employment Portal</mat-label>
+
+                                <mat-radio-group fxFlex="60" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="employmentPortalName"
+                                    formControlName="EmploymentPortalName" [disabled]="PageRights.IsReadOnly"
+                                    [required]="vtStudentExitSurveyDetailForm.controls.HveRegisteredOnEmploymentPortal.value == 'Yes'"
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.HveRegisteredOnEmploymentPortal)}">
+                                    <mat-radio-button value="National employment portal">
+                                        <a target="_blank"
+                                            href="https://www.ncs.gov.in/_layouts/15/NCSP/Registration.aspx">National
+                                            employment portal</a>
+                                    </mat-radio-button>
+                                    <mat-radio-button value="State emploment portal">
+                                        State emploment portal
+                                    </mat-radio-button>
+                                    <mat-radio-button value="Any other portal">Any other portal</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label> Willng to get registed on NAPS Portal
+                                    <a target="_blank"
+                                        href="https://www.apprenticeshipindia.gov.in/candidate-registration">
+                                        NAPS : National Apprenticeship Promotion Scheme
+                                    </a>?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WillingToGetRegisteredOnNAPS"
+                                    formControlName="WillingToGetRegisteredOnNAPS" [disabled]="PageRights.IsReadOnly"
+                                    required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WillingToGetRegisteredOnNAPS)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px" *ngIf="className == 'Class 12'">
+                                <mat-label>Are you interested in Job or Self Employment post 12th?</mat-label>
+
+                                <mat-radio-group fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc"
+                                    name="IntrestedInJobOrSelfEmploymentPost12th"
+                                    formControlName="IntrestedInJobOrSelfEmploymentPost12th"
+                                    [disabled]="PageRights.IsReadOnly" required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.IntrestedInJobOrSelfEmploymentPost12th)}"
+                                    (change)="onChangeIntrestedInJobOrSelfEmploymentPost12th($event.value)">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px"
+                                *ngIf="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.IntrestedInJobOrSelfEmploymentPost12th.value == 'Yes'">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Any Prefered Location </mat-label>
+                                    <mat-select name="PreferredLocations" formControlName="PreferredLocations"
+                                        appearance="outline"
+                                        [required]="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.IntrestedInJobOrSelfEmploymentPost12th.value == 'Yes'"
+                                        [disabled]="PageRights.IsReadOnly"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.PreferredLocations)}">
+                                        <mat-option *ngFor="let locationItem of preferredLocationForEmploymentList"
+                                            [value]="locationItem.Name">
+                                            {{locationItem.Name}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="100" fxFlex.lt-sm="100"
+                                    *ngIf="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.PreferredLocations.value == 'Particular Location'">
+                                    <mat-label>Mention Particular Location</mat-label>
+
+                                    <input matInput name="ParticularLocation" formControlName="ParticularLocation"
+                                        [required]="className == 'Class 12' && vtStudentExitSurveyDetailForm.controls.PreferredLocations.value == 'Particular Location'"
+                                        [readonly]="PageRights.IsReadOnly">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label>
+                                    Do you want to know about the opportunities in skill education/ higher
+                                    technical education, Apprenticeship, and Self-employment?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WantToKnowAboutOpportunities"
+                                    formControlName="WantToKnowAboutOpportunities" [disabled]="PageRights.IsReadOnly"
+                                    required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WantToKnowAboutOpportunities)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-label>
+                                    Can Vocational Trainer/ Vocational Training Provider/ Lend A Hand India or
+                                    Department of Education get in touch with you through WhatsApp/call/sms for more
+                                    information and opportunities on programs for education, employment or skilling?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="CanLahiGetInTouch"
+                                    formControlName="CanLahiGetInTouch" [disabled]="PageRights.IsReadOnly" required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.CanLahiGetInTouch)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px" *ngIf="className == 'Class 12'">
+                                <mat-label>There are different programs available for job and continued education
+                                    together. For Example HCL-Tech Bee, Tech Mahindra Will you be interested to know
+                                    more about these opportunities?
+                                </mat-label>
+
+                                <mat-radio-group fxFlex="10" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                    appearance="outline" class="radio-space-tc" name="WantToKnowAbtPgmsForJobsNContEdu"
+                                    formControlName="WantToKnowAbtPgmsForJobsNContEdu"
+                                    [disabled]="PageRights.IsReadOnly" required
+                                    [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.WantToKnowAbtPgmsForJobsNContEdu)}">
+                                    <mat-radio-button value="Yes">Yes</mat-radio-button>
+                                    <mat-radio-button value="No">No</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </fieldset>
+
+                        <!-- Status & Remarks -->
+                        <fieldset class="fieldset-container mt-24">
+                            <legend>Status & Remarks</legend>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="50" fxFlex.lt-sm="100">
+                                    <mat-label>Collect email id/confirm if already there</mat-label>
+
+                                    <input matInput name="CollectedEmailId" formControlName="CollectedEmailId">
+
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.CollectedEmailId.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'CollectedEmailId')}}
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-row"
+                                    fxLayoutGap="10px" fxLayoutGap.lt-md="0px" fxFlex="70" fxFlex.lt-md="75"
+                                    fxFlex.lt-sm="100">
+                                    <mat-label>Survey completed by Student/Parent</mat-label>
+
+                                    <mat-radio-group fxFlex="40" fxFlex.lt-md="75" fxFlex.lt-sm="100" fxLayoutGap="20px"
+                                        class="radio-space-tc" name="SurveyCompletedByStudentORParent"
+                                        formControlName="SurveyCompletedByStudentORParent"
+                                        [disabled]="PageRights.IsReadOnly" required
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.SurveyCompletedByStudentORParent)}">
+                                        <mat-radio-button value="Student">Student</mat-radio-button>
+                                        <mat-radio-button value="Parent">Parent</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Date of Survey Completion / Last Status</mat-label>
+
+                                    <input matInput name="dateOfIntv" formControlName="DateOfIntv"
+                                        [matDatepicker]="date" required [disabled]="PageRights.IsReadOnly"
+                                        [max]="CurrentDate"
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.DateOfIntv)}">
+                                    <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+                                    <mat-datepicker #date></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                                fxLayoutGap.lt-md="0px">
+                                <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                                    <mat-label>Remark</mat-label>
+
+                                    <input matInput name="Remark" formControlName="Remark">
+
+                                    <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.Remark.invalid">
+                                        {{getErrorMessage(vtStudentExitSurveyDetailForm, 'Remark')}}
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </fieldset>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Date of Survey Completion / Last Status</mat-label>
-
-                            <input matInput name="dateOfIntv" formControlName="DateOfIntv" [matDatepicker]="date"
-                                required [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
-                            <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
-                            <mat-datepicker #date></mat-datepicker>
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.DateOfIntv.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'DateOfIntv')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-form-field appearance="outline" fxFlex="100" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Remark</mat-label>
-
-                            <input matInput name="Remark" formControlName="Remark">
-
-                            <mat-error *ngIf="vtStudentExitSurveyDetailForm.controls.Remark.invalid">
-                                {{getErrorMessage(vtStudentExitSurveyDetailForm, 'Remark')}}
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
                 </form>
 
             </div>

@@ -36,10 +36,10 @@
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
-            <button mat-raised-button [routerLink]="['/vt-student-details','new']" skipLocationChange="true" *ngIf="UserModel.RoleCode == 'VT'"
+            <!-- <button mat-raised-button [routerLink]="['/vt-student-details','new']" skipLocationChange="true" *ngIf="UserModel.RoleCode == 'VT'"
                 replaceUrl="false" class="add-vt-student-exit-survey-detail-button fuse-white mt-24 mt-md-0">
                 <span>ADD</span>
-            </button>
+            </button> -->
             <!-- / ADD BUTTON -->
 
         </div>
@@ -56,8 +56,7 @@
 
                         <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="outline"
                             (selectionChange)="onChangeAcademicYear($event.value)">
-                            <mat-option [value]="academicYearItem.Id"
-                                *ngFor="let academicYearItem of academicyearList">
+                            <mat-option [value]="academicYearItem.Id" *ngFor="let academicYearItem of academicyearList">
                                 {{ academicYearItem.Name }}
                             </mat-option>
                         </mat-select>
@@ -74,7 +73,8 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="34" fxFlex.lt-sm="100" *ngIf="isUploadStudentAllowed && UserModel.RoleCode == 'VT'">
+                    <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-md="34" fxFlex.lt-sm="100"
+                        *ngIf="isUploadStudentAllowed">
                         <mat-label>Upload Excel File</mat-label>
                         <ngx-mat-file-input name="UploadFile" formControlName="UploadFile" required
                             [accept]="AllowedExcelExtensions" (change)="uploadedFile($event)"
@@ -87,7 +87,6 @@
                     </mat-form-field>
                     <!-- (change)="uploadedFile($event)" -->
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="10" *ngIf="isUploadStudentAllowed">
-
                         <span class="material-icons action-btn" (click)="uploadExcelData()"
                             matTooltip="Upload bulk data" matTooltipPosition="above">cloud_upload</span>
                         <span class="material-icons action-btn" *ngIf="isAvailableUploadedExcel"
@@ -98,8 +97,9 @@
                 </div>
             </form>
 
-            <mat-table class="vt-student-exit-survey-detail-table responsive-table" #table [dataSource]="tableDataSource" matSort
-                fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
+            <mat-table class="vt-student-exit-survey-detail-table responsive-table" #table
+                [dataSource]="tableDataSource" matSort fusePerfectScrollbar
+                [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
@@ -112,10 +112,19 @@
 
                 <!-- StudentFullName Column -->
                 <ng-container matColumnDef="StudentFullName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Full Name
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Name
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtExitStudentDetail">
                         <p class="text-truncate">{{vtExitStudentDetail.StudentFullName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- FatherName Column -->
+                <ng-container matColumnDef="FatherName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Father Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtExitStudentDetail">
+                        <p class="text-truncate">{{vtExitStudentDetail.FatherName}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -160,28 +169,36 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- AssessmentConducted Column -->
+                <ng-container matColumnDef="AssessmentConducted">
+                    <mat-header-cell *matHeaderCellDef class="mat-header-center">Assessment Conducted </mat-header-cell>
+                    <mat-cell *matCellDef="let vtExitStudentDetail" class="text-center">
+                        <p class="text-truncate">{{vtExitStudentDetail.AssessmentConducted}}</p>
+                    </mat-cell>
+                </ng-container>
+
                 <ng-container matColumnDef="Actions">
-                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs>Actions</mat-header-cell>
-                    <mat-cell *matCellDef="let vtExitStudentDetail" fxShow.gt-xs>
-                        <button *ngIf="PageRights.IsView && vtExitStudentDetail.isExitSurveyFilled == 1" mat-icon-button
+                    <mat-header-cell *matHeaderCellDef fxShow.gt-xs class="mat-header-center">Actions</mat-header-cell>
+
+                    <mat-cell *matCellDef="let vtExitStudentDetail" fxShow.gt-xs class="text-center">
+                        <button *ngIf="PageRights.IsView && vtExitStudentDetail.IsExitSurveyFilled == 1" mat-icon-button
                             [routerLink]="['/vt-student-exit-survey-details', 'view', vtExitStudentDetail.ExitStudentId, vtExitStudentDetail.AcademicYear, vtExitStudentDetail.Class]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">visibility</mat-icon>
+                            <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit && vtExitStudentDetail.isExitSurveyFilled == 0 && UserModel.RoleCode == 'VT'" mat-icon-button
+                        <button
+                            *ngIf="PageRights.IsEdit && vtExitStudentDetail.IsExitSurveyFilled == 0 && UserModel.RoleCode == 'VT'"
+                            mat-icon-button
                             [routerLink]="['/vt-student-exit-survey-details', 'add', vtExitStudentDetail.ExitStudentId, vtExitStudentDetail.AcademicYear, vtExitStudentDetail.Class]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">assessment</mat-icon>
+                            <mat-icon class="data-assessment s-20">assessment</mat-icon>
                         </button>
-                        <button *ngIf="PageRights.IsEdit && vtExitStudentDetail.isExitSurveyFilled == 1 && UserModel.RoleCode == 'VT'" mat-icon-button
+                        <button
+                            *ngIf="PageRights.IsEdit && vtExitStudentDetail.IsExitSurveyFilled == 1 && UserModel.RoleCode == 'VT'"
+                            mat-icon-button
                             [routerLink]="['/vt-student-exit-survey-details', 'edit', vtExitStudentDetail.ExitStudentId, vtExitStudentDetail.AcademicYear, vtExitStudentDetail.Class]"
                             skipLocationChange="true" replaceUrl="false">
-                            <mat-icon color="primary">edit</mat-icon>
-                        </button>
-                        <button mat-icon-button color="warn"
-                            (click)="onDeleteVTStudentPlacementDetail(vtExitStudentDetail.ExitStudentId)"
-                            *ngIf="PageRights.IsDelete && UserModel.RoleCode == 'VT'">
-                            <mat-icon>delete_outline</mat-icon>
+                            <mat-icon class="data-edit s-20">edit</mat-icon>
                         </button>
                     </mat-cell>
                 </ng-container>

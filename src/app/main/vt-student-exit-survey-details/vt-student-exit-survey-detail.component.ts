@@ -133,18 +133,10 @@ export class VTStudentExitSurveyDetailComponent extends BaseListComponent<VTStud
       "ClassId": classId,
     };
 
-    let academicYear = this.elRef.nativeElement.querySelector('mat-select[name="academicYearId"]').innerText;
-    let className = this.elRef.nativeElement.querySelector('mat-select[name="classId"]').innerText;
-
-    this.isUploadStudentAllowed = (academicYear == "2021-2022" || academicYear == "2022-2023") ? false : true;;
-
     this.vtStudentExitSurveyDetailService.GetStudentsForExitForm(ReqObj).subscribe(response => {
-      this.displayedColumns = ['AcademicYear', 'StudentFullName', 'NameOfSchool', 'UdiseCode', 'Class', 'Sector', 'JobRole', 'Actions'];
-      this.tableDataSource.data = [];
-
+      this.displayedColumns = ['AcademicYear', 'StudentFullName', 'FatherName', 'NameOfSchool', 'UdiseCode', 'Class', 'Sector', 'JobRole', 'AssessmentConducted', 'Actions'];
 
       this.tableDataSource.data = response.Results;
-
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
       this.tableDataSource.filteredData = this.tableDataSource.data;
