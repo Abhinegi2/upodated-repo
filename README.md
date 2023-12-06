@@ -15,6 +15,8 @@ Lighthouse is a multi-layered architecture, with each layer responsible for a sp
 - **Backend:** The Lighthouse backend is a C# application built with ASP.NET. It is responsible for performing the Lighthouse audits and generating the results report.
 - **API Gateway:** The API Gateway is a layer that sits between the front end and the back end. It is responsible for routing requests and responses between the two layers.
 - **Database:** The Lighthouse database stores the Lighthouse results and other configuration data.
+- **API Docs:**  [Lighthouse Service API Docs](https://documenter.getpostman.com/view/31510190/2s9YeHaqnz).
+
 The Lighthouse architecture is designed to be scalable and extensible. The front end and back end can be scaled independently, and the API Gateway allows for new services to be easily added to the architecture.
 ![Architecture](https://github.com/LAHI-Lighthoue/lighthouse-base-service/assets/108608673/8d03d952-c4b5-469e-97e2-b10fe3396eed)
 Here you can check the New Lighthouse [Architecture](https://docs.google.com/presentation/d/1jgdvISTEu2sPxDKZ6jUHqmb5_ylz20RemXGXS9is2Fk/edit?usp=sharing) to get a better understanding.
