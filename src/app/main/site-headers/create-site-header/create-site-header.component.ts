@@ -22,7 +22,7 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
   siteHeaderModel: SiteHeaderModel;
 
   stakeholdersList = [
-    { label: 'PMU-Admin', code: 'PMU' },
+    { label: 'PMU-Admin', code: 'ADM' },
     { label: 'Vocational Coordinator', code: 'VC' },
     { label: 'Vocational Trainer', code: 'VT' },
     { label: 'Head Master', code: 'HM' },
