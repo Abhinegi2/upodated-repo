@@ -46,13 +46,15 @@ export class VTStudentExitSurveyDetailModel {
 
     // Education post 10th
     WillContHigherStudies: string;
+    PartTimeJobWithEducation: string;
     IsFullTime: string;
+    OtherIsFullTime:string;
     CourseToPursue: string;
     StreamOfEducation: string;
-    WillContVocEdu: string;
+    // WillContVocEdu: string;
     WillContVocational11: string;
-    ReasonsNOTToContinue: string;
-    WillContSameSector: string;
+    ReasonsNoTToContinue: string;
+   // WillContSameSector: string;
     SectorTrade: string;
     OtherSector: string;
 
@@ -61,13 +63,15 @@ export class VTStudentExitSurveyDetailModel {
     WorkTitle: string;
     DetailsOfEmployment: string;
     WillBeFullTime: string;
-    SectorsOfEmployment: string;
+    // SectorsOfEmployment: string;
     IsVSCompleted: string;
+    IsJobSelfEmployment:string;
+    PartTimeEdcationSelfEmployment:string;
 
     // Support
     WantToPursueAnySkillTraining: string;
-    IsFulltimeWillingness: string;
-    HveRegisteredOnEmploymentPortal: string;
+    // IsFulltimeWillingness: string;
+    // HveRegisteredOnEmploymentPortal: string;
     EmploymentPortalName: string;
     WillingToGetRegisteredOnNAPS: string;
     WantToKnowAboutOpportunities: string;
@@ -81,7 +85,7 @@ export class VTStudentExitSurveyDetailModel {
 
     // Class 12
     DoneInternship: string;
-    InternshipCompletedSector: string;
+    // InternshipCompletedSector: string;
     ContinueEductionPost12th: string;
     IntrestedInJobOrSelfEmploymentPost12th: string;
     PreferredLocations: string;
@@ -99,13 +103,13 @@ export class VTStudentExitSurveyDetailModel {
     SkillTrainingType: string;
     CourseForTraining: string;
     CourseNameIfOther: string;
-    SectorForTraining: string;
+    // SectorForTraining: string;
     OtherSectorsIfAny: string;
     SectorForSkillTraining: string;
     OthersIfAny: string;
     WillingToGoForTechHighEdu: string;
     WantToKnowAbtSkillsUnivByGvt: string;
-    WantToKnowAbtPgmsForJobsNContEdu: string;
+    // WantToKnowAbtPgmsForJobsNContEdu: string;
     InterestedInJobOrSelfEmployment: number;
     TopicsOfInterest: any;
     CanSendTheUpdates: number;
@@ -159,14 +163,16 @@ export class VTStudentExitSurveyDetailModel {
 
         // Education post 10th
         this.WillContHigherStudies = vtStudentExitSurveyDetailItem.WillContHigherStudies || null;
+        this.PartTimeJobWithEducation =  vtStudentExitSurveyDetailItem.PartTimeJobWithEducation || null;
         this.IsFullTime = vtStudentExitSurveyDetailItem.IsFullTime || null;
+        this.OtherIsFullTime =vtStudentExitSurveyDetailItem.OtherIsFullTime || null;
         this.CourseToPursue = vtStudentExitSurveyDetailItem.CourseToPursue || null;
         this.StreamOfEducation = vtStudentExitSurveyDetailItem.StreamOfEducation || null;
-        this.WillContVocEdu = vtStudentExitSurveyDetailItem.WillContVocEdu || null;
+        // this.WillContVocEdu = vtStudentExitSurveyDetailItem.WillContVocEdu || null;
         this.WillContVocational11 = vtStudentExitSurveyDetailItem.WillContVocational11 || null;
-        this.ReasonsNOTToContinue = vtStudentExitSurveyDetailItem.ReasonsNOTToContinue || null;
-        this.WillContSameSector = vtStudentExitSurveyDetailItem.WillContSameSector || null;
-        this.SectorForTraining = vtStudentExitSurveyDetailItem.SectorForTraining || null;
+        this.ReasonsNoTToContinue = vtStudentExitSurveyDetailItem.ReasonsNoTToContinue || null;
+      //  this.WillContSameSector = vtStudentExitSurveyDetailItem.WillContSameSector || null;
+        // this.SectorForTraining = vtStudentExitSurveyDetailItem.SectorForTraining || null;
         this.OtherSector = vtStudentExitSurveyDetailItem.OtherSector || null;
 
         // Employment Details
@@ -174,18 +180,20 @@ export class VTStudentExitSurveyDetailModel {
         this.WorkTitle = vtStudentExitSurveyDetailItem.WorkTitle || null;
         this.DetailsOfEmployment = vtStudentExitSurveyDetailItem.DetailsOfEmployment || null;
         this.WillBeFullTime = vtStudentExitSurveyDetailItem.WillBeFullTime || null;
-        this.SectorsOfEmployment = vtStudentExitSurveyDetailItem.SectorsOfEmployment || null;
+        // this.SectorsOfEmployment = vtStudentExitSurveyDetailItem.SectorsOfEmployment || null;
         this.IsVSCompleted = vtStudentExitSurveyDetailItem.IsVSCompleted || null;
+        this.IsJobSelfEmployment = vtStudentExitSurveyDetailItem.IsJobSelfEmployment || null;
+        this.PartTimeEdcationSelfEmployment = vtStudentExitSurveyDetailItem.PartTimeEdcationSelfEmployment || null;
 
         // Support
         this.WantToPursueAnySkillTraining = vtStudentExitSurveyDetailItem.WantToPursueAnySkillTraining || null;
-        this.IsFulltimeWillingness = vtStudentExitSurveyDetailItem.IsFulltimeWillingness || null;
-        this.HveRegisteredOnEmploymentPortal = vtStudentExitSurveyDetailItem.HveRegisteredOnEmploymentPortal || null;
+        // this.IsFulltimeWillingness = vtStudentExitSurveyDetailItem.IsFulltimeWillingness || null;
+        // this.HveRegisteredOnEmploymentPortal = vtStudentExitSurveyDetailItem.HveRegisteredOnEmploymentPortal || null;
         this.EmploymentPortalName = vtStudentExitSurveyDetailItem.EmploymentPortalName || null;
         this.WillingToGetRegisteredOnNAPS = vtStudentExitSurveyDetailItem.WillingToGetRegisteredOnNAPS || null;
         this.WantToKnowAboutOpportunities = vtStudentExitSurveyDetailItem.WantToKnowAboutOpportunities || null;
         this.CanLahiGetInTouch = vtStudentExitSurveyDetailItem.CanLahiGetInTouch || null;
-        this.WantToKnowAbtPgmsForJobsNContEdu = vtStudentExitSurveyDetailItem.WantToKnowAbtPgmsForJobsNContEdu || null;
+        // this.WantToKnowAbtPgmsForJobsNContEdu = vtStudentExitSurveyDetailItem.WantToKnowAbtPgmsForJobsNContEdu || null;
 
         // Status & Remarks
         this.CollectedEmailId = vtStudentExitSurveyDetailItem.CollectedEmailId || null;
@@ -195,7 +203,7 @@ export class VTStudentExitSurveyDetailModel {
 
         // Class 12 
         this.DoneInternship = vtStudentExitSurveyDetailItem.DoneInternship || null;
-        this.InternshipCompletedSector = vtStudentExitSurveyDetailItem.InternshipCompletedSector || null;
+        // this.InternshipCompletedSector = vtStudentExitSurveyDetailItem.InternshipCompletedSector || null;
         this.ContinueEductionPost12th = vtStudentExitSurveyDetailItem.ContinueEductionPost12th || null;
         this.IntrestedInJobOrSelfEmploymentPost12th = vtStudentExitSurveyDetailItem.IntrestedInJobOrSelfEmploymentPost12th || null;
         this.PreferredLocations = vtStudentExitSurveyDetailItem.PreferredLocations || null;
