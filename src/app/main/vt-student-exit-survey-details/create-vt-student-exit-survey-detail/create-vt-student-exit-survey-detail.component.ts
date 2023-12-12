@@ -31,6 +31,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
   natureOfWorkList: any;
   sectorOfEmployementList: any;
   courseToBePursueList: any;
+  NotContinuingEducation: any;
   streamOfEducationList: any;
   topicsOfJobInterestList: any;
   preferredLocationForEmploymentList: any;
@@ -130,11 +131,15 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
                 this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'CourseToBePursueFor12th', SelectTitle: 'The Course' }).subscribe((response: any) => {
                   this.courseToBePursueList = response.Results;
                 });
-
+                
                 this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'StreamOfEducationFor12th', SelectTitle: 'Stream Of Education' }).subscribe((response: any) => {
                   this.streamOfEducationList = response.Results;
                 });
               }
+
+              this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NotContinuingEducation', SelectTitle: 'Stream Of Education' }).subscribe((response: any) => {
+                this.NotContinuingEducation = response.Results;
+              });
 
               this.PageRights.IsReadOnly = (this.PageRights.ActionType == this.Constants.Actions.View);
               this.vtStudentExitSurveyDetailForm = this.createVTStudentExitSurveyDetailForm();
@@ -201,15 +206,15 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
 
   onChangeWillContHigherStudies(selectedValue: string) {
     if (selectedValue == 'No') {
-      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['IsFullTime', 'CourseToPursue', 'WillContVocEdu', 'StreamOfEducation', 'OtherStreamStudying', 'WillContVocational11', 'WillContSameSector', 'SectorForTraining', 'OtherSector', 'ReasonsNOTToContinue']);
+      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['IsFullTime','OtherIsFullTime', 'CourseToPursue', /*'WillContVocEdu',*/ 'StreamOfEducation', 'OtherStreamStudying', 'WillContVocational11', 'WillContSameSector',/* 'SectorForTraining',*/ 'OtherSector', 'PartTimeJobWithEducation','ReasonsNoTToContinue']);
     }
   }
 
-  onChangeDoneInternship(selectedValue: string) {
-    if (selectedValue == 'No') {
-      this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['InternshipCompletedSector']);
-    }
-  }
+  // onChangeDoneInternship(selectedValue: string) {
+  //   if (selectedValue == 'No') {
+  //     this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['InternshipCompletedSector']);
+  //   }
+  // }
 
   onChangeCourseToPursue(selectedValue: string) {
     if (selectedValue != 'Other') {
@@ -217,21 +222,21 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
     }
 
     if ((this.className == 'Class 10' && this.vtStudentExitSurveyDetailForm.controls['CourseToPursue'].value != 'Continue in class 11')) {
-      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['StreamOfEducation', 'OtherStreamStudying', 'WillContVocational11', 'WillContSameSector', 'SectorForTraining', 'OtherSector', 'ReasonsNOTToContinue']);
+      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['StreamOfEducation', 'OtherStreamStudying', 'WillContVocational11', 'WillContSameSector',/* 'SectorForTraining',*/ 'OtherSector', 'ReasonsNoTToContinue']);
     }
   }
 
   onChangeWillContVocational11(selectedValue: string) {
     if (selectedValue == 'No') {
-      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['WillContSameSector', 'SectorForTraining', 'ReasonsNOTToContinue']);
+      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['WillContSameSector', /*'SectorForTraining',*/ 'ReasonsNoTToContinue']);
     }
   }
 
-  onChangeWillContSameSector(selectedValue: string) {
-    if (selectedValue == 'Yes') {
-      this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['SectorForTraining']);
-    }
-  }
+  // onChangeWillContSameSector(selectedValue: string) {
+  //   if (selectedValue == 'Yes') {
+  //     this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['SectorForTraining']);
+  //   }
+  // }
 
   onChangeSectorForTraining(selectedValue: string) {
     if (selectedValue != 'Other') {
@@ -241,7 +246,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
 
   onChangeCurrentlyEmployed(selectedValue: string) {
     if (selectedValue == 'No') {
-      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['WorkTitle', 'DetailsOfEmployment', 'WillBeFullTime', 'SectorsOfEmployment', 'IsVSCompleted']);
+      this.setFormControlInitialState(this.vtStudentExitSurveyDetailForm, ['WorkTitle', 'DetailsOfEmployment', 'WillBeFullTime',/* 'SectorsOfEmployment',*/ 'IsVSCompleted','IsJobSelfEmployment','PartTimeEdcationSelfEmployment']);
     }
   }
 
@@ -251,11 +256,11 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
     }
   }
 
-  onChangeHveRegisteredOnEmploymentPortal(selectedValue: string) {
-    if (selectedValue == 'No') {
-      this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['EmploymentPortalName']);
-    }
-  }
+  // onChangeHveRegisteredOnEmploymentPortal(selectedValue: string) {
+  //   if (selectedValue == 'No') {
+  //     this.clearFormControlAsInitialState(this.vtStudentExitSurveyDetailForm.controls['EmploymentPortalName']);
+  //   }
+  // }
 
   onChangeIntrestedInJobOrSelfEmploymentPost12th(selectedValue: string) {
     if (selectedValue == 'No') {
@@ -343,22 +348,24 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
       ParentMobileNo: new FormControl({ value: this.vtStudentExitSurveyDetailModel.ParentMobileNo, disabled: true }, [Validators.pattern(this.Constants.Regex.Number)]),
 
       // Residential Information
-      CityOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.CityOfResidence, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      DistrictOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.DistrictOfResidence, disabled: this.PageRights.IsReadOnly }, Validators.required),
-      BlockOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.BlockOfResidence, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      CityOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.CityOfResidence, disabled: this.PageRights.IsReadOnly }),
+      DistrictOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.DistrictOfResidence, disabled: this.PageRights.IsReadOnly },Validators.required),
+      BlockOfResidence: new FormControl({ value: this.vtStudentExitSurveyDetailModel.BlockOfResidence, disabled: this.PageRights.IsReadOnly }),
       PinCode: new FormControl({ value: this.vtStudentExitSurveyDetailModel.PinCode, disabled: this.PageRights.IsReadOnly }),
       StudentAddress: new FormControl({ value: this.vtStudentExitSurveyDetailModel.StudentAddress, disabled: this.PageRights.IsReadOnly }),
 
       // Education post 10th
       WillContHigherStudies: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContHigherStudies, disabled: this.PageRights.IsReadOnly }),
+      PartTimeJobWithEducation: new FormControl({ value: this.vtStudentExitSurveyDetailModel.PartTimeJobWithEducation, disabled: this.PageRights.IsReadOnly }),
       IsFullTime: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IsFullTime, disabled: this.PageRights.IsReadOnly }),
+      OtherIsFullTime:  new FormControl({ value: this.vtStudentExitSurveyDetailModel.OtherIsFullTime, disabled: this.PageRights.IsReadOnly }),
       CourseToPursue: new FormControl({ value: this.vtStudentExitSurveyDetailModel.CourseToPursue, disabled: this.PageRights.IsReadOnly }),
       StreamOfEducation: new FormControl({ value: this.vtStudentExitSurveyDetailModel.StreamOfEducation, disabled: this.PageRights.IsReadOnly }),
-      WillContVocEdu: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContVocEdu, disabled: this.PageRights.IsReadOnly }),
+      // WillContVocEdu: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContVocEdu, disabled: this.PageRights.IsReadOnly }),
       WillContVocational11: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContVocational11, disabled: this.PageRights.IsReadOnly }),
-      ReasonsNOTToContinue: new FormControl({ value: this.vtStudentExitSurveyDetailModel.ReasonsNOTToContinue, disabled: this.PageRights.IsReadOnly }),
-      WillContSameSector: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContSameSector, disabled: this.PageRights.IsReadOnly }),
-      SectorForTraining: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorForTraining, disabled: this.PageRights.IsReadOnly }),
+      ReasonsNoTToContinue: new FormControl({ value: this.vtStudentExitSurveyDetailModel.ReasonsNoTToContinue, disabled: this.PageRights.IsReadOnly }),
+     // WillContSameSector: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillContSameSector, disabled: this.PageRights.IsReadOnly }),
+      //SectorForTraining: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorForTraining, disabled: this.PageRights.IsReadOnly }),
       OtherSector: new FormControl({ value: this.vtStudentExitSurveyDetailModel.OtherSector, disabled: this.PageRights.IsReadOnly }),
 
       // Employment Details
@@ -366,13 +373,14 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
       WorkTitle: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WorkTitle, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(200)),
       DetailsOfEmployment: new FormControl({ value: this.vtStudentExitSurveyDetailModel.DetailsOfEmployment, disabled: this.PageRights.IsReadOnly }),
       WillBeFullTime: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillBeFullTime, disabled: this.PageRights.IsReadOnly }),
-      SectorsOfEmployment: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorsOfEmployment, disabled: this.PageRights.IsReadOnly }),
+      // SectorsOfEmployment: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorsOfEmployment, disabled: this.PageRights.IsReadOnly }),
       IsVSCompleted: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IsVSCompleted, disabled: this.PageRights.IsReadOnly }),
-
+      IsJobSelfEmployment: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IsJobSelfEmployment, disabled: this.PageRights.IsReadOnly }),
+      PartTimeEdcationSelfEmployment: new FormControl({ value: this.vtStudentExitSurveyDetailModel.PartTimeEdcationSelfEmployment, disabled: this.PageRights.IsReadOnly }),
       // Support
       WantToPursueAnySkillTraining: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WantToPursueAnySkillTraining, disabled: this.PageRights.IsReadOnly }),
-      IsFulltimeWillingness: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IsFulltimeWillingness, disabled: this.PageRights.IsReadOnly }),
-      HveRegisteredOnEmploymentPortal: new FormControl({ value: this.vtStudentExitSurveyDetailModel.HveRegisteredOnEmploymentPortal, disabled: this.PageRights.IsReadOnly }),
+      // IsFulltimeWillingness: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IsFulltimeWillingness, disabled: this.PageRights.IsReadOnly }),
+      // HveRegisteredOnEmploymentPortal: new FormControl({ value: this.vtStudentExitSurveyDetailModel.HveRegisteredOnEmploymentPortal, disabled: this.PageRights.IsReadOnly }),
       EmploymentPortalName: new FormControl({ value: this.vtStudentExitSurveyDetailModel.EmploymentPortalName, disabled: this.PageRights.IsReadOnly }),
       WillingToGetRegisteredOnNAPS: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillingToGetRegisteredOnNAPS, disabled: this.PageRights.IsReadOnly }),
       WantToKnowAboutOpportunities: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WantToKnowAboutOpportunities, disabled: this.PageRights.IsReadOnly }),
@@ -386,7 +394,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
 
       // Class 12
       DoneInternship: new FormControl({ value: this.vtStudentExitSurveyDetailModel.DoneInternship, disabled: this.PageRights.IsReadOnly }),
-      InternshipCompletedSector: new FormControl({ value: this.vtStudentExitSurveyDetailModel.InternshipCompletedSector, disabled: this.PageRights.IsReadOnly }),
+      // InternshipCompletedSector: new FormControl({ value: this.vtStudentExitSurveyDetailModel.InternshipCompletedSector, disabled: this.PageRights.IsReadOnly }),
       ContinueEductionPost12th: new FormControl({ value: this.vtStudentExitSurveyDetailModel.ContinueEductionPost12th, disabled: this.PageRights.IsReadOnly }),
       IntrestedInJobOrSelfEmploymentPost12th: new FormControl({ value: this.vtStudentExitSurveyDetailModel.IntrestedInJobOrSelfEmploymentPost12th, disabled: this.PageRights.IsReadOnly }),
       PreferredLocations: new FormControl({ value: this.vtStudentExitSurveyDetailModel.PreferredLocations, disabled: this.PageRights.IsReadOnly }),
@@ -406,7 +414,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
       SectorForSkillTraining: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorForSkillTraining, disabled: this.PageRights.IsReadOnly }),
       OthersIfAny: new FormControl({ value: this.vtStudentExitSurveyDetailModel.OthersIfAny, disabled: this.PageRights.IsReadOnly }),
       WillingToGoForTechHighEdu: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WillingToGoForTechHighEdu, disabled: this.PageRights.IsReadOnly }),
-      WantToKnowAbtPgmsForJobsNContEdu: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WantToKnowAbtPgmsForJobsNContEdu, disabled: this.PageRights.IsReadOnly }),
+      // WantToKnowAbtPgmsForJobsNContEdu: new FormControl({ value: this.vtStudentExitSurveyDetailModel.WantToKnowAbtPgmsForJobsNContEdu, disabled: this.PageRights.IsReadOnly }),
       SectorTrade: new FormControl({ value: this.vtStudentExitSurveyDetailModel.SectorTrade, disabled: this.PageRights.IsReadOnly }),
       CanSendTheUpdates: new FormControl({ value: this.vtStudentExitSurveyDetailModel.CanSendTheUpdates, disabled: this.PageRights.IsReadOnly }),
     });
