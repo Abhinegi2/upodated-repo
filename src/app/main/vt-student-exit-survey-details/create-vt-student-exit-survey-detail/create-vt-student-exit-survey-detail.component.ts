@@ -137,7 +137,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
                 });
               }
 
-              this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NotContinuingEducation', SelectTitle: 'Stream Of Education' }).subscribe((response: any) => {
+              this.commonService.GetMasterDataByType({ DataType: 'DataValues', ParentId: 'NotContinuingEducation', SelectTitle: 'Select The Reason' }).subscribe((response: any) => {
                 this.NotContinuingEducation = response.Results;
               });
 
