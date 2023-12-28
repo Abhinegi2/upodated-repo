@@ -18,7 +18,8 @@
                 </mat-icon>
                 <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
                     VT STUDENT EXIT SURVEY
-                    <a [routerLink]="['./']" class="refresh-data mt-24 mt-md-0">
+                    <a [routerLink]="['./']" class="refresh-data export-excel mt-24 mt-md-0" matTooltip="Refresh"
+                        matTooltipPosition="right">
                         <mat-icon [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">refresh</mat-icon>
                     </a>
                 </span>
@@ -30,36 +31,41 @@
                 <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
                     <mat-icon>search</mat-icon>
                     <input #filter (keyup)="applySearchFilter($event.target.value)"
-                        placeholder="Search for a VT Student Exit Survey">
+                        placeholder="Search for a VT Student Exit Survey" matTooltip="Search within display results"
+                        matTooltipPosition="below">
                 </div>
             </div>
             <!-- / SEARCH -->
 
             <!-- ADD BUTTON -->
             <div class="action-buttons">
-                <a *ngIf="PageRights.IsExport" class="export-excel" (click)="exportExcel()">
+
+                <a  class="export-excel"  class="export-excel" (click)="exportFilterData()"  matTooltip="Download with filters data">
+                    <mat-icon color="primary"> cloud_download</mat-icon>
+                </a>
+                <a  class="export-excel"  class="export-excel" (click)="exportBulkData()"  matTooltip="Download without filters data">
                     <mat-icon> cloud_download</mat-icon>
                 </a>
+                
             </div>
             <!-- / ADD BUTTON -->
         </div>
         <!-- / HEADER -->
 
-        <!-- <div fxLayout="row" fxLayoutAlign="start center" >
-            <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;" (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
-        </div> -->
-
         <!-- Filter Section -->
-        <!-- <div class="filter-content-card" *ngIf="isShowFilterContainer">
+        <div class="filter-content-card">
             <div class="filter-content">
-                <form name="vtStudentExitSurveyForm" [formGroup]="vtStudentExitSurveyForm" class="vt-school-sector"
+                <form name="vtStudentExitSurveyForm" [formGroup]="vtStudentExitSurveyForm" class="exit-survey-report"
                     fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
+
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        fxLayoutGap.lt-md="0px">
+
+                        <mat-form-field fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label> Academic Year</mat-label>
 
-                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill">
+                            <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="fill"
+                                required>
                                 <mat-option [value]="academicYearItem.Id"
                                     *ngFor="let academicYearItem of academicyearList">
                                     {{ academicYearItem.Name }}
@@ -67,167 +73,121 @@
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field  fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label> Month</mat-label>
-
-                            <mat-select formControlName="MonthId" name="monthId" appearance="fill" disabled="true">
-                                <mat-option [value]="monthItem.Id"
-                                    *ngFor="let monthItem of monthList">
-                                    {{ monthItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>Division</mat-label>
-
-                            <mat-select formControlName="DivisionId" name="divisionId" appearance="fill"
-                                (selectionChange)="onChangeDivision($event.value)">
-                                <mat-option [value]="DivisionItem.Id" *ngFor="let DivisionItem of divisionList">
-                                    {{ DivisionItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
-                            <mat-label>District</mat-label>
-                            <mat-select formControlName="DistrictId" name="districtId" appearance="fill">
-                                <mat-option *ngFor="let districtItem of districtList" [value]="districtItem.Id">
-                                    {{districtItem.Name}}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Sector</mat-label>
-
-                            <mat-select formControlName="SectorId" name="sectorId" appearance="fill"
-                                (selectionChange)="onChangeSector($event.value)">
-                                <mat-option [value]="sectorItem.Id" *ngFor="let sectorItem of sectorList">
-                                    {{ sectorItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Select Job Role</mat-label>
-
-                            <mat-select formControlName="JobRoleId" name="jobRoleId" appearance="fill">
-                                <mat-option [value]="jobRoleItem.Id" *ngFor="let jobRoleItem of jobRoleList">
-                                    {{ jobRoleItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Class</mat-label>
 
-                            <mat-select formControlName="ClassId" name="classId" appearance="fill" [disabled]="true">
+                            <mat-select formControlName="ClassId" name="classId" appearance="fill" required>
                                 <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
                                     {{ classItem.Name }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
 
-                        <mat-form-field  fxFlex="30" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>Vocational Training Provider</mat-label>
+                        <mat-form-field fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="adjust-alignment">
+                            <mat-label>Student Unique Id</mat-label>
 
-                            <mat-select formControlName="VTPId" name="vtpId" appearance="fill">
-                                <mat-option [value]="vtpItem.Id" *ngFor="let vtpItem of vtpList">
-                                    {{ vtpItem.Name }}
-                                </mat-option>
-                            </mat-select>
+                            <input matInput name="studentUniqueId" formControlName="StudentUniqueId"
+                                placeholder="Student Unique Id" appearance="fill"
+                                matTooltip="Search by Student Unique Id" matTooltipPosition="below">
                         </mat-form-field>
 
-                        <mat-form-field  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
-                            <mat-label>School Management</mat-label>
-
-                            <mat-select formControlName="SchoolManagementId" name="schoolManagementId" appearance="fill">
-                                <mat-option [value]="schoolManagementItem.Id" *ngFor="let schoolManagementItem of schoolManagementList">
-                                    {{ schoolManagementItem.Name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                        <div class="clear-filter pr-1" fxFlex="20" fxFlex.lt-md="75" fxFlex.lt-sm="100"
+                            style="height: 60px;">
                             <button mat-raised-button class="fuse-white filter-button"
-                                (click)="getVTStudentExitSurveyReports()"><span>SEARCH</span></button>
-                            <button mat-raised-button class="fuse-white filter-button"
-                                (click)="resetReportFilters()"><span>CLEAR</span></button>
+                                (click)="onLoadStudentExitSurveyReportByCriteria()" matTooltip="Search with filters"
+                                matTooltipPosition="below"><span>SEARCH</span></button>
+                            <button mat-raised-button class="fuse-white filter-button" (click)="resetFilters()"
+                                matTooltip="Reset search filters" matTooltipPosition="below"><span>CLEAR</span></button>
                         </div>
                     </div>
                 </form>
             </div>
-        </div> -->
+        </div>
         <!-- /Filter Section -->
 
         <!-- CONTENT CARD -->
         <div class="content-card">
-            <form name="vtStudentExitSurveyForm" [formGroup]="vtStudentExitSurveyForm" class="summary-dashboard-view"
-                fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" fxFlex>
-                <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
-                    fxLayoutGap.lt-md="0px">
-                    <mat-form-field fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
-                        <mat-label> Academic Year</mat-label>
-
-                        <mat-select formControlName="AcademicYearId" name="academicYearId" appearance="outline"
-                            (selectionChange)="onChangeAcademicYear($event.value)">
-                            <mat-option [value]="academicYearItem.Id" *ngFor="let academicYearItem of academicyearList">
-                                {{ academicYearItem.Name }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                    <mat-form-field fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100" appearance="outline">
-                        <mat-label> Class</mat-label>
-
-                        <mat-select formControlName="ClassId" name="classId" required appearance="outline"
-                            [disabled]="PageRights.IsReadOnly" (selectionChange)="onChangeClass()">
-                            <mat-option [value]="classItem.Id" *ngFor="let classItem of classList">
-                                {{ classItem.Name }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </form>
-
             <mat-table class="vt-student-exit-survey-report-table responsive-table" [dataSource]="tableDataSource"
                 matSort fusePerfectScrollbar [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
-                <!-- SrNo Column -->
-                <!-- <ng-container matColumnDef="SrNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sr No</mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey; let RowIndex = index;">
-                        <p class="text-truncate">{{vtStudentExitSurvey.SrNo}}</p>
-                    </mat-cell>
-                </ng-container> -->
 
-                <!-- StudentFullName Column -->
-                <ng-container matColumnDef="StudentFullName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Full Name
+                <!-- AcademicYear Column -->
+                <ng-container matColumnDef="AcademicYear">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Academic Year
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.StudentFullName}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.AcademicYear}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- StudentUniqueId Column -->
-                <ng-container matColumnDef="StudentUniqueId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Unique Id
+                <!-- VTPName Column -->
+                <ng-container matColumnDef="VTPName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTPName
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.StudentUniqueId}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.VTPName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- SeatNo Column -->
-                <ng-container matColumnDef="SeatNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Seat No.
+                <!-- VCName Column -->
+                <ng-container matColumnDef="VCName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VCName
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.SeatNo}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.VCName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTName Column -->
+                <ng-container matColumnDef="VTName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTName
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.VTName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- VTMobile Column -->
+                <ng-container matColumnDef="VTMobile">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Mobile
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.VTMobile}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Sector Column -->
+                <ng-container matColumnDef="Sector">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.Sector}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- JobRole Column -->
+                <ng-container matColumnDef="JobRole">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>JobRole
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.JobRole}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Division Column -->
+                <ng-container matColumnDef="Division">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Division
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.Division}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- District Column -->
+                <ng-container matColumnDef="District">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.District}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -249,21 +209,39 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- District Column -->
-                <ng-container matColumnDef="District">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>District
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.District}}</p>
-                    </mat-cell>
-                </ng-container>
-
                 <!-- Class Column -->
                 <ng-container matColumnDef="Class">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Class
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
                         <p class="text-truncate">{{vtStudentExitSurvey.Class}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SeatNo Column -->
+                <ng-container matColumnDef="SeatNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Seat No.
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.SeatNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- StudentUniqueId Column -->
+                <ng-container matColumnDef="StudentUniqueId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Unique Id
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.StudentUniqueId}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- StudentFullName Column -->
+                <ng-container matColumnDef="StudentFullName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Full Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.StudentFullName}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -286,24 +264,6 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Category Column -->
-                <ng-container matColumnDef="Category">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Category
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.Category}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- Religion Column -->
-                <ng-container matColumnDef="Religion">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Religion
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.Religion}}</p>
-                    </mat-cell>
-                </ng-container>
-
                 <!-- FatherName Column -->
                 <ng-container matColumnDef="FatherName">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Father Name
@@ -322,65 +282,57 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- Sector Column -->
-                <ng-container matColumnDef="Sector">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector
+                <!-- Category Column -->
+                <ng-container matColumnDef="Category">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Category
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.Sector}}</p>
-                    </mat-cell>
-                </ng-container>
-                <!-- JobRole Column -->
-                <ng-container matColumnDef="JobRole">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>JobRole
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.JobRole}}</p>
-                    </mat-cell>
-                </ng-container>
-                <!-- VTPName Column -->
-                <ng-container matColumnDef="VTPName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTPName
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.VTPName}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.Category}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- VTName Column -->
-                <ng-container matColumnDef="VTName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VTName
+                <!-- Religion Column -->
+                <ng-container matColumnDef="Religion">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Religion
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.VTName}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.Religion}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- VTMobile Column -->
-                <ng-container matColumnDef="VTMobile">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VT Mobile
+                <!-- StreamName Column -->
+                <ng-container matColumnDef="StreamName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Stream
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.VTMobile}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.StreamName}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- VCName Column -->
-                <ng-container matColumnDef="VCName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>VCName
+                <!-- StudentMobileNo Column -->
+                <ng-container matColumnDef="StudentMobileNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Mobile No
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.VCName}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.StudentMobileNo}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DateOfIntv Column -->
-                <ng-container matColumnDef="DateOfIntv">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Date Of Interview
+                <!-- StudentWhatsAppNo Column -->
+                <ng-container matColumnDef="StudentWhatsAppNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student WhatsApp No
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.DateOfIntv | date: Constants.ShortDateFormat}}
-                        </p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.StudentWhatsAppNo}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ParentMobileNo Column -->
+                <ng-container matColumnDef="ParentMobileNo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Parent Mobile No
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.ParentMobileNo}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -420,39 +372,12 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- StudentMobileNo Column -->
-                <ng-container matColumnDef="StudentMobileNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Mobile No
+                <!-- StudentAddress Column -->
+                <ng-container matColumnDef="StudentAddress">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student Address
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.StudentMobileNo}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- StudentWANo Column -->
-                <ng-container matColumnDef="StudentWANo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Student WhatsApp No
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.StudentWANo}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- ParentMobileNo Column -->
-                <ng-container matColumnDef="ParentMobileNo">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Parent Mobile No
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.ParentMobileNo}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- ParentName Column -->
-                <ng-container matColumnDef="ParentName">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Parent Name
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.ParentName}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.StudentAddress}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -467,23 +392,22 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- CurrentlyEmployed Column -->
-                <ng-container matColumnDef="CurrentlyEmployed">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Currently Employed
+                <!-- DoneInternship Column -->
+                <ng-container matColumnDef="InternshipCompletedSector">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Internship Completed
+                        Sector
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CurrentlyEmployed === '1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CurrentlyEmployed === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CurrentlyEmployed == ''">NA</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.InternshipCompletedSector}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- DetailsOfEmployment Column -->
-                <ng-container matColumnDef="DetailsOfEmployment">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>DetailsOfEmployment
+                <!-- WillContHigherStudies Column -->
+                <ng-container matColumnDef="WillContHigherStudies">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WillContHigherStudies
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.DetailsOfEmployment}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillContHigherStudies}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -494,47 +418,6 @@
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
                         <p class="text-truncate" *ngIf="vtStudentExitSurvey.IsFullTime==318">Full Time</p>
                         <p class="text-truncate" *ngIf="vtStudentExitSurvey.IsFullTime==319">Part Time</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- SectorsOfEmployment Column
-                <ng-container matColumnDef="SectorsOfEmployment">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SectorsOfEmployment
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.SectorsOfEmployment}}</p>
-                    </mat-cell>
-                </ng-container> -->
-
-                <!-- IsRelevantToVocCourse Column -->
-                <ng-container matColumnDef="IsRelevantToVocCourse">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>IsRelevantToVocCourse
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.IsRelevantToVocCourse === '1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.IsRelevantToVocCourse === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.IsRelevantToVocCourse == ''">NA</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- WillContHigherStudies Column -->
-                <ng-container matColumnDef="WillContHigherStudies">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WillContHigherStudies
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillContHigherStudies === '1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillContHigherStudies === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillContHigherStudies == ''">NA</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- WillBeFullTime Column -->
-                <ng-container matColumnDef="WillBeFullTime">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WillBeFullTime
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillBeFullTime==318">Full Time</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillBeFullTime==319">Part Time</p>
                     </mat-cell>
                 </ng-container>
 
@@ -565,52 +448,120 @@
                     </mat-cell>
                 </ng-container>
 
-                <!-- WillingToContSkillTraining Column -->
-                <ng-container matColumnDef="WillingToContSkillTraining">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        WillingToContinueSkillTraining
+                <!-- OtherStreamStudying Column -->
+                <ng-container matColumnDef="OtherStreamStudying">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Other Stream Studying
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToContSkillTraining === '1' ">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToContSkillTraining === '0' ">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToContSkillTraining == ''">NA</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.OtherStreamStudying}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- SkillTrainingType Column -->
-                <ng-container matColumnDef="SkillTrainingType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SkillTrainingType
+                <!-- WillContVocEdu Column -->
+                <ng-container matColumnDef="WillContVocEdu">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WillContVocEdu
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.SkillTrainingType==318">Full Time</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.SkillTrainingType==319">Part Time</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillContVocEdu}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- CourseForTraining Column -->
-                <ng-container matColumnDef="CourseForTraining">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CourseForTraining
+                <!-- WillContVocational11 Column -->
+                <ng-container matColumnDef="WillContVocational11">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>WillContVocational11
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.CourseForTraining}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillContVocational11}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ReasonsNOTToContinue Column -->
+                <ng-container matColumnDef="ReasonsNOTToContinue">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Reasons NOT To Continue
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.ReasonsNOTToContinue}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WillContSameSector Column -->
+                <ng-container matColumnDef="WillContSameSector">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Will Cont Same Sector
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillContSameSector}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- SectorForTraining Column -->
-                <!-- <ng-container matColumnDef="SectorForTraining">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SectorForTraining
+                <ng-container matColumnDef="SectorForTraining">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Sector For Training
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
                         <p class="text-truncate">{{vtStudentExitSurvey.SectorForTraining}}</p>
                     </mat-cell>
-                </ng-container> -->
+                </ng-container>
 
-                <!-- OtherSectorsIfAny Column -->
-                <ng-container matColumnDef="OtherSectorsIfAny">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>OtherSectorsIfAny
+                <!-- OtherSector Column -->
+                <ng-container matColumnDef="OtherSector">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Other Sector
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.OtherSectorsIfAny}}</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.OtherSector}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CurrentlyEmployed Column -->
+                <ng-container matColumnDef="CurrentlyEmployed">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Currently Employed
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.CurrentlyEmployed}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WorkTitle Column -->
+                <ng-container matColumnDef="WorkTitle">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Work Title
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.WorkTitle}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- DetailsOfEmployment Column -->
+                <ng-container matColumnDef="DetailsOfEmployment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Details Of Employment
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.DetailsOfEmployment}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WillBeFullTime Column -->
+                <ng-container matColumnDef="WillBeFullTime">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Will Be FullTime
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillBeFullTime}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SectorsOfEmployment Column -->
+                <ng-container matColumnDef="SectorsOfEmployment">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SectorsOfEmployment
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.SectorsOfEmployment}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IsVSCompleted Column -->
+                <ng-container matColumnDef="IsVSCompleted">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>IsVSCompleted
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.IsVSCompleted}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -620,55 +571,100 @@
                         WantToPursueAnySkillTraining
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToPursueAnySkillTraining==='1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToPursueAnySkillTraining==='0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToPursueAnySkillTraining == ''">NA</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.WantToPursueAnySkillTraining}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- TrainingType Column -->
-                <ng-container matColumnDef="TrainingType">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>TrainingType
+                <!-- IsFulltimeWillingness Column -->
+                <ng-container matColumnDef="IsFulltimeWillingness">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>IsFulltimeWillingness
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <!-- <p class="text-truncate">{{vtStudentExitSurvey.TrainingType}}</p> -->
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.TrainingType==318">Full Time</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.TrainingType==319">Part Time</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.IsFulltimeWillingness}}</p>
                     </mat-cell>
                 </ng-container>
 
-                <!-- SectorForSkillTraining Column -->
-                <ng-container matColumnDef="SectorForSkillTraining">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>SectorForSkillTraining
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.SectorForSkillTraining}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- OthersIfAny Column -->
-                <ng-container matColumnDef="OthersIfAny">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>OthersIfAny
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.OthersIfAny}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- WillingToGoForTechHighEdu Column -->
-                <ng-container matColumnDef="WillingToGoForTechHighEdu">
+                <!-- HveRegisteredOnEmploymentPortal Column -->
+                <ng-container matColumnDef="HveRegisteredOnEmploymentPortal">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        willing to go for higher technical education
+                        HveRegisteredOnEmploymentPortal
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToGoForTechHighEdu === '1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToGoForTechHighEdu === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WillingToGoForTechHighEdu == ''">NA</p>
+                        <p class="text-truncate">{{vtStudentExitSurvey.HveRegisteredOnEmploymentPortal}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- EmploymentPortalName Column -->
+                <ng-container matColumnDef="EmploymentPortalName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        Employment Portal Name
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.EmploymentPortalName}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WillingToGetRegisteredOnNAPS Column -->
+                <ng-container matColumnDef="WillingToGetRegisteredOnNAPS">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        WillingToGetRegisteredOnNAPS
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.WillingToGetRegisteredOnNAPS}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- IntrestedInJobOrSelfEmploymentPost12th Column -->
+                <ng-container matColumnDef="IntrestedInJobOrSelfEmploymentPost12th">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        IntrestedInJobOrSelfEmploymentPost12th
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.IntrestedInJobOrSelfEmploymentPost12th}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PreferredLocations Column -->
+                <ng-container matColumnDef="PreferredLocations">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        PreferredLocations
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.PreferredLocations}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- PreferredLocations Column -->
+                <ng-container matColumnDef="ParticularLocation">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        ParticularLocation
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.ParticularLocation}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- WantToKnowAboutOpportunities Column -->
+                <ng-container matColumnDef="WantToKnowAboutOpportunities">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
+                        WantToKnowAboutOpportunities
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.WantToKnowAboutOpportunities}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CanLahiGetInTouch Column -->
+                <ng-container matColumnDef="CanLahiGetInTouch">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>CanLahiGetInTouch
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.CanLahiGetInTouch}}</p>
                     </mat-cell>
                 </ng-container>
 
                 <!-- WantToKnowAbtPgmsForJobsNContEdu Column -->
-                <!-- <ng-container matColumnDef="WantToKnowAbtPgmsForJobsNContEdu">
+                <ng-container matColumnDef="WantToKnowAbtPgmsForJobsNContEdu">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
                         WantToKnowAboutPgmsForJobsNContEdu
                     </mat-header-cell>
@@ -679,57 +675,6 @@
                         </p>
                         <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToKnowAbtPgmsForJobsNContEdu == ''">NA
                         </p>
-                    </mat-cell>
-                </ng-container> -->
-
-                <!-- WantToKnowAboutOpportunities Column -->
-                <ng-container matColumnDef="WantToKnowAboutOpportunities">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        WantToKnowAboutOpportunities
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToKnowAboutOpportunities === '1'">Yes
-                        </p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToKnowAboutOpportunities === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.WantToKnowAboutOpportunities == ''">NA</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- InterestedInJobOrSelfEmployment Column -->
-                <ng-container matColumnDef="InterestedInJobOrSelfEmployment">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        InterestedInJobOrSelfEmployment
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.InterestedInJobOrSelfEmployment === '1'">Yes
-                        </p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.InterestedInJobOrSelfEmployment === '0'">No
-                        </p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.InterestedInJobOrSelfEmployment === '2'">
-                            Undecided</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.InterestedInJobOrSelfEmployment == ''">NA
-                        </p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- TopicsOfInterest Column -->
-                <ng-container matColumnDef="TopicsOfInterest">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>TopicsOfInterest
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate">{{vtStudentExitSurvey.TopicsOfInterest}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- CanSendTheUpdates Column -->
-                <ng-container matColumnDef="CanSendTheUpdates">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>
-                        CanLAHIGetInTouchWithYouForSuchPrograms
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let vtStudentExitSurvey">
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CanSendTheUpdates === '1'">Yes</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CanSendTheUpdates === '0'">No</p>
-                        <p class="text-truncate" *ngIf="vtStudentExitSurvey.CanSendTheUpdates == ''">NA</p>
                     </mat-cell>
                 </ng-container>
 
@@ -752,12 +697,40 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- DateOfIntv Column -->
+                <ng-container matColumnDef="DateOfIntv">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Date Of Interview
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.DateOfIntv | date: Constants.ShortDateFormat}}
+                        </p>
+                    </mat-cell>
+                </ng-container>
+
                 <!-- Remark Column -->
                 <ng-container matColumnDef="Remark">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Remark
                     </mat-header-cell>
                     <mat-cell *matCellDef="let vtStudentExitSurvey">
                         <p class="text-truncate">{{vtStudentExitSurvey.Remark}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- ExitSurveyStatus Column -->
+                <ng-container matColumnDef="ExitSurveyStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Exit Survey Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.ExitSurveyStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SubmissionDate Column -->
+                <ng-container matColumnDef="SubmissionDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Submission Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let vtStudentExitSurvey">
+                        <p class="text-truncate">{{vtStudentExitSurvey.SubmissionDate}}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -768,11 +741,12 @@
                 </mat-row>
             </mat-table>
 
-            <mat-paginator #ListPaginator [length]="TotalResults" [pageIndex]="PageIndex" [pageSize]="PageSize"
-                [pageSizeOptions]="PageSizeOptions" [showFirstLastButtons]="ShowFirstLastButtons"
-                (page)="onPageIndexChanged($event)">
-            </mat-paginator>
+            <div class="no-data-found" *ngIf="tableDataSource.data.length === 0">No records found!</div>
 
+            <mat-paginator #ListPaginator [length]="SearchBy.TotalResults" [pageIndex]="SearchBy.PageIndex"
+                [pageSize]="SearchBy.PageSize" [pageSizeOptions]="SearchBy.PageSizeOptions"
+                [showFirstLastButtons]="SearchBy.ShowFirstLastButtons" (page)="onPageIndexChanged($event)">
+            </mat-paginator>
         </div>
         <!-- / CONTENT CARD -->
     </div>

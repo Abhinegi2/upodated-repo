@@ -5,11 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VTStudentExitSurveyReportModel } from './vt-student-exit-survey-detail-report.model';
 import { BaseListComponent } from 'app/common/base-list/base.list.component';
 import { fuseAnimations } from '@fuse/animations';
-import { DialogService } from 'app/common/confirm-dialog/dialog.service';
 import { ReportService } from '../report.service';
 import { DropdownModel } from 'app/models/dropdown.model';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'data-list-view',
@@ -23,24 +21,7 @@ export class VTStudentExitSurveyReportComponent extends BaseListComponent<VTStud
   vtStudentExitSurveyForm: FormGroup;
 
   academicyearList: [DropdownModel];
-  divisionList: [DropdownModel];
-  districtList: [DropdownModel];
-  sectorList: [DropdownModel];
-  jobRoleList: [DropdownModel];
-  vtpList: [DropdownModel];
   classList: any = [];
-  monthList: [DropdownModel];
-  schoolManagementList: [DropdownModel];
-
-  currentAcademicYearId: string;
-  isShowFilterContainer = false;
-  roleCode: string;
-  ReqObj: any;
-  PageIndex: number;
-  PageSize: number;
-  ShowFirstLastButtons = true;
-  PageSizeOptions = [5, 10, 25, 50, 100, 200];
-  TotalResults: number;
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -50,11 +31,14 @@ export class VTStudentExitSurveyReportComponent extends BaseListComponent<VTStud
     public formBuilder: FormBuilder,
     private reportService: ReportService) {
     super(commonService, router, routeParams, snackBar, zone);
+
+    this.displayedColumns = ['AcademicYear', 'VTPName', 'VCName', 'VTName', 'VTMobile', 'Sector', 'JobRole', 'Division', 'District', 'NameOfSchool', 'UdiseCode', 'Class', 'SeatNo', 'StudentUniqueId', 'StudentFullName', 'Gender', 'DOB', 'FatherName', 'MotherName', 'Category', 'Religion', 'StreamName', 'StudentMobileNo', 'StudentWhatsAppNo', 'ParentMobileNo', 'CityOfResidence', 'DistrictOfResidence', 'BlockOfResidence', 'PinCode', 'StudentAddress', 'WillContHigherStudies', 'IsFullTime', 'CourseToPursue', 'OtherCourse', 'StreamOfEducation', 'OtherStreamStudying', 'WillContVocEdu', 'WillContVocational11', 'ReasonsNOTToContinue', 'WillContSameSector', 'SectorForTraining', 'OtherSector', 'CurrentlyEmployed', 'WorkTitle', 'DetailsOfEmployment', 'WillBeFullTime', 'SectorsOfEmployment', 'IsVSCompleted', 'WantToPursueAnySkillTraining', 'IsFulltimeWillingness', 'HveRegisteredOnEmploymentPortal', 'EmploymentPortalName', 'WillingToGetRegisteredOnNAPS', 'WantToKnowAboutOpportunities', 'CanLahiGetInTouch', 'CollectedEmailId', 'SurveyCompletedByStudentORParent', 'DateOfIntv', 'Remark', 'ExitSurveyStatus', 'SubmissionDate'];
+    this.vtStudentExitSurveyForm = this.createVTStudentExitSurveyForm();
   }
 
   ngOnInit(): void {
-    this.PageIndex = 0; // delete after script changed
-    this.PageSize = 10; // delete after script changed
+    this.SearchBy.PageIndex = 0; // delete after script changed
+    this.SearchBy.PageSize = 250; // delete after script changed
 
     this.reportService.GetExitSurveyReportDropdown(this.UserModel).subscribe(results => {
       if (results[0].Success) {
@@ -68,16 +52,8 @@ export class VTStudentExitSurveyReportComponent extends BaseListComponent<VTStud
       });
 
       this.vtStudentExitSurveyForm.get('ClassId').setValue('3d99b3d3-f955-4e8f-9f2e-ec697a774bbc');
-
-      let currentYearItem = this.academicyearList.find(ay => ay.IsSelected == true);
-      if (currentYearItem != null) {
-        this.currentAcademicYearId = currentYearItem.Id;
-        this.vtStudentExitSurveyForm.get('AcademicYearId').setValue(this.currentAcademicYearId);
-        this.onChangeAcademicYear(this.currentAcademicYearId);
-      }
+      this.vtStudentExitSurveyForm.get('AcademicYearId').setValue(this.UserModel.AcademicYearId);
     });
-
-    this.vtStudentExitSurveyForm = this.createVTStudentExitSurveyForm();
   }
 
   ngAfterViewInit() {
@@ -85,59 +61,46 @@ export class VTStudentExitSurveyReportComponent extends BaseListComponent<VTStud
   }
 
   onPageIndexChanged(evt) {
-    this.PageIndex = evt.pageIndex;
-    this.PageSize = evt.pageSize;
-    let ay = this.vtStudentExitSurveyForm.get('AcademicYearId').value;
-    this.onChangeAcademicYear(ay);
+    this.SearchBy.PageIndex = evt.pageIndex;
+    this.SearchBy.PageSize = evt.pageSize;
+
+    this.onLoadStudentExitSurveyReportByCriteria();
   }
 
-  //Create VTSchoolSector form and returns {FormGroup}
-  createVTStudentExitSurveyForm(): FormGroup {
-    return this.formBuilder.group({
-      AcademicYearId: new FormControl(),
-      ClassId: new FormControl(),
-    });
-  }
+  resetFilters(): void {
+    this.SearchBy.PageIndex = 0;
+    this.vtStudentExitSurveyForm.reset();
+    this.vtStudentExitSurveyForm.get('ClassId').setValue('3d99b3d3-f955-4e8f-9f2e-ec697a774bbc');
+    this.vtStudentExitSurveyForm.get('AcademicYearId').setValue(this.UserModel.AcademicYearId);
 
-  onChangeClass() {
-    let ay = this.vtStudentExitSurveyForm.get('AcademicYearId').value;
-    this.onChangeAcademicYear(ay);
     this.tableDataSource.data = [];
+    this.tableDataSource.filteredData = [];
   }
 
-  onChangeAcademicYear(academicYear) {
-    let classId = this.vtStudentExitSurveyForm.get('ClassId').value;
-    this.roleCode = this.UserModel.RoleCode;
-
-    if (this.UserModel.RoleCode == "ADM") {
-      this.roleCode = "PMU";
-    }
-
-    this.ReqObj = {
-      "UserId": this.UserModel.UserTypeId,
-      "UserType": this.roleCode,
-      "AcademicYearId": academicYear,
-      "StudentId": null,
-      "ClassId": classId,
-      "PageIndex": this.PageIndex,
-      "PageSize": this.PageSize
-    };
-
+  onLoadStudentExitSurveyReportByCriteria() {
     this.IsLoading = true;
-    this.reportService.GetVTStudentExitSurveyReportsByCriteria(this.ReqObj).subscribe(response => {
-      this.displayedColumns = ['StudentFullName', 'StudentUniqueId', 'SeatNo', 'District', 'NameOfSchool', 'UdiseCode', 'Class', 'Gender', 'DOB', 'Category', 'Religion', 'FatherName', 'MotherName', 'Sector', 'JobRole', 'VTPName', 'VTName', 'VTMobile', 'VCName', 'DateOfIntv', 'CityOfResidence', 'DistrictOfResidence', 'BlockOfResidence', 'PinCode', 'StudentMobileNo', 'StudentWANo', 'ParentMobileNo', 'ParentName', 'DoneInternship', 'CurrentlyEmployed', 'DetailsOfEmployment', 'IsFullTime', /*'SectorsOfEmployment',*/ 'IsRelevantToVocCourse', 'WillContHigherStudies','PartTimeJobWithEducation', 'WillBeFullTime', 'CourseToPursue', 'OtherCourse', 'StreamOfEducation', 'WillingToContSkillTraining', 'SkillTrainingType', 'CourseForTraining', /*'SectorForTraining',*/ 'OtherSectorsIfAny', 'WantToPursueAnySkillTraining', 'TrainingType', 'SectorForSkillTraining', 'OthersIfAny', 'WillingToGoForTechHighEdu', /*'WantToKnowAbtPgmsForJobsNContEdu',*/ 'WantToKnowAboutOpportunities', 'InterestedInJobOrSelfEmployment', 'TopicsOfInterest', 'CanSendTheUpdates', 'CollectedEmailId', 'SurveyCompletedByStudentORParent', 'Remark'];
 
-      this.tableDataSource.data = [];
+    this.getVTStudentExitSurveyReportsData().then(response => {
+
+      if (this.vtStudentExitSurveyForm.get('ClassId').value == '3d99b3d3-f955-4e8f-9f2e-ec697a774bbc') {
+        this.displayedColumns = ['AcademicYear', 'VTPName', 'VCName', 'VTName', 'VTMobile', 'Sector', 'JobRole', 'Division', 'District', 'NameOfSchool', 'UdiseCode', 'Class', 'SeatNo', 'StudentUniqueId', 'StudentFullName', 'Gender', 'DOB', 'FatherName', 'MotherName', 'Category', 'Religion', 'StreamName', 'StudentMobileNo', 'StudentWhatsAppNo', 'ParentMobileNo', 'CityOfResidence', 'DistrictOfResidence', 'BlockOfResidence', 'PinCode', 'StudentAddress', 'WillContHigherStudies', 'IsFullTime', 'CourseToPursue', 'OtherCourse', 'StreamOfEducation', 'OtherStreamStudying', 'WillContVocEdu', 'WillContVocational11', 'ReasonsNOTToContinue', 'WillContSameSector', 'SectorForTraining', 'OtherSector', 'CurrentlyEmployed', 'WorkTitle', 'DetailsOfEmployment', 'WillBeFullTime', 'SectorsOfEmployment', 'IsVSCompleted', 'WantToPursueAnySkillTraining', 'IsFulltimeWillingness', 'HveRegisteredOnEmploymentPortal', 'EmploymentPortalName', 'WillingToGetRegisteredOnNAPS', 'WantToKnowAboutOpportunities', 'CanLahiGetInTouch', 'CollectedEmailId', 'SurveyCompletedByStudentORParent', 'DateOfIntv', 'Remark', 'ExitSurveyStatus', 'SubmissionDate'];
+      }
+      else {
+        this.displayedColumns = ['AcademicYear', 'VTPName', 'VCName', 'VTName', 'VTMobile', 'Sector', 'JobRole', 'Division', 'District', 'NameOfSchool', 'UdiseCode', 'Class', 'SeatNo', 'StudentUniqueId', 'StudentFullName', 'Gender', 'DOB', 'FatherName', 'MotherName', 'Category', 'Religion', 'StreamName', 'StudentMobileNo', 'StudentWhatsAppNo', 'ParentMobileNo', 'CityOfResidence', 'DistrictOfResidence', 'BlockOfResidence', 'PinCode', 'StudentAddress', 'DoneInternship', 'InternshipCompletedSector', 'WillContHigherStudies', 'IsFullTime', 'CourseToPursue', 'OtherCourse', 'StreamOfEducation', 'OtherStreamStudying', 'WillContVocEdu', 'WillContVocational11', 'ReasonsNOTToContinue', 'WillContSameSector', 'SectorForTraining', 'OtherSector', 'CurrentlyEmployed', 'WorkTitle', 'DetailsOfEmployment', 'WillBeFullTime', 'SectorsOfEmployment', 'IsVSCompleted', 'WantToPursueAnySkillTraining', 'IsFulltimeWillingness', 'HveRegisteredOnEmploymentPortal', 'EmploymentPortalName', 'WillingToGetRegisteredOnNAPS', 'IntrestedInJobOrSelfEmploymentPost12th', 'PreferredLocations', 'ParticularLocation', 'WantToKnowAboutOpportunities', 'CanLahiGetInTouch', 'WantToKnowAbtPgmsForJobsNContEdu', 'CollectedEmailId', 'SurveyCompletedByStudentORParent', 'DateOfIntv', 'Remark', 'ExitSurveyStatus', 'SubmissionDate'];
+      }
+
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
       this.tableDataSource.filteredData = this.tableDataSource.data;
-      this.TotalResults = response.TotalResults;
+
+      this.SearchBy.TotalResults = response.TotalResults;
 
       setTimeout(() => {
-        this.ListPaginator.pageIndex = this.PageIndex;
-        this.ListPaginator.length = this.TotalResults;
+        this.ListPaginator.pageIndex = this.SearchBy.PageIndex;
+        this.ListPaginator.length = this.SearchBy.TotalResults;
       });
+
       this.zone.run(() => {
         if (this.tableDataSource.data.length == 0) {
           this.showNoDataFoundSnackBar();
@@ -150,50 +113,167 @@ export class VTStudentExitSurveyReportComponent extends BaseListComponent<VTStud
     });
   }
 
-  exportExcel(): void {
-    this.IsLoading = true;
-    this.PageIndex = 0;
-    this.PageSize = 1000000;
-
-    let classId = this.vtStudentExitSurveyForm.get('ClassId').value;
-    let academicYearId = this.vtStudentExitSurveyForm.get('AcademicYearId').value;
-    this.roleCode = this.UserModel.RoleCode;
-
-    if (this.UserModel.RoleCode == "ADM") {
-      this.roleCode = "PMU";
+  getVTStudentExitSurveyReportsData(): Promise<any> {
+    if (!this.vtStudentExitSurveyForm.valid) {
+      this.validateAllFormFields(this.vtStudentExitSurveyForm);
+      return;
     }
 
-    this.ReqObj = {
-      "UserId": this.UserModel.UserTypeId,
-      "UserType": this.roleCode,
-      "AcademicYearId": academicYearId,
-      "StudentId": null,
-      "ClassId": classId,
-      "PageIndex": this.PageIndex,
-      "PageSize": this.PageSize
+    let studentUniqueId: string = this.vtStudentExitSurveyForm.get('StudentUniqueId').value;
+
+    let exitSurveyParams = {
+      UserId: this.UserModel.UserTypeId,
+      UserType: this.UserModel.RoleCode,
+      AcademicYearId: this.vtStudentExitSurveyForm.get('AcademicYearId').value,
+      ClassId: this.vtStudentExitSurveyForm.get('ClassId').value,
+      StudentId: null,
+      StudentUniqueId: (studentUniqueId == null || studentUniqueId.length == 0 ? null : studentUniqueId),
+      PageIndex: this.SearchBy.PageIndex,
+      PageSize: this.SearchBy.PageSize
     };
 
-    this.reportService.GetVTStudentExitSurveyReportsByCriteria(this.ReqObj).subscribe(response => {
+    let promise = new Promise((resolve, reject) => {
+      this.reportService.GetVTStudentExitSurveyReportsByCriteria(exitSurveyParams).subscribe(response => {
+        resolve(response);
+      }, error => {
+        console.log(error);
+        resolve(error);
+      });
+    });
+
+    return promise;
+  }
+
+  exportFilterData(): void {
+    this.IsLoading = true;
+    this.SearchBy.PageIndex = 0;
+    this.SearchBy.PageSize = 25000000;
+    let selectedClassId = this.vtStudentExitSurveyForm.get('ClassId').value;
+
+    this.getVTStudentExitSurveyReportsData().then(response => {
 
       response.Results.forEach(
         function (obj) {
-          delete obj.TotalRows;
-          delete obj.VTPId;
-          delete obj.VCId;
-          delete obj.VTId;
+          obj.LhStudentId = obj.ExitStudentId;
+
+          if (selectedClassId == '3d99b3d3-f955-4e8f-9f2e-ec697a774bbc') {
+            delete obj.DoneInternship;
+            delete obj.InternshipCompletedSector;
+            delete obj.IntrestedInJobOrSelfEmploymentPost12th;
+            delete obj.PreferredLocations;
+            delete obj.ParticularLocation;
+            delete obj.WantToKnowAbtPgmsForJobsNContEdu;
+          }
+
           delete obj.ExitStudentId;
+          delete obj.AcademicYearId;
+          delete obj.State;
+          delete obj.StudentFirstName;
+          delete obj.StudentMiddleName;
+          delete obj.StudentLastName;
+          delete obj.OtherReasons;
+          delete obj.DoesFieldStudyHveVocSub;
+          delete obj.AnyPreferredLocForEmployment;
+          delete obj.TrainingType;
+          delete obj.WillingToContSkillTraining;
+          delete obj.SkillTrainingType;
+          delete obj.CourseForTraining;
+          delete obj.CourseNameIfOther;
+          delete obj.OtherSectorsIfAny;
+          delete obj.InterestedInJobOrSelfEmployment;
+          delete obj.TopicsOfInterest;
+          delete obj.IsRelevantToVocCourse;
+          delete obj.SectorForSkillTraining;
+          delete obj.OthersIfAny;
+          delete obj.WillingToGoForTechHighEdu;
+          delete obj.WantToKnowAbtSkillsUnivByGvt;
+          delete obj.CanSendTheUpdates;
+          delete obj.IsAssessmentRequired;
+          delete obj.AssessmentConducted;
+          delete obj.TotalRows;
         });
 
-      this.exportExcelFromTable(response.Results, "VTExitSurveyDetailsReport");
-
+      this.exportExcelFromTable(response.Results, "VTExitSurveyReport");
+      this.SearchBy.PageSize = 250;
       this.IsLoading = false;
-      this.PageIndex = 0;
-      this.PageSize = 10;
     }, error => {
       console.log(error);
       this.IsLoading = false;
     });
   }
 
+  exportBulkData(): void {
+    this.IsLoading = true;
+    let selectedClassId = this.vtStudentExitSurveyForm.get('ClassId').value;
+
+    let exitSurveyParams = {
+      UserId: this.UserModel.UserTypeId,
+      UserType: this.UserModel.RoleCode,
+      AcademicYearId: this.vtStudentExitSurveyForm.get('AcademicYearId').value,
+      ClassId: this.vtStudentExitSurveyForm.get('ClassId').value,
+      PageIndex: 0,
+      PageSize: 25000000
+    };
+
+    this.reportService.GetVTStudentExitSurveyReportsByCriteria(exitSurveyParams).subscribe(response => {
+
+      response.Results.forEach(
+        function (obj) {
+          obj.LhStudentId = obj.ExitStudentId;
+
+          if (selectedClassId == '3d99b3d3-f955-4e8f-9f2e-ec697a774bbc') {
+            delete obj.DoneInternship;
+            delete obj.InternshipCompletedSector;
+            delete obj.IntrestedInJobOrSelfEmploymentPost12th;
+            delete obj.PreferredLocations;
+            delete obj.ParticularLocation;
+            delete obj.WantToKnowAbtPgmsForJobsNContEdu;
+          }
+
+          delete obj.ExitStudentId;
+          delete obj.AcademicYearId;
+          delete obj.State;
+          delete obj.StudentFirstName;
+          delete obj.StudentMiddleName;
+          delete obj.StudentLastName;
+          delete obj.OtherReasons;
+          delete obj.DoesFieldStudyHveVocSub;
+          delete obj.AnyPreferredLocForEmployment;
+          delete obj.TrainingType;
+          delete obj.WillingToContSkillTraining;
+          delete obj.SkillTrainingType;
+          delete obj.CourseForTraining;
+          delete obj.CourseNameIfOther;
+          delete obj.OtherSectorsIfAny;
+          delete obj.InterestedInJobOrSelfEmployment;
+          delete obj.TopicsOfInterest;
+          delete obj.IsRelevantToVocCourse;
+          delete obj.SectorForSkillTraining;
+          delete obj.OthersIfAny;
+          delete obj.WillingToGoForTechHighEdu;
+          delete obj.WantToKnowAbtSkillsUnivByGvt;
+          delete obj.CanSendTheUpdates;
+          delete obj.IsAssessmentRequired;
+          delete obj.AssessmentConducted;
+          delete obj.TotalRows;
+        });
+
+      this.exportExcelFromTable(response.Results, "VTExitSurveyReport");
+      this.SearchBy.PageSize = 250;
+      this.IsLoading = false;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
+
+  //Create VTSchoolSector form and returns {FormGroup}
+  createVTStudentExitSurveyForm(): FormGroup {
+    return this.formBuilder.group({
+      AcademicYearId: new FormControl(),
+      ClassId: new FormControl(),
+      StudentUniqueId: new FormControl(),
+    });
+  }
 }
 
