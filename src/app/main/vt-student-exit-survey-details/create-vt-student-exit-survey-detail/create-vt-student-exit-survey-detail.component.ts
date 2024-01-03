@@ -342,7 +342,7 @@ export class CreateVTStudentExitSurveyDetailComponent extends BaseComponent<VTSt
       FatherName: new FormControl({ value: this.vtStudentExitSurveyDetailModel.FatherName, disabled: true }),
       MotherName: new FormControl({ value: this.vtStudentExitSurveyDetailModel.MotherName, disabled: true }),
       Category: new FormControl({ value: this.vtStudentExitSurveyDetailModel.Category, disabled: true }),
-      Religion: new FormControl({ value: this.vtStudentExitSurveyDetailModel.Religion, disabled: this.PageRights.IsReadOnly }, Validators.required),
+      // Religion: new FormControl({ value: this.vtStudentExitSurveyDetailModel.Religion, disabled: this.PageRights.IsReadOnly }),
       StudentMobileNo: new FormControl({ value: this.vtStudentExitSurveyDetailModel.StudentMobileNo, disabled: true }, [Validators.pattern(this.Constants.Regex.Number)]),
       StudentWhatsAppNo: new FormControl({ value: this.vtStudentExitSurveyDetailModel.StudentWhatsAppNo, disabled: true }, [Validators.pattern(this.Constants.Regex.Number)]),
       ParentMobileNo: new FormControl({ value: this.vtStudentExitSurveyDetailModel.ParentMobileNo, disabled: true }, [Validators.pattern(this.Constants.Regex.Number)]),
