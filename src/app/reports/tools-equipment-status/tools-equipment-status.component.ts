@@ -233,4 +233,33 @@ export class ToolsAndEquipmentStatusComponent extends BaseListComponent<ToolsAnd
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.toolsAndEquipmentStatusForm.get('AcademicYearId').value,
+      DivisionId: this.toolsAndEquipmentStatusForm.get('DivisionId').value,
+      DistrictId: this.toolsAndEquipmentStatusForm.get('DistrictId').value,
+      SectorId: this.toolsAndEquipmentStatusForm.get('SectorId').value,
+      JobRoleId: this.toolsAndEquipmentStatusForm.get('JobRoleId').value,
+      VTPId: this.toolsAndEquipmentStatusForm.get('VTPId').value,
+      ClassId: this.toolsAndEquipmentStatusForm.get('ClassId').value,
+      MonthId: this.toolsAndEquipmentStatusForm.get('MonthId').value,
+      SchoolManagementId: this.toolsAndEquipmentStatusForm.get('SchoolManagementId').value
+    };
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+    this.reportService.GetToolsAndEquipmentStatusReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "ToolsAndEquipmentStatus");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

@@ -251,4 +251,33 @@ export class SchoolInfoReportComponent extends BaseListComponent<SchoolInfoRepor
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.schoolInfoReportForm.get('AcademicYearId').value,
+      DivisionId: this.schoolInfoReportForm.get('DivisionId').value,
+      DistrictId: this.schoolInfoReportForm.get('DistrictId').value,
+      SectorId: this.schoolInfoReportForm.get('SectorId').value,
+      JobRoleId: this.schoolInfoReportForm.get('JobRoleId').value,
+      VTPId: this.schoolInfoReportForm.get('VTPId').value,
+      ClassId: this.schoolInfoReportForm.get('ClassId').value,
+      MonthId: this.schoolInfoReportForm.get('MonthId').value,
+      SchoolManagementId: this.schoolInfoReportForm.get('SchoolManagementId').value
+    };
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+    this.reportService.GetSchoolInfoReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "SchoolInformation");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

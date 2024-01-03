@@ -47,7 +47,7 @@
                 </a>
 
                 <a *ngIf="PageRights.IsExport" class="export-excel"
-                    (click)="exporter.exportTable('xlsx', {fileName:'VTDailyMonthlyReport', sheet: 'VTDailyMonthlyReport', Props: {Author: 'Lighthouse'}})">
+                (click)="exportExcel()">
                     <mat-icon> cloud_download</mat-icon>
                 </a>
             </div>

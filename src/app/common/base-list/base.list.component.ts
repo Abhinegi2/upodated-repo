@@ -105,7 +105,6 @@ export class BaseListComponent<T> extends BaseComponent<T> implements OnInit {
 
             /* save to file */
             let fileName = dataType + '-' + currentDateTime + '.xlsx';
-            XLSX.writeFile(wb, fileName);
             XLSX.writeFile(wb, fileName, exportOptions);
 
             resolve(currentDateTime);

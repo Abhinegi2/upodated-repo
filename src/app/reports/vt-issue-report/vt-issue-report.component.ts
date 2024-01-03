@@ -227,4 +227,32 @@ export class VTIssueReportComponent extends BaseListComponent<VTIssueReportModel
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.vtIssueReportingForm.get('AcademicYearId').value,
+      DivisionId: this.vtIssueReportingForm.get('DivisionId').value,
+      DistrictId: this.vtIssueReportingForm.get('DistrictId').value,
+      SectorId: this.vtIssueReportingForm.get('SectorId').value,
+      JobRoleId: this.vtIssueReportingForm.get('JobRoleId').value,
+      VTPId: this.vtIssueReportingForm.get('VTPId').value,
+      ClassId: this.vtIssueReportingForm.get('ClassId').value,
+      MonthId: this.vtIssueReportingForm.get('MonthId').value,
+      SchoolManagementId: this.vtIssueReportingForm.get('SchoolManagementId').value
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVTIssueReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VTIssueReporting");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

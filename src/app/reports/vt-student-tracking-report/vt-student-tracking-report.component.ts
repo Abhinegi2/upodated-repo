@@ -234,4 +234,34 @@ export class VTStudentTrackingReportComponent extends BaseListComponent<VTStuden
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      FromDate: this.DateFormatPipe.transform(this.vtStudentTrackingForm.get('FromDate').value, this.Constants.ServerDateFormat),
+      ToDate: this.DateFormatPipe.transform(this.vtStudentTrackingForm.get('ToDate').value, this.Constants.ServerDateFormat),
+      AcademicYearId: this.vtStudentTrackingForm.get('AcademicYearId').value,
+      DivisionId: this.vtStudentTrackingForm.get('DivisionId').value,
+      DistrictId: this.vtStudentTrackingForm.get('DistrictId').value,
+      SectorId: this.vtStudentTrackingForm.get('SectorId').value,
+      JobRoleId: this.vtStudentTrackingForm.get('JobRoleId').value,
+      VTPId: this.vtStudentTrackingForm.get('VTPId').value,
+      ClassId: this.vtStudentTrackingForm.get('ClassId').value,
+      MonthId: this.vtStudentTrackingForm.get('MonthId').value,
+      SchoolManagementId: this.vtStudentTrackingForm.get('SchoolManagementId').value
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVTStudentTrackingByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VTStudentTracking");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

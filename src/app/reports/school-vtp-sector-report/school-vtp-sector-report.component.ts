@@ -231,4 +231,30 @@ export class SchoolVTPSectorReportComponent extends BaseListComponent<SchoolVTPS
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.schoolVTPSectorForm.get('AcademicYearId').value,
+      DivisionId: this.schoolVTPSectorForm.get('DivisionId').value,
+      DistrictId: this.schoolVTPSectorForm.get('DistrictId').value,
+      SectorId: this.schoolVTPSectorForm.get('SectorId').value,
+      JobRoleId: this.schoolVTPSectorForm.get('JobRoleId').value,
+      VTPId: this.schoolVTPSectorForm.get('VTPId').value,
+      ClassId: this.schoolVTPSectorForm.get('ClassId').value,
+      MonthId: this.schoolVTPSectorForm.get('MonthId').value,
+      SchoolManagementId: this.schoolVTPSectorForm.get('SchoolManagementId').value
+    };
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+    this.reportService.GetSchoolVTPSectorReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "SchoolVTPSectors");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

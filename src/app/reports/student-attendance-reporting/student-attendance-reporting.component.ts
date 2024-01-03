@@ -229,4 +229,32 @@ export class StudentAttendanceReportingComponent extends BaseListComponent<Stude
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.studentAttendanceReportingForm.get('AcademicYearId').value,
+      DivisionId: this.studentAttendanceReportingForm.get('DivisionId').value,
+      DistrictId: this.studentAttendanceReportingForm.get('DistrictId').value,
+      SectorId: this.studentAttendanceReportingForm.get('SectorId').value,
+      JobRoleId: this.studentAttendanceReportingForm.get('JobRoleId').value,
+      VTPId: this.studentAttendanceReportingForm.get('VTPId').value,
+      ClassId: this.studentAttendanceReportingForm.get('ClassId').value,
+      MonthId: this.studentAttendanceReportingForm.get('MonthId').value,
+      SchoolManagementId: this.studentAttendanceReportingForm.get('SchoolManagementId').value
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetStudentAttendanceReportingReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "StudentAttendanceReporting");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

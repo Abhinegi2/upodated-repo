@@ -233,4 +233,36 @@ export class CourseMaterialStatusComponent extends BaseListComponent<CourseMater
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.courseMaterialStatusForm.get('AcademicYearId').value,
+      DivisionId: this.courseMaterialStatusForm.get('DivisionId').value,
+      DistrictId: this.courseMaterialStatusForm.get('DistrictId').value,
+      SectorId: this.courseMaterialStatusForm.get('SectorId').value,
+      JobRoleId: this.courseMaterialStatusForm.get('JobRoleId').value,
+      VTPId: this.courseMaterialStatusForm.get('VTPId').value,
+      ClassId: this.courseMaterialStatusForm.get('ClassId').value,
+      MonthId: this.courseMaterialStatusForm.get('MonthId').value,
+      SchoolManagementId: this.courseMaterialStatusForm.get('SchoolManagementId').value
+    };
+
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetCourseMaterialStatusReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "CourseMaterials");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

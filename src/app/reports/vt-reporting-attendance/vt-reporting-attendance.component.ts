@@ -229,4 +229,35 @@ export class VTReportingAttendanceComponent extends BaseListComponent<VTReportin
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.vtReportingAttendanceForm.get('AcademicYearId').value,
+      DivisionId: this.vtReportingAttendanceForm.get('DivisionId').value,
+      DistrictId: this.vtReportingAttendanceForm.get('DistrictId').value,
+      SectorId: this.vtReportingAttendanceForm.get('SectorId').value,
+      JobRoleId: this.vtReportingAttendanceForm.get('JobRoleId').value,
+      ClassId: this.vtReportingAttendanceForm.get('ClassId').value,
+      MonthId: this.vtReportingAttendanceForm.get('MonthId').value,
+      SchoolManagementId: this.vtReportingAttendanceForm.get('SchoolManagementId').value
+    };
+
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVTReportingAttendanceReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VTReportingAttendances");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

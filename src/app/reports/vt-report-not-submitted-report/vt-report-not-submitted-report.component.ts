@@ -73,4 +73,23 @@ export class VTReportNotSubmittedReportComponent extends BaseListComponent<VTRep
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      FromDate: this.DateFormatPipe.transform(this.vtReportNotSubmittedForm.get('FromDate').value, this.Constants.ServerDateFormat),
+      ToDate: this.DateFormatPipe.transform(this.vtReportNotSubmittedForm.get('ToDate').value, this.Constants.ServerDateFormat)
+    };
+
+    this.reportService.GetVTDailyReportNotSubmittedTrackingByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VTReportNotSubmitted");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }
