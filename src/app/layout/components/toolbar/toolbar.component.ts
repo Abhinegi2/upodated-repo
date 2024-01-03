@@ -14,6 +14,7 @@ import { environment } from 'environments/environment';
 import { Router } from '@angular/router';
 import { RouteConstants } from 'app/constants/route.constant';
 import { LoginModel } from 'app/models/login.model';
+import { Platform } from '@angular/cdk/platform';
 
 @Component({
     selector: 'toolbar',
@@ -32,11 +33,17 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
     userStatusOptions: any[];
     currentUser: UserModel;
     loginModel: LoginModel;
+    isMobile: boolean;
+    isCheckedIn: boolean = false;
+
+    userLocation: { latitude: number, longitude: number } = null;
+
 
     public appInfo = environment;
 
     // Private
     private _unsubscribeAll: Subject<any>;
+    showCheckInButton: boolean;
 
     /**
      * Constructor
@@ -44,6 +51,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {FuseConfigService} _fuseConfigService
      * @param {FuseSidebarService} _fuseSidebarService
      * @param {TranslateService} _translateService
+     * @param {Platform} _platform
      */
     constructor(
         private _fuseConfigService: FuseConfigService,
@@ -51,6 +59,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService,
         private fuseNavigationService: FuseNavigationService,
+        private _platform: Platform,
+        
+        
         public router: Router
     ) {
         // Set the defaults
@@ -101,6 +112,8 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this._unsubscribeAll = new Subject();
 
         this.currentUser = new UserModel();
+        this.isMobile = false;
+        this.isMobile = this._platform.ANDROID || this._platform.IOS;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -111,6 +124,16 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+
+        // if (this.fusePerfectScrollbarDirective) {
+        //     this.fusePerfectScrollbarDirective.isMobileChange.subscribe((isMobile: boolean) => {
+        //         console.log('Is Mobile:', isMobile);
+        //         // Use the isMobile value as needed
+        //     });
+        // }
+
+        this.showCheckInButton = this._platform.ANDROID || this._platform.IOS;
+
         // Subscribe to the config changes
         this._fuseConfigService.config
             .pipe(takeUntil(this._unsubscribeAll))
@@ -119,10 +142,14 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.rightNavbar = settings.layout.navbar.position === 'right';
                 this.hiddenNavbar = settings.layout.navbar.hidden === true;
             });
-
+            
+            // this.showCheckInButton = this._platform.ANDROID || this._platform.IOS;
+            // console.log(this.showCheckInButton);
+            // console.log("hsfe")
+            
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
-
+       
         var _currentUser = this.authenticationService.getCurrentUser();
         if (_currentUser != null) {
             this.currentUser = _currentUser;
@@ -131,6 +158,24 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         var userNavigations = this.authenticationService.getUserNavigations();
         if (userNavigations != null) {
             this.navigation = userNavigations;
+        }
+       
+
+        // Check screen width to detect tablet
+        // if (window.innerWidth >= 600 && window.innerWidth < 1024) {
+        //     console.log("It's a tablet");
+        //     // You can set a flag or take some action for tablets
+        // }
+        
+    }
+    checkIn(): void {
+        console.log("checkins")
+        this.isCheckedIn = !this.isCheckedIn;
+        // Handle the check-in logic here, e.g., capture user location
+        if (this.isCheckedIn) {
+            console.log("usernot")
+            this.getUserLocation();
+            // Add your logic to process the check-in
         }
     }
 
@@ -145,6 +190,38 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this._unsubscribeAll.next();
         this._unsubscribeAll.complete();
     }
+
+    getUserLocation(): void {
+        console.log("locationbaba")
+       var UserId =this.currentUser.UserTypeId
+        console.log(UserId);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    this.userLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+                    console.log('User Location:', this.userLocation);
+                },
+                (error) => {
+                    console.error('Error getting user location:', error);
+                    alert('Please enable GPS for accurate location.');
+                    if (error.code === 1) {
+                    } else if (error.code === 2) {
+                        alert('Location information is unavailable. Please enable GPS.');
+                    } else if (error.code === 3) {
+                      
+                        alert('Request for location information timed out. Please enable GPS.');
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+            );
+        } else {
+            console.error('Geolocation is not supported by this browser.');
+        }
+    }
+
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

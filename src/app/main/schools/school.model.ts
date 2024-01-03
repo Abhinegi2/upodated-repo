@@ -21,6 +21,10 @@ export class SchoolModel {
     Pincode: string;
     Demography: string;
     IsImplemented: boolean;
+    GeoLocation: string;
+    Latitude: string;
+    Longitude: string;
+    Range: number
     IsActive: boolean;
     RequestType: any;
 
@@ -48,6 +52,10 @@ export class SchoolModel {
         this.Demography = schoolItem.Demography || '';
         this.IsImplemented = schoolItem.IsImplemented || true
         this.IsActive = schoolItem.IsActive || true;
+        this.GeoLocation = schoolItem.GeoLocation || '';
+        this.Latitude = schoolItem.Latitude || '';
+        this.Longitude = schoolItem.Longitude || '';
+        this.Range = schoolItem.Range || '';
         this.RequestType = 0; // New
     }
 }

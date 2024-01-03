@@ -298,6 +298,51 @@
                         </mat-error>
                     </div>
 
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row" fxLayoutGap="10px"
+                        fxLayoutGap.lt-md="0px">
+
+                        <!-- <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Latitude</mat-label>
+                            <input matInput name="Latitude" formControlName="Latitude" digitOnly minlength="20" maxlength="20"
+                                required placeholder="Enter the 20 digit Latitude number"
+                                matTooltip="Enter the 20 digit Latitude number." matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Latitude.invalid">
+                                {{getErrorMessage(schoolForm, 'Latitude')}}
+                            </mat-error>
+                        </mat-form-field> -->
+
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Latitude</mat-label>
+                            <input matInput name="Latitude" formControlName="Latitude" required placeholder="Enter the Latitude number" matTooltip="Enter the 20 digit Latitude number." matTooltipPosition="above"/>
+                            <mat-error *ngIf="schoolForm.controls.Latitude.invalid">
+                              {{ getErrorMessage(schoolForm, 'Latitude') }}
+                            </mat-error>
+                          </mat-form-field>
+
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Longitude</mat-label>
+                            <input matInput name="Longitude" formControlName="Longitude"
+                              required placeholder="Enter the 20 digit Longitude number" matTooltip="Enter the 20 digit Longitude number."
+                              matTooltipPosition="above"/>
+                            <mat-error *ngIf="schoolForm.controls.Longitude.invalid">
+                              {{ getErrorMessage(schoolForm, 'Longitude') }}
+                            </mat-error>
+                          </mat-form-field>
+
+                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                            <mat-label>Range</mat-label>
+                            <input matInput name="Range" formControlName="Range" digitOnly minlength="1" maxlength="2"
+                                required placeholder="Enter the Range"
+                                matTooltip="Enter the Range" matTooltipPosition="above">
+                            <mat-error *ngIf="schoolForm.controls.Range.invalid">
+                                {{getErrorMessage(schoolForm, 'Range')}}
+                            </mat-error>
+                        </mat-form-field>
+
+                    </div>
+
                     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
                         <span class="checkbox-space">Is Implemented?</span>
                         <mat-checkbox matInput formControlName="IsImplemented" [disabled]="PageRights.IsReadOnly">
