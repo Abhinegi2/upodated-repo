@@ -230,4 +230,31 @@ export class VCSchoolVisitSummaryComponent extends BaseListComponent<VCSchoolVis
       console.log(error);
     });
   }
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.vcSchoolVisitSummaryForm.get('AcademicYearId').value,
+      DivisionId: this.vcSchoolVisitSummaryForm.get('DivisionId').value,
+      DistrictId: this.vcSchoolVisitSummaryForm.get('DistrictId').value,
+      SectorId: this.vcSchoolVisitSummaryForm.get('SectorId').value,
+      JobRoleId: this.vcSchoolVisitSummaryForm.get('JobRoleId').value,
+      VTPId: this.vcSchoolVisitSummaryForm.get('VTPId').value,
+      ClassId: this.vcSchoolVisitSummaryForm.get('ClassId').value,
+      MonthId: this.vcSchoolVisitSummaryForm.get('MonthId').value,
+      SchoolManagementId: this.vcSchoolVisitSummaryForm.get('SchoolManagementId').value
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVCSchoolVisitSummaryReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VCSchoolVisitSummary");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

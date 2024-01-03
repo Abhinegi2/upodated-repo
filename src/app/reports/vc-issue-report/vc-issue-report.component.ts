@@ -229,4 +229,30 @@ export class VCIssueReportComponent extends BaseListComponent<VCIssueReportModel
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.vcIssueReportForm.get('AcademicYearId').value,
+      DivisionId: this.vcIssueReportForm.get('DivisionId').value,
+      DistrictId: this.vcIssueReportForm.get('DistrictId').value,
+      SectorId: this.vcIssueReportForm.get('SectorId').value,
+      JobRoleId: this.vcIssueReportForm.get('JobRoleId').value,
+      VTPId: this.vcIssueReportForm.get('VTPId').value,
+      ClassId: this.vcIssueReportForm.get('ClassId').value,
+      MonthId: this.vcIssueReportForm.get('MonthId').value,
+      SchoolManagementId: this.vcIssueReportForm.get('SchoolManagementId').value
+    };
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+    this.reportService.GetVCIssueReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VCIssueReporting");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

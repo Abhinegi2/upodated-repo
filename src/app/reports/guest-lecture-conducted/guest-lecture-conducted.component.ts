@@ -235,4 +235,35 @@ export class GuestLectureConductedComponent extends BaseListComponent<GuestLectu
       console.log(error);
     });
   }
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.guestLectureConductedForm.get('AcademicYearId').value,
+      DivisionId: this.guestLectureConductedForm.get('DivisionId').value,
+      DistrictId: this.guestLectureConductedForm.get('DistrictId').value,
+      SectorId: this.guestLectureConductedForm.get('SectorId').value,
+      JobRoleId: this.guestLectureConductedForm.get('JobRoleId').value,
+      VTPId: this.guestLectureConductedForm.get('VTPId').value,
+      ClassId: this.guestLectureConductedForm.get('ClassId').value,
+      MonthId: this.guestLectureConductedForm.get('MonthId').value,
+      SchoolManagementId: this.guestLectureConductedForm.get('SchoolManagementId').value
+    };
+
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetGuestLectureConductedReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "GuestLectureConducted");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

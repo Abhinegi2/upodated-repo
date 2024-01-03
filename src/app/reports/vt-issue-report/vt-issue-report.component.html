@@ -40,7 +40,7 @@
                 <button mat-raised-button class="fuse-white filter-button" style="margin-bottom: 10px;"
                 (click)="isShowFilterContainer=!isShowFilterContainer"><span>FILTERS</span></button>
                 <a *ngIf="PageRights.IsExport" class="export-excel"
-                    (click)="exporter.exportTable('xlsx', {fileName:'VTIssueReporting', sheet: 'VTIssueReporting', Props: {Author: 'Lighthouse'}})">
+                (click)="exportExcel()">
                     <mat-icon> cloud_download</mat-icon>
                 </a>
             </div>

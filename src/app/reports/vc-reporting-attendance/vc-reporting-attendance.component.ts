@@ -228,4 +228,33 @@ export class VCReportingAttendanceReportComponent extends BaseListComponent<VCRe
       console.log(error);
     });
   }
+
+  
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.vcReportingAttendanceForm.get('AcademicYearId').value,
+      DivisionId: this.vcReportingAttendanceForm.get('DivisionId').value,
+      DistrictId: this.vcReportingAttendanceForm.get('DistrictId').value,
+      SectorId: this.vcReportingAttendanceForm.get('SectorId').value,
+      JobRoleId: this.vcReportingAttendanceForm.get('JobRoleId').value,
+      VTPId: this.vcReportingAttendanceForm.get('VTPId').value,
+      ClassId: this.vcReportingAttendanceForm.get('ClassId').value,
+      MonthId: this.vcReportingAttendanceForm.get('MonthId').value,
+      SchoolManagementId: this.vcReportingAttendanceForm.get('SchoolManagementId').value
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVCReportingAttendanceReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VCReportingAttendances");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

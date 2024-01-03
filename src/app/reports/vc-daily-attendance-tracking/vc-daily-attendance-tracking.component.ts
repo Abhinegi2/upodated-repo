@@ -218,4 +218,33 @@ export class VCDailyAttendanceTrackingComponent extends BaseListComponent<VCDail
       console.log(error);
     });
   }
+
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      AcademicYearId: this.dailyAttendanceTrackingForm.get('AcademicYearId').value,
+      DivisionId: this.dailyAttendanceTrackingForm.get('DivisionId').value,
+      DistrictId: this.dailyAttendanceTrackingForm.get('DistrictId').value,
+      SectorId: this.dailyAttendanceTrackingForm.get('SectorId').value,
+      JobRoleId: this.dailyAttendanceTrackingForm.get('JobRoleId').value,
+      VTPId: this.dailyAttendanceTrackingForm.get('VTPId').value,
+      ClassId: this.dailyAttendanceTrackingForm.get('ClassId').value,
+      SchoolManagementId: this.dailyAttendanceTrackingForm.get('SchoolManagementId').value,
+      UserId: this.UserModel.LoginId,
+      FromDate: this.DateFormatPipe.transform(this.dailyAttendanceTrackingForm.get('FromDate').value, this.Constants.ServerDateFormat),
+      ToDate: this.DateFormatPipe.transform(this.dailyAttendanceTrackingForm.get('ToDate').value, this.Constants.ServerDateFormat)
+    };
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetVCDailyAttendanceTrackingByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "VCDailyAttendanceTracking");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
 }

@@ -373,9 +373,9 @@ export class VTDailyMonthlyReportComponent extends BaseListComponent<VTDailyMont
       UserId: this.UserModel.LoginId,
       AcademicYearId: this.vtDailyMonthlyFilterForm.controls["AcademicYearId"].value,
       VTPId: this.vtDailyMonthlyFilterForm.controls["VTPId"].value,
-      VCId: this.vtDailyMonthlyFilterForm.controls['VCId'].value,
+      VCId: this.UserModel.RoleCode == 'VC' ? this.UserModel.UserTypeId : this.vtDailyMonthlyFilterForm.controls['VCId'].value,
       HMId: null,
-      VTId: this.vtDailyMonthlyFilterForm.controls['VTId'].value,
+      VTId: null,
       SchoolId: this.vtDailyMonthlyFilterForm.controls['SchoolId'].value,
       DivisionId: this.vtDailyMonthlyFilterForm.controls['DivisionId'].value,
       DistrictId: this.vtDailyMonthlyFilterForm.controls['DistrictId'].value,
@@ -387,7 +387,8 @@ export class VTDailyMonthlyReportComponent extends BaseListComponent<VTDailyMont
       reportParams.HMId = this.UserModel.UserTypeId;
     }
 
-    this.reportService.GetVTDailyMonthlyTrackingByCriteria(this.SearchBy).subscribe(response => {
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+    this.reportService.GetVTDailyMonthlyTrackingByCriteria(reportParams).subscribe(response => {
       this.exportExcelFromTable(response.Results, "VTDailyMonthlyReport");
 
       this.IsLoading = false;

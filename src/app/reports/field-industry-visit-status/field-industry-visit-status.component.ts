@@ -234,4 +234,36 @@ export class FieldAndIndustryVisitStatusComponent extends BaseListComponent<Fiel
       console.log(error);
     });
   }
+  exportExcel(): void {
+    this.IsLoading = true;
+    var reportParams: any = {
+      UserId: this.UserModel.LoginId,
+      AcademicYearId: this.fieldAndIndustryVisitStatusForm.get('AcademicYearId').value,
+      DivisionId: this.fieldAndIndustryVisitStatusForm.get('DivisionId').value,
+      DistrictId: this.fieldAndIndustryVisitStatusForm.get('DistrictId').value,
+      SectorId: this.fieldAndIndustryVisitStatusForm.get('SectorId').value,
+      JobRoleId: this.fieldAndIndustryVisitStatusForm.get('JobRoleId').value,
+      VTPId: this.fieldAndIndustryVisitStatusForm.get('VTPId').value,
+      ClassId: this.fieldAndIndustryVisitStatusForm.get('ClassId').value,
+      MonthId: this.fieldAndIndustryVisitStatusForm.get('MonthId').value,
+      SchoolManagementId: this.fieldAndIndustryVisitStatusForm.get('SchoolManagementId').value
+    };
+
+    if (this.UserModel.RoleCode == 'HM') {
+      reportParams.HMId = this.UserModel.UserTypeId;
+    }
+
+    reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
+
+    this.reportService.GetfieldAndIndustryVisitStatusReportsByCriteria(reportParams).subscribe(response => {
+      this.exportExcelFromTable(response.Results, "FieldIndustryVisitStatus");
+      this.IsLoading = false;
+      this.SearchBy.PageIndex = 0;
+      this.SearchBy.PageSize = 10;
+    }, error => {
+      console.log(error);
+      this.IsLoading = false;
+    });
+  }
+  
 }

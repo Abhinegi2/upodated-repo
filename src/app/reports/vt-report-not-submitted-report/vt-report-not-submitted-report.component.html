@@ -38,7 +38,7 @@
             <!-- ADD BUTTON -->
             <div class="action-buttons">
                 <a *ngIf="PageRights.IsExport" class="export-excel"
-                    (click)="exporter.exportTable('xlsx', {fileName:'VTReportNotSubmitted', sheet: 'VTReportNotSubmitted', Props: {Author: 'Lighthouse'}})">
+                (click)="exportExcel()">
                     <mat-icon> cloud_download</mat-icon>
                 </a>
             </div>
