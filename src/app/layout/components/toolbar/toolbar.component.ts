@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'lodash';
-
+import { CommonService } from 'app/services/common.service';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { FuseSidebarService } from '@fuse/components/sidebar/sidebar.service';
 import { navigation } from 'app/navigation/navigation';
@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { RouteConstants } from 'app/constants/route.constant';
 import { LoginModel } from 'app/models/login.model';
 import { Platform } from '@angular/cdk/platform';
+import { BaseListComponent } from 'app/common/base-list/base.list.component';
+
 
 @Component({
     selector: 'toolbar',
@@ -44,6 +46,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
     // Private
     private _unsubscribeAll: Subject<any>;
     showCheckInButton: boolean;
+    // UserModel: any;
 
     /**
      * Constructor
@@ -53,17 +56,16 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
      * @param {TranslateService} _translateService
      * @param {Platform} _platform
      */
-    constructor(
+    constructor(public commonService: CommonService,
         private _fuseConfigService: FuseConfigService,
         private _fuseSidebarService: FuseSidebarService,
         private _translateService: TranslateService,
         private authenticationService: AuthenticationService,
         private fuseNavigationService: FuseNavigationService,
         private _platform: Platform,
-        
-        
-        public router: Router
+        public router: Router,
     ) {
+        
         // Set the defaults
         this.userStatusOptions = [
             {
@@ -168,14 +170,23 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         // }
         
     }
+    
     checkIn(): void {
         console.log("checkins")
         this.isCheckedIn = !this.isCheckedIn;
-        // Handle the check-in logic here, e.g., capture user location
+
         if (this.isCheckedIn) {
-            console.log("usernot")
+            // console.log("usernot")
             this.getUserLocation();
-            // Add your logic to process the check-in
+           console.log(this.currentUser.UserTypeId)
+
+          this.commonService.GetMasterDataByType({ DataType: 'SchoolsByUser', roleId: this.currentUser.RoleCode,ParentId:this.currentUser.UserTypeId, SelectTitle: "UserId" }).subscribe((response: any) => {
+           console.log("userroel")
+           console.log(response);
+          });
+
+
+
         }
     }
 
