@@ -182,7 +182,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.commonService.GetMasterDataByType({ DataType: 'SchoolsByUser', roleId: this.currentUser.RoleCode,ParentId:this.currentUser.UserTypeId, SelectTitle: "UserId" }).subscribe((response: any) => {
            console.log("userroel")
-           console.log(response);
+           console.log(response)
           });
 
 
