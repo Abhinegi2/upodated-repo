@@ -280,9 +280,9 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude
                     };
-                    errorMessages = "You have successfully Checked-In"
+                    // errorMessages = "You have successfully Checked-In"
                     console.log('User Location:', this.userLocation);
-                    this.dialogService.openShowDialog(errorMessages);
+                    // this.dialogService.openShowDialog(errorMessages);
                 },
                 (error) => {
                     errorMessages = "Please enable GPS for accurate location.";
