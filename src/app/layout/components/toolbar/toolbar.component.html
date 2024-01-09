@@ -54,6 +54,12 @@
                     <span>Logout</span>
                 </button>
 
+                <mat-button-toggle mat-menu-item class="" *ngIf="showCheckInButton" [checked]="isCheckedIn" (click)="checkIn()">
+                    <mat-icon>{{ isCheckedIn ? 'done' : 'check' }}</mat-icon>
+                    <span>{{ isCheckedIn ? 'Checked-In' : 'Check-In' }}</span>
+                </mat-button-toggle>
+                
+                
             </mat-menu>
 
             <div class="toolbar-separator"></div>

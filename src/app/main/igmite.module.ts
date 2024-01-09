@@ -433,6 +433,7 @@ import { CreateWhatsappBrodcastingComponent } from './whatsapp-broadcasting/crea
 import { EmailBroadcastingComponent } from './email-broadcasting/email-broadcasting.component';
 import { CreateEmailBrodcastingComponent } from './email-broadcasting/create-email-brodcasting/create-email-brodcasting.component';
 import { EmailBroadcastingService } from './email-broadcasting/email-broadcating.service';
+import { ToolbarService } from 'app/layout/components/toolbar/toolbar.service';
 
 const routes: Routes = [
     { path: RouteConstants.Login, component: LoginComponent },
@@ -1366,6 +1367,7 @@ const routes: Routes = [
         VTSchoolSectorsForAcademicRolloverService,
         MessageTemplateService,
         whatsappBroadcastingService,
+        ToolbarService,
         EmailBroadcastingService
     ]
 })

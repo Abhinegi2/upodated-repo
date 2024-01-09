@@ -99,8 +99,11 @@ export class ServiceConstants {
         ChangePassword: "Account/ChangePassword",
         ForgotPassword: "Lighthouse/ForgotPassword",
         ResetPassword: "Lighthouse/ResetPassword",
-        ChangeLogin: "Account/ChangeUserLoginId"
+        ChangeLogin: "Account/ChangeUserLoginId",
+        CheckIn: "UserCheckInDetails/CreateUserCheckInDetails"
     };
+
+    
 
     public Country = {
         GetAll: "Country/GetCountries",
@@ -805,4 +808,5 @@ export class ServiceConstants {
         CreateOrUpdate: "EmailBroadcating/CreateOrUpdateMessageTemplateDetails",
         Delete: "EmailBroadcating/DeleteMessageTemplateById"
     };
+ 
 };

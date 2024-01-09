@@ -5,6 +5,8 @@ export const RouteConstants = {
     Settings: 'settings',
     PageNotFound: 'page-not-found',
 
+    CreateUserCheckInDetails: 'user-check-in-details/create',
+
     AcademicYear: {
         List: 'academic-years',
         New: 'academic-years/:actionType',
