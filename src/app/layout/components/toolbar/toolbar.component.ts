@@ -232,17 +232,17 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
                             console.log('Location saved successfully:', response);
     
                             if (response && response.Result === 'Success') {
-                                this.snackBar.open('Location saved successfully', 'OK', {
-                                    duration: 3000,
-                                });
+                                // this.snackBar.open('Location saved successfully', 'OK', {
+                                //     duration: ,
+                                // });
                             } else {
                                 this.dialogService.openShowDialog(response.Errors[0]);
                                 console.log(response.Errors[0])
                                 console.error('Unexpected response:', response);
-                                this.snackBar.open('Failed to save location', 'OK', {
-                                    duration: 3000,
-                                    panelClass: ['error-snackbar'] 
-                                });
+                                // this.snackBar.open('Failed to save location', 'OK', {
+                                //     duration: 3000,
+                                //     panelClass: ['error-snackbar'] 
+                                // });
                             }
                         },
                         (error) => {
