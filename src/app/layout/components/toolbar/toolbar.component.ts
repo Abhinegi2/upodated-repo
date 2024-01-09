@@ -137,10 +137,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit(): void {
 
-        this.commonService.GetMasterDataByType({ DataType: 'SchoolsByUser', roleId: this.currentUser.RoleCode,ParentId:this.currentUser.UserTypeId, SelectTitle: "UserId" }).subscribe((response: any) => {
-               console.log("userroel")
-               console.log(response,"join me k")
-              });
         // if (this.fusePerfectScrollbarDirective) {
         //     this.fusePerfectScrollbarDirective.isMobileChange.subscribe((isMobile: boolean) => {
         //         console.log('Is Mobile:', isMobile);
