@@ -13,12 +13,12 @@ export class ToolbarService {
 
     constructor(private http: BaseService) { }
 
-    saveUserLocation(userId: string, latitude: number, longitude: number,SchoolId:string, Designation:string): Observable<any> {
+    saveUserLocation(userId: string, latitude: number, longitude: number,Designation:string): Observable<any> {
       const payload = {
         UserId: userId,
         Latitude: latitude,
         Longitude: longitude,
-        SchoolId: SchoolId,
+        // SchoolId: SchoolId,
         Designation:Designation
       };
       console.log("akakkakaak")

@@ -225,7 +225,7 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
                 const schoolId = this.schoolId;
                 const Designation = this.currentUser.Designation;
     
-                this.toolbarService.saveUserLocation(userId, latitude, longitude, schoolId, Designation)
+                this.toolbarService.saveUserLocation(userId, latitude, longitude, Designation)
                     .subscribe(
                         (response) => {
                             console.log("hello");
