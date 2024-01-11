@@ -220,6 +220,30 @@
                         <p class="text-truncate">{{school.SchoolUniqueId}}</p>
                     </mat-cell>
                 </ng-container> -->
+
+                  <!-- SchoolUniqueId Column -->
+                  <ng-container matColumnDef="Latitude">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Latitude</mat-header-cell>
+                    <mat-cell *matCellDef="let school">
+                        <p class="text-truncate">{{school.Latitude}}</p>
+                    </mat-cell>
+                </ng-container> 
+
+                  <!-- SchoolUniqueId Column -->
+                  <ng-container matColumnDef="Longitude">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Longitude</mat-header-cell>
+                    <mat-cell *matCellDef="let school">
+                        <p class="text-truncate">{{school.Longitude}}</p>
+                    </mat-cell>
+                </ng-container> 
+
+                  <!-- SchoolUniqueId Column -->
+                  <ng-container matColumnDef="Range">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Range</mat-header-cell>
+                    <mat-cell *matCellDef="let school">
+                        <p class="text-truncate">{{school.Range}}</p>
+                    </mat-cell>
+                </ng-container> 
                 
                  <!-- CreatedBy Column -->
                  <ng-container matColumnDef="CreatedBy">

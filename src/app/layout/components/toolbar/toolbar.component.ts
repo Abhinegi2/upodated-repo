@@ -137,13 +137,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     ngOnInit(): void {
 
-        // if (this.fusePerfectScrollbarDirective) {
-        //     this.fusePerfectScrollbarDirective.isMobileChange.subscribe((isMobile: boolean) => {
-        //         console.log('Is Mobile:', isMobile);
-        //         // Use the isMobile value as needed
-        //     });
-        // }
-
         this.showCheckInButton = this._platform.ANDROID || this._platform.IOS;
 
         // Subscribe to the config changes
@@ -154,10 +147,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.rightNavbar = settings.layout.navbar.position === 'right';
                 this.hiddenNavbar = settings.layout.navbar.hidden === true;
             });
-            
-            // this.showCheckInButton = this._platform.ANDROID || this._platform.IOS;
-            // console.log(this.showCheckInButton);
-            // console.log("hsfe")
             
         // Set the selected language from default languages
         this.selectedLanguage = _.find(this.languages, { id: this._translateService.currentLang });
@@ -171,87 +160,39 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
         if (userNavigations != null) {
             this.navigation = userNavigations;
         }
-       
-
-        // Check screen width to detect tablet
-        // if (window.innerWidth >= 600 && window.innerWidth < 1024) {
-        //     console.log("It's a tablet");
-        //     // You can set a flag or take some action for tablets
-        // }
         
     }
     
-    // checkIn(): void {
-    //     console.log("checkins")
-    //     this.isCheckedIn = !this.isCheckedIn;
-
-    //     if (this.isCheckedIn) {
-    //         // console.log("usernot")
-    //         this.getUserLocation();
-    //        console.log(this.currentUser.UserTypeId)
-
-        //   this.commonService.GetMasterDataByType({ DataType: 'SchoolsByUser', roleId: this.currentUser.RoleCode,ParentId:this.currentUser.UserTypeId, SelectTitle: "UserId" }).subscribe((response: any) => {
-        //    console.log("userroel")
-        //    console.log(response)
-        //   });
-
-
-
-    //     }
-    // }
-
     checkIn(): void {
         console.log("checkins");
         this.isCheckedIn = !this.isCheckedIn;
     
         if (this.isCheckedIn) {
             this.getUserLocation();
-            this.commonService.GetMasterDataByType({
-                DataType: 'SchoolsByUser',
-                roleId: this.currentUser.RoleCode,
-                ParentId: this.currentUser.UserTypeId,
-                SelectTitle: "UserId"
-            }).subscribe((response: any) => {
-                this.schoolId = response.Results[1].Id;
-                console.log(response.Results[1].Id, "idi");
-    
-                const userId = this.currentUser.UserTypeId;
-                const latitude = this.userLocation.latitude;
-                const longitude = this.userLocation.longitude;
-                const schoolId = this.schoolId;
-                const Designation = this.currentUser.Designation;
-    
-                this.toolbarService.saveUserLocation(userId, latitude, longitude, Designation)
-                    .subscribe(
-                        (response) => {
-                            console.log("hello");
-                            console.log('Location saved successfully:', response);
-    
-                            if (response && response.Result === 'Success') {
-                                // this.snackBar.open('Location saved successfully', 'OK', {
-                                //     duration: ,
-                                // });
-                            } else {
-                                this.dialogService.openShowDialog(response.Errors[0]);
-                                console.log(response.Errors[0])
-                                console.error('Unexpected response:', response);
-                                // this.snackBar.open('Failed to save location', 'OK', {
-                                //     duration: 3000,
-                                //     panelClass: ['error-snackbar'] 
-                                // });
-                            }
-                        },
-                        (error) => {
-                            console.error('Error saving user location:', error);
-                            this.snackBar.open('Failed to save location', 'OK', {
-                                duration: 3000,
-                                panelClass: ['error-snackbar'] 
-                            });
+            const userId = this.currentUser.UserTypeId;
+            const latitude = this.userLocation.latitude;
+            const longitude = this.userLocation.longitude;
+            const schoolId = this.schoolId;
+            const Designation = this.currentUser.Designation;
+
+            this.toolbarService.saveUserLocation(userId, latitude, longitude, Designation)
+                .subscribe(
+                    (response) => {
+                        if (response && response.Result !== 'Success') {
+                            this.dialogService.openShowDialog(response.Errors[0]);
                         }
-                    );
-            });
+                    },
+                    (error) => {
+                        console.error('Error saving user location:', error);
+                        this.snackBar.open('Failed to save location', 'OK', {
+                            duration: 3000,
+                            panelClass: ['error-snackbar'] 
+                        });
+                    }
+                );
         }
     }
+
 
     ngAfterViewInit() {
     }
