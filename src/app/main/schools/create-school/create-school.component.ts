@@ -191,9 +191,9 @@ export class CreateSchoolComponent extends BaseComponent<SchoolModel> implements
       Pincode: new FormControl({ value: this.schoolModel.Pincode, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(6), Validators.minLength(6), Validators.pattern(this.Constants.Regex.Number)]),
       Demography: new FormControl({ value: this.schoolModel.Demography, disabled: this.PageRights.IsReadOnly }, Validators.maxLength(250)),
       IsImplemented: new FormControl({ value: this.schoolModel.IsImplemented, disabled: this.PageRights.IsReadOnly }),
-      Latitude: new FormControl({ value: this.schoolModel.Latitude, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(20), Validators.minLength(6), Validators.required]),
-      Longitude: new FormControl({ value: this.schoolModel.Longitude, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(20), Validators.minLength(6), Validators.required]),
-      Range: new FormControl({ value: this.schoolModel.Range, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(2), Validators.minLength(1), Validators.required]),
+      Latitude: new FormControl({ value: this.schoolModel.Latitude, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(20), Validators.minLength(6)]),
+      Longitude: new FormControl({ value: this.schoolModel.Longitude, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(20), Validators.minLength(6)]),
+      Range: new FormControl({ value: this.schoolModel.Range, disabled: this.PageRights.IsReadOnly }, [Validators.maxLength(2), Validators.minLength(1)]),
       IsActive: new FormControl({ value: this.schoolModel.IsActive, disabled: this.PageRights.IsReadOnly }),
     });
   }

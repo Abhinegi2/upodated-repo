@@ -314,7 +314,7 @@
 
                         <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Latitude</mat-label>
-                            <input matInput name="Latitude" formControlName="Latitude" required placeholder="Enter the Latitude number" matTooltip="Enter the 20 digit Latitude number." matTooltipPosition="above"/>
+                            <input matInput name="Latitude" formControlName="Latitude" placeholder="Enter the Latitude number" matTooltip="Enter the 20 digit Latitude number." matTooltipPosition="above"/>
                             <mat-error *ngIf="schoolForm.controls.Latitude.invalid">
                               {{ getErrorMessage(schoolForm, 'Latitude') }}
                             </mat-error>
@@ -324,7 +324,7 @@
                         <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Longitude</mat-label>
                             <input matInput name="Longitude" formControlName="Longitude"
-                              required placeholder="Enter the 20 digit Longitude number" matTooltip="Enter the 20 digit Longitude number."
+                               placeholder="Enter the 20 digit Longitude number" matTooltip="Enter the 20 digit Longitude number."
                               matTooltipPosition="above"/>
                             <mat-error *ngIf="schoolForm.controls.Longitude.invalid">
                               {{ getErrorMessage(schoolForm, 'Longitude') }}
@@ -335,7 +335,7 @@
                             <mat-label>Range</mat-label>
                             <div fxLayout="row" fxLayoutAlign="start center">
                               <input matInput name="Range" formControlName="Range" digitOnly minlength="1" maxlength="2"
-                                     required placeholder="Enter the Range"
+                                      placeholder="Enter the Range"
                                      matTooltip="Enter the Range in meter" matTooltipPosition="above">
                               <div style="margin-left: 8px;">meter</div>
                             </div>
