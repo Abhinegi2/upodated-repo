@@ -18,10 +18,8 @@ export class ToolbarService {
         UserId: userId,
         Latitude: latitude,
         Longitude: longitude,
-        // SchoolId: SchoolId,
         Designation:Designation
       };
-      console.log("akakkakaak")
         return this.http
         .HttpPost(this.http.Services.Account.CheckIn, payload)
         .pipe(
