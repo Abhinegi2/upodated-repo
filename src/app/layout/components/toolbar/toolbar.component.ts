@@ -178,9 +178,6 @@ export class ToolbarComponent implements OnInit, AfterViewInit, OnDestroy {
             this.toolbarService.saveUserLocation(userId, latitude, longitude, Designation)
                 .subscribe(
                     (response) => {
-                        console.log("hello");
-                        console.log('Location saved successfully:', response);
-
                         if (response && response.Result !== 'Success') {
                             this.dialogService.openShowDialog(response.Errors[0]);
                         }
