@@ -331,15 +331,18 @@
                             </mat-error>
                           </mat-form-field>
 
-                        <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
+                          <mat-form-field appearance="outline" fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Range</mat-label>
-                            <input matInput name="Range" formControlName="Range" digitOnly minlength="1" maxlength="2"
-                                required placeholder="Enter the Range"
-                                matTooltip="Enter the Range" matTooltipPosition="above">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                              <input matInput name="Range" formControlName="Range" digitOnly minlength="1" maxlength="2"
+                                     required placeholder="Enter the Range"
+                                     matTooltip="Enter the Range in meter" matTooltipPosition="above">
+                              <div style="margin-left: 8px;">meter</div>
+                            </div>
                             <mat-error *ngIf="schoolForm.controls.Range.invalid">
-                                {{getErrorMessage(schoolForm, 'Range')}}
+                              {{getErrorMessage(schoolForm, 'Range')}}
                             </mat-error>
-                        </mat-form-field>
+                          </mat-form-field>
 
                     </div>
 
