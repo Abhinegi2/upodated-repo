@@ -209,7 +209,7 @@
                             <mat-icon class="data-view s-22">visibility</mat-icon>
                         </button>
                         <button
-                            *ngIf="PageRights.IsEdit && (UserModel.RoleCode !== 'VT' || (UserModel.RoleCode === 'VT' && headMaster.CreatedByUserId === currentUser)) && headMaster.IsActive"
+                            *ngIf="PageRights.IsEdit && headMaster.IsActive"
                             mat-icon-button [routerLink]="['/head-masters', 'edit', headMaster.HMId]"
                             skipLocationChange="true" replaceUrl="false">
                             <mat-icon class="data-edit s-20">edit</mat-icon>
