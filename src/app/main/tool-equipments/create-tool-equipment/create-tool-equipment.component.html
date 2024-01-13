@@ -123,7 +123,7 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-label fxFlex="30" class="radio-label-tc">Tools & Equipment Receiving Status</mat-label>
+                        <mat-label fxFlex="30" class="radio-label-tc">Tools & Equipment Receiving Status<span style="color: red;">*</span></mat-label>
 
                         <mat-radio-group aria-labelledby="Tools & Equipment Receiving Status"
                             name="teReceiveStatus" formControlName="TEReceiveStatus" required appearance="outline"
@@ -153,25 +153,26 @@
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
-                        fxLayoutGap.lt-md="0px">
-                        <mat-label fxFlex="30" class="radio-label-tc">Tools & Equipment Status</mat-label>
-
+                    <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px">
+                        <mat-label fxFlex="30" class="radio-label-tc">
+                          Tools & Equipment Status
+                          <span style="color: red;" *ngIf="toolEquipmentForm.controls.TEReceiveStatus.value === 'Yes'">*</span>
+                        </mat-label>
+                      
                         <mat-radio-group aria-labelledby="Tools & Equipment Status" name="teStatus"
-                            formControlName="TEStatus" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
-                            fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
-                            [disabled]="PageRights.IsReadOnly || toolEquipmentForm.controls.TEReceiveStatus.value == 'No'"
-                            [required]="toolEquipmentForm.controls.TEReceiveStatus.value == 'Yes'"
-                            [ngClass]="{'mat-form-field-invalid': toolEquipmentForm.controls.TEReceiveStatus.value == 'Yes' && toolEquipmentForm.controls.TEStatus.touched && toolEquipmentForm.controls.TEStatus.value == ''}">
-                            <mat-radio-button value="Working">Working</mat-radio-button>
-                            <mat-radio-button value="Partially Working">Partially Working</mat-radio-button>
-                            <mat-radio-button value="Not Working">Not Working</mat-radio-button>
+                                        formControlName="TEStatus" appearance="outline" fxFlex="70" fxFlex.lt-md="75"
+                                        fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
+                                        [required]="toolEquipmentForm.controls.TEReceiveStatus.value == 'Yes'"
+                                        [disabled]="PageRights.IsReadOnly || toolEquipmentForm.controls.TEReceiveStatus.value == 'No'">
+                          <mat-radio-button value="Working">Working</mat-radio-button>
+                          <mat-radio-button value="Partially Working">Partially Working</mat-radio-button>
+                          <mat-radio-button value="Not Working">Not Working</mat-radio-button>
                         </mat-radio-group>
-                    </div>
+                      </div>
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-label fxFlex="30" class="radio-label-tc">Raw Material Availability Status</mat-label>
+                        <mat-label fxFlex="30" class="radio-label-tc">Raw Material Availability Status<span style="color: red;">*</span></mat-label>
                         <mat-radio-group aria-labelledby="Raw Material Availability Status" name="rmStatus"
                             formControlName="RMStatus" required appearance="outline" fxFlex="70" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
@@ -184,7 +185,7 @@
 
                     <div fxLayout="row" fxLayout.lt-md="column" class="input-row radio-option-height" fxLayoutGap="10px"
                         fxLayoutGap.lt-md="0px">
-                        <mat-label fxFlex="30" class="radio-label-tc">Raw Material Fund Status</mat-label>
+                        <mat-label fxFlex="30" class="radio-label-tc">Raw Material Fund Status<span style="color: red;">*</span></mat-label>
                         <mat-radio-group aria-labelledby="Raw Material Fund Status" name="rmFundStatus"
                             formControlName="RMFundStatus" required appearance="outline" fxFlex="70" fxFlex.lt-md="75"
                             fxFlex.lt-sm="100" fxLayoutGap="20px" class="radio-space-tc"
