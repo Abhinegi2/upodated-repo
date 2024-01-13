@@ -144,10 +144,10 @@
 
                         <mat-form-field appearance="outline" fxFlex="70" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Email</mat-label>
-                            <input matInput name="email" formControlName="Email" required
+                            <input matInput name="email" formControlName="Email" [attr.disabled]="PageRights.IsReadOnly || PageRights.ActionType === 'edit' ? true : null" required
                                 placeholder="Ex. abc@test.com">
                             <mat-error *ngIf="headMasterForm.controls.Email.invalid">
-                                {{getErrorMessage(headMasterForm, 'Email')}}
+                                {{ getErrorMessage(headMasterForm, 'Email') }}
                             </mat-error>
                         </mat-form-field>
                     </div>
