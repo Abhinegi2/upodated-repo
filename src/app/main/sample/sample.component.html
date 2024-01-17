@@ -144,7 +144,7 @@
                                 fxFlex.lt-sm="100%">
                                 <mat-label>Date Of Birth</mat-label>
                                 <input matInput name="dateOfBirth" formControlName="DateOfBirth"
-                                    [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                                    [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfBirth.open()">
                                 <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                                 <mat-datepicker #dateOfBirth></mat-datepicker>
 
@@ -193,7 +193,7 @@
                                 fxFlex.lt-sm="100%">
                                 <mat-label>Valid From</mat-label>
                                 <input matInput name="validFrom" formControlName="ValidFrom" [matDatepicker]="validFrom"
-                                    [disabled]="PageRights.IsReadOnly">
+                                    [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="validFrom.open()">
                                 <mat-datepicker-toggle matSuffix [for]="validFrom"></mat-datepicker-toggle>
                                 <mat-datepicker #validFrom></mat-datepicker>
 
@@ -208,7 +208,7 @@
                                 fxFlex.lt-sm="100%">
                                 <mat-label>Valid To</mat-label>
                                 <input matInput name="validTo" formControlName="ValidTo" [matDatepicker]="validTo"
-                                    [disabled]="PageRights.IsReadOnly">
+                                    [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="validTo.open()">
                                 <mat-datepicker-toggle matSuffix [for]="validTo"></mat-datepicker-toggle>
                                 <mat-datepicker #validTo></mat-datepicker>
 

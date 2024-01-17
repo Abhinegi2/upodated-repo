@@ -153,7 +153,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>Date Of Birth</mat-label>
                             <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
-                                [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                                [max]="MinimumAgeDate" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfBirth.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfBirth></mat-datepicker>
 
@@ -262,7 +262,7 @@
                             <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
                                 [max]="CurrentDate" [matDatepicker]="dateOfJoining"
                                 [min]="vocationalTrainerForm.controls.DateOfBirth.value"
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfJoining.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfJoining></mat-datepicker>
 
@@ -281,7 +281,7 @@
                                 [min]="vocationalTrainerForm.controls.DateOfJoining.value"
                                 (dateChange)="onChangeDateEnableDisableCheckBox(vocationalTrainerForm, $event)"
                                 formControlName="DateOfResignation" [matDatepicker]="dateOfResignation"
-                                [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
+                                [disabled]="PageRights.IsReadOnly" [max]="CurrentDate" [readonly]="true" (click)="dateOfResignation.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfResignation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfResignation></mat-datepicker>
                             <mat-error *ngIf="vocationalTrainerForm.controls.DateOfResignation.invalid">

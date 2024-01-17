@@ -58,7 +58,7 @@
                         <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>From Date</mat-label>
                             <input matInput name="fromDate" formControlName="FromDate" [matDatepicker]="fromDate"
-                                [max]="CurrentDate">
+                                [max]="CurrentDate" [readonly]="true" (click)="fromDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
                             <mat-datepicker #fromDate></mat-datepicker>
                         </mat-form-field>
@@ -66,7 +66,7 @@
                         <mat-form-field fxFlex="35" fxFlex.lt-md="75" fxFlex.lt-sm="100" class="filter-disabled">
                             <mat-label>To Date</mat-label>
                             <input matInput name="toDate" formControlName="ToDate" [matDatepicker]="toDate"
-                                [max]="CurrentDate">
+                                [max]="CurrentDate" [readonly]="true" (click)="toDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
                             <mat-datepicker #toDate></mat-datepicker>
                         </mat-form-field>

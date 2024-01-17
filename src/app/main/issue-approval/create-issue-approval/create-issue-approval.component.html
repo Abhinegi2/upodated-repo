@@ -159,7 +159,7 @@
                             <mat-form-field appearance="outline"  fxFlex="33" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                                 <mat-label>Reporting Date</mat-label>
                                 <input matInput [matDatepicker]="issueReportDate" name="issueReportDate" [max]="CurrentDate" 
-                                formControlName="IssueReportDate" [disabled]="PageRights.IsReadOnly">
+                                formControlName="IssueReportDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="issueReportDate.open()">
                                 <mat-datepicker-toggle matSuffix [for]="issueReportDate"></mat-datepicker-toggle>
                                 <mat-datepicker #issueReportDate></mat-datepicker>
                                 <mat-error *ngIf="issueApprovalForm.controls.IssueReportDate.invalid">{{getErrorMessage(issueApprovalForm, 'IssueReportDate')}}

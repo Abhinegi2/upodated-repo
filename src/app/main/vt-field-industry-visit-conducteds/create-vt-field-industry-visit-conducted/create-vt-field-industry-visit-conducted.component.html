@@ -163,7 +163,7 @@
                             <mat-label>Reporting Date</mat-label>
                             <input matInput name="reportingDate" formControlName="ReportingDate"
                                 [min]="minReportingDate" [max]="CurrentDate" [matDatepicker]="reportingDate" required
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="reportingDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="reportingDate"></mat-datepicker-toggle>
                             <mat-datepicker #reportingDate></mat-datepicker>
 

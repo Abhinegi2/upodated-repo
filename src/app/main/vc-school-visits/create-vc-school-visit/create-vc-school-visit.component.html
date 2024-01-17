@@ -74,7 +74,7 @@
                             <mat-label>Reporting Date</mat-label>
 
                             <input matInput [matDatepicker]="reportDate" name="reportDate" [max]="CurrentDate"
-                                formControlName="ReportDate" required [disabled]="PageRights.IsReadOnly">
+                                formControlName="ReportDate" required [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="reportDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
                             <mat-datepicker #reportDate></mat-datepicker>
 
@@ -209,7 +209,7 @@
                             <mat-label>CM Date</mat-label>
 
                             <input matInput [matDatepicker]="cmDate" name="cmDate" formControlName="CMDate" required
-                                [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
+                                [disabled]="PageRights.IsReadOnly" [max]="CurrentDate" [readonly]="true" (click)="cmDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="cmDate"></mat-datepicker-toggle>
                             <mat-datepicker #cmDate></mat-datepicker>
 
@@ -235,7 +235,7 @@
                             <mat-label>TE Date</mat-label>
 
                             <input matInput [matDatepicker]="teDate" name="teDate" formControlName="TEDate" required
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="teDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="teDate"></mat-datepicker-toggle>
                             <mat-datepicker #teDate></mat-datepicker>
 

@@ -166,7 +166,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>Date Of Joining</mat-label>
                             <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
-                                [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly" [max]="CurrentDate">
+                                [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly" [max]="CurrentDate" [readonly]="true" (click)="dateOfJoining.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfJoining></mat-datepicker>
 
@@ -185,7 +185,7 @@
                                 formControlName="DateOfResignation"
                                 (dateChange)="onChangeDateEnableDisableCheckBox(vocationalcoordinatordetailForm, $event)"
                                 [matDatepicker]="dateOfResignation" [disabled]="PageRights.IsReadOnly"
-                                [max]="CurrentDate">
+                                [max]="CurrentDate" [readonly]="true" (click)="dateOfResignation.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfResignation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfResignation></mat-datepicker>
                             <mat-error *ngIf="vocationalcoordinatordetailForm.controls.DateOfResignation.invalid">

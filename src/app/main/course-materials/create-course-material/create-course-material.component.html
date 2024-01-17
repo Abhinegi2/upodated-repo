@@ -190,7 +190,7 @@
                             <input matInput name="receiptDate" formControlName="ReceiptDate" [max]="CurrentDate"
                                    [matDatepicker]="receiptDate"
                                    [required]="courseMaterialForm.controls.CMStatus.value == 'Yes'"
-                                   [disabled]="courseMaterialForm.controls.CMStatus.value == 'No' || PageRights.IsReadOnly">
+                                   [disabled]="courseMaterialForm.controls.CMStatus.value == 'No' || PageRights.IsReadOnly" [readonly]="true" (click)="receiptDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="receiptDate"></mat-datepicker-toggle>
                             <mat-datepicker #receiptDate></mat-datepicker>
                     

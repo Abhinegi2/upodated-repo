@@ -69,7 +69,7 @@
                         <mat-form-field appearance="outline"  fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Submission</mat-label>
 
-                            <input matInput [matDatepicker]="dateSubmission" name="dateSubmission" required [max]="CurrentDate" formControlName="DateSubmission" [disabled]="PageRights.IsReadOnly">
+                            <input matInput [matDatepicker]="dateSubmission" name="dateSubmission" required [max]="CurrentDate" formControlName="DateSubmission" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateSubmission.open()">
 
                             <mat-datepicker-toggle matSuffix [for]="dateSubmission"></mat-datepicker-toggle>
                             <mat-datepicker #dateSubmission></mat-datepicker>

@@ -91,7 +91,7 @@
 
                             <input matInput [matDatepicker]="visitDate" name="visitDate" [max]="CurrentDate"
                                 [min]="minReportingDate" formControlName="VisitDate" required
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="visitDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="visitDate"></mat-datepicker-toggle>
                             <mat-datepicker #visitDate></mat-datepicker>
 

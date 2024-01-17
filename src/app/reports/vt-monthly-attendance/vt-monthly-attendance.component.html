@@ -63,7 +63,7 @@
                                 <mat-label>Report Month</mat-label>
 
                                 <input matInput name="reportDate" formControlName="ReportDate" required
-                                    [matDatepicker]="reportDate" [max]="CurrentDate">
+                                    [matDatepicker]="reportDate" [max]="CurrentDate" [readonly]="true" (click)="reportDate.open()">
                                 <mat-datepicker-toggle matSuffix [for]="reportDate"></mat-datepicker-toggle>
                                 <mat-datepicker #reportDate startView="year" (yearSelected)="chosenYearHandler($event)"
                                     (monthSelected)="chosenMonthHandler($event, reportDate)"></mat-datepicker>
