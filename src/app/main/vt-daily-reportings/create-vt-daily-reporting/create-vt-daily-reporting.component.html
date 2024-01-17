@@ -60,7 +60,7 @@
                             <mat-label>Reporting Date</mat-label>
                             <input matInput [matDatepicker]="reportingDate" name="reportingDate"
                                 [min]="minReportingDate" [max]="CurrentDate" formControlName="ReportingDate" required
-                                (dateChange)="onChangeReportingDate()" [disabled]="PageRights.IsReadOnly">
+                                (dateChange)="onChangeReportingDate()" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="reportingDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="reportingDate"></mat-datepicker-toggle>
                             <mat-datepicker #reportingDate></mat-datepicker>
                             <mat-error *ngIf="vtDailyReportingForm.controls.ReportingDate.invalid">

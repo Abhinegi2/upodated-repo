@@ -196,7 +196,7 @@
 
                                 <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="70" fxFlex.lt-sm="100">
                                     <mat-label>Date Of Birth</mat-label>
-                                    <input matInput [matDatepicker]="dateOfBirth" name="DOB" formControlName="DOB">
+                                    <input matInput [matDatepicker]="dateOfBirth" name="DOB" formControlName="DOB" [readonly]="true" (click)="dateOfBirth.open()">
                                     <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                                     <mat-datepicker #dateOfBirth></mat-datepicker>
                                 </mat-form-field>
@@ -950,7 +950,7 @@
                                     <input matInput name="dateOfIntv" formControlName="DateOfIntv"
                                         [matDatepicker]="date" required [disabled]="PageRights.IsReadOnly"
                                         [max]="CurrentDate"
-                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.DateOfIntv)}">
+                                        [ngClass]="{'mat-form-field-invalid': isValidRequiredFields(vtStudentExitSurveyDetailForm.controls.DateOfIntv)}" [readonly]="true" (click)="date.open()">
                                     <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
                                     <mat-datepicker #date></mat-datepicker>
                                 </mat-form-field>

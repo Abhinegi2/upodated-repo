@@ -71,7 +71,7 @@
                         <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="50" fxFlex.lt-sm="100">
                             <mat-label>Date Issuence</mat-label>
                             <input matInput name="dateIssuence" formControlName="DateIssuence" [max]="CurrentDate"
-                                   [matDatepicker]="dateIssuence" required [disabled]="PageRights.IsReadOnly">
+                                   [matDatepicker]="dateIssuence" required [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateIssuence.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateIssuence"></mat-datepicker-toggle>
                             <mat-datepicker #dateIssuence></mat-datepicker>
 

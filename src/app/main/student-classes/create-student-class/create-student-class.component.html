@@ -237,7 +237,7 @@
                     fxFlex.lt-sm="100">
                     <mat-label>Date Of Birth</mat-label>
                     <input matInput name="dateOfBirth" formControlName="DateOfBirth" required
-                        [max]="MaxDateOfBirthStudent" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly">
+                        [max]="MaxDateOfBirthStudent" [matDatepicker]="dateOfBirth" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfBirth.open()">
                     <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfBirth></mat-datepicker>
     
@@ -379,7 +379,7 @@
                     <mat-label>Date Of Enrollment</mat-label>
                     <input matInput [matDatepicker]="dateOfEnrollment" name="dateOfEnrollment" required
                         [max]="CurrentDate" formControlName="DateOfEnrollment"
-                        [disabled]="PageRights.IsReadOnly">
+                        [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfEnrollment.open()">
                     <mat-datepicker-toggle matSuffix [for]="dateOfEnrollment"></mat-datepicker-toggle>
                     <mat-datepicker #dateOfEnrollment></mat-datepicker>
                     <mat-error *ngIf="studentClassForm.controls.DateOfEnrollment.invalid">
@@ -398,7 +398,7 @@
                             <input matInput [matDatepicker]="dateOfDropout" name="dateOfDropout" [max]="CurrentDate"
                                 (dateChange)="onChangeDateEnableDisableCheckBox(studentClassForm, $event)"
                                 [min]="studentClassForm.controls.DateOfEnrollment.value" formControlName="DateOfDropout"
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfDropout.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfDropout"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfDropout></mat-datepicker>
                             <mat-error *ngIf="studentClassForm.controls.DateOfDropout.invalid">

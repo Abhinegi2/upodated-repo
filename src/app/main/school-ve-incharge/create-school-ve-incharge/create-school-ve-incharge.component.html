@@ -199,7 +199,7 @@
                         <mat-form-field appearance="outline" fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>Date Of Joining</mat-label>
                             <input matInput name="dateOfJoining" formControlName="DateOfJoining" required
-                                [max]="CurrentDate" [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly">
+                                [max]="CurrentDate" [matDatepicker]="dateOfJoining" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfJoining.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfJoining"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfJoining></mat-datepicker>
 
@@ -216,7 +216,7 @@
                                 formControlName="DateOfResignationFromRoleSchool"
                                 [matDatepicker]="dateOfResignationFromRoleSchool"
                                 [min]="schoolVEInchargeForm.controls.DateOfJoining.value"
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfResignationFromRoleSchool.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfResignationFromRoleSchool">
                             </mat-datepicker-toggle>
                             <mat-datepicker #dateOfResignationFromRoleSchool></mat-datepicker>

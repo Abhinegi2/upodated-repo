@@ -73,7 +73,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>Week Start Date</mat-label>
                             <input matInput name="weekStartDate" formControlName="WeekStartDate" required [max]="CurrentDate"
-                                [matDatepicker]="weekStartDate" [disabled]="PageRights.IsReadOnly">
+                                [matDatepicker]="weekStartDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="weekStartDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="weekStartDate"></mat-datepicker-toggle>
                             <mat-datepicker #weekStartDate></mat-datepicker>
 
@@ -86,7 +86,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>Weekend Date</mat-label>
                             <input matInput name="weekendDate" formControlName="WeekendDate" required [max]="CurrentDate"
-                                [matDatepicker]="weekendDate" [disabled]="PageRights.IsReadOnly">
+                                [matDatepicker]="weekendDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="weekendDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="weekendDate"></mat-datepicker-toggle>
                             <mat-datepicker #weekendDate></mat-datepicker>
 
@@ -111,7 +111,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>IV Planned Date</mat-label>
                             <input matInput name="ivPlannedDate" formControlName="IVPlannedDate" [max]="CurrentDate"
-                                [matDatepicker]="ivPlannedDate" [disabled]="PageRights.IsReadOnly">
+                                [matDatepicker]="ivPlannedDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="ivPlannedDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="ivPlannedDate"></mat-datepicker-toggle>
                             <mat-datepicker #ivPlannedDate></mat-datepicker>
 
@@ -137,7 +137,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>FV Planned Date</mat-label>
                             <input matInput name="fvPlannedDate" formControlName="FVPlannedDate" [max]="CurrentDate"
-                                [matDatepicker]="fvPlannedDate" [disabled]="PageRights.IsReadOnly">
+                                [matDatepicker]="fvPlannedDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="fvPlannedDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="fvPlannedDate"></mat-datepicker-toggle>
                             <mat-datepicker #fvPlannedDate></mat-datepicker>
 
@@ -171,7 +171,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>GL Planned Date</mat-label>
                             <input matInput name="glPlannedDate" formControlName="GLPlannedDate" [max]="CurrentDate"
-                                [matDatepicker]="glPlannedDate" [disabled]="PageRights.IsReadOnly">
+                                [matDatepicker]="glPlannedDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="glPlannedDate.open()">
                             <mat-datepicker-toggle matSuffix [for]="glPlannedDate"></mat-datepicker-toggle>
                             <mat-datepicker #glPlannedDate></mat-datepicker>
 

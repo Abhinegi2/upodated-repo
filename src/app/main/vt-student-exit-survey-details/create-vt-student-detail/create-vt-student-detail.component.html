@@ -203,7 +203,7 @@
                             <mat-form-field appearance="outline" fxFlex="33" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                 <mat-label>Date Of Birth</mat-label>
                                 <input matInput [matDatepicker]="dateOfBirth" name="DOB" required formControlName="DOB"
-                                    [max]="MinimumAgeChildrenDate" [disabled]="PageRights.IsReadOnly">
+                                    [max]="MinimumAgeChildrenDate" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfBirth.open()">
                                 <mat-datepicker-toggle matSuffix [for]="dateOfBirth"></mat-datepicker-toggle>
                                 <mat-datepicker #dateOfBirth></mat-datepicker>
                                 <mat-error *ngIf="vtStudentDetailForm.controls.DOB.invalid">

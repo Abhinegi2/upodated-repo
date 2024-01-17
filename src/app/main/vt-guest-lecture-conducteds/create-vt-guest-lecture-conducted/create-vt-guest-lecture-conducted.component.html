@@ -162,7 +162,7 @@
                             <mat-label>Reporting Date</mat-label>
                             <input matInput [matDatepicker]="picker" name="reportingDate" [min]="minReportingDate"
                                 [max]="CurrentDate" formControlName="ReportingDate" required
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="picker.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error *ngIf="vtGuestLectureConductedForm.controls.ReportingDate.invalid">

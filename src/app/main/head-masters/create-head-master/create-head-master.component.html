@@ -158,7 +158,7 @@
                             <mat-label>Date Of Joining School</mat-label>
                             <input matInput [matDatepicker]="picker1" name="dateOfJoiningSchool"
                                 (dateChange)="onChangeDateCalculateYear($event)" formControlName="DateOfJoining"
-                                [max]="CurrentDate" [disabled]="PageRights.IsReadOnly" required>
+                                [max]="CurrentDate" [disabled]="PageRights.IsReadOnly" required [readonly]="true" (click)="picker1.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                             <mat-error *ngIf="headMasterForm.controls.DateOfJoining.invalid">
@@ -172,7 +172,7 @@
                             <input matInput [matDatepicker]="picker" name="dateOfResignationFromSchool"
                                 (dateChange)="onChangeDateEnableDisableCheckBox(headMasterForm, $event)"
                                 [max]="CurrentDate" [min]="headMasterForm.controls.DateOfJoining.value"
-                                formControlName="DateOfResignation" [disabled]="PageRights.IsReadOnly">
+                                formControlName="DateOfResignation" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="picker.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error *ngIf="headMasterForm.controls.DateOfResignation.invalid">

@@ -59,7 +59,7 @@
                             fxFlex.lt-sm="100">
                             <mat-label>Reporting Date</mat-label>
                             <input matInput [matDatepicker]="picker" name="reportDate" required [min]="minReportingDate" [max]="CurrentDate" 
-                                formControlName="ReportDate" [disabled]="PageRights.IsReadOnly">
+                                formControlName="ReportDate" [disabled]="PageRights.IsReadOnly"  [readonly]="true" (click)="picker.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                             <mat-error *ngIf="dailyReportingForm.controls.ReportDate.invalid">

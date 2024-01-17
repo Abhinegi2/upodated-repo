@@ -70,7 +70,7 @@
                             <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                 <mat-label>Assessment Date</mat-label>
                                 <input matInput name="assessmentDate" formControlName="AssessmentDate"
-                                    [matDatepicker]="assessmentDate" required [disabled]="PageRights.IsReadOnly">
+                                    [matDatepicker]="assessmentDate" required [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="assessmentDate.open()">
                                 <mat-datepicker-toggle matSuffix [for]="assessmentDate"></mat-datepicker-toggle>
                                 <mat-datepicker #assessmentDate></mat-datepicker>
 
@@ -139,7 +139,7 @@
                             <mat-form-field appearance="outline"  fxFlex="50" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                                 <mat-label>Assessor Time Reached</mat-label>                                
                                 <input matInput name="assessorTimeReached" formControlName="AssessorTimeReached"
-                                    [matDatepicker]="assessorTimeReached" [disabled]="PageRights.IsReadOnly">
+                                    [matDatepicker]="assessorTimeReached" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="assessorTimeReached.open()">
                                 <mat-datepicker-toggle matSuffix [for]="assessorTimeReached"></mat-datepicker-toggle>
                                 <mat-datepicker #assessorTimeReached></mat-datepicker>
 

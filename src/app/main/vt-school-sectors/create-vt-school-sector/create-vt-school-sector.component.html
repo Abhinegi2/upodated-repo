@@ -173,7 +173,7 @@
                             <mat-label>Date Of Allocation</mat-label>
                             <input matInput [matDatepicker]="dateOfAllocation" name="dateOfAllocation" required
                                 [min]="minAllocationDate" [max]="CurrentDate" formControlName="DateOfAllocation"
-                                [disabled]="PageRights.IsReadOnly">
+                                [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="dateOfAllocation.open()">
                             <mat-datepicker-toggle matSuffix [for]="dateOfAllocation"></mat-datepicker-toggle>
                             <mat-datepicker #dateOfAllocation></mat-datepicker>
                             <mat-error *ngIf="vtSchoolSectorForm.controls.DateOfAllocation.invalid">
@@ -187,7 +187,7 @@
                             <input matInput [matDatepicker]="picker1" name="dateOfRemoval" [max]="CurrentDate"
                                 (dateChange)="onChangeDateEnableDisableCheckBox(vtSchoolSectorForm, $event)"
                                 [min]="vtSchoolSectorForm.controls.DateOfAllocation.value"
-                                formControlName="DateOfRemoval" [disabled]="PageRights.IsReadOnly">
+                                formControlName="DateOfRemoval" [disabled]="PageRights.IsReadOnly" [readonly]="true" (click)="picker1.open()">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
                             <mat-error *ngIf="vtSchoolSectorForm.controls.DateOfRemoval.invalid">
