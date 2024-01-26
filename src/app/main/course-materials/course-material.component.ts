@@ -145,7 +145,7 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
       this.displayedColumns = ['AcademicYear', 'VCName',
         // 'VTName', 
         'VTPName',
-        'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'CreatedBy', 'UpdatedBy', 'Actions'];
+        'SchoolName', 'ClassName', 'ReceiptDate', 'CMStatus', 'Details', 'SubmissionDate', 'CreatedBy', 'UpdatedBy', 'Actions'];
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
