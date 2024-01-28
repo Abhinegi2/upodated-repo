@@ -136,8 +136,8 @@
         <!-- CONTENT CARD -->
         <div class="content-card">
 
-            <mat-table class="course-material-table responsive-table" #table [dataSource]="tableDataSource" matSort
-                fusePerfectScrollbar>
+            <mat-table class="school-table responsive-table" [dataSource]="tableDataSource" matSort fusePerfectScrollbar
+            [fusePerfectScrollbarOptions]="{'suppressScrollX': false}">
 
                 <!-- AcademicYear Column -->
                 <ng-container matColumnDef="AcademicYear">
@@ -216,7 +216,7 @@
                 <ng-container matColumnDef="SubmissionDate">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Submission Date</mat-header-cell>
                     <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{courseMaterial.SubmissionDate}}</p>
+                        <p class="text-truncate">{{courseMaterial.SubmissionDate | date: Constants.ShortDateFormat }}</p>
                     </mat-cell>
                 </ng-container>
 
@@ -266,7 +266,7 @@
             </mat-table>
 
             <mat-paginator #ListPaginator [length]="tableDataSource.filteredData.length" [pageIndex]="0" [pageSize]="10"
-                [pageSizeOptions]="[5, 10, 25, 100]">
+                [pageSizeOptions]="[5, 10, 25, 100, 250]">
             </mat-paginator>
 
         </div>

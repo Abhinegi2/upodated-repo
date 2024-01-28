@@ -85,7 +85,7 @@ export class CourseMaterialComponent extends BaseListComponent<CourseMaterialMod
       }
 
       this.SearchBy.PageIndex = 0; // delete after script changed
-      this.SearchBy.PageSize = 10; // delete after script changed
+      this.SearchBy.PageSize = 1000; // delete after script changed
 
       //Load initial ToolEquipments data
       this.onLoadCourseMaterialsByCriteria();
