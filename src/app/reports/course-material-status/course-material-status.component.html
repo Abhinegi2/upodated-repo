@@ -90,6 +90,7 @@
                             </mat-select>
                         </mat-form-field>
 
+
                         <mat-form-field fxFlex="25" fxFlex.lt-md="75" fxFlex.lt-sm="100">
                             <mat-label>District</mat-label>
                             <mat-select #districtMatSelect formControlName="DistrictId" name="districtId"
@@ -411,6 +412,15 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let courseMaterialStatus">
                         <p class="text-truncate">{{courseMaterialStatus.DateOfReceipt | date:
+                            Constants.ShortDateFormat}}</p>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="SubmissionDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Submission Date
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let courseMaterialStatus">
+                        <p class="text-truncate">{{courseMaterialStatus.SubmissionDate | date:
                             Constants.ShortDateFormat}}</p>
                     </mat-cell>
                 </ng-container>
