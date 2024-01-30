@@ -41,7 +41,7 @@ export class SearchFilterModel {
 
         this.SortOrder = 'asc';
         this.PageIndex = 0;
-        this.PageSize = 15000;
+        this.PageSize = 20000;
         this.TotalResults = 0;
         this.PageSizeOptions = [10, 25, 100, 250, 500];
         this.ShowFirstLastButtons = true;
