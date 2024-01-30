@@ -290,8 +290,7 @@ export class BaseComponent<T> implements OnInit {
 
         if (userRoleTransactionJson != undefined) {
             let userRoleTransactions = JSON.parse(userRoleTransactionJson);
-
-            let userPageRights = userRoleTransactions.find(ut => ut.RouteUrl === window.location.pathname);
+            let userPageRights = userRoleTransactions.$values.find(ut => ut.RouteUrl === window.location.pathname);
             if (userPageRights != undefined && userPageRights != null) {
                 this.PageRights = new PageRightModel(userPageRights);
             }

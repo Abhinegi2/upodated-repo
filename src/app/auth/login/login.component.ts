@@ -110,7 +110,7 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
 
     this.authenticationService.loginUser(this.loginModel)
       .subscribe((logResp: any) => {
-        if (logResp.Success && logResp.Errors.length == 0) {
+        if (logResp.Success) {
 
           var currentUser: UserModel = {
             LoginUniqueId: logResp.Result.LoginUniqueId,
@@ -154,12 +154,12 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
           
           this.authenticationService.getUserTransactionsById(this.loginModel)
             .subscribe((tranResp: any) => {
-              if (tranResp.Success && tranResp.Errors.length == 0) {
+              if (tranResp.Success) {
 
                 let userNavigations = [];
                 let transHeader: any, menuItem: any;
 
-                tranResp.Results.forEach(tranItem => {
+                tranResp.Results.$values.forEach(tranItem => {
 
                   if (tranItem.HeaderName != 'Main') {
                     let headerItem = userNavigations.find(ob => ob.title === tranItem.HeaderName);
@@ -178,7 +178,7 @@ export class LoginComponent extends BaseComponent<LoginModel> implements OnInit 
                         StakeHolders: tranItem.StakeHolders
                       };
 
-                      let subMenuItems = tranResp.Results.filter(ob => ob.HeaderName === tranItem.HeaderName);
+                      let subMenuItems = tranResp.Results.$values.filter(ob => ob.HeaderName === tranItem.HeaderName);
 
                       if (subMenuItems.length > 0) {
                         subMenuItems.forEach(tranSubItem => {

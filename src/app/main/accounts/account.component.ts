@@ -60,8 +60,7 @@ export class AccountComponent extends BaseListComponent<AccountModel> implements
       this.displayedColumns = [
         'LoginId', 'UserName', 'EmailId', 'Mobile', 'AccountType', 'CreatedBy', 'UpdatedBy', 'IsActive', 'Actions'
       ];
-
-      this.tableDataSource.data = response.Results;
+      this.tableDataSource.data = response.Results.$values;
       this.tableDataSource.sort = this.ListSort;
       this.tableDataSource.paginator = this.ListPaginator;
       this.tableDataSource.filteredData = this.tableDataSource.data;

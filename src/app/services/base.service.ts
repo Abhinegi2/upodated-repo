@@ -122,7 +122,7 @@ export class BaseService extends HttpClient {
             catchError(this.HandleError),
             tap(function (response: any) {
                 if (isSelectOption == undefined) {
-                    response.Results.unshift({ Id: null, Name: selectTitle, Description: "", SequenceNo: 1 });
+                    response.Results.$values.unshift({ Id: null, Name: selectTitle, Description: "", SequenceNo: 1 });
                 }
                 return response;
             })
