@@ -338,7 +338,9 @@ export class CreateToolEquipmentComponent extends BaseComponent<ToolEquipmentMod
   onChangeOnTEReceiveStatusType(chk) {
     if (chk.value == "No") {
       this.toolEquipmentForm.controls["ReceiptDate"].clearValidators();
+      this.toolEquipmentForm.controls["ReceiptDate"].setValue(null);
       this.toolEquipmentForm.controls["TEStatus"].clearValidators();
+      this.toolEquipmentForm.controls["TEStatus"].setValue(null);
     }
     else {
       this.toolEquipmentForm.controls["ReceiptDate"].setValidators([Validators.required]);
