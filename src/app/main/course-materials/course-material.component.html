@@ -213,13 +213,6 @@
                     </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="SubmissionDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>Submission Date</mat-header-cell>
-                    <mat-cell *matCellDef="let courseMaterial" fxHide fxShow.gt-xs>
-                        <p class="text-truncate">{{courseMaterial.SubmissionDate | date: Constants.ShortDateFormat }}</p>
-                    </mat-cell>
-                </ng-container>
-
                 <!-- CreatedBy Column -->
                 <ng-container matColumnDef="CreatedBy">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxHide fxShow.gt-xs>CreatedBy</mat-header-cell>

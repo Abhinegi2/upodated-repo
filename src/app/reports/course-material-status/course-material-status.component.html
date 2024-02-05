@@ -416,15 +416,6 @@
                     </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="SubmissionDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Submission Date
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let courseMaterialStatus">
-                        <p class="text-truncate">{{courseMaterialStatus.SubmissionDate | date:
-                            Constants.ShortDateFormat}}</p>
-                    </mat-cell>
-                </ng-container>
-
                 <!-- MonthYear Column -->
                 <ng-container matColumnDef="MonthYear">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Month Year
