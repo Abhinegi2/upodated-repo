@@ -21,12 +21,7 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
   siteHeaderForm: FormGroup;
   siteHeaderModel: SiteHeaderModel;
 
-  stakeholdersList = [
-    { label: 'PMU-Admin', code: 'ADM' },
-    { label: 'Vocational Coordinator', code: 'VC' },
-    { label: 'Vocational Trainer', code: 'VT' },
-    { label: 'Head Master', code: 'HM' },
-  ];
+  stakeholdersList = [];
 
   constructor(public commonService: CommonService,
     public router: Router,
@@ -44,6 +39,9 @@ export class CreateSiteHeaderComponent extends BaseComponent<SiteHeaderModel> im
   }
 
   ngOnInit(): void {
+    this.commonService.GetMasterDataByType({ DataType: 'RoleCodes', UserId: this.UserModel.UserId, SelectTitle: 'RoleCodes' }).subscribe((response: any) => {
+      this.stakeholdersList = response.Results;
+    });
     this.route.paramMap.subscribe(params => {
       if (params.keys.length > 0) {
         this.PageRights.ActionType = params.get('actionType');
