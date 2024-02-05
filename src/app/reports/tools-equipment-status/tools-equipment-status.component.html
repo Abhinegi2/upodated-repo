@@ -386,6 +386,15 @@
                     </mat-cell>
                 </ng-container>
 
+                <!-- ToolsReceiptStatus Column -->
+                <ng-container matColumnDef="ToolsReceiptStatus">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Tools Receipt Status
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let toolsEquipmentStatus">
+                        <p class="text-truncate">{{toolsEquipmentStatus.ToolsReceiptStatus}}</p>
+                    </mat-cell>
+                </ng-container>
+                
                 <!-- ToolsAvailabilityStatus Column -->
                 <ng-container matColumnDef="ToolsAvailabilityStatus">
                     <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Tools Availability
@@ -393,15 +402,6 @@
                     </mat-header-cell>
                     <mat-cell *matCellDef="let toolsEquipmentStatus">
                         <p class="text-truncate">{{toolsEquipmentStatus.ToolsAvailabilityStatus}}</p>
-                    </mat-cell>
-                </ng-container>
-
-                <!-- ToolsReceiptStatus Column -->
-                <ng-container matColumnDef="ToolsReceiptStatus">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header fxShow.lt-sm fxShow.gt-md>Tools Receipt Status
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let toolsEquipmentStatus">
-                        <p class="text-truncate">{{toolsEquipmentStatus.ToolsReceiptStatus}}</p>
                     </mat-cell>
                 </ng-container>
 
