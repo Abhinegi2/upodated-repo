@@ -367,6 +367,7 @@ export class CreateCourseMaterialComponent extends BaseComponent<CourseMaterialM
   onChangeOnCMStatusType(chk) {
     if (chk.value == "No") {
       this.courseMaterialForm.controls["ReceiptDate"].clearValidators();
+      this.courseMaterialForm.controls["ReceiptDate"].setValue(null);
     }
     else {
       this.courseMaterialForm.controls["ReceiptDate"].setValidators([Validators.required]);

@@ -294,7 +294,7 @@ export class BaseComponent<T> implements OnInit {
             if (userPageRights != undefined && userPageRights != null) {
                 this.PageRights = new PageRightModel(userPageRights);
             }
-            else if (window.location.pathname !== '/login') {
+            else if (window.location.pathname !== '/login' && window.location.pathname !== '/reset-password') {
                 this.commonService.openShowDialog("You are not authorized to access this page. Please contact the administrator.");
                 //this.router.navigate([RouteConstants.Login]);
 

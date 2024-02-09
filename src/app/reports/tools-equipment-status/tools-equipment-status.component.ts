@@ -216,7 +216,7 @@ export class ToolsAndEquipmentStatusComponent extends BaseListComponent<ToolsAnd
     reportParams.DistrictId = (reportParams.DistrictId != null && reportParams.DistrictId.length > 0) ? reportParams.DistrictId.toString() : null;
 
     this.reportService.GetToolsAndEquipmentStatusReportsByCriteria(reportParams).subscribe(response => {
-      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VTPName', 'VCName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'JobRoleName', 'ToolsAvailabilityStatus', 'ToolsReceiptStatus', 'MonthOfReceipt'];
+      this.displayedColumns = ['SrNo', 'AcademicYear', 'SchoolAllottedYear', 'PhaseName', 'VTPName', 'VCName', 'VCMobile', 'VCEmail', 'VTName', 'VTMobile', 'VTEmail', 'VTDateOfJoining', 'HMName', 'HMMobile', 'HMEmail', 'SchoolManagement', 'DivisionName', 'DistrictName', 'BlockName', 'UDISE', 'SchoolName', 'SectorName', 'JobRoleName', 'ToolsReceiptStatus', 'ToolsAvailabilityStatus', 'MonthOfReceipt'];
 
       this.tableDataSource.data = response.Results;
       this.tableDataSource.sort = this.ListSort;

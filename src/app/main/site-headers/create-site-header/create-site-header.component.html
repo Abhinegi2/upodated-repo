@@ -88,8 +88,8 @@
                                             fxFlex.lt-sm="100%">
                               <mat-label>Stakeholders</mat-label>
                               <mat-select name="stakeholders" formControlName="StakeHolders" multiple>
-                                <mat-option *ngFor="let stakeholder of stakeholdersList" [value]="stakeholder.code">
-                                  {{ stakeholder.label }}
+                                <mat-option *ngFor="let stakeholder of stakeholdersList" [value]="stakeholder.Description">
+                                  {{ stakeholder.Name }}
                                 </mat-option>
                               </mat-select>
                               <mat-error *ngIf="siteHeaderForm.controls.StakeHolders.invalid">
